@@ -1,10 +1,10 @@
-def chopSimple(fi, pathout, size):
-    '''Takes a file fi, chops it into as many segments of length size as possible, and deposits the files containing the new segments in pathout.
+def chopSimple(fi, pathOut, size):
+    '''Takes a file fi, chops it into as many segments of length size as possible, and deposits the files containing the new segments in pathOut.
         Assumes only one genome per file.'''
     
     f = open(fi,'r')
-    ensureDir(pathout+"/")
-    nm = pathout + "/" + fi.split("/")[-1][:-4]
+    ensureDir(pathOut+"/")
+    nm = pathOut + "/" + fi.split("/")[-1][:-4]
 
     ctbp = 0
     ctsq = 0
@@ -85,7 +85,7 @@ def analyzeChop(path, nm, out):
         fout.write("\t{!s}: Mean = {:1.6f}, StdDev = {:1.6f}, Spread = {:1.6f}, Spread/Mean = {:1.6f}\n".format(kmer, numpy.mean(arr), numpy.std(arr), spread, spread/numpy.mean(arr)))
     fout.close()
 
-def chopRandom(fi, pathout, avg_size, interval, num_chop):
+def chopRandom(fi, pathOut, avg_size, interval, num_chop):
     import random
     nm, seq = readSequence(fi)
     llim = len(seq) - avg_size - interval
@@ -97,12 +97,12 @@ def chopRandom(fi, pathout, avg_size, interval, num_chop):
     else:
         sizestr = str(avg_size)
 
-    if pathout[-1] != "/":
-        pathout = pathout + "/"
+    if pathOut[-1] != "/":
+        pathOut = pathOut + "/"
     
     out = fi[:-4]
     name = fi.split("/")[-1][:-4]
-    f = open(pathout + name + "_random_chopped_" + sizestr + "b.fna",'w')
+    f = open(pathOut + name + "_random_chopped_" + sizestr + "b.fna",'w')
     for i in range(num_chop):
         st = random.randrange(llim)
         leng = random.randrange(avg_size - interval, avg_size + interval)
@@ -223,7 +223,7 @@ def testCorrectSubfolders(path):
             print "{!s}: Whoops".format(fl)
     return corr
 
-def randomSeedClustering(fi, pr, reps):
+def randomSeedClustering(fi, pr, reps, pathWork, pathRai):
     import os
     import numpy
     import networkx as nx
@@ -238,28 +238,33 @@ def randomSeedClustering(fi, pr, reps):
         buf = input.readline()
     input.close()
 
+    if pathWork[-1] != '/':
+        pathWork = pathWork + '/'
+    if pathRai[-1] != '/':
+        pathRai = pathRai + '/'
+
     mat = numpy.zeros((len(contigs),len(contigs)), dtype=numpy.float)
 
     for i in range(reps):
-        os.system("perl makeRandom.pl {!s} {!s} ClusteringTest/dbIn.fna ClusteringTest/seqs.fna".format(pr, fi))
-        os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 2 -i ClusteringTest/dbIn.fna -d ClusteringTest/db")
-        os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 0 -i ClusteringTest/seqs.fna -d ClusteringTest/db -o ClusteringTest/res")
-        os.system("rm ClusteringTest/dbIn.fna")
-        os.system("rm ClusteringTest/seqs.fna")
-        os.system("rm ClusteringTest/db")
+        os.system("perl makeRandom.pl {!s} {!s} {!s}dbIn.fna {!s}seqs.fna".format(pr, fi, pathWork, pathWork))
+        os.system("{!s}raiphy -e .fna -m 2 -i {!s}dbIn.fna -d {!s}db".format(pathRai, pathWork, pathWork))
+        os.system("{!s}raiphy -e .fna -m 0 -i {!s}seqs.fna -d {!s}db -o {!s}res".format(pathRai, pathWork, pathWork, pathWork))
+        os.system("rm {!s}dbIn.fna".format(pathWork))
+        os.system("rm {!s}seqs.fna".format(pathWork))
+        os.system("rm {!s}db".format(pathWork))
         
-        res = open("ClusteringTest/res")
+        res = open("{!s}res".format(pathWork))
         lines = res.readlines()
         for sq, db in zip(lines[1::2], lines[2::2]):
             a = sq.rstrip()[1:]
             b = db.rstrip()
             mat[contigs.index(a)][contigs.index(b)] += 1.0
         res.close()
-    os.system("rm ClusteringTest/res")
+    os.system("rm {!s}res".format(pathWork))
 
     mat = mat/reps # Normalizing
 
-    adj = open("ClusteringTest/adjacency_{!s}.csv".format(reps),'w')
+    adj = open("{!s}adjacency_{!s}.csv".format(pathWork, reps), 'w')
     for j in range(len(contigs)):
         adj.write(",".join(str(n) for n in mat[j])+"\n")
     adj.close()
@@ -272,7 +277,7 @@ def randomSeedClustering(fi, pr, reps):
             y = contigs[k]
             D.add_edge(x,y,weight=max(mat[j][k],mat[k][j]))
 
-    gra = open("ClusteringTest/graph_facts_{!s}.txt".format(reps),'w')
+    gra = open("{!s}graph_facts_{!s}.txt".format(pathWork, reps),'w')
     gra.write("Communities: \n")
     # http://perso.crans.org/aynaud/communities/
     partition = community.best_partition(D)
@@ -287,7 +292,7 @@ def randomSeedClustering(fi, pr, reps):
                        node_color = [count/size]*len(list_nodes), with_labels=False,cmap=plt.cm.Dark2,vmin=0.0, vmax=1.0)
         gra.write("{!s}: {!s}\n".format(com,sorted(list_nodes)))
     nx.draw_networkx_edges(D, pos)
-    plt.savefig("ClusteringTest/graph_{!s}.png".format(reps))
+    plt.savefig("{!s}graph_{!s}.png".format(pathWork, reps))
     gra.close()
 
 def adjMatrix2Graph(fi):
@@ -332,7 +337,7 @@ def Fasta2Tab(fIn,fOut):
     fileIn.close()
     fileOut.close()
 
-def bootStrap(fi, threshold):
+def bootStrap(fi, threshold, pathWork, pathRai):
     import os
     import numpy
     import scipy
@@ -347,19 +352,24 @@ def bootStrap(fi, threshold):
 
     #mat = numpy.zeros((len(contigs),len(contigs)), dtype=numpy.float)
 
-    os.system("perl separateBySize.pl {!s} {!s} BootstrappingTest/dbIn.fna BootstrappingTest/seqs.fna BootstrappingTest/nums.txt".format(threshold, fi))
-    nmf = open("BootstrappingTest/nums.txt",'r')
+    if pathWork[-1] != '/':
+        pathWork = pathWork + '/'
+    if pathRai[-1] != '/':
+        pathRai = pathRai + '/'
+    
+    os.system("perl separateBySize.pl {!s} {!s} {!s}dbIn.fna {!s}seqs.fna {!s}nums.txt".format(threshold, fi, pathWork, pathWork, pathWork))
+    nmf = open("{!s}nums.txt".format(pathWork),'r')
     [dbNum, seqNum] = nmf.readline().rstrip().split(",")
-    os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 2 -i BootstrappingTest/dbIn.fna -d BootstrappingTest/db")
-    os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 0 -i BootstrappingTest/seqs.fna -d BootstrappingTest/db -o BootstrappingTest/resSeeds")
-    os.system("rm BootstrappingTest/dbIn.fna")
-    os.system("rm BootstrappingTest/seqs.fna")
-    os.system("rm BootstrappingTest/db")
-    os.system("rm BootstrappingTest/nums.txt")
+    os.system("{!s}raiphy -e .fna -m 2 -i {!s}dbIn.fna -d {!s}db".format(pathRai, pathWork, pathWork))
+    os.system("{!s}raiphy -e .fna -m 0 -i {!s}seqs.fna -d {!s}db -o {!s}resSeeds".format(pathRai, pathWork, pathWork, pathWork))
+    os.system("rm {!s}dbIn.fna".format(pathWork))
+    os.system("rm {!s}seqs.fna".format(pathWork))
+    os.system("rm {!s}db".format(pathWork))
+    os.system("rm {!s}nums.txt".format(pathWork))
 
     seqs = []
     matches = []
-    res = open("BootstrappingTest/resSeeds",'r')
+    res = open("{!s}resSeeds".format(pathWork),'r')
     lines = res.readlines()
     for sq, db in zip(lines[1::2], lines[2::2]):
         seqs.append(int(sq.rstrip()[2:]))
@@ -374,12 +384,12 @@ def bootStrap(fi, threshold):
         dict1[s].append(seqs[i])
     list1 = dict1.values()
 
-    fout = open("BootstrappingTest/Clusters_{!s}.txt".format(threshold),'w')
+    fout = open("{!s}Clusters_{!s}.txt".format(pathWork, threshold),'w')
     fout.write(str(list1))
     fout.close()
 
 
-def adjMatrix2Dendrograms(fi, namefi, pathout, num):
+def adjMatrix2Dendrograms(fi, namefi, pathOut, num):
     import numpy
     import scipy
     import scipy.cluster.hierarchy as sch
@@ -388,10 +398,10 @@ def adjMatrix2Dendrograms(fi, namefi, pathout, num):
     import math
     import pylab
     
-    if pathout[-1] != "/":
-        pathout = pathout + "/"
+    if pathOut[-1] != "/":
+        pathOut = pathOut + "/"
     
-    pathout = pathout + str(num)
+    pathOut = pathOut + str(num)
     
     f = open(fi,'r')
     lines = f.readlines()
@@ -439,13 +449,13 @@ def adjMatrix2Dendrograms(fi, namefi, pathout, num):
 
     axcolor = fig.add_axes([0.91,0.1,0.02,0.8])
     pylab.colorbar(im, cax=axcolor)
-    fig.savefig("{!s}_dendrogram_matrix.png".format(pathout))
+    fig.savefig("{!s}_dendrogram_matrix.png".format(pathOut))
 
-    order = open("{!s}_dendro_order.p".format(pathout),'wb')
+    order = open("{!s}_dendro_order.p".format(pathOut),'wb')
     pickle.dump(Z1['leaves'],order)
     order.close()
 
-    clustersOut = open("{!s}_dendro_clusters.txt".format(pathout),'w')
+    clustersOut = open("{!s}_dendro_clusters.txt".format(pathOut),'w')
 
     for x in range(min(10,int(mx*20)),0,-1):
         clusters = sch.fcluster(Y, float(x)/10.0, criterion='distance')
@@ -707,7 +717,7 @@ def distanceHistogramFolder(folder, pctrep, max):
 
     plt.savefig("{!s}Histogram.png".format(folder))
 
-def testSelfRecruitment(pathIn, numSpecies, sizeChop, numDB, numSeq):
+def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     import os
     import random
     import numpy as np
@@ -717,9 +727,12 @@ def testSelfRecruitment(pathIn, numSpecies, sizeChop, numDB, numSeq):
     import community as cm
     import matplotlib.pyplot as plt
 
-    if pathIn[-1] != '/':
-        pathIn = pathIn + '/'
-    allList = os.listdir(pathIn)
+    if pathWork[-1] != '/':
+        pathWork = pathWork + '/'
+    if pathRai[-1] != '/':
+        pathRai = pathRai + '/'
+            
+    allList = os.listdir(pathWork)
     genomeList = []
     for file in allList:
         if file[-4:] == ".fna":
@@ -729,15 +742,15 @@ def testSelfRecruitment(pathIn, numSpecies, sizeChop, numDB, numSeq):
 
     for file in subset:
         # make sequences to be matched
-        ensureDir(pathIn+"Sequences/")
-        chopRandom(pathIn+file, pathIn+"Sequences/", sizeChop, sizeChop/10, numSeq)
+        ensureDir(pathWork+"Sequences/")
+        chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop, sizeChop/10, numSeq)
         # make sequences to be matched to
-        ensureDir(pathIn+"DataBase/")
-        chopRandom(pathIn+file, pathIn+"DataBase/", sizeChop, sizeChop/10, numDB)
+        ensureDir(pathWork+"DataBase/")
+        chopRandom(pathWork+file, pathWork+"DataBase/", sizeChop, sizeChop/10, numDB)
 
     # Make RAI databases
-    os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathIn,pathIn))        
-    os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 2 -I {!s}DataBase/ -d {!s}db".format(pathIn,pathIn))
+    os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
+    os.system("{!s}raiphy -e .fna -m 2 -I {!s}DataBase/ -d {!s}db".format(pathRai,pathWork,pathWork))
 
     # Data sets for further evaluation
     namesSq, RaiSq = rai2Numpy(pathIn+"seqs")
@@ -751,12 +764,12 @@ def testSelfRecruitment(pathIn, numSpecies, sizeChop, numDB, numSeq):
         csvout.write(",".join(str(x) for x in r)+"\n")
             
     # Run RAIphy
-    os.system("/Users/anna/Research/RAIphyCommandLine/raiphy -e .fna -m 0 -I {!s}Sequences/ -d {!s}db -o {!s}output".format(pathIn,pathIn,pathIn))
+    os.system("{!s}raiphy -e .fna -m 0 -I {!s}Sequences/ -d {!s}db -o {!s}output".format(pathRai,pathWork,pathWork,pathWork))
     # Evaluate RAIphy results
     raiDict = {}
     for k in namesDb:
         raiDict[k] = [k]
-    raiRes = open("{!s}output".format(pathIn),'r')
+    raiRes = open("{!s}output".format(pathWork),'r')
     raiRes.readline()
     buf = raiRes.readline().rstrip()
     while buf:
@@ -771,11 +784,11 @@ def testSelfRecruitment(pathIn, numSpecies, sizeChop, numDB, numSeq):
 
     print "RAIphy cluster list: {!s}".format(raiList)
 
-    os.system("rm -r {!s}Sequences/".format(pathIn))
-    os.system("rm -r {!s}seqs".format(pathIn))
-    os.system("rm -r {!s}DataBase/".format(pathIn))
-    os.system("rm -r {!s}db".format(pathIn))
-    os.system("rm -r {!s}output".format(pathIn))
+    os.system("rm -r {!s}Sequences/".format(pathWork))
+    os.system("rm -r {!s}seqs".format(pathWork))
+    os.system("rm -r {!s}DataBase/".format(pathWork))
+    os.system("rm -r {!s}db".format(pathWork))
+    os.system("rm -r {!s}output".format(pathWork))
 
     print "Files removed"
 
