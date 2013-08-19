@@ -553,23 +553,34 @@ def distMatrixInputOrder(matfile, orderfile, outfile):
     fig.savefig(outfile)
 
 
-def distanceDistributionCSV(file, out):
+def distanceDistributionCSV(file, out, intervals = []):
     # http://stackoverflow.com/a/5328669
     import matplotlib.pyplot as plt
     import numpy as np
     
     f = open(file,'r')
     lines = f.readlines()
-    list = []
-    
-    for i in range(len(lines)):
-        row = lines[i].rstrip().split(',')
-        for j in range(len(lines)):
-            if float(row[j]) > 0:
-                list.append(float(row[j]))
+    mylist = []
+
+		nl = len(lines)    
+
+		if intervals == []:
+    		for i in range(nl):
+        		row = lines[i].rstrip().split(',')
+        		for j in range(nl):
+            		if float(row[j]) > 0:
+                		mylist.append(float(row[j]))
+		else:
+				for n in range(len(intervals)):
+						for i in intervals[n]:
+								row = lines[i].rstrip().split(',')
+								okset = set(range(nl)) - set(intervals[n])
+								for j in okset:
+										if float(row[j]) > 0:
+												mylist.append(float(row[j]))
     f.close()
 
-    mat = np.array(list)
+    mat = np.array(mylist)
 
     hist, bins = np.histogram(mat, bins=50)
     width = 0.7*(bins[1]-bins[0])
