@@ -173,3 +173,35 @@ def rai2Numpy(fi):
         buf = f.readline().rstrip()
     
     return names, numpy.array(obs)
+
+def spectralContrastAngle(vec1, vec2):
+    # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 5
+    import math
+    asq = 0.0
+    bsq = 0.0
+    num = 0.0
+    for i in range(len(vec1)):
+        asq += math.pow(vec1[i],2)
+        bsq += math.pow(vec2[i],2)
+        num += vec1[i]*vec2[i]
+    c = num/(math.sqrt(asq*bsq))
+    return math.acos(c)
+
+def negDist(vec1, vec2, r=1.0):
+    import math
+    s = 0.0
+    for i in range(len(vec1)):
+        s += math.pow(vec1[i] - vec2[i],2)
+    return -math.pow(s, r/2.0)
+
+def similarityIndex(vec1, vec2):
+    # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 2
+    import math
+    i = 0.0
+    i0 = 0.0
+    s = 0.0
+    for j in range(len(vec1)):
+        i = max(vec1[j],vec2[j])
+        i0 = min(vec1[j],vec2[j])
+        s += math.pow((i-i0)/(i+i0) * 100, 2)
+    return math.sqrt(s/len(vec1))
