@@ -490,7 +490,7 @@ def distMatrixInputOrder(matfile, orderfile, outfile):
     fig.savefig(outfile)
 
 
-def distanceDistributionCSV(file, out, intervals = []):
+def csv2DistanceDistribution(file, out, intervals = []):
     # http://stackoverflow.com/a/5328669
     import matplotlib.pyplot as plt
     import numpy as np
@@ -683,3 +683,35 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     clustWeightedLink = sch.fcluster(WeightedLink,numSpecies,criterion='maxclust')
     hist, bins = np.histogram(clustWeightedLink, bins=numSpecies)
     print hist
+
+def computeDistances(raiFile, outFile, intervals=[], method='euclidean'):
+    import numpy
+    if method not in {'euclidean', 'negDist2', 'angle', 'similarityIndex'}:
+        print "Method {!s} not recognized.  Please try again."
+    else:
+        dispatch = {
+                    'euclidean': numpy.linalg.norm,
+                    'negDist2': negDist2,
+                    'angle': spectralContrastAngle,
+                    'similarityIndex': similarityIndex,
+                    }
+        arr = rai2Numpy(raiFile)
+        dist = numpy.zeros([len(arr), len(arr)])
+        if intervals == []:
+            for i in range(len(arr)):
+                for j in range(i):
+                    d = send(dispatch[method], [vec1, vec2])
+                    dist[i][j] = d
+                    dist[j][i] = d
+        else:
+            for I in intervals:
+                for i in I:
+                    okset = set(range(len(arr))) - set(I)
+                    for j in okset:
+                        d = send(dispatch[method], [vec1,vec2])
+                        dist[i][j] = d
+                        dist[j][i] = d
+
+        oF = open(outFile,'w')
+        for a in arr:
+            oF.write(",".join(str(x) for x in a)+"\n")

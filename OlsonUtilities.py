@@ -80,6 +80,7 @@ def csv2NumpyMatrix(fi):
     
     return mat
 
+
 def adjMatrix2SymMatrix(fi):
     mat = csv2NumpyMatrix(fi)
     for i in range(len(mat)):
@@ -174,27 +175,25 @@ def rai2Numpy(fi):
     
     return names, numpy.array(obs)
 
-def spectralContrastAngle(vec1, vec2):
+def spectralContrastAngle([vec1, vec2]):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 5
+    from numpy.linalg import norm, vdot
     import math
-    asq = 0.0
-    bsq = 0.0
-    num = 0.0
-    for i in range(len(vec1)):
-        asq += math.pow(vec1[i],2)
-        bsq += math.pow(vec2[i],2)
-        num += vec1[i]*vec2[i]
-    c = num/(math.sqrt(asq*bsq))
-    return math.acos(c)
+    v1n = norm(vec1)
+    v2n = norm(vec2)
+    c = vdot(vec1,vec2)
+    return math.acos(c/(v1n*v2n))
 
-def negDist(vec1, vec2, r=1.0):
-    import math
-    s = 0.0
-    for i in range(len(vec1)):
-        s += math.pow(vec1[i] - vec2[i],2)
-    return -math.pow(s, r/2.0)
+def euclidean([vec1, vec2]):
+    from numpy.linalg import norm
+    return norm(vec1-vec2)
 
-def similarityIndex(vec1, vec2):
+def negDist2([vec1,vec2]):
+    from numpy.linalg import norm
+    from math import pow
+    return -pow(norm(vec1-vec2))
+
+def similarityIndex([vec1, vec2]):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 2
     import math
     i = 0.0
