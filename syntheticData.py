@@ -77,5 +77,4 @@ def writeProperSequences(path1, path2):
                 ct += 60
                 if (ct > len(se)):
                     break
-            f1.close()
             f2.close()
