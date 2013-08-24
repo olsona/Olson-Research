@@ -120,6 +120,7 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
         f.write("\n")
     f.close()
 
+
 def testCorrectPlus(raifi):
     import string
     f = open(raifi,'r')
@@ -140,6 +141,7 @@ def testCorrectPlus(raifi):
         total += 1
         buf = f.readline().rstrip()
     return float(100.0 * correct)/float(total), reps
+
 
 def routeSeqs(family, pathIn, mainNo, mainPath, divertNo, otherPath):
     import os
@@ -186,6 +188,7 @@ def makeDistinct(llist, nums, reps, destPth, genePth, numSq, numDB, nKBP):
                 chopSimple('{!s}{!s}'.format(genePth, s), super, nKBP*1000)
                 routeSeqs(fam, super, numSq, mnpth, numDB, orpth)
 
+
 def testCorrectSubfolders(path):
     import os
     if path[-1] != '/':
@@ -200,6 +203,7 @@ def testCorrectSubfolders(path):
         except IOError:
             print "{!s}: Whoops".format(fl)
     return corr
+
 
 def randomSeedClustering(fi, pr, reps, pathWork, pathRai):
     import os
@@ -410,6 +414,7 @@ def adjMatrix2Dendrograms(fi, namefi, pathOut, num):
         clustersOut.write("\n")
     clustersOut.close()
 
+
 def rai2KMeans(fi, clRange, out):
     import scipy.cluster.vq as scv
     import numpy
@@ -559,6 +564,7 @@ def getDistances(fi, pctrep):
 
     return dists
 
+
 def distanceHistogramFolder(folder, pctrep, max):
     import matplotlib.pyplot as plt
     import os
@@ -579,6 +585,43 @@ def distanceHistogramFolder(folder, pctrep, max):
     n, bins, patches = plt.hist(dist, 50, facecolor='green')
 
     plt.savefig("{!s}Histogram.png".format(folder))
+
+
+def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
+    import os
+    import random
+    import numpy as np
+        
+    if pathWork[-1] != '/':
+        pathWork = pathWork + '/'
+    if pathRai[-1] != '/':
+        pathRai = pathRai + '/'
+        
+    allList = os.listdir(pathWork)
+    genomeList = []
+    for file in allList:
+        if file[-4:] == ".fna":
+            genomeList.append(file)
+
+    ns = len(genomeList)
+        
+    for file in genomeList:
+        # make sequences to be matched
+        ensureDir(pathWork+"Sequences/")
+        chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop, sizeChop/10, numSeq)
+        
+    # Make RAI databases
+    os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
+        
+    #I = [range(x*numSeq,(x+1)*numSeq) for x in range(ns)]
+    
+    computeDistances(pathWork+"seqs", pathWork+"dist_{!s}bp_{!s}reps_{!s}.csv".format(sizeChop,numSeq,type), method=type)
+
+    os.system("rm -r {!s}Sequences/".format(pathWork))
+    os.system("rm -r {!s}seqs".format(pathWork))
+
+    print "Files removed"
+
 
 def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     import os
@@ -616,8 +659,8 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     os.system("{!s}raiphy -e .fna -m 2 -I {!s}DataBase/ -d {!s}db".format(pathRai,pathWork,pathWork))
 
     # Data sets for further evaluation
-    namesSq, RaiSq = rai2Numpy(pathIn+"seqs")
-    namesDb, RaiDb = rai2Numpy(pathIn+"db")
+    namesSq, RaiSq = rai2Numpy(pathWork+"seqs")
+    namesDb, RaiDb = rai2Numpy(pathWork+"db")
             
     namesAll = namesSq + namesDb
     RaiAll = np.concatenate([RaiSq,RaiDb])
@@ -682,7 +725,8 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     hist, bins = np.histogram(clustWeightedLink, bins=numSpecies)
     print hist
 
-def computeDistances(raiFile, outFile, intervals=[], method='euclidean'):
+
+def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include=0):
     import numpy
     if method not in {'euclidean', 'negDist2', 'angle', 'similarityIndex'}:
         print "Method {!s} not recognized.  Please try again."
@@ -702,13 +746,21 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean'):
                     dist[i][j] = d
                     dist[j][i] = d
         else:
-            for I in intervals:
-                for i in I:
-                    okset = set(range(len(arr))) - set(I)
-                    for j in okset:
-                        d = dispatch[method]([arr[i],arr[j]])
-                        dist[i][j] = d
-                        dist[j][i] = d
+            if include == 0:
+                for I in intervals:
+                    for i in I:
+                        okset = set(range(len(arr))) - set(I)
+                        for j in okset:
+                            d = dispatch[method]([arr[i],arr[j]])
+                            dist[i][j] = d
+                            dist[j][i] = d
+            else:
+                for I in intervals:
+                    for i in I:
+                        for j in I:
+                            d = dispatch[method]([arr[i],arr[j]])
+                            dist[i][j] = d
+                            dist[j][i] = d
 
         oF = open(outFile,'w')
         for a in dist:

@@ -199,11 +199,11 @@ def similarityIndex(v):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 2
     import math
     [vec1,vec2] = v
-    i = 0.0
-    i0 = 0.0
+    a = 0.0
+    a0 = 0.0
     s = 0.0
     for j in range(len(vec1)):
-        i = max(vec1[j],vec2[j])
-        i0 = min(vec1[j],vec2[j])
-        s += math.pow((i-i0)/(i+i0) * 100, 2)
+        a = max(vec1[j],vec2[j])
+        a0 = min(vec1[j],vec2[j])
+        s += math.pow(100.0*(i-i0)/(i+i0), 2.0)
     return math.sqrt(s/len(vec1))
