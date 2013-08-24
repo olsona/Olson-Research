@@ -498,23 +498,21 @@ def csv2DistanceDistribution(file, out, intervals = []):
     f = open(file,'r')
     lines = f.readlines()
     mylist = []
-
-		nl = len(lines)    
-
-		if intervals == []:
-    		for i in range(nl):
-        		row = lines[i].rstrip().split(',')
-        		for j in range(nl):
-            		if float(row[j]) > 0:
-                		mylist.append(float(row[j]))
-		else:
-				for n in range(len(intervals)):
-						for i in intervals[n]:
-								row = lines[i].rstrip().split(',')
-								okset = set(range(nl)) - set(intervals[n])
-								for j in okset:
-										if float(row[j]) > 0:
-												mylist.append(float(row[j]))
+    nl = len(lines)
+    if intervals == []:
+        for i in range(nl):
+            row = lines[i].rstrip().split(',')
+            for j in range(nl):
+                if float(row[j]) > 0:
+                    mylist.append(float(row[j]))
+    else:
+        for n in range(len(intervals)):
+            for i in intervals[n]:
+                row = lines[i].rstrip().split(',')
+                okset = set(range(nl)) - set(intervals[n])
+                for j in okset:
+                    if float(row[j]) > 0:
+                        mylist.append(float(row[j]))
     f.close()
 
     mat = np.array(mylist)
@@ -695,12 +693,12 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean'):
                     'angle': spectralContrastAngle,
                     'similarityIndex': similarityIndex,
                     }
-        arr = rai2Numpy(raiFile)
+        _, arr = rai2Numpy(raiFile)
         dist = numpy.zeros([len(arr), len(arr)])
         if intervals == []:
             for i in range(len(arr)):
                 for j in range(i):
-                    d = send(dispatch[method], [vec1, vec2])
+                    d = dispatch[method]([arr[i], arr[j]])
                     dist[i][j] = d
                     dist[j][i] = d
         else:
@@ -708,10 +706,10 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean'):
                 for i in I:
                     okset = set(range(len(arr))) - set(I)
                     for j in okset:
-                        d = send(dispatch[method], [vec1,vec2])
+                        d = dispatch[method]([arr[i],arr[j]])
                         dist[i][j] = d
                         dist[j][i] = d
 
         oF = open(outFile,'w')
-        for a in arr:
+        for a in dist:
             oF.write(",".join(str(x) for x in a)+"\n")

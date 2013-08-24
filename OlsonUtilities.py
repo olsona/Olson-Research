@@ -175,27 +175,30 @@ def rai2Numpy(fi):
     
     return names, numpy.array(obs)
 
-def spectralContrastAngle([vec1, vec2]):
+def spectralContrastAngle(v):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 5
-    from numpy.linalg import norm, vdot
+    from numpy.linalg import norm
+    from numpy import dot
     import math
+    [vec1,vec2] = v
     v1n = norm(vec1)
     v2n = norm(vec2)
-    c = vdot(vec1,vec2)
+    c = dot(vec1,vec2)
     return math.acos(c/(v1n*v2n))
 
-def euclidean([vec1, vec2]):
+def euclidean(v):
     from numpy.linalg import norm
-    return norm(vec1-vec2)
+    return LA.norm(v[0] - v[1])
 
-def negDist2([vec1,vec2]):
+def negDist2(v):
     from numpy.linalg import norm
     from math import pow
-    return -pow(norm(vec1-vec2))
+    return -pow(norm(v[0]-v[1]),2)
 
-def similarityIndex([vec1, vec2]):
+def similarityIndex(v):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 2
     import math
+    [vec1,vec2] = v
     i = 0.0
     i0 = 0.0
     s = 0.0
