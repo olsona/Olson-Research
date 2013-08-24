@@ -68,10 +68,8 @@ def writeProperSequences(path1, path2):
     fls = os.listdir(path1)
     for f in fls:
         if f[-3:] == 'fna':
-            nm = f[:-4]
-            f1 = open(path1 + "/" + f, 'r')
             f2 = open(path2 + "/" + f, 'w')
-            se = readSequence(f1)
+            nm, se = readSequence(path1 + "/" + f)
             f2.write(">: " + nm + "\n")
             ct = 0
             while 1:
