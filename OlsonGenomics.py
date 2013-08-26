@@ -591,6 +591,9 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
     import os
     import random
     import numpy as np
+    
+    if len(sizeChop) != len(numSeq):
+        numSeq = numSeq[0] * len(sizeChop)
         
     if pathWork[-1] != '/':
         pathWork = pathWork + '/'
@@ -608,7 +611,8 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
     for file in genomeList:
         # make sequences to be matched
         ensureDir(pathWork+"Sequences/")
-        chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop, sizeChop/10, numSeq)
+        for i in range(len(sizeChop)):
+            chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop[i], sizeChop/10, numSeq[i])
         
     # Make RAI databases
     os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
