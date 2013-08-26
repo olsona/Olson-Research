@@ -612,7 +612,7 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
         # make sequences to be matched
         ensureDir(pathWork+"Sequences/")
         for i in range(len(sizeChop)):
-            chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop[i], sizeChop/10, numSeq[i])
+            chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop[i], sizeChop[i]/10, numSeq[i])
         
     # Make RAI databases
     os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
