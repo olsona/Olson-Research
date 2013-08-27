@@ -205,5 +205,5 @@ def similarityIndex(v):
     for j in range(len(vec1)):
         a = max(vec1[j],vec2[j])
         a0 = min(vec1[j],vec2[j])
-        s += math.pow(100.0*(i-i0)/(i+i0), 2.0)
+        s += math.pow(100.0*(a-a0)/(a+a0), 2.0)
     return math.sqrt(s/len(vec1))
