@@ -514,7 +514,7 @@ def csv2DistanceDistribution(file, out, intervals = [], include = 1):
             for n in range(len(intervals)):
                 for i in intervals[n]:
                     row = lines[i].rstrip().split(',')
-                    for j in set(intervals[n])-set(i):
+                    for j in set(intervals[n]) - set([i]):
                         if float(row[j]) > 0:
                             mylist.append(float(row[j]))
         else:
@@ -734,7 +734,7 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
 
 def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include=0):
     import numpy
-    if method not in {'euclidean', 'negDist2', 'angle', 'similarityIndex'}:
+    if method not in {'euclidean', 'negDist2', 'angle', 'similarityIndex','raiScore'}:
         print "Method {!s} not recognized.  Please try again."
     else:
         dispatch = {
@@ -742,6 +742,7 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include
                     'negDist2': negDist2,
                     'angle': spectralContrastAngle,
                     'similarityIndex': similarityIndex,
+                    'raiScore': raiScore,
                     }
         _, arr = rai2Numpy(raiFile)
         dist = numpy.zeros([len(arr), len(arr)])

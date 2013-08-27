@@ -16,12 +16,14 @@ def readSequence(fi):
     return seq_name, concat
     f.close()
 
+
 def ensureDir(pth):
     # source: http://stackoverflow.com/questions/273192/python-best-way-to-create-directory-if-it-doesnt-exist-for-file-write
     import os
     d = os.path.dirname(pth)
     if not os.path.exists(d):
         os.makedirs(d)
+
 
 def adjMatrix2Graph(fi):
     import networkx as nx
@@ -36,6 +38,7 @@ def adjMatrix2Graph(fi):
             if w > 0.0:
                 G.add_edge(x,y,weight=float(li[y]))
     return G
+
 
 def adjMatrix2Dot(num, fi, out):
     dot = open(out,'w')
@@ -52,6 +55,7 @@ def adjMatrix2Dot(num, fi, out):
     dot.write("}")
     dot.close()
 
+
 def Fasta2Tab(fIn,fOut):
     fileIn = open(fIn,'r')
     fileOut = open(fOut,'w')
@@ -64,6 +68,7 @@ def Fasta2Tab(fIn,fOut):
         buf = fileIn.readline().rstrip()
     fileIn.close()
     fileOut.close()
+
 
 def csv2NumpyMatrix(fi):
     import numpy
@@ -110,6 +115,7 @@ def adjMatrix2SymDistanceMatrix(A):
     
     return O - M
 
+
 def clusterSimilarityK(A, B):
     import numpy
     import math
@@ -149,11 +155,13 @@ def clusterSimilarityK(A, B):
     
     return Bk, EBk, math.pow(var,0.5), [EBk - 2*(math.pow(var,0.5)), EBk + 2*(math.pow(var,0.5))]
 
+
 # http://stackoverflow.com/a/17622583
 def newWhiten(obs):
     import numpy
     std_dev = numpy.std(obs)
     return obs/std_dev
+
 
 def rai2Numpy(fi):
     import numpy
@@ -175,6 +183,7 @@ def rai2Numpy(fi):
     
     return names, numpy.array(obs)
 
+
 def spectralContrastAngle(v):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 5
     from numpy.linalg import norm
@@ -186,14 +195,17 @@ def spectralContrastAngle(v):
     c = dot(vec1,vec2)
     return math.acos(c/(v1n*v2n))
 
+
 def euclidean(v):
     from numpy.linalg import norm
     return LA.norm(v[0] - v[1])
+
 
 def negDist2(v):
     from numpy.linalg import norm
     from math import pow
     return -pow(norm(v[0]-v[1]),2)
+
 
 def similarityIndex(v):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 2
@@ -208,3 +220,11 @@ def similarityIndex(v):
         if a != a0:
             s += math.pow(100.0*(a-a0)/(a+a0), 2.0)
     return math.sqrt(s/len(vec1))
+
+def raiScore(v):
+    import math
+    [vec1,vec2] = v
+    s = 0.0
+    for i in range(len(vec1)):
+        s += vec1[i]*vec2[i]
+    return s
