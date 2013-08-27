@@ -495,9 +495,8 @@ def distMatrixInputOrder(matfile, orderfile, outfile):
     fig.savefig(outfile)
 
 
-def csv2DistanceDistribution(file, out, intervals = []):
+def csv2DistanceDistribution(file, out, intervals = [], include = 1):
     # http://stackoverflow.com/a/5328669
-    import matplotlib.pyplot as plt
     import numpy as np
     
     f = open(file,'r')
@@ -511,22 +510,25 @@ def csv2DistanceDistribution(file, out, intervals = []):
                 if float(row[j]) > 0:
                     mylist.append(float(row[j]))
     else:
-        for n in range(len(intervals)):
-            for i in intervals[n]:
-                row = lines[i].rstrip().split(',')
-                okset = set(range(nl)) - set(intervals[n])
-                for j in okset:
-                    if float(row[j]) > 0:
-                        mylist.append(float(row[j]))
+        if include:
+            for n in range(len(intervals)):
+                for i in intervals[n]:
+                    row = lines[i].rstrip().split(',')
+                    for j in set(intervals[n])-set(i):
+                        if float(row[j]) > 0:
+                            mylist.append(float(row[j]))
+        else:
+            for n in range(len(intervals)):
+                for i in intervals[n]:
+                    row = lines[i].rstrip().split(',')
+                    okset = set(range(nl)) - set(intervals[n])
+                    for j in okset:
+                        if float(row[j]) > 0:
+                            mylist.append(float(row[j]))
     f.close()
 
     mat = np.array(mylist)
-
-    hist, bins = np.histogram(mat, bins=50)
-    width = 0.7*(bins[1]-bins[0])
-    center = (bins[:-1]+bins[1:])/2
-    plt.bar(center, hist, align='center', width=width)
-    plt.show()
+    np.savetxt(out, mat, fmt='%.5e', delimiter=',')
 
 
 def getDistances(fi, pctrep):
