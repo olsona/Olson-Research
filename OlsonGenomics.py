@@ -617,16 +617,16 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
             chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop[i], sizeChop[i]/10, numSeq[i])
         
     # Make RAI databases
-    os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
+    #os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
         
     #I = [range(x*numSeq,(x+1)*numSeq) for x in range(ns)]
     
-    computeDistances(pathWork+"seqs", pathWork+"dist_{!s}bp_{!s}reps_{!s}.csv".format(sizeChop,numSeq,type), method=type)
+    #computeDistances(pathWork+"seqs", pathWork+"dist_{!s}bp_{!s}reps_{!s}.csv".format(sizeChop,numSeq,type), method=type)
 
-    os.system("rm -r {!s}Sequences/".format(pathWork))
-    os.system("rm -r {!s}seqs".format(pathWork))
+    #os.system("rm -r {!s}Sequences/".format(pathWork))
+    #os.system("rm -r {!s}seqs".format(pathWork))
 
-    print "Files removed"
+    #print "Files removed"
 
 
 def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
@@ -742,14 +742,13 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include
                     'negDist2': negDist2,
                     'angle': spectralContrastAngle,
                     'similarityIndex': similarityIndex,
-                    'raiScore': raiScore,
                     }
         _, arr = rai2Numpy(raiFile)
         dist = numpy.zeros([len(arr), len(arr)])
         if intervals == []:
             for i in range(len(arr)):
                 for j in range(i):
-                    d = dispatch[method]([arr[i], arr[j]])
+                    d = dispatch[method](arr[i], arr[j])
                     dist[i][j] = d
                     dist[j][i] = d
         else:
@@ -758,14 +757,14 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include
                     for i in I:
                         okset = set(range(len(arr))) - set(I)
                         for j in okset:
-                            d = dispatch[method]([arr[i],arr[j]])
+                            d = dispatch[method](arr[i],arr[j])
                             dist[i][j] = d
                             dist[j][i] = d
             else:
                 for I in intervals:
                     for i in I:
                         for j in I:
-                            d = dispatch[method]([arr[i],arr[j]])
+                            d = dispatch[method](arr[i],arr[j])
                             dist[i][j] = d
                             dist[j][i] = d
 

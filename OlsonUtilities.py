@@ -184,33 +184,31 @@ def rai2Numpy(fi):
     return names, numpy.array(obs)
 
 
-def spectralContrastAngle(v):
+def spectralContrastAngle(vec1,vec2):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 5
     from numpy.linalg import norm
     from numpy import dot
     import math
-    [vec1,vec2] = v
     v1n = norm(vec1)
     v2n = norm(vec2)
     c = dot(vec1,vec2)
     return math.acos(c/(v1n*v2n))
 
 
-def euclidean(v):
+def euclidean(vec1, vec2):
     from numpy.linalg import norm
-    return LA.norm(v[0] - v[1])
+    return LA.norm(vec1 - vec2)
 
 
-def negDist2(v):
+def negDist2(vec1, vec2):
     from numpy.linalg import norm
     from math import pow
-    return -pow(norm(v[0]-v[1]),2)
+    return -pow(norm(vec1-vec2),2)
 
 
-def similarityIndex(v):
+def similarityIndex(vec1, vec2):
     # From J Am Soc Mass Spectrom 2002, 13, 85-88, K. Wan, I. Vidavsky, M. Gross; eqn 2
     import math
-    [vec1,vec2] = v
     a = 0.0
     a0 = 0.0
     s = 0.0
@@ -221,10 +219,16 @@ def similarityIndex(v):
             s += math.pow(100.0*(a-a0)/(a+a0), 2.0)
     return math.sqrt(s/len(vec1))
 
-def raiScore(v):
-    import math
-    [vec1,vec2] = v
-    s = 0.0
-    for i in range(len(vec1)):
-        s += vec1[i]*vec2[i]
-    return s
+
+def grayCode(base, digits, value):
+    baseN = [0]*digits
+    gray = [0]*digits
+    for i in range(digits):
+        baseN[i] = value % base
+        value = value / base
+    shift = 0
+    while (i >= 0):
+        gray[i] = (baseN[i] + shift) % base
+        shift = shift + base - gray[i]
+        i -= 1
+    return gray
