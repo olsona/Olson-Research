@@ -33,6 +33,33 @@ def chopSimple(fi, pathOut, size):
     fout.close()
     f.close()
 
+
+def chopFolder(pathWork, sizeChop, numSeq):
+    import os
+    import random
+    import numpy as np
+    
+    if len(sizeChop) != len(numSeq):
+        numSeq = numSeq[0] * len(sizeChop)
+    
+    if pathWork[-1] != '/':
+        pathWork = pathWork + '/'
+    
+    allList = os.listdir(pathWork)
+    genomeList = []
+    for file in allList:
+        if file[-4:] == ".fna":
+            genomeList.append(file)
+    
+    ns = len(genomeList)
+    
+    for file in genomeList:
+        # make sequences to be matched
+        ensureDir(pathWork+"Sequences_{!s}/".format(sizeChop))
+        for i in range(len(sizeChop)):
+            chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".format(sizeChop), sizeChop[i], sizeChop[i]/10, numSeq[i])
+
+
 def analyzeChop(path, nm, out):
     import os
     import string
@@ -617,16 +644,16 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
             chopRandom(pathWork+file, pathWork+"Sequences/", sizeChop[i], sizeChop[i]/10, numSeq[i])
         
     # Make RAI databases
-    #os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
+    os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
         
-    #I = [range(x*numSeq,(x+1)*numSeq) for x in range(ns)]
+    I = [range(x*numSeq,(x+1)*numSeq) for x in range(ns)]
     
-    #computeDistances(pathWork+"seqs", pathWork+"dist_{!s}bp_{!s}reps_{!s}.csv".format(sizeChop,numSeq,type), method=type)
+    computeDistances(pathWork+"seqs", pathWork+"dist_{!s}bp_{!s}reps_{!s}.csv".format(sizeChop,numSeq,type), method=type)
 
-    #os.system("rm -r {!s}Sequences/".format(pathWork))
-    #os.system("rm -r {!s}seqs".format(pathWork))
+    os.system("rm -r {!s}Sequences/".format(pathWork))
+    os.system("rm -r {!s}seqs".format(pathWork))
 
-    #print "Files removed"
+    print "Files removed"
 
 
 def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
