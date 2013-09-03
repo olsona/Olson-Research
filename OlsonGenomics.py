@@ -55,9 +55,9 @@ def chopFolder(pathWork, sizeChop, numSeq):
     
     for file in genomeList:
         # make sequences to be matched
-        ensureDir(pathWork+"Sequences_{!s}/".format(sizeChop))
+        ensureDir(pathWork+"Sequences_{!s}/".format(sizeChop[i]))
         for i in range(len(sizeChop)):
-            chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".format(sizeChop), sizeChop[i], sizeChop[i]/10, numSeq[i])
+            chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".format(sizeChop[i]), sizeChop[i], sizeChop[i]/10, numSeq[i])
 
 
 def analyzeChop(path, nm, out):
