@@ -170,6 +170,41 @@ def testCorrectPlus(raifi):
     return float(100.0 * correct)/float(total), reps
 
 
+def testCorrectTopList(resFile, outFile):
+    import string
+    f = open(resFile, 'r')
+    totalCount = 0
+    innerCount = 0
+    correctScore = [float('NaN')]
+    correctRank = [-1]
+    realGenus = ''
+    line = []
+    f.readline()
+    buf = f.readline()
+    while buf:
+        if buf = "\n":
+            pass
+        elif buf[0] = ">":
+            realGenus = buf.split("_")[0]
+            totalCount += 1
+            correctScore.append(float('NaN'))
+            correctRank.append(-1)
+            innerCount = 0
+        else:
+            line = buf.rstrip().split("\t")
+            innerCount += 1
+            if string.find(line[1], realGenus) > -1:
+                correctScore[totalCount] = line[0]
+                correctRank[totalCount] = innerCount
+        buf = f.readline()
+    f.close()
+
+    oF = open(outFile, 'w')
+    for l in zip(correctRank, correctScore):
+        oF.write(",".join(l) + "\n")
+    oF.close()
+
+
 def routeSeqs(family, pathIn, mainNo, mainPath, divertNo, otherPath):
     import os
     import shutil
