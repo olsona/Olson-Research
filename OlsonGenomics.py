@@ -182,11 +182,10 @@ def testCorrectTopList(resFile, outFile):
     f.readline()
     buf = f.readline()
     while buf:
-        if buf = "\n":
-            pass
-        elif buf[0] = ">":
-            realGenus = buf.split("_")[0]
+        if buf == "\n":
             totalCount += 1
+        elif buf[0] == ">":
+            realGenus = buf.split(":")[1].split("_")[0].lstrip()
             correctScore.append(float('NaN'))
             correctRank.append(-1)
             innerCount = 0
@@ -200,8 +199,9 @@ def testCorrectTopList(resFile, outFile):
     f.close()
 
     oF = open(outFile, 'w')
+    oF.write("Rank,Score\n")
     for l in zip(correctRank, correctScore):
-        oF.write(",".join(l) + "\n")
+        oF.write("{!s},{!s}\n".format(l[0],l[1]))
     oF.close()
 
 
