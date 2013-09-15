@@ -130,13 +130,13 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
         pathOut = pathOut + "/"
     
     out = fi[:-4]
-    name = string.replace(fi.split("/")[-1][:-4],"_"," ")
+    name = fi.split("/")[-1][:-4]
     for i in range(num_chop):
         f = open("{!s}{!s}_random_chopped_{!s}b_{!s}.fna".format(pathOut,name,sizestr,str(i).zfill(3)),'w')
         st = random.randrange(llim)
         leng = random.randrange(avg_size - interval, avg_size + interval)
         subseq = seq[st:st+leng]
-        f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".format(name, sizestr, st, st+leng))
+        f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".format(string.replace(name,"_"," "), sizestr, st, st+leng))
         #f.write(">: {!s}\n".format(name))
         ct = 0
         while 1:
