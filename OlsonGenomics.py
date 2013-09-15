@@ -2,7 +2,7 @@ from OlsonUtilities import *
 
 def chopSimple(fi, pathOut, size):
     '''Takes a file fi, chops it into as many segments of length size as possible, and deposits the files containing the new segments in pathOut.
-        Assumes only one genome per file.'''
+        Assumes only one genome per input file.'''
     
     f = open(fi,'r')
     ensureDir(pathOut+"/")
@@ -115,7 +115,7 @@ def analyzeChop(path, nm, out):
     fout.close()
 
 def chopRandom(fi, pathOut, avg_size, interval, num_chop):
-    import random
+    import random, string
     nm, seq = readSequence(fi)
     llim = len(seq) - avg_size - interval
     if llim <= 0:
@@ -130,14 +130,14 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
         pathOut = pathOut + "/"
     
     out = fi[:-4]
-    name = fi.split("/")[-1][:-4]
-    f = open(pathOut + name + "_random_chopped_" + sizestr + "b.fna",'w')
+    name = string.replace(fi.split("/")[-1][:-4],"_"," ")
     for i in range(num_chop):
+        f = open(pathOut + name + "_random_chopped_" + sizestr + "b_"+i+".fna",'w')
         st = random.randrange(llim)
         leng = random.randrange(avg_size - interval, avg_size + interval)
         subseq = seq[st:st+leng]
-        #f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".format(name, sizestr, st, st+leng))
-        f.write(">: {!s}\n".format(name))
+        f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".format(name, sizestr, st, st+leng))
+        #f.write(">: {!s}\n".format(name))
         ct = 0
         while 1:
             f.write(subseq[ct:ct+60] + "\n")
@@ -145,7 +145,7 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
             if (ct > len(subseq)):
                 break
         f.write("\n")
-    f.close()
+        f.close()
 
 
 def testCorrectPlus(raifi):
