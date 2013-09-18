@@ -249,3 +249,18 @@ def grayCode(base, digits, value):
         shift = shift + base - gray[i]
         i -= 1
     return gray
+
+
+def csv2CoordinateInput(inFile, outFile):
+    fin = open(inFile,'r')
+    fout = open(outFile, 'w')
+    count = 0
+    buf = fin.readline().rstrip()
+    while buf:
+        l = buf.split(",")
+        for j in range(len(l)):
+            if j != i:
+                fout.write("<{!s} {!s} {!s}>\n".format(i,j,l[j])
+    fin.close()
+    fout.close()
+    
