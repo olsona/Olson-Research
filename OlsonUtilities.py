@@ -260,7 +260,7 @@ def csv2CoordinateInput(inFile, outFile):
         l = buf.split(",")
         for j in range(len(l)):
             if j != i:
-                fout.write("<{!s} {!s} {!s}>\n".format(i,j,l[j])
+                fout.write("<{!s} {!s} {!s}>\n".format(i,j,l[j]))
     fin.close()
     fout.close()
     
