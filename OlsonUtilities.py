@@ -272,5 +272,5 @@ def csv2Medians(inFile, outFile):
     mat = csv2NumpyMatrix(inFile)
     fout = open(outFile, 'w')
     for r in mat:
-        fout.write(numpy.median(r) + "\n")
+        fout.write("{!s}\n".format(numpy.median(r)))
     fout.close()
