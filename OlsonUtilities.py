@@ -265,4 +265,12 @@ def csv2CoordinateInput(inFile, outFile):
         buf = fin.readline().rstrip()
     fin.close()
     fout.close()
-    
+
+
+def csv2Medians(inFile, outFile):
+    import numpy
+    mat = csv2NumpyMatrix(inFile)
+    fout = open(outFile, 'w')
+    for r in mat:
+        fout.write(numpy.median(r) + "\n")
+    fout.close()
