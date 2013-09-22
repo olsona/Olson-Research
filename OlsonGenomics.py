@@ -833,3 +833,25 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include
         oF = open(outFile,'w')
         for a in dist:
             oF.write(",".join(str(x) for x in a)+"\n")
+        oF.close()
+
+
+def scoreDistribution(csvFile, outFile, intervals=[], include=0):
+    import numpy
+    scoreMat = numpy.genfromtxt(csvFile, dtype=numpy.float32, delimiter = ",")
+    dist = []
+    if include == 0:
+        for I in intervals:
+            for i in I:
+                okset = set(range(len(arr))) - set(I)
+                for j in okset:
+                    dist.append(scoreMat[i][j])
+    else:
+        for I in intervals:
+            for i in I:
+                for j in I:
+                    dist.append(scoreMat[i][j])
+
+    oF = open(outFile,'w')
+    oF.write(",".join(str(a) for a in dist))
+    oF.close()
