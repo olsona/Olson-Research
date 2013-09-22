@@ -843,7 +843,7 @@ def scoreDistribution(csvFile, outFile, intervals=[], include=0):
     if include == 0:
         for I in intervals:
             for i in I:
-                okset = set(range(len(arr))) - set(I)
+                okset = set(range(len(scoreMat))) - set(I)
                 for j in okset:
                     dist.append(scoreMat[i][j])
     else:
