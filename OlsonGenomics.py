@@ -850,7 +850,8 @@ def scoreDistribution(csvFile, outFile, intervals=[], include=0):
         for I in intervals:
             for i in I:
                 for j in I:
-                    dist.append(scoreMat[i][j])
+                    if j != i:
+                        dist.append(scoreMat[i][j])
 
     oF = open(outFile,'w')
     oF.write(",".join(str(a) for a in dist))
