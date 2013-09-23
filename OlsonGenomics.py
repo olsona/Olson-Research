@@ -855,5 +855,5 @@ def scoreDistribution(csvFile, outFile, intervals=[], include=0):
                         dist.append(scoreMat[i][j])
 
     oF = open(outFile,'w')
-    oF.write(",".join(str(a) for a in dist))
+    oF.write("\n".join(str(a) for a in dist))
     oF.close()
