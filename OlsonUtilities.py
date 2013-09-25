@@ -276,7 +276,7 @@ def csv2MediansAll(inFile, outFile):
     fout.close()
 
 
-def csv2MediansTop(inFile, outFile, numContigs, numTop)
+def csv2MediansTop(inFile, outFile, numContigs, numTop):
     import numpy
     mat = numpy.genfromtxt(inFile, dtype=numpy.float32, delimiter=" ")
     fout = open(outFile, 'w')
