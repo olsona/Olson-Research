@@ -866,8 +866,9 @@ def correctDistributionOneAnswer(raiScoreFile, outFile, correctList):
     oF.write("Correct:Max,Correct:Min,Rank(Correct)\n")
     for i in range(nm):
         ans = rsf[i][correctList[i]]
-        sorted = numpy.sort(rsf[i])
+        sorted = numpy.sort(-rsf[i])
+        sorted = -sorted
         oF.write("{!s},".format(ans/sorted[-1]))
         oF.write("{!s},".format(ans/sorted[0]))
-        oF.write("{!s}\n".format(nm - numpy.nonzero(sorted==ans)[0][0]))
+        oF.write("{!s}\n".format(numpy.nonzero(sorted==ans)[0][0]))
     oF.close()
