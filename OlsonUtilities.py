@@ -282,5 +282,5 @@ def csv2MediansTop(inFile, outFile, numContigs, numTop):
     fout = open(outFile, 'w')
     for r in range(numContigs):
         segment = mat[r*numTop:(r+1)*numTop]
-        fout.write("{!s}\n".format(numpy.median(segment)[2]))
+        fout.write("{!s}\n".format(numpy.median(segment,axis=0)[2]))
     fout.close()
