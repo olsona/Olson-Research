@@ -869,5 +869,5 @@ def correctDistributionOneAnswer(raiScoreFile, outFile, correctList):
         sorted = numpy.sort(rsf[i])
         oF.write("{!s},".format(ans/sorted[-1]))
         oF.write("{!s},".format(ans/sorted[0]))
-        oF.write("{!s}\n".format(sorted.index(ans)))
+        oF.write("{!s}\n".format(numpy.nonzero(sorted==ans)[0][0])
     oF.close()
