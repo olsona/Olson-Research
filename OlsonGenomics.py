@@ -856,3 +856,18 @@ def scoreDistribution(csvFile, outFile, intervals=[], include=0):
     oF = open(outFile,'w')
     oF.write("\n".join(str(a) for a in dist))
     oF.close()
+
+
+def correctDistributionOneAnswer(raiScoreFile, outFile, correctList):
+    import numpy
+    rsf = numpy.genfromtxt(raiScoreFile, dtype=numpy.float32, delimiter=",")
+    nm = len(rsf)
+    oF = open(outFile, 'w')
+    oF.write("Correct:Max,Correct:Min,Rank(Correct)\n")
+    for i in range(nm):
+        ans = rsf[i][correctList[i]]
+        sorted = numpy.sort(rsf[i])
+        oF.write("{!s},".format(ans/sorted[-1]))
+        oF.write("{!s},".format(ans/sorted[0]))
+        oF.write("{!s}\n".format(sorted.index(ans)))
+    oF.close()
