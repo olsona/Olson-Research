@@ -1,4 +1,5 @@
 def readSequence(fi):
+    '''This assumes that only one organism is in a file'''
     f = open(fi,'r')
     concat = ''
     buf = f.readline().rstrip()
@@ -284,3 +285,40 @@ def csv2MediansTop(inFile, outFile, numTop):
         segment = mat[r*numTop:(r+1)*numTop]
         fout.write("{!s}\n".format(numpy.median(segment,axis=0)[2]))
     fout.close()
+
+
+def reverseComplement(seq):
+    rules = {'a':'t', 'c':'g', 'g':'c', 't':'a'}
+    op = ''
+    for c in seq:
+        op = rules[c]+op
+    return op
+
+
+def kmerCountSequence(seq, k):
+    import itertools
+    myDict = dict(zip([''.join(i) for i in itertools.product("acgt",repeat=k)],range(4**k)))
+    freqs = [0]*(4**k)
+    for c in range(len(seq)-k+1):
+        kseq = seq[c:c+k]
+        freqs[myDict(kseq)] += 1
+        freqs[myDict(reverseComplement(kseq))] += 1
+    return freqs
+
+
+def kmerCountFile(fi, k):
+    import itertools
+    freqs = [0]*(4**k)
+    f = open(fi, 'r')
+    buf = f.readline().rstrip()
+    while buf:
+        seq = ''
+        buf.readline()
+        while not buf.startswith('>') and buf:
+            seq = seq + buf.rstrip()
+            buf = f.readline()
+        subFreq = kmerCountSequence(seq, k)
+        for i in range(4**k):
+            freqs[i] = subFreq[i]
+    return freqs
+
