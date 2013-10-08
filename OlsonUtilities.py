@@ -313,7 +313,7 @@ def kmerCountFile(fi, k):
     buf = f.readline().rstrip()
     while buf:
         seq = ''
-        buf.readline()
+        buf = f.readline()
         while not buf.startswith('>') and buf:
             seq = seq + buf.rstrip()
             buf = f.readline()
