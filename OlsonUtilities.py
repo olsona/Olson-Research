@@ -300,7 +300,7 @@ def kmerCountSequence(seq, k):
     myDict = dict(zip([''.join(i) for i in itertools.product("acgt",repeat=k)],range(4**k)))
     freqs = [0]*(4**k)
     for c in range(len(seq)-k+1):
-        kseq = seq[c:c+k]
+        kseq = seq[c:c+k].lower()
         freqs[myDict(kseq)] += 1
         freqs[myDict(reverseComplement(kseq))] += 1
     return freqs
