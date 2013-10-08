@@ -301,8 +301,8 @@ def kmerCountSequence(seq, k):
     freqs = [0]*(4**k)
     for c in range(len(seq)-k+1):
         kseq = seq[c:c+k].lower()
-        freqs[myDict(kseq)] += 1
-        freqs[myDict(reverseComplement(kseq))] += 1
+        freqs[myDict[kseq]] += 1
+        freqs[myDict[reverseComplement(kseq)]] += 1
     return freqs
 
 
