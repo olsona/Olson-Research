@@ -319,6 +319,6 @@ def kmerCountFile(fi, k):
             buf = f.readline()
         subFreq = kmerCountSequence(seq, k)
         for i in range(4**k):
-            freqs[i] = subFreq[i]
+            freqs[i] += subFreq[i]
     return freqs
 
