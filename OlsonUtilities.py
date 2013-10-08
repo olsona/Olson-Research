@@ -299,16 +299,18 @@ def kmerCountSequence(seq, k):
     import itertools
     myDict = dict(zip([''.join(i) for i in itertools.product("acgt",repeat=k)],range(4**k)))
     freqs = [0]*(4**k)
+    count = 0
     for c in range(len(seq)-k+1):
         kseq = seq[c:c+k].lower()
         freqs[myDict[kseq]] += 1
         freqs[myDict[reverseComplement(kseq)]] += 1
-    return freqs
+        count += 2
+    return freqs, count
 
 
 def kmerCountFile(fi, k):
-    import itertools
-    freqs = [0]*(4**k)
+    freqs = [0.0]*(4**k)
+    count = 0
     f = open(fi, 'r')
     buf = f.readline().rstrip()
     while buf:
@@ -317,8 +319,10 @@ def kmerCountFile(fi, k):
         while not buf.startswith('>') and buf:
             seq = seq + buf.rstrip()
             buf = f.readline()
-        subFreq = kmerCountSequence(seq, k)
+        subFreq, subCount = kmerCountSequence(seq, k)
+        count += subCount
         for i in range(4**k):
             freqs[i] += subFreq[i]
+    for i in range(4**k):
+        freqs[i] = freqs[i]/count
     return freqs
-
