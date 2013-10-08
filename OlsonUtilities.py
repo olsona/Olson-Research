@@ -306,23 +306,3 @@ def kmerCountSequence(seq, k):
         freqs[myDict[reverseComplement(kseq)]] += 1
         count += 2
     return freqs, count
-
-
-def kmerCountFile(fi, k):
-    freqs = [0.0]*(4**k)
-    count = 0
-    f = open(fi, 'r')
-    buf = f.readline().rstrip()
-    while buf:
-        seq = ''
-        buf = f.readline()
-        while not buf.startswith('>') and buf:
-            seq = seq + buf.rstrip()
-            buf = f.readline()
-        subFreq, subCount = kmerCountSequence(seq, k)
-        count += subCount
-        for i in range(4**k):
-            freqs[i] += subFreq[i]
-    for i in range(4**k):
-        freqs[i] = freqs[i]/count
-    return freqs

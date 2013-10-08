@@ -872,3 +872,27 @@ def correctDistributionOneAnswer(raiScoreFile, outFile, correctList):
         oF.write("{!s},".format(ans/sorted[0]))
         oF.write("{!s}\n".format(numpy.nonzero(sorted==ans)[0][0]+1))
     oF.close()
+
+
+def kmerCountFile(fi, k):
+    freqs = [0.0]*(4**k)
+    count = 0
+    allFreqs = []
+    allCounts = []
+    f = open(fi, 'r')
+    buf = f.readline().rstrip()
+    while buf:
+        seq = ''
+        buf = f.readline()
+        while not buf.startswith('>') and buf:
+            seq = seq + buf.rstrip()
+            buf = f.readline()
+        subFreq, subCount = kmerCountSequence(seq, k)
+        count += subCount
+        for i in range(4**k):
+            freqs[i] += subFreq[i]
+        allFreqs.append(subFreq)
+        allCounts.append(subCount)
+    for i in range(4**k):
+        freqs[i] = freqs[i]/count
+    return freqs
