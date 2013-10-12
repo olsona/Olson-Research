@@ -1,26 +1,17 @@
 #!/usr/bin/perl
-my ($threshold, $input, $db, $seq, $nums) = @ARGV;
-my ($dbCt, $seqCt) = (0,0);
+my ($threshold, $input, $smaller, $bigger) = @ARGV;
 open(IN, $input);
-open(OUT1, '>', $db);
-open(OUT2, '>', $seq);
-open(OUT3, '>', $nums);
+open(OUT1, '>', $smaller);
+open(OUT2, '>', $bigger);
 while (<IN>) {
     chomp;
     ($name, $seq) = split("\t");
     if ( length($seq) >= $threshold ) {
-        print "Hello";
-        print OUT1 "$name\n";
-        print OUT1 "$seq\n";
-        $dbCt ++;
+        print OUT2 "$name\t$seq\n";
     } else {
-        print OUT2 "$name\n";
-        print OUT2 "$seq\n";
-        $seqCt ++;
+        print OUT1 "$name\t$seq\n";
     }
 }
-print OUT3 "$dbCt,$seqCt\n";
 close(IN);
 close(OUT1);
 close(OUT2);
-close(OUT3);

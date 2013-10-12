@@ -215,7 +215,7 @@ def spectralContrastAngle(vec1,vec2):
 
 def euclidean(vec1, vec2):
     from numpy.linalg import norm
-    return LA.norm(vec1 - vec2)
+    return norm(vec1 - vec2)
 
 
 def negDist2(vec1, vec2):
@@ -296,13 +296,24 @@ def reverseComplement(seq):
 
 
 def kmerCountSequence(seq, k):
-    import itertools
-    myDict = dict(zip([''.join(i) for i in itertools.product("acgt",repeat=k)],range(4**k)))
-    freqs = [0]*(4**k)
+    myDict = {}
     count = 0
-    for c in range(len(seq)-k+1):
-        kseq = seq[c:c+k].lower()
-        freqs[myDict[kseq]] += 1
-        freqs[myDict[reverseComplement(kseq)]] += 1
+    gc = 0
+    seqL = seq.lower()
+    for c in range(len(seqL)-k+1):
+        kseq = seqL[c:c+k]
+        if kseq in myDict:
+            myDict[kseq] += 1
+            myDict[reverseComplement(kseq)] += 1
+        else:
+            myDict[kseq] = 1
+            myDict[reverseComplement(kseq)] = 1
         count += 2
-    return freqs, count
+        ch = seqL[c]
+        if ch == 'g' or ch == 'c':
+            gc += 2
+    for c in range(len(seq)-k+1, len(seq)):
+        ch = seqL[c]
+        if ch == 'g' or ch == 'c':
+            gc += 2
+    return myDict, count, gc

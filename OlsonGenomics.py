@@ -36,8 +36,6 @@ def chopSimple(fi, pathOut, size):
 
 def chopFolder(pathWork, sizeChop, numSeq):
     import os
-    import random
-    import numpy as np
     
     if len(sizeChop) != len(numSeq):
         numSeq = numSeq[0] * len(sizeChop)
@@ -51,8 +49,6 @@ def chopFolder(pathWork, sizeChop, numSeq):
         if file[-4:] == ".fna":
             genomeList.append(file)
     
-    ns = len(genomeList)
-    
     for file in genomeList:
         # make sequences to be matched
         for i in range(len(sizeChop)):
@@ -62,7 +58,6 @@ def chopFolder(pathWork, sizeChop, numSeq):
 
 def analyzeChop(path, nm, out):
     import os
-    import string
     import numpy
     dirList = os.listdir(path)
     listMatch = []
@@ -129,7 +124,6 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
     if pathOut[-1] != "/":
         pathOut = pathOut + "/"
     
-    out = fi[:-4]
     name = fi.split("/")[-1][:-4]
     for i in range(num_chop):
         f = open("{!s}{!s}_random_chopped_{!s}b_{!s}.fna".format(pathOut,name,sizestr,str(i).zfill(3)),'w')
@@ -342,8 +336,8 @@ def randomSeedClustering(fi, pr, reps, pathWork, pathRai):
 
 def bootStrap(fi, threshold, pathWork, pathRai):
     import os
-    import numpy
-    import scipy
+    #import numpy
+    #import scipy
 
     #contigs = []
     #input = open(fi,'r')
@@ -394,11 +388,8 @@ def bootStrap(fi, threshold, pathWork, pathRai):
 
 def adjMatrix2Dendrograms(fi, namefi, pathOut, num):
     import numpy
-    import scipy
     import scipy.cluster.hierarchy as sch
-    import matplotlib.pyplot as plt
     import pickle
-    import math
     import pylab
     
     if pathOut[-1] != "/":
@@ -480,7 +471,6 @@ def adjMatrix2Dendrograms(fi, namefi, pathOut, num):
 def rai2KMeans(fi, clRange, out):
     import scipy.cluster.vq as scv
     import numpy
-    import math
     
     names = []
     obs = []
@@ -595,7 +585,6 @@ def csv2DistanceDistribution(file, out, intervals = [], include = 1):
 
 def getDistances(fi, pctrep):
     import numpy
-    import math
     import random
         
     names = []
@@ -653,8 +642,6 @@ def distanceHistogramFolder(folder, pctrep, max):
 
 def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
     import os
-    import random
-    import numpy as np
     
     if len(sizeChop) != len(numSeq):
         numSeq = numSeq[0] * len(sizeChop)
@@ -670,7 +657,7 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
         if file[-4:] == ".fna":
             genomeList.append(file)
 
-    ns = len(genomeList)
+    # ns = len(genomeList)
         
     for file in genomeList:
         # make sequences to be matched
@@ -680,8 +667,6 @@ def speciesDistances(pathWork, pathRai, sizeChop, numSeq, type='euclidean'):
         
     # Make RAI databases
     os.system("{!s}raiphy -e .fna -m 2 -I {!s}Sequences/ -d {!s}seqs".format(pathRai,pathWork,pathWork))
-        
-    I = [range(x*numSeq,(x+1)*numSeq) for x in range(ns)]
     
     computeDistances(pathWork+"seqs", pathWork+"dist_{!s}bp_{!s}reps_{!s}.csv".format(sizeChop,numSeq,type), method=type)
 
@@ -697,9 +682,9 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     import numpy as np
     import scipy.cluster.vq as scv
     import scipy.cluster.hierarchy as sch
-    import networkx as nx
-    import community as cm
-    import matplotlib.pyplot as plt
+    #import networkx as nx
+    #import community as cm
+    #import matplotlib.pyplot as plt
 
     if pathWork[-1] != '/':
         pathWork = pathWork + '/'
@@ -730,7 +715,7 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
     namesSq, RaiSq = rai2Numpy(pathWork+"seqs")
     namesDb, RaiDb = rai2Numpy(pathWork+"db")
             
-    namesAll = namesSq + namesDb
+    # namesAll = namesSq + namesDb
     RaiAll = np.concatenate([RaiSq,RaiDb])
 
     csvout = open("{!s}seqs.csv".format(pathIn),'w')
@@ -788,7 +773,7 @@ def testSelfRecruitment(pathWork, pathRai, numSpecies, sizeChop, numDB, numSeq):
 
     # hierarchy-based clusterings
     WeightedLink = sch.weighted(D)
-    mylen = len(namesDb)
+    # mylen = len(namesDb)
     clustWeightedLink = sch.fcluster(WeightedLink,numSpecies,criterion='maxclust')
     hist, bins = np.histogram(clustWeightedLink, bins=numSpecies)
     print hist
@@ -874,11 +859,16 @@ def correctDistributionOneAnswer(raiScoreFile, outFile, correctList):
     oF.close()
 
 
-def kmerCountFile(fi, k):
-    freqs = [0.0]*(4**k)
+def JGI(fi, k):
+    import matplotlib.pyplot as plt
+    # initialize
+    myFreqs = {}
     count = 0
     allFreqs = []
     allCounts = []
+    allGCs = []
+    
+    # read file, get kmer frequencies and GC counts
     f = open(fi, 'r')
     buf = f.readline().rstrip()
     while buf:
@@ -887,12 +877,27 @@ def kmerCountFile(fi, k):
         while not buf.startswith('>') and buf:
             seq = seq + buf.rstrip()
             buf = f.readline()
-        subFreq, subCount = kmerCountSequence(seq, k)
+        subFreq, subCount, subGC = kmerCountSequence(seq, k)
         count += subCount
-        for i in range(4**k):
-            freqs[i] += subFreq[i]
+        for km in subFreq:
+            if km in myFreqs:
+                myFreqs[km] += float(subFreq[km])
+            else:
+                myFreqs[km] = float(subFreq[km])
         allFreqs.append(subFreq)
         allCounts.append(subCount)
-    for i in range(4**k):
-        freqs[i] = freqs[i]/count
-    return freqs
+        allGCs.append(float(subGC)/float(subCount))
+    for km in myFreqs:
+        myFreqs[km] = myFreqs[km]/float(count)
+
+    # compute y-axis values
+    ratios = [0.0]*len(allCounts)
+    for i in range(len(allCounts)):
+        sum = 0.0
+        for km in allFreqs[i]:
+            sum += (float(allFreqs[i][km])/float(allCounts[i]))/myFreqs[km]
+        ratios[i] = sum/float(4**k)
+
+    # plot
+    plt.plot(allGCs,ratios,'b.')
+    plt.show()
