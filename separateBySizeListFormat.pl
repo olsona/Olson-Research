@@ -16,7 +16,7 @@ while (<IN>) {
         $Text::Wrap::columns = 60;
         print FI wrap('','',$seq);
         close(FI);
-        print SMLR "$nname\t$path$nname\n";
+        print SMLR "$nname\t$path$nname.fna\n";
     }
 }
 close(IN);
