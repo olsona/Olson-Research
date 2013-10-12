@@ -33,7 +33,7 @@ def main(argv):
         elif opt in ("-r", "--db", "--reference"):
             reference = arg
         elif opt in ("-c", "--schedule"):
-            coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
+            coolingSchedule = [float(n) for n in arg.lstrip()[1:-1].split(',')]
     if len(inputFile) == 0:
         print 'Missing argument: -i'
         print usageString
@@ -91,7 +91,9 @@ def main(argv):
         myFiles.append(smlr)
     myFiles.append(fileSep)
     
-    
+    # De novo clustering of first files
+    # If I'm going to use Kiki, which I probably am, I'll have to figure out 
+    # how to make the otu.fasta.table for the input to kiki/bin/rait.  Sigh.
     
 
 if __name__ == "__main__":
