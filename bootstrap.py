@@ -68,6 +68,7 @@ def main(argv):
     # Separate out all sizes
     fileSep = inputFile
     baseName = fileSep.split(".")[0]
+    print "Base name = ", baseName
     myFiles = []
     for i in range(len(coolingSchedule)):
         num = coolingSchedule[i]
