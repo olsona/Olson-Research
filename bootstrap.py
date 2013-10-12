@@ -86,8 +86,8 @@ def main(argv):
                 coolingSchedule[i-1],num)
         bgr = baseName + "_gt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]
-        os.system("perl separateBySize.pl {!s} {!s} {!s} {!s} {!s}".format(\
-            1000*num, pth, fileSep, smlr, bgr))
+        os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
+            format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = bgr
         myFiles.append(smlr)
     myFiles.append(fileSep)
