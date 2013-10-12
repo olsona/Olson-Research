@@ -33,7 +33,7 @@ def main(argv):
         elif opt in ("-r", "--db", "--reference"):
             reference = arg
         elif opt in ("-c", "--schedule"):
-            coolingSchedule = [float(n) for n in arg.lstrip()[1:-1].split(',')]
+            coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
     if len(inputFile) == 0:
         print 'Missing argument: -i'
         print usageString
@@ -82,11 +82,11 @@ def main(argv):
             fileSep = newName
             print "New name = ", newName
         if i == 0:
-            smlr = "{!s}_lt{!s}k.LIST".format(baseName,num)
+            smlr = "{!s}_lt{!s}k.LIST".format(baseName, num)
             print "Smaller = ", smlr
         else:
             smlr = "{!s}_gt{!s}k_lt{!s}k.LIST".format(baseName,\
-                coolingSchedule[i-1],num)
+                coolingSchedule[i-1], num)
             print "Smaller = ", smlr
         bgr = baseName + "_gt" + str(num) + "k.fa"
         print "Bigger = ", bgr
