@@ -13,8 +13,9 @@ while (<IN>) {
         $nname = substr $name, 1;
         open(FI, '>', "$path$nname.fna");
         print FI "$name\n";
-        $Text::Wrap::columns = 60;
-        print FI wrap('','',$seq);
+        #$Text::Wrap::columns = 60;
+        #print FI wrap('','',$seq);
+        print FI "$seq";
         close(FI);
         print SMLR "$nname\t$path$nname.fna\n";
     }
