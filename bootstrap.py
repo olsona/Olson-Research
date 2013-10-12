@@ -80,9 +80,9 @@ def main(argv):
                 .format(fileSep, newName))
             fileSep = newName
         if i == 0:
-            smlr = "{!s}_lt{!s}k.fa".format(baseName,num)
+            smlr = "{!s}_lt{!s}k.LIST".format(baseName,num)
         else:
-            smlr = "{!s}_gt{!s}k_lt{!s}k.fa".format(baseName,\
+            smlr = "{!s}_gt{!s}k_lt{!s}k.LIST".format(baseName,\
                 coolingSchedule[i-1],num)
         bgr = baseName + "_gt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]
