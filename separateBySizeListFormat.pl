@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 my ($threshold, $path, $input, $smaller, $bigger) = @ARGV;
 open(IN, $input);
-open(SMLR, '>', $smaller);
+open(SMLR1, '>', "$smaller1");
+open(SMLR2, '>', "$smaller2");
 open(BGGR, '>', $bigger);
 while (<IN>) {
     chomp;
@@ -13,9 +14,11 @@ while (<IN>) {
         open(FI, '>', "$path$nname.fna");
         print FI "$name\n$seq";
         close(FI);
-        print SMLR "$nname\t$path$nname.fna\n";
+        print SMLR1 "$path$nname.fna\n";
+        print SMLR2 "$nname\t$path$nname.fna\n";
     }
 }
 close(IN);
-close(SMLR);
+close(SMLR1);
+close(SMLR2);
 close(BGGR);

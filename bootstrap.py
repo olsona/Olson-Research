@@ -98,8 +98,7 @@ def main(argv):
     myFiles.append(fileSep)
     
     # De novo clustering of first files
-    # If I'm going to use Kiki, which I probably am, I'll have to figure out 
-    # how to make the otu.fasta.table for the input to kiki/bin/rait.  Sigh.
+    
     
 
 if __name__ == "__main__":
