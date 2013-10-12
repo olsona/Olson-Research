@@ -79,13 +79,17 @@ def main(argv):
             os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
                 .format(fileSep, newName))
             fileSep = newName
+            print "New name = ", newName
         if i == 0:
             smlr = "{!s}_lt{!s}k.LIST".format(baseName,num)
+            print "Smaller = ", smlr
         else:
             smlr = "{!s}_gt{!s}k_lt{!s}k.LIST".format(baseName,\
                 coolingSchedule[i-1],num)
+            print "Smaller = ", smlr
         bgr = baseName + "_gt" + str(num) + "k.fa"
-        pth = fileSep.rsplit("/",1)[0]
+        print "Bigger = ", bgr
+        pth = fileSep.rsplit("/",1)[0]+"/"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
             format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = bgr
