@@ -85,7 +85,7 @@ def main(argv):
             smlr = "{!s}_lt{!s}k.LIST".format(baseName, num)
             print "Smaller = ", smlr
         else:
-            smlr = "{!s}_gt{!s}k_lt{!s}k.LIST".format(baseName,\
+            smlr = "{!s}_gt{!s}k_lt{!s}k_LIST".format(baseName,\
                 coolingSchedule[i-1], num)
             print "Smaller = ", smlr
         bgr = baseName + "_gt" + str(num) + "k.fa"
