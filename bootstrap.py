@@ -68,7 +68,6 @@ def main(argv):
         print raiPath+"rait cannot be opened."
         sys.exit(1)
    
-    print "I finished checking the validity of the inputs." 
         
     # Separate out all sizes
     fileSep = inputFile
@@ -79,14 +78,11 @@ def main(argv):
         f = open(fileSep, 'r')
         ln = f.readline()
         if string.find(ln,"\t") == -1:
-            print "I have to convert the file."
             # convert to tabbed format using Alex's trick
             newName = fileSep.split(".")[0]+"_TAB.fa"
             os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
                 .format(fileSep, newName))
             fileSep = newName
-        else:
-            print "I don't have to convert the file."
         if i == 0:
             smlr = "{!s}-lt{!s}k-LIST".format(baseName, num)
         else:
@@ -99,7 +95,6 @@ def main(argv):
         fileSep = bgr
         myFiles.append(smlr)
     myFiles.append(fileSep)
-    print myFiles
     
     # De novo clustering of first files
     os.system("{!s}rait -new -o {!s}lt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
