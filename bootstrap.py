@@ -93,10 +93,11 @@ def main(argv):
             format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = bgr
         myFiles.append(smlr)
-    myFiles.append(pth+fileSep)
+    myFiles.append(fileSep)
+    print myFiles
     
     # De novo clustering of first files
-    os.system("{!s}rait -new -o {!s}lt{!s}kDB -i {!s}-2 &> null".format(raiPath,\
+    os.system("{!s}rait -new -o {!s}lt{!s}kDB -i {!s}-2 &>/dev/null".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
     os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
