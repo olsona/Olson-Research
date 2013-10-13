@@ -74,7 +74,6 @@ def main(argv):
     # Separate out all sizes
     fileSep = inputFile
     baseName = fileSep.split(".")[0]
-    print "Base name = ", baseName
     myFiles = []
     for i in range(len(coolingSchedule)):
         num = coolingSchedule[i]
@@ -89,13 +88,10 @@ def main(argv):
             print "New name = ", newName
         if i == 0:
             smlr = "{!s}_lt{!s}k.LIST".format(baseName, num)
-            print "Smaller = ", smlr
         else:
             smlr = "{!s}_gt{!s}k_lt{!s}k_LIST".format(baseName,\
                 coolingSchedule[i-1], num)
-            print "Smaller = ", smlr
         bgr = baseName + "_gt" + str(num) + "k.fa"
-        print "Bigger = ", bgr
         pth = fileSep.rsplit("/",1)[0]+"/"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
             format(1000*num, pth, fileSep, smlr, bgr))
