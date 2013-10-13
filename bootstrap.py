@@ -9,7 +9,6 @@ def main(argv):
     # get inputs, check validity
     inputFile = ''
     outputFile = ''
-    reference = ''
     coolingSchedule = []
     raiPath = ''
     # Command line arguments
@@ -29,8 +28,6 @@ def main(argv):
             inputFile = arg
         elif opt in ("-o", "--ofile"):
             outputFile = arg
-        elif opt in ("-r", "--db", "--reference"):
-            reference = arg
         elif opt in ("-c", "--schedule"):
             coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
         elif opt in ("-p", "--path:"):
@@ -85,7 +82,6 @@ def main(argv):
             os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
                 .format(fileSep, newName))
             fileSep = newName
-            print "New name = ", newName
         if i == 0:
             smlr = "{!s}_lt{!s}k.LIST".format(baseName, num)
         else:
@@ -100,6 +96,8 @@ def main(argv):
     myFiles.append(fileSep)
     
     # De novo clustering of first files
+    print "{!s}rait -o {!s}{!s}kDB -i {!s}.2".format(raiPath, pth,\
+        coolingSchedule[0], myFiles[0])
     os.system("{!s}rait -o {!s}{!s}kDB -i {!s}.2".format(raiPath, pth,\
         coolingSchedule[0], myFiles[0]))
     
