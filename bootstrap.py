@@ -77,7 +77,7 @@ def main(argv):
         f = open(fileSep, 'r')
         ln = f.readline()
         if string.find(ln,"\t") == -1:
-            # convert to tabbed format using tab2fasta.pl
+            # convert to tabbed format using Alex's trick
             newName = fileSep.split(".")[0]+"_TAB.fa"
             os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
                 .format(fileSep, newName))
