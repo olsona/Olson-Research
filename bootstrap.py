@@ -83,11 +83,11 @@ def main(argv):
                 .format(fileSep, newName))
             fileSep = newName
         if i == 0:
-            smlr = "{!s}_lt{!s}k_LIST".format(baseName, num)
+            smlr = "{!s}-lt{!s}k-LIST".format(baseName, num)
         else:
-            smlr = "{!s}_gt{!s}k_lt{!s}k_LIST".format(baseName,\
+            smlr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
                 coolingSchedule[i-1], num)
-        bgr = baseName + "_gt" + str(num) + "k.fa"
+        bgr = baseName + "-gt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
             format(1000*num, pth, fileSep, smlr, bgr))
@@ -96,9 +96,9 @@ def main(argv):
     myFiles.append(fileSep)
     
     # De novo clustering of first files
-    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}_2".format(raiPath,\
+    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}-2".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
-    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}_1".format(raiPath,\
+    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
     
 
