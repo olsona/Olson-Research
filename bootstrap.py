@@ -9,13 +9,14 @@ def main(argv):
     # get inputs, check validity
     inputFile = ''
     outputFile = ''
-    method = ''
     reference = ''
     coolingSchedule = []
+    raiPath = ''
     # Command line arguments
     try:
-        opts, args = getopt.getopt(argv,"hi:o:m:r:c:",\
-            ["ifile=","ofile=","method=","reference=","db=","schedule="])
+        opts, args = getopt.getopt(argv,"hi:o:r:c:p:",\
+            ["ifile=","ofile=","reference=","db=","schedule=",\
+            "path="])
     except getopt.GetoptError:
         print usageString
         sys.exit(2)
@@ -28,12 +29,12 @@ def main(argv):
             inputFile = arg
         elif opt in ("-o", "--ofile"):
             outputFile = arg
-        elif opt in ("-m", "--method"):
-            method = arg
         elif opt in ("-r", "--db", "--reference"):
             reference = arg
         elif opt in ("-c", "--schedule"):
             coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
+        elif opt in ("-p", "--path:"):
+            raiPath = arg
     if len(inputFile) == 0:
         print 'Missing argument: -i'
         print usageString
@@ -42,13 +43,15 @@ def main(argv):
         print 'Missing argument: -o'
         print usageString
         sys.exit(2)
-    elif len(method) == 0:
-        print 'Missing argument: -m'
+    elif len(raiPath) == 0:
+        print 'Missing argument: -p'
         print usageString
         sys.exit(2)
     if len(coolingSchedule) == 0:
         coolingSchedule = defaultSchedule
     # Checking validity of inputs
+    if raiPath[-1] != "/":
+        raiPath = raiPath + "/"
     try:
         temp = open(inputFile, 'r')
         temp.close()
@@ -61,14 +64,16 @@ def main(argv):
     except IOError:
         print outputFile + "cannot be opened."
         sys.exit(1)
-    if method.lower() not in myMethods:
-        print 'Method', method, 'is not supported.'
+    try:
+        temp = open(raiPath+"rait",'w')
+        temp.close()
+    except IOError:
+        print raiPath+"rait cannot be opened."
         sys.exit(1)
-    
+        
     # Separate out all sizes
     fileSep = inputFile
     baseName = fileSep.split(".")[0]
-    print "Base name = ", baseName
     myFiles = []
     for i in range(len(coolingSchedule)):
         num = coolingSchedule[i]
@@ -83,13 +88,10 @@ def main(argv):
             print "New name = ", newName
         if i == 0:
             smlr = "{!s}_lt{!s}k.LIST".format(baseName, num)
-            print "Smaller = ", smlr
         else:
             smlr = "{!s}_gt{!s}k_lt{!s}k_LIST".format(baseName,\
                 coolingSchedule[i-1], num)
-            print "Smaller = ", smlr
         bgr = baseName + "_gt" + str(num) + "k.fa"
-        print "Bigger = ", bgr
         pth = fileSep.rsplit("/",1)[0]+"/"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
             format(1000*num, pth, fileSep, smlr, bgr))
@@ -98,7 +100,8 @@ def main(argv):
     myFiles.append(fileSep)
     
     # De novo clustering of first files
-    
+    os.system("{!s}rait -o {!s}{!s}kDB -i {!s}.2".format(raiPath, pth,\
+        coolingSchedule[0], myFiles[0]))
     
 
 if __name__ == "__main__":
