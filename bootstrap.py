@@ -85,7 +85,7 @@ def main(argv):
         if i == 0:
             smlr = "{!s}_lt{!s}k.LIST".format(baseName, num)
         else:
-            smlr = "{!s}_gt{!s}k_lt{!s}k_LIST".format(baseName,\
+            smlr = "{!s}_gt{!s}k_lt{!s}k.LIST".format(baseName,\
                 coolingSchedule[i-1], num)
         bgr = baseName + "_gt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
@@ -98,7 +98,7 @@ def main(argv):
     # De novo clustering of first files
     print "{!s}rait -o {!s}{!s}kDB -i {!s}.2".format(raiPath, pth,\
         coolingSchedule[0], myFiles[0])
-    os.system("{!s}rait -o {!s}{!s}kDB -i {!s}.2".format(raiPath, pth,\
+    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}.2".format(raiPath, pth,\
         coolingSchedule[0], myFiles[0]))
     
 
