@@ -96,10 +96,10 @@ def main(argv):
     myFiles.append(fileSep)
     
     # De novo clustering of first files
-    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}-2".format(raiPath,\
+    os.system("{!s}rait -new -o {!s}lt{!s}kDB -i {!s}-2 &> null".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
-    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
-        pth, coolingSchedule[0], myFiles[0]))
+    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}{!s}-1".format(raiPath,\
+        pth, coolingSchedule[0], pth, myFiles[0]))
     
 
 if __name__ == "__main__":
