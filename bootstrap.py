@@ -100,7 +100,6 @@ def main(argv):
         pth, coolingSchedule[0], myFiles[0]))
     os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}.1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
-    os.system("rm {!s}*.fna".format(pth))
     
 
 if __name__ == "__main__":
