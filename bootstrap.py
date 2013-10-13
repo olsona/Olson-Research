@@ -96,9 +96,9 @@ def main(argv):
     myFiles.append(fileSep)
     
     # De novo clustering of first files
-    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}.2 &>/dev/null".format(raiPath,\
+    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}.2".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
-    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}.1 &>/dev/null".format(raiPath,\
+    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}.1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
     os.system("rm {!s}*.fna".format(pth))
     
