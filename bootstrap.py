@@ -102,7 +102,12 @@ def main(argv):
         pth, coolingSchedule[0], myFiles[0]))
     os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
-    print "Path: {!s}".format(pth)
+    print "My path: {!s}".format(os.getcwd())
+    os.system("cp {!s}/{!s}.bin {!s}{!s}.bin".format(os.getcwd(), myFiles[0],\
+        pth, myFiles[0]))
+    os.system("rm {!s}/{!s}.bin".format(os.getcwd(), myFiles[0]))
+    csv2MediansTop("{!s}{!s}.bin".format(pth, myFiles[0]), \
+        "{!s}{!s}.pref".format(pth, myFiles[0]), 30)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
