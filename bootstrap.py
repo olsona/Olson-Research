@@ -100,7 +100,7 @@ def main(argv):
     os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
     #os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
-        pth, coolingSchedule[0], myFiles[0]))
+    #    pth, coolingSchedule[0], myFiles[0]))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
