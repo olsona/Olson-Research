@@ -4,6 +4,7 @@
 
 import sys, getopt, string, os
 from bootstrapConstants import *
+from bootstrapUtils import *
 
 def main(argv):
     # get inputs, check validity
@@ -101,6 +102,7 @@ def main(argv):
         pth, coolingSchedule[0], myFiles[0]))
     os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
+    print "Path: {!s}".format(pth)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
