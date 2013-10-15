@@ -103,10 +103,11 @@ def main(argv):
     os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
     print "My path: {!s}".format(os.getcwd())
-    os.system("cp {!s}/{!s}.bin {!s}{!s}.bin".format(os.getcwd(), myFiles[0],\
-        pth, myFiles[0]))
-    os.system("rm {!s}/{!s}.bin".format(os.getcwd(), myFiles[0]))
-    csv2MediansTop("{!s}{!s}.bin".format(pth, myFiles[0]), \
+    myFileShort = myFiles[0].split("/")[-1]
+    os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(), \
+        myFilesShort, pth, myFileShort))
+    os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+    csv2MediansTop("{!s}{!s}-1.bin".format(pth, myFileShort), \
         "{!s}{!s}.pref".format(pth, myFiles[0]), 30)
 
 if __name__ == "__main__":
