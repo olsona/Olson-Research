@@ -1,8 +1,9 @@
 from OlsonUtilities import *
 
 def chopSimple(fi, pathOut, size):
-    '''Takes a file fi, chops it into as many segments of length size as possible, and deposits the files containing the new segments in pathOut.
-        Assumes only one genome per input file.'''
+    '''Takes a file fi, chops it into as many segments of length size as 
+    possible, and deposits the files containing the new segments in pathOut.
+    Assumes only one genome per input file.'''
     
     f = open(fi,'r')
     ensureDir(pathOut+"/")
@@ -25,7 +26,8 @@ def chopSimple(fi, pathOut, size):
             fout.close()
             ctsq += 1
             ctbp = 0
-            fout = open(nm + '_chop_{:03}kbp_{:02d}.fna'.format(int(size/1000),ctsq),'w')
+            fout = open(nm+'_chop_{:03}kbp_{:02d}.fna'.\
+                format(int(size/1000),ctsq),'w')
             fout.write('{!s}; Seq # {!s}\n'.format(infostr,ctsq))
             fout.write(buf + "\n")
             ctbp += len(buf)
@@ -53,8 +55,11 @@ def chopFolder(pathWork, sizeChop, numSeq):
         # make sequences to be matched
         for i in range(len(sizeChop)):
             ensureDir(pathWork+"Sequences_{!s}/".format(sizeChop[i]))
-            chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".format(sizeChop[i]), sizeChop[i], sizeChop[i]/10, numSeq[i])
-
+            #chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".\
+            #    format(sizeChop[i]), sizeChop[i], sizeChop[i]/10, numSeq[i])
+            chopRandomNoOverlap(pathWork+file, pathWork+"Sequences_{!s}/",\
+                format(sizeChop[i]), sizeChop[i], numSeq[i])
+                
 
 def analyzeChop(path, nm, out):
     import os
@@ -93,7 +98,8 @@ def analyzeChop(path, nm, out):
             if kmer in kmerDict.keys():
                 kmerDict[kmer][v] = float(1000*ct)/float(sz)
             else:
-                kmerDict[kmer] = numpy.zeros(len(listMatch), dtype = numpy.dtype(float))
+                kmerDict[kmer] = numpy.zeros(len(listMatch),\
+                    dtype = numpy.dtype(float))
                 kmerDict[kmer][v] = float(1000*ct)/float(sz)
             buf = f.readline().rstrip()
         print v+1
@@ -101,7 +107,8 @@ def analyzeChop(path, nm, out):
 
     fout = open(path+"/"+out,'w')
     fout.write("Name: {0!s}\n\n".format(nm));
-    fout.write("Fractions:\n\tMean = {:1.6f}\n\tStandard Deviation={:1.6f}\n\n".format(numpy.mean(fracArr),numpy.std(fracArr)))
+    fout.write("Fractions:\n\tMean = {:1.6f}\n\tStandard Deviation={:1.6f}\n\n".\
+        format(numpy.mean(fracArr),numpy.std(fracArr)))
     fout.write("Kmers:\n")
     for kmer in sorted(kmerDict):
         arr = kmerDict[kmer]
@@ -109,10 +116,11 @@ def analyzeChop(path, nm, out):
         fout.write("\t{!s}: Mean = {:1.6f}, StdDev = {:1.6f}, Spread = {:1.6f}, Spread/Mean = {:1.6f}\n".format(kmer, numpy.mean(arr), numpy.std(arr), spread, spread/numpy.mean(arr)))
     fout.close()
 
-def chopRandom(fi, pathOut, avg_size, interval, num_chop):
+
+def chopRandom(fi, pathOut, avg_size, margin, num_chop):
     import random, string
-    nm, seq = readSequence(fi)
-    llim = len(seq) - avg_size - interval
+    _, seq = readSequence(fi)
+    llim = len(seq) - avg_size - margin
     if llim <= 0:
         return
     
@@ -126,11 +134,13 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
     
     name = fi.split("/")[-1][:-4]
     for i in range(num_chop):
-        f = open("{!s}{!s}_random_chopped_{!s}b_{!s}.fna".format(pathOut,name,sizestr,str(i).zfill(3)),'w')
+        f = open("{!s}{!s}_random_chopped_{!s}b_{!s}.fna".\
+            format(pathOut,name,sizestr,str(i).zfill(3)),'w')
         st = random.randrange(llim)
-        leng = random.randrange(avg_size - interval, avg_size + interval)
+        leng = random.randrange(avg_size - margin, avg_size + margin)
         subseq = seq[st:st+leng]
-        f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".format(string.replace(name,"_"," "), sizestr, st, st+leng))
+        f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".\
+            format(string.replace(name,"_"," "), sizestr, st, st+leng))
         #f.write(">: {!s}\n".format(name))
         ct = 0
         while 1:
@@ -141,6 +151,42 @@ def chopRandom(fi, pathOut, avg_size, interval, num_chop):
         f.write("\n")
         f.close()
 
+
+def chopRandomNoOverlap(fi, pathOut, avg_size, num_chop):
+    import random, string
+    _, seq = readSequence(fi)
+    interval = len(seq)/num_chop
+    if interval < avg_size:
+        return
+    else:
+        margin = (interval-avg_size)/2
+    
+    if avg_size >= 1000:
+        sizestr = str(avg_size/1000) + "k"
+    else:
+        sizestr = str(avg_size)
+        
+    if pathOut[-1] != "/":
+        pathOut = pathOut + "/"
+    
+    name = fi.split("/")[-1][:-4]
+    for i in range(num_chop):
+        f = open("{!s}{!s}_random_chopped_{!s}b_{!s}.fna".\
+            format(pathOut,name,sizestr,str(i).zfill(3)),'w')
+        st = random.randrange(margin)+(i*interval)
+        leng = random.randrange(avg_size - margin, avg_size + margin)
+        subseq = seq[st:st+leng]
+        f.write(">: {!s}, ~{!s}bp: {!s} - {!s}\n".\
+            format(string.replace(name,"_"," "), sizestr, st, st+leng))
+        ct = 0
+        while 1:
+            f.write(subseq[ct:ct+60] + "\n")
+            ct += 60
+            if (ct > len(subseq)):
+                break
+        f.write("\n")
+        f.close()
+        
 
 def testCorrectPlus(raifi):
     import string
@@ -634,7 +680,7 @@ def distanceHistogramFolder(folder, pctrep, max):
 
     # http://matplotlib.org/examples/api/histogram_demo.html
 
-    fig = plt.figure()
+    plt.figure()
     n, bins, patches = plt.hist(dist, 50, facecolor='green')
 
     plt.savefig("{!s}Histogram.png".format(folder))
