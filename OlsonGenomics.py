@@ -54,11 +54,14 @@ def chopFolder(pathWork, sizeChop, numSeq):
     for file in genomeList:
         # make sequences to be matched
         for i in range(len(sizeChop)):
-            ensureDir(pathWork+"Sequences_{!s}/".format(sizeChop[i]))
+            sizestr = sizeString(sizeChop[i])
+            ensureDir(pathWork+"Sequences_{!s}/".format(sizestr))
             #chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".\
-            #    format(sizeChop[i]), sizeChop[i], sizeChop[i]/10, numSeq[i])
-            chopRandomNoOverlap(pathWork+file, pathWork+"Sequences_{!s}/",\
-                format(sizeChop[i]), sizeChop[i], numSeq[i])
+            #    format(sizestr), sizeChop[i], sizeChop[i]/10,\
+            #        numSeq[i])
+            chopRandomNoOverlap(pathWork+file, pathWork+"Sequences_{!s}/".\
+                format(sizestr), sizeChop[i], sizeChop[i]/10,\
+                    numSeq[i])
                 
 
 def analyzeChop(path, nm, out):
@@ -123,11 +126,8 @@ def chopRandom(fi, pathOut, avg_size, margin, num_chop):
     llim = len(seq) - avg_size - margin
     if llim <= 0:
         return
-    
-    if avg_size >= 1000:
-        sizestr = str(avg_size/1000) + "k"
-    else:
-        sizestr = str(avg_size)
+        
+    sizestr = sizeString(avg_size)
 
     if pathOut[-1] != "/":
         pathOut = pathOut + "/"
@@ -152,19 +152,16 @@ def chopRandom(fi, pathOut, avg_size, margin, num_chop):
         f.close()
 
 
-def chopRandomNoOverlap(fi, pathOut, avg_size, num_chop):
+def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
     import random, string
     _, seq = readSequence(fi)
     interval = len(seq)/num_chop
     if interval < avg_size:
         return
     else:
-        margin = (interval-avg_size)/2
-    
-    if avg_size >= 1000:
-        sizestr = str(avg_size/1000) + "k"
-    else:
-        sizestr = str(avg_size)
+        margin = min((interval-avg_size)/2, max_margin)
+        
+    sizestr = sizeString(avg_size)
         
     if pathOut[-1] != "/":
         pathOut = pathOut + "/"

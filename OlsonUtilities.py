@@ -317,3 +317,10 @@ def kmerCountSequence(seq, k):
         if ch == 'g' or ch == 'c':
             gc += 2
     return myDict, count, gc
+
+
+def sizeString(n):
+    if n >= 1000:
+        return str(n/1000) + "k"
+    else:
+        return str(n)
