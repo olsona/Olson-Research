@@ -545,9 +545,6 @@ def rai2KMeans(fi, clRange, out):
                 clDict[clusters[i]].append(int(names[i]))
             else:
                 clDict[clusters[i]] = [int(names[i])]
-            
-        print clDict
-        print clDict
                     
         clustersOut.write("k: {!s}\n[".format(k))
         clustersOut.write(",".join(str(v) for v in clDict.values()))
@@ -645,7 +642,6 @@ def getDistances(fi, pctrep):
     D = numpy.array(obs)
 
     numrep = int(pctrep * len(D)/100.0)
-    print numrep
             
     reps = random.sample(xrange(len(D)),numrep)
 
@@ -863,7 +859,6 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include
 def scoreDistribution(csvFile, outFile, intervals=[], include=0):
     import numpy
     scoreMat = numpy.genfromtxt(csvFile, dtype=numpy.float32, delimiter = ",")
-    print len(scoreMat)
     dist = []
     if include == 0:
         for I in intervals:
