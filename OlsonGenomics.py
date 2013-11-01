@@ -12,7 +12,7 @@ def chopSimple(fi, pathOut, size):
     ctbp = 0
     ctsq = 0
     
-    fout = open(nm + '_chop_{:03}kbp_{:02d}.fna'.format(int(size/1000),ctsq),'w')
+    fout = open(nm+'_chop_{:03}kbp_{:02d}.fna'.format(int(size/1000),ctsq),'w')
     
     buf = f.readline()
     infostr = buf.rstrip()
@@ -148,7 +148,6 @@ def chopRandom(fi, pathOut, avg_size, margin, num_chop):
             ct += 60
             if (ct > len(subseq)):
                 break
-        f.write("\n")
         f.close()
 
 
@@ -181,7 +180,6 @@ def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
             ct += 60
             if (ct > len(subseq)):
                 break
-        f.write("\n")
         f.close()
         
 
@@ -610,16 +608,14 @@ def csv2DistanceDistribution(file, out, intervals = [], include = 1):
                 for i in intervals[n]:
                     row = lines[i].rstrip().split(',')
                     for j in set(intervals[n]) - set([i]):
-                        if float(row[j]) > 0:
-                            mylist.append(float(row[j]))
+                        mylist.append(float(row[j]))
         else:
             for n in range(len(intervals)):
                 for i in intervals[n]:
                     row = lines[i].rstrip().split(',')
                     okset = set(range(nl)) - set(intervals[n])
                     for j in okset:
-                        if float(row[j]) > 0:
-                            mylist.append(float(row[j]))
+                        mylist.append(float(row[j]))
     f.close()
 
     mat = np.array(mylist)
@@ -867,6 +863,7 @@ def computeDistances(raiFile, outFile, intervals=[], method='euclidean', include
 def scoreDistribution(csvFile, outFile, intervals=[], include=0):
     import numpy
     scoreMat = numpy.genfromtxt(csvFile, dtype=numpy.float32, delimiter = ",")
+    print len(scoreMat)
     dist = []
     if include == 0:
         for I in intervals:
