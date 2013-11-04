@@ -124,7 +124,6 @@ def chopRandom(fi, pathOut, avg_size, margin, num_chop):
     import random, string
     _, seq = readSequence(fi)
     llim = len(seq) - avg_size - margin
-    print len(seq), llim
     if llim <= 0:
         return
         
@@ -156,6 +155,7 @@ def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
     import random, string
     _, seq = readSequence(fi)
     interval = len(seq)/num_chop
+    print len(seq), interval
     if interval < avg_size:
         return
     else:
