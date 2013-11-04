@@ -120,10 +120,11 @@ def analyzeChop(path, nm, out):
     fout.close()
 
 
-def chopRandom(fi, pathOut, avg_size, margin, num_chop):
+def chopRandom(fi, pathOut, avg_size, margin, num _chop):
     import random, string
     _, seq = readSequence(fi)
     llim = len(seq) - avg_size - margin
+    print len(seq), llim
     if llim <= 0:
         return
         
