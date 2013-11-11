@@ -154,13 +154,14 @@ def chopRandom(fi, pathOut, avg_size, margin, num_chop):
 def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
     import random, string
     _, seq = readSequence(fi)
-    print len(seq)
     interval = len(seq)/num_chop
     if interval < avg_size:
         print fi
         return
     else:
         margin = min((interval-avg_size)/2, max_margin)
+        
+    dig = len(str(len(seq)))
         
     sizestr = sizeString(avg_size)
         
@@ -173,7 +174,8 @@ def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
         leng = random.randrange(avg_size - margin, avg_size + margin)
         subseq = seq[st:st+leng]
         f = open("{!s}{!s}_random_chopped_{!s}b_{!s}-{!s}.fna".\
-            format(pathOut,name,sizestr,st,st+leng),'w')
+            format(pathOut,name,sizestr,str(st).zfill(dig),\
+            str(st+leng).zfill(dig)),'w')
         f.write(">: {!s}, ~{!s}bp: {!s} - {!s}\n".\
             format(string.replace(name,"_"," "), sizestr, st, st+leng))
         ct = 0
@@ -938,3 +940,7 @@ def JGI(fi, k):
     # plot
     plt.plot(allGCs,ratios,'b.')
     plt.show()
+
+
+def distanceVsScore(workingFolder, ext):
+    pass
