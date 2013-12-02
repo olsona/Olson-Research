@@ -73,7 +73,6 @@ def main(argv):
     # Separate out all sizes
     fileSep = inputFile
     baseName = fileSep.split(".")[-2]
-    print fileSep.split(".")
     myFiles = []
     for i in range(len(coolingSchedule)):
         num = coolingSchedule[i]
@@ -81,28 +80,26 @@ def main(argv):
         ln = f.readline()
         if string.find(ln,"\t") == -1:
             # convert to tabbed format using Alex's trick
-            newName = fileSep.split(".")[0]+"_TAB.fa"
+            newName = baseName+"_TAB.fa"
             os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
                 .format(fileSep, newName))
             fileSep = newName
         if i == 0:
             bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
         else:
-            bgr = "{!s}-lt{!s}k-gt{!s}k-LIST".format(baseName,\
-                coolingSchedule[i-1], num)
-        smlr = baseName + "-gt" + str(num) + "k.fa"
+            bgr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
+                num, coolingSchedule[i-1])
+        smlr = baseName + "-lt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
-            format(1000*num, pth, fileSep, bgr, smlr))
+            format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = smlr
         myFiles.append(bgr)
     myFiles.append(fileSep)
-    print myFiles
-    print raiPath
     
     # Seeding first round
-    os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
-        pth, coolingSchedule[0], myFiles[0]))
+    #os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
+    #    pth, coolingSchedule[0], myFiles[0]))
         
     
     # Main loop
