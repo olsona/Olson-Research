@@ -97,6 +97,9 @@ def main(argv):
         myFiles.append(bgr)
     myFiles.append(fileSep)
     print myFiles
+    print raiPath
+    print pth
+    print baseName
     
     # Seeding first round
     os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
@@ -106,8 +109,7 @@ def main(argv):
     # Main loop
     for i in range(1,len(coolingSchedule)):
         # Match round of smaller contigs to database of longer contigs
-        print "{!}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
-            coolingSchedule[i-1], myFiles[i])
+        print "{!}rai -d "
         #os.system("{!}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
         #    coolingSchedule[i-1], myFiles[i]))
         # Keep track of who was attached to what larger contig
