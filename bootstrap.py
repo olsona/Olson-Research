@@ -109,9 +109,9 @@ def main(argv):
         # Match round of smaller contigs to database of longer contigs
         os.system("{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
             coolingSchedule[i-1], myFiles[i]))
-        myFileShort = myFiles[0].split("/")[-1]
-        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-            myFileShort, pth, myFileShort)) # moves results to results folder
+        #myFileShort = myFiles[i].split("/")[-1]
+        #os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
+        #    myFileShort, pth, myFileShort)) # moves results to results folder
         # Keep track of who was attached to what larger contig
 
 
