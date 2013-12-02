@@ -93,8 +93,10 @@ def main(argv):
                 num, coolingSchedule[i-1])
         smlr = baseName + "-lt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
+        print "I got here 1"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
             format(1000*num, pth, fileSep, smlr, bgr))
+        print "I got here 2"
         fileSep = smlr
         myFiles.append(bgr)
     myFiles.append(fileSep)
