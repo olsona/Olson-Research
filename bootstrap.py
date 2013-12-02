@@ -101,16 +101,16 @@ def main(argv):
     myFiles.append(fileSep)
     
     # Seeding first round
-    #os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
-    #    pth, coolingSchedule[0], myFiles[0]))
+    os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
+        pth, coolingSchedule[0], myFiles[0]))
         
     
     # Main loop
     for i in range(1,len(coolingSchedule)):
         # Match round of smaller contigs to database of longer contigs
         pass
-        #os.system("{!}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
-        #    coolingSchedule[i-1], myFiles[i]))
+        print "{!}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
+            coolingSchedule[i-1], myFiles[i])
         # Keep track of who was attached to what larger contig
 
 
