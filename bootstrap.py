@@ -100,7 +100,7 @@ def main(argv):
     
     
     # Seeding first round
-    os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
+    os.system("{!s}rait -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
         pth, coolingSchedule[0], myFiles[0]))
         
     
