@@ -97,6 +97,8 @@ def main(argv):
         myFiles.append(bgr)
     myFiles.append(fileSep)
     
+    print myFiles
+    
     
     # Seeding first round
     #os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
