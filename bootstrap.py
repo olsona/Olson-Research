@@ -94,7 +94,7 @@ def main(argv):
         smlr = baseName + "-lt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
         # Produce RAI input lists for bigger contigs and fasta file of smaller contigs
-        os.system("perl separateBySizeListFormatTopDown.pl {!s} {!s} {!s} {!s} {!s}".\
+        os.system("perl sepSizeListTopDown.pl {!s} {!s} {!s} {!s} {!s}".\
             format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = smlr
         myFiles.append(bgr)
