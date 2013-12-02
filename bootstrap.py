@@ -75,6 +75,7 @@ def main(argv):
     baseName = fileSep.split(".")[-2]
     myFiles = []
     for i in range(len(coolingSchedule)):
+        print myFiles
         num = coolingSchedule[i]
         f = open(fileSep, 'r')
         ln = f.readline()
