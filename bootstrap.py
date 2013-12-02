@@ -73,6 +73,7 @@ def main(argv):
     # Separate out all sizes
     fileSep = inputFile
     baseName = fileSep.split(".")[0]
+    print fileSep.split(".")
     myFiles = []
     for i in range(len(coolingSchedule)):
         num = coolingSchedule[i]
@@ -99,7 +100,6 @@ def main(argv):
     print myFiles
     print raiPath
     print pth
-    print baseName
     
     # Seeding first round
     os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
