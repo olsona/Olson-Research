@@ -80,7 +80,6 @@ def main(argv):
         ln = f.readline()
         if string.find(ln,"\t") == -1:
             # convert to tabbed format using Alex's trick
-            print "I am converting a file"
             newName = baseName+"_TAB.fa"
             os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
                 .format(fileSep, newName))
@@ -107,8 +106,11 @@ def main(argv):
     # Main loop
     for i in range(1,len(coolingSchedule)):
         # Match round of smaller contigs to database of longer contigs
-        pass
-        print "{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth, coolingSchedule[i-1], myFiles[i])
+        os.system("{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
+            coolingSchedule[i-1], myFiles[i]))
+        # myFileShort = myFiles[0].split("/")[-1]
+        # os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(), \
+        #    myFileShort, pth, myFileShort)) # moves results to results folder
         # Keep track of who was attached to what larger contig
 
 
