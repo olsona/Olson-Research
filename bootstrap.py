@@ -75,7 +75,6 @@ def main(argv):
     baseName = fileSep.split(".")[-2]
     myFiles = []
     for i in range(len(coolingSchedule)):
-        print myFiles
         num = coolingSchedule[i]
         f = open(fileSep, 'r')
         ln = f.readline()
@@ -109,7 +108,7 @@ def main(argv):
     for i in range(1,len(coolingSchedule)):
         # Match round of smaller contigs to database of longer contigs
         pass
-        print "{!}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth, coolingSchedule[i-1], myFiles[i])
+        print "{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth, coolingSchedule[i-1], myFiles[i])
         # Keep track of who was attached to what larger contig
 
 
