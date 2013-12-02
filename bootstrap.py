@@ -85,16 +85,16 @@ def main(argv):
                 .format(fileSep, newName))
             fileSep = newName
         if i == 0:
-            smlr = "{!s}-lt{!s}k-LIST".format(baseName, num)
+            bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
         else:
-            smlr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
+            bgr = "{!s}-lt{!s}k-gt{!s}k-LIST".format(baseName,\
                 coolingSchedule[i-1], num)
-        bgr = baseName + "-gt" + str(num) + "k.fa"
+        smlr = baseName + "-gt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
         os.system("perl separateBySizeListFormat.pl {!s} {!s} {!s} {!s} {!s}".\
-            format(1000*num, pth, fileSep, smlr, bgr))
-        fileSep = bgr
-        myFiles.append(smlr)
+            format(1000*num, pth, fileSep, bgr, smlr))
+        fileSep = smlr
+        myFiles.append(bgr)
     myFiles.append(fileSep)
     
     
