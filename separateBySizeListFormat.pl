@@ -3,7 +3,6 @@ my ($threshold, $path, $input, $smaller, $bigger) = @ARGV;
 open(IN, $input);
 open(SMLR1, '>', "$smaller-1");
 open(SMLR2, '>', "$smaller-2");
-print STDOUT "$smaller_1";
 open(BGGR, '>', $bigger);
 while (<IN>) {
     chomp;
