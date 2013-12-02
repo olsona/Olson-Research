@@ -72,7 +72,7 @@ def main(argv):
         
     # Separate out all sizes
     fileSep = inputFile
-    baseName = fileSep.split(".")[0]
+    baseName = fileSep.split(".")[-1]
     print fileSep.split(".")
     myFiles = []
     for i in range(len(coolingSchedule)):
