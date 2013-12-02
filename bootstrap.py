@@ -107,6 +107,8 @@ def main(argv):
     # Main loop
     for i in range(1,len(coolingSchedule)):
         # Match round of smaller contigs to database of longer contigs
+        print "{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
+            coolingSchedule[i-1], myFiles[i])
         os.system("{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
             coolingSchedule[i-1], myFiles[i]))
         #myFileShort = myFiles[i].split("/")[-1]
