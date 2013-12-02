@@ -942,5 +942,49 @@ def JGI(fi, k):
     plt.show()
 
 
-def distanceVsScore(workingFolder, ext):
-    pass
+def distanceVsScore(distanceFile, listFile, genomeFile, outFile):
+    import re, numpy
+    # Get total length of sequence
+    _, seq = readSequence(genomeFile)
+    totalLen = len(seq)
+    
+    # Get locations for each contig
+    listFi = open(listFile,'r')
+    listLines = listFi.readlines()
+    locs = [[0,0]]*len(listLines)
+    mids = [0]*len(listLines)
+    for i in range(len(listLines)):
+        ln = listLines[i].rstrip()
+        spl = re.split('_|-', ln)
+        ls = [int(spl[-2]),int(spl[-1].split(".")[0])]
+        rs = (ls[1]+ls[0])/2
+        locs[i] = [ls[0],ls[1]]
+        mids[i] = rs
+    listFi.close()
+    
+    # Get distance matrix
+    scoreMat = numpy.genfromtxt(distanceFile,dtype=numpy.float32,delimiter = ",")
+    
+    # Associate similarities with distances
+    l = len(scoreMat)
+    distX = [0.0]*((l**2)-l)
+    simY = [0.0]*((l**2)-l)
+    ct = 0
+    
+    for i in range(l):
+        for j in range(l):
+            if i != j:
+                simY[ct] = scoreMat[i][j]
+                if i < j:
+                    distX[ct] = min(mids[j]-mids[i], mids[i]+(totalLen-mids[j]))
+                else:
+                    distX[ct] = min(mids[i]-mids[j], mids[j]+(totalLen-mids[i]))
+                ct += 1
+                
+    # Write results  
+    outF = open(outFile,'w')  
+    outF.write("X,Y\n")        
+    zipped = zip(distX, simY)
+    for z in zipped:
+        outF.write("{!s},{!s}\n".format(z[0],z[1]))
+    outF.close()

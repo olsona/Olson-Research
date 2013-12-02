@@ -97,17 +97,20 @@ def main(argv):
         myFiles.append(smlr)
     myFiles.append(fileSep)
     
-    # De novo clustering of first files
-    os.system("{!s}rait -o {!s}lt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
-        pth, coolingSchedule[0], myFiles[0]))
-    os.system("{!s}rai -d {!s}lt{!s}kDB -I {!s}-1".format(raiPath,\
-        pth, coolingSchedule[0], myFiles[0]))
-    myFileShort = myFiles[0].split("/")[-1]
-    os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(), \
-        myFileShort, pth, myFileShort))
-    os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
-    csv2MediansTop("{!s}{!s}-1.bin".format(pth, myFileShort), \
-        "{!s}.pref".format(myFiles[0]), 30)
+    
+    # Seeding first round
+    #os.system("{!s}rait -new -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
+    #    pth, coolingSchedule[0], myFiles[0]))
+        
+    
+    # Main loop
+    #for i in range(1,len(coolingSchedule)):
+        # Match round of smaller contigs to database of longer contigs
+    #    os.system("{!}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
+    #        coolingSchedule[i-1], myFiles[i]))
+        # Keep track of who was attached to what larger contig
+    #    pass
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
