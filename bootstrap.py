@@ -139,7 +139,7 @@ def main(argv):
     
     finalOut = open(outputFile,'w')
     for fs in firstSeeds:
-        finalOut.write("{!s}\n".format(fs) + "\n".join(str(x) for x in matches[fs])+"\n")
+        finalOut.write("{!s}\n".format(fs) + "\n\t".join(str(x) for x in matches[fs])+"\n\n")
     finalOut.close()
     
 
