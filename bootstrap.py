@@ -74,6 +74,7 @@ def main(argv):
     fileSep = inputFile
     baseName = fileSep.split(".")[-2]
     myFiles = []
+    rangeList = []
     for i in range(len(coolingSchedule)):
         num = coolingSchedule[i]
         f = open(fileSep, 'r')
@@ -86,9 +87,11 @@ def main(argv):
             fileSep = newName
         if i == 0:
             bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
+            rangeList.append("gt{!s}k".format(num))
         else:
             bgr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
                 num, coolingSchedule[i-1])
+            rangeList.append("gt{!s}k-lt{!s}k".format(num, coolingSchedule[i-1]))
         smlr = baseName + "-lt" + str(num) + "k.fa"
         pth = fileSep.rsplit("/",1)[0]+"/"
         # Produce RAI input lists for bigger contigs and fasta file of smaller contigs
@@ -100,23 +103,31 @@ def main(argv):
     
     
     # Seeding first round
-    os.system("{!s}rait -o {!s}gt{!s}kDB -i {!s}-2 >/dev/null 2>&1".format(raiPath,\
-        pth, coolingSchedule[0], myFiles[0]))
+    os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
+        raiPath, pth, rangeList[0], myFiles[0]))
         
     
-    # Main loop
+    matches = {}
+    # Main grouping loop
     for i in range(1,len(coolingSchedule)):
         # Match round of smaller contigs to database of longer contigs
-        print "{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
-            coolingSchedule[i-1], myFiles[i])
-        os.system("{!s}rai -d {!s}gt{!s}kDB -I {!s}-1".format(raiPath, pth,\
-            coolingSchedule[i-1], myFiles[i]))
+        print "{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
+            rangeList[i-1], myFiles[i])
         myFileShort = myFiles[i].split("/")[-1]
-        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-            myFileShort, pth, myFileShort)) # moves results to results folder
-        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+        #os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
+        #    myFileShort, pth, myFileShort)) # moves results to results folder
+        #os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+        
         # Keep track of who was attached to what larger contig
-
+        #fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
+        #for l in fmatch.readlines():
+        #    [u1,u2] = l.rstrip().split(" ")
+        #    matches[u1] = u2
+            
+        # Seed next round
+        print("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
+            raiPath, pth, rangeList[i], myFiles[i]))
+    
 
 if __name__ == "__main__":
     main(sys.argv[1:])
