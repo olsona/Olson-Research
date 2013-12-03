@@ -112,6 +112,7 @@ def main(argv):
         
     
     matches = {}
+    firstSeeds = []
     # Main grouping loop
     for i in range(len(coolingSchedule)-1):
         # Seed this round
@@ -129,7 +130,17 @@ def main(argv):
         fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
         for l in fmatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
-            matches[u1] = u2
+            if i == 0:
+                firstSeeds.append(u2)
+            if u2 in matches:
+                matches[u2] = matches[u2].append(u1)
+            else:
+                matches[u2] = u1
+    
+    finalOut = open(outputFile,'w')
+    for fs in firstSeeds:
+        finalOut.write("{!s}\n".format(fs) + "\n".join(str(x) for x in matches[fs])+"\n")
+    finalOut.close()
     
 
 if __name__ == "__main__":
