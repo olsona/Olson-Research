@@ -131,7 +131,7 @@ def main(argv):
         for l in fmatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
             if i == 0:
-                firstSeeds.append(u2)
+                firstSeeds.add(u2)
             if u2 in matches:
                 matches[u2].append(u1)
             else:
