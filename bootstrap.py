@@ -116,7 +116,7 @@ def main(argv):
         # Match round of smaller contigs to database of longer contigs
         print "{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
             rangeList[i], myFiles[i+1])
-        print("myFileShort = {!s}".format(myFiles[i].split("/")[-1]))
+        print("myFileShort = {!s}".format(myFiles[i+1].split("/")[-1]))
         #os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
         #    myFileShort, pth, myFileShort)) # moves results to results folder
         #os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
