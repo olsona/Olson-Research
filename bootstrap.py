@@ -135,7 +135,7 @@ def main(argv):
             if u2 in matches:
                 matches[u2].append(u1)
             else:
-                matches[u2] = u1
+                matches[u2] = [u1]
     
     finalOut = open(outputFile,'w')
     for fs in firstSeeds:
