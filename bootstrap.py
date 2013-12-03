@@ -100,6 +100,7 @@ def main(argv):
         fileSep = smlr
         myFiles.append(bgr)
     myFiles.append(fileSep)
+    print myFiles
     
     
     # Seeding first round
@@ -110,22 +111,22 @@ def main(argv):
     matches = {}
     # Main grouping loop
     for i in range(len(coolingSchedule)-1):
-        # Seed next round
+        # Seed this round
         print("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
             raiPath, pth, rangeList[i], myFiles[i]))
         # Match round of smaller contigs to database of longer contigs
         print "{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
             rangeList[i], myFiles[i+1])
-        print("myFileShort = {!s}".format(myFiles[i+1].split("/")[-1]))
-        #os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-        #    myFileShort, pth, myFileShort)) # moves results to results folder
-        #os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+        myFileShort = format(myFiles[i+1].split("/")[-1])
+        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
+            myFileShort, pth, myFileShort)) # moves results to results folder
+        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
         
         # Keep track of who was attached to what larger contig
-        #fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
-        #for l in fmatch.readlines():
-        #    [u1,u2] = l.rstrip().split(" ")
-        #    matches[u1] = u2
+        fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
+        for l in fmatch.readlines():
+            [u1,u2] = l.rstrip().split(" ")
+            matches[u1] = u2
     
 
 if __name__ == "__main__":
