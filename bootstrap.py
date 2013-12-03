@@ -88,6 +88,9 @@ def main(argv):
         if i == 0:
             bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
             rangeList.append("gt{!s}k".format(num))
+        elif num == 0:
+            bgr = "{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[i-1])
+            rangeList.append("lt{!s}k".format(coolingSchedule[i-1]))
         else:
             bgr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
                 num, coolingSchedule[i-1])
