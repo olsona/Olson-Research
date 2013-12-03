@@ -112,7 +112,7 @@ def main(argv):
         
     
     matches = {}
-    firstSeeds = []
+    firstSeeds = set()
     # Main grouping loop
     for i in range(len(coolingSchedule)-1):
         # Seed this round
