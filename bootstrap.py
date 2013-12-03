@@ -133,7 +133,7 @@ def main(argv):
             if i == 0:
                 firstSeeds.append(u2)
             if u2 in matches:
-                matches[u2] = matches[u2].append(u1)
+                matches[u2].append(u1)
             else:
                 matches[u2] = u1
     
