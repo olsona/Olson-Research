@@ -105,6 +105,7 @@ def main(argv):
     print baseName
     print coolingSchedule[-1]
     myFiles.append("{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[-1]))
+    rangeList.append("lt{1s}k".format(coolingSchedule[-1]))
     print myFiles
     print rangeList
     
