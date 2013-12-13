@@ -102,9 +102,9 @@ def main(argv):
             format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = smlr
         myFiles.append(bgr)
-    myFiles.append(fileSep)
+    myFiles.append("{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[-1]))
     print myFiles
-    
+    print rangeList
     
     #matches = {}
     #firstSeeds = set()
