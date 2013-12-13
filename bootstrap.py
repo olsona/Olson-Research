@@ -102,6 +102,8 @@ def main(argv):
             format(1000*num, pth, fileSep, smlr, bgr))
         fileSep = smlr
         myFiles.append(bgr)
+    print baseName
+    print coolingSchedule[-1]
     myFiles.append("{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[-1]))
     print myFiles
     print rangeList
