@@ -108,17 +108,17 @@ def main(argv):
     #matches = {}
     #firstSeeds = set()
     # Main grouping loop
-    for i in range(len(rangeList)-1):
+    #for i in range(len(rangeList)-1):
         # Seed this round
-        os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
-            raiPath, pth, rangeList[i], myFiles[i]))
+    #    os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
+    #        raiPath, pth, rangeList[i], myFiles[i]))
         # Match round of smaller contigs to database of longer contigs
-        os.system("{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
-            rangeList[i], myFiles[i+1]))
-        myFileShort = format(myFiles[i+1].split("/")[-1])
-        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-            myFileShort, pth, myFileShort)) # moves results to results folder
-        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+    #    os.system("{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
+    #        rangeList[i], myFiles[i+1]))
+    #    myFileShort = format(myFiles[i+1].split("/")[-1])
+    #    os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
+    #        myFileShort, pth, myFileShort)) # moves results to results folder
+    #    os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
         
         # Keep track of who was attached to what larger contig
     #    fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
