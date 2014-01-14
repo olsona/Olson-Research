@@ -91,8 +91,7 @@ def main(argv):
                 s = 0
                 while ln:
                     if ln[0] == '>': # deal with name lines
-                        m = re.search('[A-Za-z]',ln)
-                        print m
+                        m = re.search('[A-Za-z]',ln).group()[0]
                         if s == 0: # start file
                             fN.write(ln.rstrip()[m:]+'\t')
                             s = 1
