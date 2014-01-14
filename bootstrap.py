@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os
+import sys, getopt, string, os, re
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -80,11 +80,32 @@ def main(argv):
         f = open(fileSep, 'r')
         ln = f.readline()
         if string.find(ln,"\t") == -1:
-            # convert to tabbed format using Alex's trick
-            newName = baseName+"_TAB.fa"
-            os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
-                .format(fileSep, newName))
-            fileSep = newName
+            # The rest of my code depends on having contiguous lines of contigs, not contigs separated out into 60-character lines.
+            ln = f.readline()
+            if len(ln.rstrip()) == 60 or len(ln.rstrip()) == 80:
+                # convert to contiguous line AND tabbed format
+                newName = baseName+"_TAB.fa"
+                f.seek(0) # go back to the beginning of the file
+                ln = f.readline()
+                fN = open(newName,'w')
+                s = 0
+                while ln:
+                    if ln[0] == '>': # deal with name lines
+                        m = re.search([A-Za-z],ln)
+                        if !s: # start file
+                            fN.write(ln.rstrip()[m:]+'\t')
+                            s = 1
+                        else: # make new line
+                            fN.write('\n'+ln.rstrip()[m:]+'\t')
+                    else: # genetic lines
+                        fN.write(ln.rstrip())
+                    ln = f.readline()
+            else:
+                # convert to tabbed format using Alex's Perl trick
+                newName = baseName+"_TAB.fa"
+                os.system("cat {!s} | perl -pe's/[\r\n]+$/\t/ if $i = !$i' > {!s}"\
+                          .format(fileSep, newName))
+                fileSep = newName
         if i == 0:
             bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
             rangeList.append("gt{!s}k".format(num))
