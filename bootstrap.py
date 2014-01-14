@@ -92,7 +92,7 @@ def main(argv):
                 while ln:
                     if ln[0] == '>': # deal with name lines
                         m = re.search([A-Za-z],ln)
-                        if !s: # start file
+                        if s == 0: # start file
                             fN.write(ln.rstrip()[m:]+'\t')
                             s = 1
                         else: # make new line
