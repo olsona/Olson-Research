@@ -115,36 +115,36 @@ def main(argv):
     myFiles.append("{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[-1]))
     rangeList.append("lt{!s}k".format(coolingSchedule[-1]))
     
-    #matches = {}
-    #firstSeeds = set()
+    matches = {}
+    firstSeeds = set()
     # Main grouping loop
-    #for i in range(len(rangeList)-1):
+    for i in range(len(rangeList)-1):
         # Seed this round
-    #    os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
-    #        raiPath, pth, rangeList[i], myFiles[i]))
+        os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
+            raiPath, pth, rangeList[i], myFiles[i]))
         # Match round of smaller contigs to database of longer contigs
-    #    os.system("{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
-    #        rangeList[i], myFiles[i+1]))
-    #    myFileShort = format(myFiles[i+1].split("/")[-1])
-    #    os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-    #        myFileShort, pth, myFileShort)) # moves results to results folder
-    #    os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+        os.system("{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
+            rangeList[i], myFiles[i+1]))
+        myFileShort = format(myFiles[i+1].split("/")[-1])
+        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
+            myFileShort, pth, myFileShort)) # moves results to results folder
+        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
         
         # Keep track of who was attached to what larger contig
-    #    fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
-    #    for l in fmatch.readlines():
-    #        [u1,u2] = l.rstrip().split(" ")
-    #        if i == 0:
-    #            firstSeeds.add(u2)
-    #        if u2 in matches:
-    #            matches[u2].append(u1)
-    #        else:
-    #            matches[u2] = [u1]
+        fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
+        for l in fmatch.readlines():
+            [u1,u2] = l.rstrip().split(" ")
+            if i == 0:
+                firstSeeds.add(u2)
+            if u2 in matches:
+                matches[u2].append(u1)
+            else:
+                matches[u2] = [u1]
     
-    #finalOut = open(outputFile,'w')
-    #for fs in firstSeeds:
-    #    finalOut.write("{!s}\n".format(fs) + "\n  ".join(str(x) for x in matches[fs])+"\n")
-    #finalOut.close()
+    finalOut = open(outputFile,'w')
+    for fs in firstSeeds:
+        finalOut.write("{!s}\n".format(fs) + "\n  ".join(str(x) for x in matches[fs])+"\n")
+    finalOut.close()
     
 
 if __name__ == "__main__":
