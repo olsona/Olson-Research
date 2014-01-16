@@ -62,12 +62,7 @@ def main(argv):
     except IOError:
         print outputFile + "cannot be opened."
         sys.exit(1)
-    try:
-        temp = open(raiPath+"raiphy",'r')
-        temp.close()
-    except IOError:
-        print raiPath+"rait cannot be opened."
-        sys.exit(1)
+
    
     # prepare input file; proper formatting, etc
     [basePath,baseName] = inputFile.rsplit("/",1)
