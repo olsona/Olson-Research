@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-my ($threshold, $input, $smaller, $bigger) = @ARGV;
+my ($input, $input, $smaller, $bigger) = @ARGV;
 open(IN, $input);
 open(OUT1, '>', $smaller);
 open(OUT2, '>', $bigger);

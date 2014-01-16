@@ -99,11 +99,24 @@ def main(argv):
     # preparation for main loop
     # make initial seed file by separating out the biggest contigs according to 
     # the cooling schedule
-    initSeed = basePath+baseName+"_init_seed.fna"
+    initSeeds = basePath+baseName+"_init_seed.fna"
+    tmp = basePath+baseName+"_tmp.fna"
+    nxt = basePath+baseName+"_next.fna"
     rest = basePath+baseName+"_rest.fna"
     os.system("perl separateBySize.pl {!s} {!s} {!s} {!s}".\
-        format(1000*coolingSchedule[0], keyFile, rest, initSeed))
+        format(1000*coolingSchedule[0], keyFile, tmp, initSeeds))
+    os.system("perl separateBySize.pl {!s} {!s} {!s} {!s}".\
+        format(1000*coolingSchedule[1], tmp, rest, nxt))
+    seeds = basePath+baseName+"_DB"
+    os.system("{!s}raiphy -e .fna -i {!s} -d {!s} -m 2".format(raiPath,\
+        initSeeds, seeds))
         
+    # main loop
+    res = basePath+baseName+"_results"
+    os.system("{!s} raiphy -e .fna -i {!s} -d {!s} -m 0 -o {!s}".format(\
+            raiPath, nxt, seeds, res))
+        
+    
 
 if __name__ == "__main__":
     main(sys.argv[1:])
