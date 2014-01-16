@@ -69,83 +69,41 @@ def main(argv):
         print raiPath+"rait cannot be opened."
         sys.exit(1)
    
+    # prepare input file; proper formatting, etc
+    [basePath,baseName] = inputFile.rsplit("/")
+    basePath = basePath + "/"
+    baseName = baseName.rsplit(".")[0]
+    f = open(inputFile,'r')
+    ln = f.readline()
+    if string.find(ln,"\t") == -1:
+        # convert to contiguous line AND tabbed format
+        newName = baseName+"_TAB.fa"
+        fN = open(basePath+newName,'w')
+        s = 0
+        while ln:
+            if ln[0] == '>': # deal with name lines
+                m = re.search('[A-Za-z]',ln).start()
+                if s == 0: # start file
+                    fN.write(ln.rstrip()[m:]+'\t')
+                    s = 1
+                else: # make new line
+                    fN.write('\n'+ln.rstrip()[m:]+'\t')
+            else: # genetic lines
+                fN.write(ln.rstrip())
+            ln = f.readline()
+        fN.close()
+        keyFile = basePath + "/" + newName
+    else:
+        keyFile = inputFile
         
-    # Separate out all sizes
-    fileSep = inputFile
-    baseName = fileSep.split(".")[-2]
-    myFiles = []
-    rangeList = []
-    for i in range(len(coolingSchedule)):
-        num = coolingSchedule[i]
-        f = open(fileSep, 'r')
-        ln = f.readline()
-        if string.find(ln,"\t") == -1:
-            # convert to contiguous line AND tabbed format
-            newName = baseName+"_TAB.fa"
-            fN = open(newName,'w')
-            s = 0
-            while ln:
-                if ln[0] == '>': # deal with name lines
-                    m = re.search('[A-Za-z]',ln).start()
-                    if s == 0: # start file
-                        fN.write(ln.rstrip()[m:]+'\t')
-                        s = 1
-                    else: # make new line
-                        fN.write('\n'+ln.rstrip()[m:]+'\t')
-                else: # genetic lines
-                    fN.write(ln.rstrip())
-                ln = f.readline()
-        if i == 0:
-            bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
-            rangeList.append("gt{!s}k".format(num))
-        elif num == 0:
-            bgr = "{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[i-1])
-            rangeList.append("lt{!s}k".format(coolingSchedule[i-1]))
-        else:
-            bgr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
-                num, coolingSchedule[i-1])
-            rangeList.append("gt{!s}k-lt{!s}k".format(num, coolingSchedule[i-1]))
-        smlr = baseName + "-lt" + str(num) + "k.fa"
-        pth = fileSep.rsplit("/",1)[0]+"/"
-        # Produce RAI input lists for bigger contigs and fasta file of smaller contigs
-        os.system("perl sepSizeListTopDown.pl {!s} {!s} {!s} {!s} {!s}".\
-            format(1000*num, pth, fileSep, smlr, bgr))
-        fileSep = smlr
-        myFiles.append(bgr)
-    myFiles.append("{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[-1]))
-    rangeList.append("lt{!s}k".format(coolingSchedule[-1]))
-    
-    matches = {}
-    firstSeeds = set()
-    # Main grouping loop
-    for i in range(len(rangeList)-1):
-        # Seed this round
-        os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(\
-            raiPath, pth, rangeList[i], myFiles[i]))
-        # Match round of smaller contigs to database of longer contigs
-        os.system("{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
-            rangeList[i], myFiles[i+1]))
-        myFileShort = format(myFiles[i+1].split("/")[-1])
-        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-            myFileShort, pth, myFileShort)) # moves results to results folder
-        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+    # preparation for main loop
+    # make initial seed file by separating out the biggest contigs according to 
+    # the cooling schedule
+    initSeed = basePath+baseName+"_init_seed.fna"
+    rest = basePath+baseName+"_rest.fna"
+    os.system("perl separateBySize.pl {!s} {!s} {!s} {!s}".\
+        format(1000*coolingSchedule[0], keyFile, rest, init_seed))
         
-        # Keep track of who was attached to what larger contig
-        fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
-        for l in fmatch.readlines():
-            [u1,u2] = l.rstrip().split(" ")
-            if i == 0:
-                firstSeeds.add(u2)
-            if u2 in matches:
-                matches[u2].append(u1)
-            else:
-                matches[u2] = [u1]
-    
-    finalOut = open(outputFile,'w')
-    for fs in firstSeeds:
-        finalOut.write("{!s}\n".format(fs) + "\n  ".join(str(x) for x in matches[fs])+"\n")
-    finalOut.close()
-    
 
 if __name__ == "__main__":
     main(sys.argv[1:])
