@@ -108,7 +108,7 @@ def main(argv):
         
     # main loop
     res = basePath+baseName+"_results"
-    os.system("{!s} raiphy -e .fna -i {!s} -d {!s} -m 0 -o {!s}".format(\
+    os.system("{!s}raiphy -e .fna -i {!s} -d {!s} -m 0 -o {!s}".format(\
             raiPath, nxt, seeds, res))
         
     
