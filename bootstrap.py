@@ -102,7 +102,7 @@ def main(argv):
     initSeed = basePath+baseName+"_init_seed.fna"
     rest = basePath+baseName+"_rest.fna"
     os.system("perl separateBySize.pl {!s} {!s} {!s} {!s}".\
-        format(1000*coolingSchedule[0], keyFile, rest, init_seed))
+        format(1000*coolingSchedule[0], keyFile, rest, initSeed))
         
 
 if __name__ == "__main__":
