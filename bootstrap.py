@@ -63,7 +63,7 @@ def main(argv):
         print outputFile + "cannot be opened."
         sys.exit(1)
     try:
-        temp = open(raiPath+"rait",'r')
+        temp = open(raiPath+"raiphy",'r')
         temp.close()
     except IOError:
         print raiPath+"rait cannot be opened."
