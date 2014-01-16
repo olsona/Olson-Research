@@ -70,9 +70,9 @@ def main(argv):
         sys.exit(1)
    
     # prepare input file; proper formatting, etc
-    [basePath,baseName] = inputFile.rsplit("/")
+    [basePath,baseName] = inputFile.rsplit("/",1)
     basePath = basePath + "/"
-    baseName = baseName.rsplit(".")[0]
+    baseName = baseName.rsplit(".",1)[0]
     f = open(inputFile,'r')
     ln = f.readline()
     if string.find(ln,"\t") == -1:
