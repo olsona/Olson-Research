@@ -90,6 +90,8 @@ def main(argv):
             else: # genetic lines
                 fN.write(ln.rstrip())
             ln = f.readline()
+    f.close()
+    fN.close()
 
     # separate out files by size, using sepSizeListDownUp.pl
     fNext = newName
@@ -99,10 +101,14 @@ def main(argv):
         #for i in [0]:
         workingFile = fNext
         thr = int(coolingSchedule[i])
-        bgr = "{!s}_{!s}next".format(baseName,i)
+        bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         fNext = bgr
+
+    # make initial seed file
+    fSeed = baseName+_"seed.fna"
+    os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
 
     # main loop: iterate through cooling schedule, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 
