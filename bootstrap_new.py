@@ -94,7 +94,8 @@ def main(argv):
     # separate out files by size, using sepSizeListDownUp.pl
     workingFile = newName
     print workingFile
-    genePath = newName.rsplit("/",1)[0]+"/"
+    os.system("mkdir contigs")
+    genePath = newName.rsplit("/",1)[0]+"/contigs/"
     #for i in range(len(coolingSchedule)):
     i = 0
     thr = int(coolingSchedule[i])
