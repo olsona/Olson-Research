@@ -92,8 +92,8 @@ def main(argv):
             ln = f.readline()
 
     # separate out files by size, using sepSizeListDownUp.pl
-    workingFile = inputFile
-    genePath = inputFile.rsplit("/",1)[0]+"/"
+    workingFile = newName
+    genePath = newName.rsplit("/",1)[0]+"/"
     for i in range(len(coolingSchedule)):
         thr = int(coolingSchedule[i])
         bgr = baseName + "_next"
