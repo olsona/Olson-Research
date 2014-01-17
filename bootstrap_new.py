@@ -92,18 +92,17 @@ def main(argv):
             ln = f.readline()
 
     # separate out files by size, using sepSizeListDownUp.pl
-    workingFile = newName
-    print workingFile
+    fNext = newName
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     os.system("mkdir {!s}".format(genePath))
-        #for i in range(len(coolingSchedule)):]
-    for i in [0]:
+    for i in range(len(coolingSchedule)):]
+        #for i in [0]:
+        workingFile = fNext
         thr = int(coolingSchedule[i])
-        bgr = baseName + "_next"
-        smlr = baseName + "_{!s}".format(i)
+        bgr = "{!s}_{!s}next".format(baseName,i)
+        smlr = "{!s}_{!s}".format(baseName, i)
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
-        workingFile = bgr
-        print workingFile
+        fNext = bgr
 
     # main loop: iterate through cooling schedule, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 
