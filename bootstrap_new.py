@@ -96,7 +96,8 @@ def main(argv):
     print workingFile
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     os.system("mkdir {!s}".format(genePath))
-    for i in range(len(coolingSchedule)):
+        #for i in range(len(coolingSchedule)):]
+    for i in [0]:
         thr = int(coolingSchedule[i])
         bgr = baseName + "_next"
         smlr = baseName + "_{!s}".format(i)
