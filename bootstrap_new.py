@@ -97,12 +97,13 @@ def main(argv):
     fNext = newName
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     ensureDir(genePath)
-    for i in range(len(coolingSchedule)):
+    l = len(coolingSchedule)
+    for i in range(l):
         #for i in [0]:
         workingFile = fNext
         thr = int(coolingSchedule[i])
-        bgr = "{!s}_{!s}_next".format(baseName,i)
-        smlr = "{!s}_{!s}".format(baseName, i)
+        bgr = "{!s}_{!s}_next".format(baseName,l-1-i)
+        smlr = "{!s}_{!s}".format(baseName, l-1-i)
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         fNext = bgr
 
@@ -110,7 +111,16 @@ def main(argv):
     fSeed = baseName+"_seed"
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
 
-    # main loop: iterate through cooling schedule, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
+    # main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
+    DB = baseName + "_DB"
+    matches = baseName + "_matches"
+    for i in range(len(coolingSchedule)):
+        # make DB out of fSeed, whatever it is right now
+        #os.system("{!s}rait -new -i {!s}-2 -o {!s}".format(raiPath, fSeed, DB))
+        # match ith contigs to DB
+        toMatch = "{!s}_{!s}".format(baseName,i)
+        print toMatch
+        #os.system("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, , DB, matches))
 
     # process results from main loop to get initial "trees"
 
