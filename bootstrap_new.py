@@ -92,14 +92,14 @@ def main(argv):
             ln = f.readline()
 
     # separate out files by size, using sepSizeListDownUp.pl
-    workingFile = newName
-    genePath = newName.rsplit("/",1)[0]+"/"
-    for i in range(len(coolingSchedule)):
-        thr = int(coolingSchedule[i])
-        bgr = baseName + "_next"
-        smlr = baseName + "_{!s}".format(thr)
-        os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
-        workingFile = bgr
+    #workingFile = newName
+    #genePath = newName.rsplit("/",1)[0]+"/"
+    #for i in range(len(coolingSchedule)):
+    #    thr = int(coolingSchedule[i])
+    #    bgr = baseName + "_next"
+    #    smlr = baseName + "_{!s}".format(thr)
+    #    os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
+    #workingFile = bgr
 
     # main loop: iterate through cooling schedule, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 
