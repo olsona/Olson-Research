@@ -86,7 +86,7 @@ def main(argv):
                     fN.write('>: '+ln.rstrip()[m:]+'\t')
                     s = 1
                 else: # make new line
-                    fN.write('\n'+ln.rstrip()[m:]+'\t')
+                    fN.write('\n>: '+ln.rstrip()[m:]+'\t')
             else: # genetic lines
                 fN.write(ln.rstrip())
             ln = f.readline()
