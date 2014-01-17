@@ -83,10 +83,10 @@ def main(argv):
             if ln[0] == '>': # deal with name lines
                 m = re.search('[A-Za-z]',ln).start()
                 if s == 0: # start file
-                    fN.write('>: '+ln.rstrip()[m:]+'\t')
+                    fN.write('>'+ln.rstrip()[m:]+'\t')
                     s = 1
                 else: # make new line
-                    fN.write('\n>: '+ln.rstrip()[m:]+'\t')
+                    fN.write('\n>'+ln.rstrip()[m:]+'\t')
             else: # genetic lines
                 fN.write(ln.rstrip())
             ln = f.readline()
