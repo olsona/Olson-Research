@@ -107,7 +107,7 @@ def main(argv):
         fNext = bgr
 
     # make initial seed file
-    fSeed = baseName+"_seed.fna"
+    fSeed = baseName+"_seed"
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
 
     # main loop: iterate through cooling schedule, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
