@@ -99,6 +99,7 @@ def main(argv):
         bgr = baseName + "_next"
         smlr = baseName + "_{!s}".format(thr)
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
+        workingFile = bgr
 
     # main loop: iterate through cooling schedule, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 
