@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 my ($path, $input, $output) = @ARGV;
-open(IN, $input)
-open(OUT1, '>', "$output-1")
-open(OUT2, '>', "$output-2")
+open(IN, $input);
+open(OUT1, '>', "$output-1");
+open(OUT2, '>', "$output-2");
 while (<IN>) {
     chomp;
     ($name, $seq) = split("\t");
