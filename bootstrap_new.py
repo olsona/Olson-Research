@@ -120,24 +120,24 @@ def main(argv):
         # match ith contigs to DB
         toMatch = "{!s}_{!s}".format(baseName,i)
         os.system("{!s}rai -I {!s}-1 -d {!s}".format(raiPath, toMatch, DB))
-        short = toMatch.rsplit("/",1)[1]
-        os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
-        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+        #short = toMatch.rsplit("/",1)[1]
+        #os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
+        #os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
         # construct matching dictionary
-        mDict = {}
-        fMatch = open(matches,'r')
-        for l in fMatch.readlines():
-            [u1,u2] = l.rstrip().split(" ")
-            if u2 in matches:
-                mDict[u2].append(u1)
-            else:
-                mDict[u2] = [u1]
+        #mDict = {}
+        #fMatch = open(matches,'r')
+        #for l in fMatch.readlines():
+        #    [u1,u2] = l.rstrip().split(" ")
+        #    if u2 in matches:
+        #        mDict[u2].append(u1)
+        #    else:
+        #        mDict[u2] = [u1]
         
         fSeed = toMatch
 
-    fOut = open(outputFile, 'w')
-    fOut.write(pprint(mDict))
-    fOut.close()
+    #with open(outputFile,'w') as fOut:
+    #    pprint(mDict,stream=fOut)
+    #fOut.close()
 
 
     # process results from main loop to get initial "trees"
