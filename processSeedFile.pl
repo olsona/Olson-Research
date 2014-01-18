@@ -10,10 +10,8 @@ while (<IN>) {
     open(FI, '>', "$path$nname.fna");
     print FI "$name\n$seq";
     close(FI);
-    print STDOUT "$path$nname.fna\n";
     print OUT1 "$path$nname.fna\n";
-    print STDOUT "$nname\t$path$nname.fna";
-    print OUT2 "$nname\t$path$nname.fna";
+    print OUT2 "$nname\t$path$nname.fna\n";
 }
 close(IN);
 close(OUT1);
