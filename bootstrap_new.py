@@ -116,20 +116,19 @@ def main(argv):
     matches = baseName + "_matches"
     for i in range(len(coolingSchedule)-1,-1,-1):
         # make DB out of fSeed, whatever it is right now
-        os.system("{!s}rait -new -i {!s}-2 -o {!s}".format(raiPath, fSeed, DB))
+        print("{!s}rait -new -i {!s}-2 -o {!s}".format(raiPath, fSeed, DB))
         # match ith contigs to DB
         toMatch = "{!s}_{!s}".format(baseName,i)
-        print("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, toMatch, DB, matches))
-        os.system("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, toMatch, DB, matches))
+        #os.system("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, toMatch, DB, matches))
         # construct matching dictionary
-        mDict = {}
-        fMatch = open(matches,'r')
-        for l in fMatch.readlines():
-            [u1,u2] = l.rstrip().split(" ")
-            if u2 in matches:
-                mDict[u2].append(u1)
-            else:
-                mDict[u2] = [u1]
+        #mDict = {}
+        #fMatch = open(matches,'r')
+        #for l in fMatch.readlines():
+        #    [u1,u2] = l.rstrip().split(" ")
+        #    if u2 in matches:
+        #        mDict[u2].append(u1)
+        #    else:
+        #        mDict[u2] = [u1]
         
         fSeed = toMatch
 
