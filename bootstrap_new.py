@@ -120,8 +120,8 @@ def main(argv):
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         print("{!s}rait -new -i {!s}-2 -o {!s}-{!s}".format(raiPath, fSeed, DB, i))
         # match ith contigs to DB
-        toMatch = "{!s}_{!s}".format(baseName,i)
-        os.system("{!s}rai -I {!s}-1 -d {!s}".format(raiPath, toMatch, DB))
+        #toMatch = "{!s}_{!s}".format(baseName,i)
+        #os.system("{!s}rai -I {!s}-1 -d {!s}".format(raiPath, toMatch, DB))
         #short = toMatch.rsplit("/",1)[1]
         #os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
         #os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
