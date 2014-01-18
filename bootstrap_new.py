@@ -116,7 +116,8 @@ def main(argv):
     matches = baseName + "_matches"
     for i in range(len(coolingSchedule)-1,-1,-1):
         # make DB out of fSeed, whatever it is right now
-        os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
+        #os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
+        os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s}".format(raiPath, fSeed, DB, i))
         # match ith contigs to DB
         toMatch = "{!s}_{!s}".format(baseName,i)
         os.system("{!s}rai -I {!s}-1 -d {!s}".format(raiPath, toMatch, DB))
