@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, pprint
+import sys, getopt, string, os, re, pprint
 from bootstrapConstants import *
 from bootstrapUtils import *
 
