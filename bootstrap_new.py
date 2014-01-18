@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re
+import sys, getopt, string, os, pprint
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -101,9 +101,7 @@ def main(argv):
     for i in range(l):
         #for i in [0]:
         workingFile = fNext
-        print workingFile
         thr = int(coolingSchedule[i])
-        print thr
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
@@ -116,13 +114,28 @@ def main(argv):
     # main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
     matches = baseName + "_matches"
-    for i in range(len(coolingSchedule)-1,0,-1):
+    for i in range(len(coolingSchedule)-1,-1,-1):
         # make DB out of fSeed, whatever it is right now
-        #os.system("{!s}rait -new -i {!s}-2 -o {!s}".format(raiPath, fSeed, DB))
+        os.system("{!s}rait -new -i {!s}-2 -o {!s}".format(raiPath, fSeed, DB))
         # match ith contigs to DB
         toMatch = "{!s}_{!s}".format(baseName,i)
-        print toMatch
-        #os.system("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, , DB, matches))
+        os.system("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, toMatch, DB, matches))
+        # construct matching dictionary
+        mDict = {}
+        fMatch = open("{!s}".format(matches),'r')
+        for l in fMatch.readlines():
+            [u1,u2] = l.rstrip().split(" ")
+            if u2 in matches:
+                mDict[u2].append(u1)
+            else:
+                mDict[u2] = [u1]
+        
+        fSeed = toMatch
+
+    fOut = open(outputFile, 'w')
+    fOut.write(pprint(mDict))
+    fOut.close()
+
 
     # process results from main loop to get initial "trees"
 
