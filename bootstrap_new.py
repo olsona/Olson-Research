@@ -119,10 +119,11 @@ def main(argv):
         os.system("{!s}rait -new -i {!s}-2 -o {!s}".format(raiPath, fSeed, DB))
         # match ith contigs to DB
         toMatch = "{!s}_{!s}".format(baseName,i)
+        print("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, toMatch, DB, matches))
         os.system("{!s}rai -I {!s}-1 -d {!s} -o {!s}".format(raiPath, toMatch, DB, matches))
         # construct matching dictionary
         mDict = {}
-        fMatch = open("{!s}".format(matches),'r')
+        fMatch = open(matches,'r')
         for l in fMatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
             if u2 in matches:
