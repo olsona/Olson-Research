@@ -143,6 +143,7 @@ def main(argv):
         ct = 0
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
+            masterDict["pseudocontig_{!s}".format(ct)] = [j]
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
             fpc.write(">pseudocontig_{!s}\n".format(ct))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
@@ -152,6 +153,7 @@ def main(argv):
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+                masterDict["pseudocontig_{!s}".format(ct)].append(v)
             fpc.write("\n")
             fpc.close()
             l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
