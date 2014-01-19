@@ -114,6 +114,7 @@ def main(argv):
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
     masterDict = {}
+    ct = 0
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
@@ -140,7 +141,6 @@ def main(argv):
                 matchDict[u2] = [u1]
     
         # Make concatenated seeds for next DB
-        ct = 0
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             if i < leng-1:
