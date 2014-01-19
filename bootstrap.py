@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re
+import sys, getopt, string, os, re, pprint
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -15,8 +15,8 @@ def main(argv):
     # Command line arguments
     try:
         opts, args = getopt.getopt(argv,"hi:o:r:c:p:",\
-            ["ifile=","ofile=","reference=","db=","schedule=",\
-            "path="])
+                                   ["ifile=","ofile=","reference=","db=","schedule=",\
+                                    "path="])
     except getopt.GetoptError:
         print usageString
         sys.exit(2)
@@ -68,83 +68,107 @@ def main(argv):
     except IOError:
         print raiPath+"rait cannot be opened."
         sys.exit(1)
-   
-        
-    # Separate out all sizes
-    fileSep = inputFile
-    baseName = fileSep.split(".")[-2]
-    myFiles = []
-    rangeList = []
-    for i in range(len(coolingSchedule)):
-        num = coolingSchedule[i]
-        f = open(fileSep, 'r')
-        ln = f.readline()
-        if string.find(ln,"\t") == -1:
-            # convert to contiguous line AND tabbed format
-            newName = baseName+"_TAB.fa"
-            fN = open(newName,'w')
-            s = 0
-            while ln:
-                if ln[0] == '>': # deal with name lines
-                    m = re.search('[A-Za-z]',ln).start()
-                    if s == 0: # start file
-                        fN.write(ln.rstrip()[m:]+'\t')
-                        s = 1
-                    else: # make new line
-                        fN.write('\n'+ln.rstrip()[m:]+'\t')
-                else: # genetic lines
-                    fN.write(ln.rstrip())
-                ln = f.readline()
-        if i == 0:
-            bgr = "{!s}-gt{!s}k-LIST".format(baseName, num)
-            rangeList.append("gt{!s}k".format(num))
-        elif num == 0:
-            bgr = "{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[i-1])
-            rangeList.append("lt{!s}k".format(coolingSchedule[i-1]))
-        else:
-            bgr = "{!s}-gt{!s}k-lt{!s}k-LIST".format(baseName,\
-                num, coolingSchedule[i-1])
-            rangeList.append("gt{!s}k-lt{!s}k".format(num, coolingSchedule[i-1]))
-        smlr = baseName + "-lt" + str(num) + "k.fa"
-        pth = fileSep.rsplit("/",1)[0]+"/"
-        # Produce RAI input lists for bigger contigs and fasta file of smaller contigs
-        os.system("perl sepSizeListTopDown.pl {!s} {!s} {!s} {!s} {!s}".\
-            format(1000*num, pth, fileSep, smlr, bgr))
-        fileSep = smlr
-        myFiles.append(bgr)
-    myFiles.append("{!s}-lt{!s}k-LIST".format(baseName, coolingSchedule[-1]))
-    rangeList.append("lt{!s}k".format(coolingSchedule[-1]))
+
+
+    # properly format input file
+    f = open(inputFile, 'r')
+    baseName = inputFile.rsplit(".",1)[0]
+    ln = f.readline()
+    if string.find(ln,"\t") == -1:
+        # convert to contiguous line AND tabbed format
+        newName = baseName+"_TAB.fa"
+        fN = open(newName,'w')
+        s = 0
+        while ln:
+            if ln[0] == '>': # deal with name lines
+                m = re.search('[A-Za-z]',ln).start()
+                if s == 0: # start file
+                    myStr = ln.rstrip()[m:]
+                    fN.write('>'+string.replace(myStr,' ','_')+'\t')
+                    s = 1
+                else: # make new line
+                    myStr = ln.rstrip()[m:]
+                    fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
+            else: # genetic lines
+                fN.write(ln.rstrip())
+            ln = f.readline()
+    f.close()
+    fN.close()
+
+    # separate out files by size, using sepSizeListDownUp.pl
+    fNext = newName
+    genePath = newName.rsplit("/",1)[0]+"/contigs/"
+    ensureDir(genePath)
+    leng = len(coolingSchedule)
+    for i in range(leng):
+        #for i in [0]:
+        workingFile = fNext
+        thr = int(coolingSchedule[i])
+        bgr = "{!s}_{!s}_next".format(baseName,i)
+        smlr = "{!s}_{!s}".format(baseName, i)
+        os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
+        fNext = bgr
+
+    # Make initial seed file
+    fSeed = baseName+"_seed"
+    os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
-    matches = {}
-    firstSeeds = set()
-    # Main grouping loop
-    for i in range(len(rangeList)-1):
-        # Seed this round
-        os.system("{!s}rait -new -o {!s}{!s}DB -i {!s}-2 >/dev/null 2>&1".format(raiPath, pth, rangeList[i], myFiles[i]))
-        # Match round of smaller contigs to database of longer contigs
-        os.system("{!s}rai -d {!s}{!s}DB -I {!s}-1".format(raiPath, pth,\
-            rangeList[i], myFiles[i+1]))
-        myFileShort = format(myFiles[i+1].split("/")[-1])
-        os.system("cp {!s}/{!s}-1.bin {!s}{!s}-1.bin".format(os.getcwd(),\
-            myFileShort, pth, myFileShort)) # moves results to results folder
-        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), myFileShort))
+    masterDict = {}
+    ct = 0
+
+    # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
+    DB = baseName + "_DB"
+    matches = baseName + "_matches"
+    for i in range(leng-1,-1,-1):
+    #for i in [l-1]:
+        # Make DB out of fSeed, whatever it is right now
+        os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
+        # Match ith contigs to DB
+        toMatch = "{!s}_{!s}".format(baseName,i)
+        os.system("{!s}rai -I {!s}-1 -d {!s}-{!s} >/dev/null 2>&1".format(raiPath, toMatch, DB, i))
+        short = toMatch.rsplit("/",1)[1]
+        os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
+        os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
         
-        # Keep track of who was attached to what larger contig
-        fmatch = open("{!s}{!s}-1.bin".format(pth, myFileShort),'r')
-        for l in fmatch.readlines():
+        # Construct matching dictionary
+        matchDict = {}
+        fMatch = open(matches,'r')
+        for l in fMatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
-            if i == 0:
-                firstSeeds.add(u2)
             if u2 in matches:
-                matches[u2].append(u1)
+                matchDict[u2].append(u1)
             else:
-                matches[u2] = [u1]
+                matchDict[u2] = [u1]
     
-    finalOut = open(outputFile,'w')
-    for fs in firstSeeds:
-        finalOut.write("{!s}\n".format(fs) + "\n  ".join(str(x) for x in matches[fs])+"\n")
-    finalOut.close()
-    
+        # Make concatenated seeds for next DB
+        l2 = open(fSeed + "-2",'w')
+        for j in matchDict.keys():
+            if i < leng-1:
+                print j
+            masterDict["pseudocontig_{!s}".format(ct)] = [j]
+            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
+            fpc.write(">pseudocontig_{!s}\n".format(ct))
+            _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
+            fpc.write(seq)
+            os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+            for v in matchDict[j]:
+                _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
+                fpc.write(seq)
+                os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+                masterDict["pseudocontig_{!s}".format(ct)].append(v)
+            fpc.write("\n")
+            fpc.close()
+            l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
+            ct += 1
+        l2.close()
+
+    with open(outputFile,'w') as fOut:
+        pprint.pprint(masterDict,stream=fOut)
+    fOut.close()
+
+
+    # process results from main loop to get initial "trees"
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

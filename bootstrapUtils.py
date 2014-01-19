@@ -27,7 +27,7 @@ def namesPosTable(fastaFile):
         ln = f.readline()
     return table
 
-def readSequencePos(fastaFile):
+def readSequenceFromPos(fastaFile):
     pass
 
 def readSequence(fi):
