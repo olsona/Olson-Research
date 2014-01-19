@@ -21,6 +21,8 @@ def namesPosTable(fastaFile):
     while ln:
         if ln[0] == '>': # found a contig name
             nm = ln.rstrip()
+            print f.tell()
+            print len(ln)
             table[nm] = f.tell()-len(ln)
         ln = f.readline()
     return table
