@@ -99,7 +99,7 @@ def main(argv):
     fNext = newName
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     ensureDir(genePath)
-    l = len(coolingSchedule)
+    leng = len(coolingSchedule)
     for i in range(l):
         #for i in [0]:
         workingFile = fNext
@@ -118,7 +118,7 @@ def main(argv):
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
     matches = baseName + "_matches"
-    for i in range(l-1,-1,-1):
+    for i in range(leng-1,-1,-1):
     #for i in [l-1]:
         # Make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
@@ -143,7 +143,7 @@ def main(argv):
         ct = 0
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
-            if i < l-1:
+            if i < leng-1:
                 print j
             masterDict["pseudocontig_{!s}".format(ct)] = [j]
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
