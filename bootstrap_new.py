@@ -143,6 +143,8 @@ def main(argv):
         ct = 0
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
+            if i < l-1:
+                print j
             masterDict["pseudocontig_{!s}".format(ct)] = [j]
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
             fpc.write(">pseudocontig_{!s}\n".format(ct))
