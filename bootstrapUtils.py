@@ -29,3 +29,22 @@ def namesPosTable(fastaFile):
 
 def readSequencePos(fastaFile):
     pass
+
+def readSequence(fi):
+    '''This assumes that only one organism is in a file'''
+    f = open(fi,'r')
+    concat = ''
+    buf = f.readline().rstrip()
+    while buf:
+        seq_name, seq = buf[2:], ''
+        buf = f.readline()
+        while not buf.startswith('>') and buf:
+            seq = seq + buf.rstrip()
+            buf = f.readline()
+        if seq_name.find("complete genome") == -1:
+            concat = concat + seq
+        elif seq_name.find("complete genome") > -1:
+            concat = seq
+            break
+    return seq_name, concat
+    f.close()

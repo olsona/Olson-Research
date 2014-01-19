@@ -141,13 +141,22 @@ def main(argv):
     
         # Make concatenated seeds for next DB
         ct = 0
+        l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
-            fpc.write(j)
-            list = matchDict[j]
-            for v in list:
-                fpc.write(v)
+            fpc.write(">pseudocontig_{!s}\n".format(ct))
+            _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
+            fpc.write(seq)
+            os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+            for v in matchDict[j]:
+                _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
+                fpc.write(seq)
+                os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+            fpc.write("\n")
+            fpc.close()
+            l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
             ct += 1
+        l2.close()
 
     with open(outputFile,'w') as fOut:
         pprint.pprint(masterDict,stream=fOut)
