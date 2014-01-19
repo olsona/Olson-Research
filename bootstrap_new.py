@@ -112,6 +112,8 @@ def main(argv):
     # Make initial seed file
     fSeed = baseName+"_seed"
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
+    
+    masterDict = {}
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
@@ -128,23 +130,27 @@ def main(argv):
         os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
         
         # Construct matching dictionary
-        mDict = {}
-        firstSeeds = []
+        matchDict = {}
         fMatch = open(matches,'r')
         for l in fMatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
             if u2 in matches:
-                mDict[u2].append(u1)
-                if i == l-1:
-                    firstSeeds.append(u2)
+                matchDict[u2].append(u1)
             else:
-                mDict[u2] = [u1]
+                matchDict[u2] = [u1]
     
         # Make concatenated seeds for next DB
-
+        ct = 0
+        for j in matchDict.keys():
+            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,j),'w')
+            fpc.write(j)
+            list = matchDict[j]:
+            for v in list:
+                fpc.write(v)
+            ct += 1
 
     with open(outputFile,'w') as fOut:
-        pprint.pprint(mDict,stream=fOut)
+        pprint.pprint(masterDict,stream=fOut)
     fOut.close()
 
 
