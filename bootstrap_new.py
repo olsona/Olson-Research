@@ -139,7 +139,7 @@ def main(argv):
         fSeed = toMatch
 
     with open(outputFile,'w') as fOut:
-        pprint(mDict,stream=fOut)
+        pprint.pprint(mDict,stream=fOut)
     fOut.close()
 
 
