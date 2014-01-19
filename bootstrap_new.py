@@ -116,7 +116,7 @@ def main(argv):
     # main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
     matches = baseName + "_matches"
-    for i in range(len(coolingSchedule)-1,-1,-1):
+    for i in range(l-1,-1,-1):
         # make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         print("{!s}rait -new -i {!s}-2 -o {!s}-{!s}".format(raiPath, fSeed, DB, i))
@@ -128,14 +128,16 @@ def main(argv):
         os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
         # construct matching dictionary
         mDict = {}
+        firstSeeds = []
         fMatch = open(matches,'r')
         for l in fMatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
             if u2 in matches:
                 mDict[u2].append(u1)
+                if i == l-1:
+                    firstSeeds.append(u2)
             else:
                 mDict[u2] = [u1]
-        
         fSeed = toMatch
 
     with open(outputFile,'w') as fOut:

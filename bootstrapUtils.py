@@ -13,3 +13,17 @@ def ensureDir(pth):
     d = os.path.dirname(pth)
     if not os.path.exists(d):
         os.makedirs(d)
+
+def namesPosTable(fastaFile):
+    f = open(fastaFile)
+    table = {}
+    ln = f.readline()
+    while ln:
+        if ln[0] == '>': # found a contig name
+            nm = ln.rstrip()
+            table[nm] = f.tell()-len(ln)
+        ln = f.readline()
+    return table
+
+def readSequencePos(fastaFile):
+    pass
