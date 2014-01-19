@@ -173,11 +173,8 @@ def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
         st = random.randrange(margin)+(i*interval)
         leng = random.randrange(avg_size - margin, avg_size + margin)
         subseq = seq[st:st+leng]
-        f = open("{!s}{!s}_random_chopped_{!s}b_{!s}-{!s}.fna".\
-            format(pathOut,name,sizestr,str(st).zfill(dig),\
-            str(st+leng).zfill(dig)),'w')
-        f.write(">: {!s} {!s} {!s}: {!s} - {!s}\n".\
-            format(string.replace(name,"_"," "), sizestr, i, st, st+leng))
+        f = open("{!s}{!s}_{!s}-{!s}.fna".format(pathOut,name,str(st).zfill(dig),str(st+leng).zfill(dig)),'w')
+        f.write(">: {!s}_{!s}-{!s}\n".format(string.replace(name,"_"," "),st,st+leng))
         ct = 0
         while 1:
             f.write(subseq[ct:ct+60] + "\n")

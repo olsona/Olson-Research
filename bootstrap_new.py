@@ -119,10 +119,9 @@ def main(argv):
     for i in range(l-1,-1,-1):
         # Make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
-        print("{!s}rait -new -i {!s}-2 -o {!s}-{!s}".format(raiPath, fSeed, DB, i))
         # Match ith contigs to DB
         toMatch = "{!s}_{!s}".format(baseName,i)
-        os.system("{!s}rai -I {!s}-1 -d {!s}-{!s}".format(raiPath, toMatch, DB, i))
+        os.system("{!s}rai -I {!s}-1 -d {!s}-{!s} >/dev/null 2>&1".format(raiPath, toMatch, DB, i))
         short = toMatch.rsplit("/",1)[1]
         os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
         os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
@@ -140,9 +139,8 @@ def main(argv):
             else:
                 mDict[u2] = [u1]
     
-        # Get file positions of smaller contigs
-        #posDict = namesPosTable(toMatch+"-1")
-        fSeed = toMatch
+        # Make concatenated seeds for next DB
+        
 
     with open(outputFile,'w') as fOut:
         pprint.pprint(mDict,stream=fOut)
