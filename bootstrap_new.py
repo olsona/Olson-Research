@@ -83,10 +83,12 @@ def main(argv):
             if ln[0] == '>': # deal with name lines
                 m = re.search('[A-Za-z]',ln).start()
                 if s == 0: # start file
-                    fN.write('>'+string.replace(ln.rstrip()[m:],' ','_')+'\t')
+                    myStr = ln.rstrip()[m:]
+                    fN.write('>'+string.replace(myStr,' ','_')+'\t')
                     s = 1
                 else: # make new line
-                    fN.write('\n>'+string.replace(ln.rstrip()[m:],' ','_')+'\t')
+                    myStr = ln.rstrip()[m:]
+                    fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
             else: # genetic lines
                 fN.write(ln.rstrip())
             ln = f.readline()
@@ -114,8 +116,7 @@ def main(argv):
     # main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
     matches = baseName + "_matches"
-    #for i in range(len(coolingSchedule)-1,-1,-1):
-    for i in [2]:
+    for i in range(len(coolingSchedule)-1,-1,-1):
         # make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         print("{!s}rait -new -i {!s}-2 -o {!s}-{!s}".format(raiPath, fSeed, DB, i))
