@@ -144,7 +144,7 @@ def main(argv):
         for j in matchDict.keys():
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,j),'w')
             fpc.write(j)
-            list = matchDict[j]:
+            list = matchDict[j]
             for v in list:
                 fpc.write(v)
             ct += 1
