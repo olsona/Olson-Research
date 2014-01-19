@@ -116,7 +116,8 @@ def main(argv):
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
     matches = baseName + "_matches"
-    for i in range(l-1,-1,-1):
+    #for i in range(l-1,-1,-1):
+    for i in [l-1]:
         # Make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         # Match ith contigs to DB
@@ -140,7 +141,7 @@ def main(argv):
                 mDict[u2] = [u1]
     
         # Make concatenated seeds for next DB
-        
+
 
     with open(outputFile,'w') as fOut:
         pprint.pprint(mDict,stream=fOut)
