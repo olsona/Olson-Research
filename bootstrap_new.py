@@ -142,7 +142,7 @@ def main(argv):
         # Make concatenated seeds for next DB
         ct = 0
         for j in matchDict.keys():
-            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,j),'w')
+            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
             fpc.write(j)
             list = matchDict[j]
             for v in list:
