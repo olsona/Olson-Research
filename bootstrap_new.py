@@ -141,7 +141,7 @@ def main(argv):
                 mDict[u2] = [u1]
     
         # Get file positions of smaller contigs
-        posDict = namesPosTable(toMatch)
+        #posDict = namesPosTable(toMatch+"-1")
         fSeed = toMatch
 
     with open(outputFile,'w') as fOut:
