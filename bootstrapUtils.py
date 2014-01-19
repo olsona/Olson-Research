@@ -15,15 +15,15 @@ def ensureDir(pth):
         os.makedirs(d)
 
 def namesPosTable(fastaFile):
+    import re, string
     f = open(fastaFile)
     table = {}
     ln = f.readline()
     while ln:
         if ln[0] == '>': # found a contig name
-            nm = ln.rstrip()
-            print f.tell()
-            print len(ln)
-            table[nm] = f.tell()-len(ln)
+            nm = string.replace(ln.rstrip(),' ','_')
+            m = re.search('[A-Za-z]',ln).start()
+            table[nm[m:]] = f.tell()-len(ln)
         ln = f.readline()
     return table
 
