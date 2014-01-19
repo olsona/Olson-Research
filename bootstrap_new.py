@@ -100,7 +100,7 @@ def main(argv):
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     ensureDir(genePath)
     leng = len(coolingSchedule)
-    for i in range(l):
+    for i in range(leng):
         #for i in [0]:
         workingFile = fNext
         thr = int(coolingSchedule[i])
