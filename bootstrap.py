@@ -146,7 +146,7 @@ def main(argv):
         for j in matchDict.keys():
             newContig = "pseudocontig_{!s}".format(ct)
             masterDict[newContig] = [j]
-            if j[0:6] == "pseudo":
+            if j in flatDict:
                 flatDict[newContig] = [flatDict[j]]
             else:
                 flatDict[newContig] = [j]
@@ -160,7 +160,6 @@ def main(argv):
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
                 masterDict[newContig].append(v)
-                flatDict[newContig].append(v)
             fpc.write("\n")
             fpc.close()
             l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
