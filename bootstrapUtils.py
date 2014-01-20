@@ -50,4 +50,4 @@ def readSequence(fi):
     f.close()
 
 def getLeaves(inDict, root):
-    
+    pass
