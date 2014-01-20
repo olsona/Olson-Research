@@ -132,6 +132,7 @@ def main(argv):
         
         # Construct matching dictionary
         matchDict = {}
+        flatDict = {}
         fMatch = open(matches,'r')
         for l in fMatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
@@ -143,9 +144,12 @@ def main(argv):
         # Make concatenated seeds for next DB
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
-            if i < leng-1:
-                print j
-            masterDict["pseudocontig_{!s}".format(ct)] = [j]
+            newContig = "pseudocontig_{!s}".format(ct)
+            masterDict[newContig] = [j]
+            if j[0:6] == "pseudo":
+                flatDict[newContig] = [flatDict[j]]
+            else:
+                flatDict[newContig] = [j]
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
             fpc.write(">pseudocontig_{!s}\n".format(ct))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
@@ -155,7 +159,8 @@ def main(argv):
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-                masterDict["pseudocontig_{!s}".format(ct)].append(v)
+                masterDict[newContig].append(v)
+                flatDict[newContig].append(v)
             fpc.write("\n")
             fpc.close()
             l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
@@ -163,7 +168,7 @@ def main(argv):
         l2.close()
 
     with open(outputFile,'w') as fOut:
-        pprint.pprint(masterDict,stream=fOut)
+        pprint.pprint(flatDict,stream=fOut)
     fOut.close()
 
 
