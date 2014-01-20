@@ -48,3 +48,6 @@ def readSequence(fi):
             break
     return seq_name, concat
     f.close()
+
+def getLeaves(inDict, root):
+    
