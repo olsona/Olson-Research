@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint, set
+import sys, getopt, string, os, re, pprint
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -166,6 +166,8 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
+        print roots
+        print "\n"
 
     for r in roots:
         fOut.write("{!s}: {!s}\n".format(r,getLeaves(masterDict,r)))
