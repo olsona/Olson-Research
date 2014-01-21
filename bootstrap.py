@@ -160,6 +160,7 @@ def main(argv):
                 masterDict[newContig].append(v)
                 if v in roots:
                     roots.remove(v)
+                    print v
             fpc.write("\n")
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
@@ -167,7 +168,7 @@ def main(argv):
         l2.close()
 
     for r in roots:
-        print "{!s}: {!s}\n".format(r,getLeaves(masterDict,r))
+        fOut.write("{!s}: {!s}\n".format(r,getLeaves(masterDict,r)))
 
 
     # process results from main loop to get initial "trees"
