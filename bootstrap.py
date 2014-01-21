@@ -142,12 +142,13 @@ def main(argv):
             else:
                 matchDict[u2] = [u1]
     
+        print matchDict
+    
         # Make concatenated seeds for next DB
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             roots.add(newContig)
-            print newContig
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             fpc.write(">{!s}\n".format(newContig))
