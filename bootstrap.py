@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint
+import sys, getopt, string, os, re, pprint, set
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -114,7 +114,7 @@ def main(argv):
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
     masterDict = {}
-    roots = []
+    roots = set()
     ct = 0
     fOut = open(outputFile,'a')
 
@@ -146,7 +146,7 @@ def main(argv):
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-            roots.append(newContig)
+            roots.add(newContig)
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             fpc.write(">{!s}\n".format(newContig))
