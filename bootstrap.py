@@ -114,6 +114,7 @@ def main(argv):
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
     masterDict = {}
+    roots = []
     ct = 0
     fOut = open(outputFile,'a')
 
@@ -145,7 +146,7 @@ def main(argv):
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-            print newContig
+            roots.append(newContig)
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             fpc.write(">{!s}\n".format(newContig))
@@ -157,6 +158,8 @@ def main(argv):
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
                 masterDict[newContig].append(v)
+                if v in roots:
+                    roots.remove(v)
             fpc.write("\n")
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
