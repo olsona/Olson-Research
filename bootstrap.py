@@ -165,8 +165,9 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
-        pprint.pprint(masterDict,stream=fOut)
-        print "-----------"
+
+    for r in roots:
+        print "{!s}: {!s}\n".format(r,getLeaves(masterDict,r))
 
 
     # process results from main loop to get initial "trees"
