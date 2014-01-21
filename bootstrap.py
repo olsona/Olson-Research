@@ -166,7 +166,7 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
-        print roots
+        print roots.sort()
         print "\n"
 
     for r in roots:
