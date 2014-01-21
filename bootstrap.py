@@ -163,6 +163,7 @@ def main(argv):
             ct += 1
         l2.close()
         pprint.pprint(masterDict,stream=fOut)
+        print "-----------"
 
 
     # process results from main loop to get initial "trees"
