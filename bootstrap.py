@@ -145,6 +145,7 @@ def main(argv):
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
+            print newContig
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             fpc.write(">{!s}\n".format(newContig))
