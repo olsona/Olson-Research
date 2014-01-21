@@ -160,20 +160,16 @@ def main(argv):
                 masterDict[newContig].append(v)
                 if v in roots:
                     roots.remove(v)
-                    print v
             fpc.write("\n")
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
-        print roots
-        print "\n"
 
+
+    # process results from main loop to get initial clusters
     for r in roots:
         fOut.write("{!s}: {!s}\n".format(r,getLeaves(masterDict,r)))
-
-
-    # process results from main loop to get initial "trees"
 
 
 if __name__ == "__main__":
