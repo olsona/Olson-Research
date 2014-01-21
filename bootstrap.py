@@ -144,7 +144,7 @@ def main(argv):
         # Make concatenated seeds for next DB
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
-            newContig = "pseudocontig_{!s}".format(ct)
+            newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             masterDict[newContig] = [j]
             fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
             fpc.write(">pseudocontig_{!s}\n".format(ct))
