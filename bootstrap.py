@@ -113,9 +113,7 @@ def main(argv):
     fSeed = baseName+"_seed"
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
-    masterDict = {}
-    roots = []
-    ct = 0
+    #masterDict = {}
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
@@ -141,16 +139,13 @@ def main(argv):
             else:
                 matchDict[u2] = [u1]
     
-        roots = []
         # Make concatenated seeds for next DB
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
-            newContig = "pseudocontig_{!s}".format(ct)
-            if i == 0:
-                roots.append(newContig)
-            masterDict[newContig] = [j]
-            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
-            fpc.write(">pseudocontig_{!s}\n".format(ct))
+            newContig = j+"*"+"*".join(str(v) for v in matchDict[j])
+            #masterDict[newContig] = [j]
+            fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
+            fpc.write(">{!s}\n".format(newContig))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
             os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
@@ -158,21 +153,16 @@ def main(argv):
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-                masterDict[newContig].append(v)
+                #masterDict[newContig].append(v)
             fpc.write("\n")
             fpc.close()
-            l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
+            l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
 
-    flatDict = {}
-    for r in roots:
-        flatDict[r] = getLeaves(masterDict,r)
-
-    with open(outputFile,'w') as fOut:
-        pprint.pprint(flatDict,stream=fOut)
-        pprint.pprint(masterDict,stream=fOut)
-    fOut.close()
+    #with open(outputFile,'w') as fOut:
+    #    pprint.pprint(masterDict,stream=fOut)
+    #fOut.close()
 
 
     # process results from main loop to get initial "trees"
