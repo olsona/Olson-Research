@@ -115,6 +115,7 @@ def main(argv):
     
     masterDict = {}
     ct = 0
+    fOut = open(outputFile,'a')
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
@@ -160,10 +161,7 @@ def main(argv):
             l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
             ct += 1
         l2.close()
-
-    with open(outputFile,'w') as fOut:
         pprint.pprint(masterDict,stream=fOut)
-    fOut.close()
 
 
     # process results from main loop to get initial "trees"
