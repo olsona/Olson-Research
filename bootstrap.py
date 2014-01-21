@@ -165,6 +165,7 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
+        print roots
 
 
     # process results from main loop to get initial clusters
