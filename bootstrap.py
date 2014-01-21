@@ -146,8 +146,8 @@ def main(argv):
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             masterDict[newContig] = [j]
-            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
-            fpc.write(">pseudocontig_{!s}\n".format(ct))
+            fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
+            fpc.write(">{!s}\n".format(newContig))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
             os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
@@ -158,7 +158,7 @@ def main(argv):
                 masterDict[newContig].append(v)
             fpc.write("\n")
             fpc.close()
-            l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
+            l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
         pprint.pprint(masterDict,stream=fOut)
