@@ -113,13 +113,14 @@ def main(argv):
     fSeed = baseName+"_seed"
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
-    #masterDict = {}
+    masterDict = {}
+    ct = 0
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     DB = baseName + "_DB"
     matches = baseName + "_matches"
-    for i in range(leng-1,-1,-1):
-    #for i in [l-1]:
+    #for i in range(leng-1,-1,-1):
+    for i in [l-1,l-2]:
         # Make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         # Match ith contigs to DB
@@ -142,10 +143,10 @@ def main(argv):
         # Make concatenated seeds for next DB
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
-            newContig = j+"*"+"*".join(str(v) for v in matchDict[j])
-            #masterDict[newContig] = [j]
-            fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
-            fpc.write(">{!s}\n".format(newContig))
+            newContig = "pseudocontig_{!s}".format(ct)
+            masterDict[newContig] = [j]
+            fpc = open("{!s}pseudocontig_{!s}.fna".format(genePath,ct),'w')
+            fpc.write(">pseudocontig_{!s}\n".format(ct))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
             os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
@@ -153,15 +154,16 @@ def main(argv):
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-                #masterDict[newContig].append(v)
+                masterDict[newContig].append(v)
             fpc.write("\n")
             fpc.close()
-            l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
+            l2.write("pseudocontig_{!s}\t{!s}pseudocontig_{!s}.fna\n".format(ct,genePath,ct))
+            ct += 1
         l2.close()
 
-    #with open(outputFile,'w') as fOut:
-    #    pprint.pprint(masterDict,stream=fOut)
-    #fOut.close()
+    with open(outputFile,'w') as fOut:
+        pprint.pprint(masterDict,stream=fOut)
+    fOut.close()
 
 
     # process results from main loop to get initial "trees"
