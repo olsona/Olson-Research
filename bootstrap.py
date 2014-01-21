@@ -147,6 +147,7 @@ def main(argv):
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             roots.add(newContig)
+            print newContig
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             fpc.write(">{!s}\n".format(newContig))
@@ -165,7 +166,6 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
-        print roots
 
 
     # process results from main loop to get initial clusters
