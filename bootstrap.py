@@ -120,7 +120,7 @@ def main(argv):
     DB = baseName + "_DB"
     matches = baseName + "_matches"
     #for i in range(leng-1,-1,-1):
-    for i in [l-1,l-2]:
+    for i in [leng-1,leng-2]:
         # Make DB out of fSeed, whatever it is right now
         os.system("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         # Match ith contigs to DB
