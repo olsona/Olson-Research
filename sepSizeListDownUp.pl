@@ -12,12 +12,11 @@ while (<IN>) {
         print BGGR "$name\t$seq\n";
     } else {
         $nname = substr $name, 1;
-        $allname = $nname."$len";
-        open(FI, '>', "$path$allname.fna");
+        open(FI, '>', "$path$nname.fna");
         print FI "$name\n$seq";
         close(FI);
-        print SMLR1 "$path$allname.fna\n";
-        print SMLR2 "$allname\t$path$allname.fna\n";
+        print SMLR1 "$path$nname.fna\n";
+        print SMLR2 "$nname\t$path$nname.fna\n";
     }
 }
 close(IN);
