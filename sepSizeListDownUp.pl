@@ -7,15 +7,17 @@ open(BGGR, '>', $bigger);
 while (<IN>) {
     chomp;
     ($name, $seq) = split("\t");
-    if ( length($seq) >= $threshold ) {
+    $len = length($seq)
+    if ( $len >= $threshold ) {
         print BGGR "$name\t$seq\n";
     } else {
         $nname = substr $name, 1;
-        open(FI, '>', "$path$nname.fna");
-        print FI "$name\n$seq";
+        $allname = $nname."$len";
+        open(FI, '>', "$path$allname.fna");
+        print FI "$allname\n$seq";
         close(FI);
-        print SMLR1 "$path$nname.fna\n";
-        print SMLR2 "$nname\t$path$nname.fna\n";
+        print SMLR1 "$path$allname.fna\n";
+        print SMLR2 "$allname\t$path$allname.fna\n";
     }
 }
 close(IN);
