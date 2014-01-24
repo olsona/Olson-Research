@@ -142,6 +142,8 @@ def main(argv):
             else:
                 matchDict[u2] = [u1]
     
+        pprint.pprint(matchDict)
+    
         # Make concatenated seeds for next DB
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
@@ -165,6 +167,8 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         l2.close()
+
+        print "\n\n"
 
 
     # process results from main loop to get initial clusters
