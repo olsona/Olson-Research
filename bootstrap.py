@@ -170,7 +170,7 @@ def main(argv):
             ct += 1
         l2.close()
 
-        print "\n"
+    #print "\n"
 
 
     # process results from main loop to get initial clusters
