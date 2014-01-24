@@ -108,7 +108,7 @@ def main(argv):
         fNext = bgr
 
     # Make initial seed file
-    fSeed = "{!s}_{!s}_seed".format(baseName, l)
+    fSeed = "{!s}_{!s}_seed".format(baseName, leng)
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
     masterDict = {}
