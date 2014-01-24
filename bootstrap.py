@@ -104,7 +104,7 @@ def main(argv):
         thr = int(coolingSchedule[i])
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
-        print("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
+        #print("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         fNext = bgr
 
@@ -174,7 +174,7 @@ def main(argv):
 
 
     # process results from main loop to get initial clusters
-    rs = sorted(roots.list())
+    rs = sorted(list(roots))
     for r in rs:
         fOut.write("{!s}: {!s}\n".format(r,getLeaves(masterDict,r)))
 
