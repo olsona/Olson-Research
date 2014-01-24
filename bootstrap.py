@@ -174,7 +174,8 @@ def main(argv):
 
 
     # process results from main loop to get initial clusters
-    for r in roots:
+    rs = sorted(roots.list())
+    for r in rs:
         fOut.write("{!s}: {!s}\n".format(r,getLeaves(masterDict,r)))
 
 
