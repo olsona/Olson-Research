@@ -108,7 +108,7 @@ def main(argv):
         fNext = bgr
 
     # Make initial seed file
-    fSeed = baseName+"_seed"
+    fSeed = "{!s}_{!s}_seed".format(baseName, l)
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
     
     masterDict = {}
@@ -145,6 +145,7 @@ def main(argv):
         pprint.pprint(matchDict)
     
         # Make concatenated seeds for next DB
+        fSeed = "{!s}_{!s}_seed".format(baseName, j)
         l2 = open(fSeed + "-2",'w')
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
