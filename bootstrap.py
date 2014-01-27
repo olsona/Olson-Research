@@ -93,7 +93,7 @@ def main(argv):
     f.close()
     fN.close()
 
-    # separate out files by size, using sepSizeListDownUp.pl
+    # separate out files by size, using sepSizeListDownUp.pl -- THIS WORKS
     fNext = newName
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     ensureDir(genePath)

@@ -985,3 +985,44 @@ def distanceVsScore(distanceFile, listFile, genomeFile, outFile):
     for z in zipped:
         outF.write("{!s},{!s}\n".format(z[0],z[1]))
     outF.close()
+
+
+def makeSimpleContig(path, name, size, profile):
+    import random
+
+    if path[-1] != "/":
+        path = path + "/"
+    
+    if name[-4:] == ".fna":
+        name = name[:-4]
+
+    thresh_A = profile[0]
+    thresh_C = profile[0]+profile[1]
+    thresh_G = profile[0]+profile[1]+profile[2]
+
+    ct = 0
+    f = open(path + name + ".fna",'w')
+    f.write(">{!s}\n".format(name))
+    while ct < size:
+        v = random.uniform(0.0,1.0)
+        if v <= thresh_A:
+            f.write("A")
+        elif v <= thresh_C:
+            f.write("C")
+        elif v <= thresh_G:
+            f.write("G")
+        else:
+            f.write("T")
+        if ct % 60 == 59:
+            f.write("\n")
+        ct += 1
+    f.write("\n")
+    f.close()
+
+
+def makeSimpleContigsSet(path, name, sizes, counts, profile):
+    for i in range(len(sizes)):
+        ct = 1
+        for c in range(counts[i]):
+            makeSimpleContig(path, "{!s}_{!s}bp_{!s}".format(name,sizes[i],ct), sizes[i], profile)
+            ct += 1
