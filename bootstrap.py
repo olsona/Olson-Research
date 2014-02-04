@@ -178,9 +178,7 @@ def main(argv):
 
     #print "\n"
     
-    for frm in filesToRM:
-        os.system("rm {!s}".format(frm))
-    os.system("rm -r {!s}".format(genePath))
+    print filesToRM
 
     # process results from main loop to get initial clusters
     rs = sorted(list(roots))
