@@ -59,9 +59,7 @@ def chopFolder(pathWork, sizeChop, numSeq):
             #chopRandom(pathWork+file, pathWork+"Sequences_{!s}/".\
             #    format(sizestr), sizeChop[i], sizeChop[i]/10,\
             #        numSeq[i])
-            chopRandomNoOverlap(pathWork+file, pathWork+"Sequences_{!s}/".\
-                format(sizestr), sizeChop[i], sizeChop[i]/10,\
-                    numSeq[i])
+            chopRandomNoOverlap(pathWork+file, pathWork+"Sequences_{!s}/".format(sizestr), sizeChop[i], sizeChop[i]/10,numSeq[i])
                 
 
 def analyzeChop(path, nm, out):
@@ -168,13 +166,18 @@ def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
     if pathOut[-1] != "/":
         pathOut = pathOut + "/"
     
+    totalCt = 0
+    
     name = fi.split("/")[-1][:-4]
     for i in range(num_chop):
         st = random.randrange(margin)+(i*interval)
         leng = random.randrange(avg_size - margin, avg_size + margin)
         subseq = seq[st:st+leng]
-        f = open("{!s}{!s}_{!s}-{!s}.fna".format(pathOut,name,str(st).zfill(dig),str(st+leng).zfill(dig)),'w')
-        f.write(">: {!s}_{!s}-{!s}\n".format(string.replace(name,"_"," "),st,st+leng))
+        #f = open("{!s}{!s}_{!s}-{!s}.fna".format(pathOut,name,str(st).zfill(dig),str(st+leng).zfill(dig)),'w')
+        #f.write(">: {!s}_{!s}-{!s}\n".format(string.replace(name,"_"," "),st,st+leng))
+        f = open("{!s}{!s}_{!s}_{!s}.fna".format(pathOut, name, sizestr, totalCt))
+        f.write(">: {!s}_{!s}_{!s}\n".format(string.replace(name,"_"," "),sizestr, totalCt))
+        totalCt += 1
         ct = 0
         while 1:
             f.write(subseq[ct:ct+60] + "\n")
