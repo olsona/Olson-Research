@@ -45,6 +45,7 @@ def main(argv):
         sys.exit(2)
     if len(coolingSchedule) == 0:
         coolingSchedule = defaultSchedule
+    
     # Checking validity of inputs
     if raiPath[-1] != "/":
         raiPath = raiPath + "/"
@@ -114,20 +115,20 @@ def main(argv):
     
     masterDict = {}
     roots = set()
-    ct = 0
+    ct = 0 
     fOut = open(outputFile,'a')
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    for i in range(leng-1,-1,-1):
-    #for i in [leng-1]:
+    #for i in range(leng-1,-1,-1):
+    for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         DB = "{!s}_{!s}_DB".format(baseName,i)
-        #print("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
+        print("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Match ith contigs to DB
         matches = "{!s}_{!s}_matches".format(baseName,i)
         toMatch = "{!s}_{!s}".format(baseName,i)
-        #print("{!s}rai -I {!s}-1 -d {!s}-{!s} >/dev/null 2>&1".format(raiPath, toMatch, DB, i))
+        print("{!s}rai -I {!s}-1 -d {!s}-{!s} >/dev/null 2>&1".format(raiPath, toMatch, DB, i))
         os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
         short = toMatch.rsplit("/",1)[1]
         os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
@@ -143,7 +144,7 @@ def main(argv):
             else:
                 matchDict[u2] = [u1]
     
-        #pprint.pprint(matchDict)
+        pprint.pprint(matchDict)
     
         # Make concatenated seeds for next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
@@ -170,7 +171,7 @@ def main(argv):
             ct += 1
         l2.close()
 
-    #print "\n"
+    print "\n"
 
 
     # process results from main loop to get initial clusters

@@ -97,7 +97,7 @@ def csv2NumpyMatrix(fi):
     
     for i in range(len(lines)):
         row = lines[i].rstrip().split(',')
-        for j in range(len(lines)):
+        for j in range(len(row)):
             mat[i][j] = float(row[j])
     f.close()
     
@@ -324,3 +324,24 @@ def sizeString(n):
         return str(n/1000) + "k"
     else:
         return str(n)
+
+
+def setBoxColors(bp):
+    # http://stackoverflow.com/questions/16592222/matplotlib-group-boxplots
+    setp(bp['boxes'][0], color='blue')
+    setp(bp['caps'][0], color='blue')
+    setp(bp['caps'][1], color='blue')
+    setp(bp['whiskers'][0], color='blue')
+    setp(bp['whiskers'][1], color='blue')
+    setp(bp['fliers'][0], color='blue')
+    setp(bp['fliers'][1], color='blue')
+    setp(bp['medians'][0], color='blue')
+    
+    setp(bp['boxes'][1], color='red')
+    setp(bp['caps'][2], color='red')
+    setp(bp['caps'][3], color='red')
+    setp(bp['whiskers'][2], color='red')
+    setp(bp['whiskers'][3], color='red')
+    setp(bp['fliers'][2], color='red')
+    setp(bp['fliers'][3], color='red')
+    setp(bp['medians'][1], color='red')

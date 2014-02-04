@@ -7,12 +7,14 @@ def csv2MediansTop(inFile, outFile, numTop):
         fout.write("{!s}\n".format(numpy.median(segment,axis=0)[2]))
     fout.close()
 
+
 def ensureDir(pth):
     # source: http://stackoverflow.com/questions/273192/python-best-way-to-create-directory-if-it-doesnt-exist-for-file-write
     import os
     d = os.path.dirname(pth)
     if not os.path.exists(d):
         os.makedirs(d)
+
 
 def namesPosTable(fastaFile):
     import re, string
@@ -27,8 +29,10 @@ def namesPosTable(fastaFile):
         ln = f.readline()
     return table
 
+
 def readSequenceFromPos(fastaFile):
     pass
+
 
 def readSequence(fi):
     '''This assumes that only one organism is in a file'''
@@ -49,6 +53,7 @@ def readSequence(fi):
     return seq_name, concat
     f.close()
 
+
 def getLeaves(inDict, root):
     leaves = []
     for l in inDict[root]:
@@ -59,3 +64,24 @@ def getLeaves(inDict, root):
         else:
             leaves.append(l)
     return leaves
+
+
+def purityOfCluster(cluster, nameList):
+    '''Returns the percentage representation and identify of most common name out of the whole cluster, where the possible names are given in nameList.'''
+    import string
+    repDict = {nL: 0.0 for nL in nameList}
+    for c in cluster:
+        for nL in nameList:
+            if string.find(c,nL) != -1:
+                repDict[nL] += 1.0
+                break
+    max = 0.0
+    maxName = ''
+    for r in repDict:
+        if repDict[r] > max:
+            max = repDict[r]
+            maxName = r
+
+    ratio = max/len(cluster)
+    return ratio, maxName
+

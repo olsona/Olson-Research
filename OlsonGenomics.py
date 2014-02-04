@@ -1026,3 +1026,51 @@ def makeSimpleContigsSet(path, name, sizes, counts, profile):
         for c in range(counts[i]):
             makeSimpleContig(path, "{!s}_{!s}bp_{!s}".format(name,sizes[i],ct), sizes[i], profile)
             ct += 1
+
+
+def graphDifVsK(fileList, kList, selfMatches, title):
+    # selfMatches is a dictionary
+    # selfMatches[i] = j means that contig i belongs to database element j
+    import numpy
+    import matplotlib.pyplot as plt
+    
+    # Get data for graph
+    selfY = []
+    selfX = []
+    otherY = []
+    otherX = []
+    val = 0.0
+    for x in range(len(fileList)):
+        f = fileList[x]
+        k = kList[x]
+        #selfK = []
+        #otherK = []
+        mat = csv2NumpyMatrix(f)
+        [R,C] = mat.shape
+        for r in range(R):
+            for c in range(C):
+                val = mat[r][c]
+                if c in selfMatches[r]:
+                    #selfK.append(val)
+                    selfY.append(val)
+                    selfX.append(k)
+                else:
+                    #otherK.append(val)
+                    otherY.append(val)
+                    otherX.append(k)
+        #selfY.append(selfK)
+        #otherY.append(otherK)
+
+    # Make graph
+    # http://stackoverflow.com/questions/4270301/matplotlib-multiple-datasets-on-the-same-scatter-plot
+    # http://stackoverflow.com/questions/7340547/multiple-data-set-plotting-with-matplotlib-pyplot-plot-date
+    # http://stackoverflow.com/questions/16592222/matplotlib-group-boxplots
+    fig = plt.figure()
+    plt.scatter(otherX,otherY,c='b',marker='+',s=20,alpha=0.5)
+    plt.scatter(selfX,selfY,c='r',marker='x',s=20,alpha=0.5)
+    #plt.boxplot(otherY,positions=kList)
+    #plt.boxplot(selfY,positions=kList)
+    plt.title(title)
+    plt.legend(["Other-Other","Self-Self"],loc=3)
+    plt.show()
+
