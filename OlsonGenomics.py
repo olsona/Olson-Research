@@ -175,7 +175,7 @@ def chopRandomNoOverlap(fi, pathOut, avg_size, max_margin, num_chop):
         subseq = seq[st:st+leng]
         #f = open("{!s}{!s}_{!s}-{!s}.fna".format(pathOut,name,str(st).zfill(dig),str(st+leng).zfill(dig)),'w')
         #f.write(">: {!s}_{!s}-{!s}\n".format(string.replace(name,"_"," "),st,st+leng))
-        f = open("{!s}{!s}_{!s}_{!s}.fna".format(pathOut, name, sizestr, totalCt))
+        f = open("{!s}{!s}_{!s}_{!s}.fna".format(pathOut, name, sizestr, totalCt),'w')
         f.write(">: {!s}_{!s}_{!s}\n".format(string.replace(name,"_"," "),sizestr, totalCt))
         totalCt += 1
         ct = 0
