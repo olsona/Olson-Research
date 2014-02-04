@@ -158,7 +158,6 @@ def main(argv):
             roots.add(newContig)
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
-            filesToRM.append(fpc)
             fpc.write(">{!s}\n".format(newContig))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
