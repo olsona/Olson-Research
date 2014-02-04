@@ -177,7 +177,10 @@ def main(argv):
 
     #print "\n"
     
-    print filesToRM
+    # Get rid of files we're not using any more
+    for frm in filesToRM:
+        os.system("rm {!s}".format(frm))
+    os.system("rm -r {!s}".format(genePath))
 
     # process results from main loop to get initial clusters
     rs = sorted(list(roots))
