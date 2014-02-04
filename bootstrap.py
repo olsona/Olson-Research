@@ -68,8 +68,9 @@ def main(argv):
         print raiPath+"rait cannot be opened."
         sys.exit(1)
 
+    filesToRM = []
 
-    # properly format input file -- THIS WORKS
+    # properly format input file
     f = open(inputFile, 'r')
     baseName = inputFile.rsplit(".",1)[0]
     ln = f.readline()
@@ -77,6 +78,7 @@ def main(argv):
         # convert to contiguous line AND tabbed format
         newName = baseName+"_TAB.fa"
         fN = open(newName,'w')
+        filesToRM.append(newName)
         s = 0
         while ln:
             if ln[0] == '>': # deal with name lines
@@ -94,7 +96,7 @@ def main(argv):
     f.close()
     fN.close()
 
-    # separate out files by size, using sepSizeListDownUp.pl -- THIS WORKS
+    # separate out files by size, using sepSizeListDownUp.pl
     fNext = newName
     genePath = newName.rsplit("/",1)[0]+"/contigs/"
     ensureDir(genePath)
@@ -150,11 +152,13 @@ def main(argv):
         # Make concatenated seeds for next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
         l2 = open(fSeed + "-2",'w')
+        filesToRM.append(l2)
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             roots.add(newContig)
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
+            filesToRM.append(fpc)
             fpc.write(">{!s}\n".format(newContig))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
@@ -173,7 +177,10 @@ def main(argv):
         l2.close()
 
     #print "\n"
-
+    
+    for frm in filesToRM:
+        os.system("rm {!s}".format(frm))
+    os.system("rm -r {!s}".format(genePath))
 
     # process results from main loop to get initial clusters
     rs = sorted(list(roots))
