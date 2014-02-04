@@ -119,8 +119,8 @@ def main(argv):
     fOut = open(outputFile,'a')
 
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    #for i in range(leng-1,-1,-1):
-    for i in [leng-1]:
+    for i in range(leng-1,-1,-1):
+    #for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         DB = "{!s}_{!s}_DB".format(baseName,i)
         print("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
