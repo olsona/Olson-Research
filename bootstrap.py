@@ -140,7 +140,7 @@ def main(argv):
         for l in fMatch.readlines():
             [u1,u2] = l.rstrip().split(" ")
             print u1, u2
-            if u2 in matches.keys():
+            if u2 in matchDict.keys():
                 matchDict[u2].append(u1)
             else:
                 matchDict[u2] = [u1]
