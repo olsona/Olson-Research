@@ -179,6 +179,7 @@ def main(argv):
     
     # Get rid of files we're not using any more
     for frm in filesToRM:
+        print "rm {!s}".format(frm)
         os.system("rm {!s}".format(frm))
     os.system("rm -r {!s}".format(genePath))
 
