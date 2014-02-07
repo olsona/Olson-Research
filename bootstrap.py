@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint
+import sys, getopt, string, os, re, pprint, pickle
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -179,13 +179,14 @@ def main(argv):
     
     # Get rid of files we're not using any more
     os.system("rm -r {!s}".format(genePath))
-    for i in range(leng):
+    for i in range(leng+1):
         os.system("rm {!s}_{!s}*".format(baseName,i))
 
     # process results from main loop to get initial clusters
     rs = sorted(list(roots))
     for r in rs:
-        fOut.write("{!s}: {!s}\n".format(r,getLeaves(masterDict,r)))
+        clust = getLeaves(masterDict,r)
+        fOut.write("{!s}: {!s}\n".format(r,clust))
 
 
 if __name__ == "__main__":
