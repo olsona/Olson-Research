@@ -167,9 +167,8 @@ def main(argv):
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
                 masterDict[newContig].append(v)
-                if v in roots:
-                    print "removing {!s} from roots\n".format(v)
-                    roots.remove(v)
+                print "removing {!s} from roots\n".format(v)
+                roots.remove(v)
             fpc.write("\n")
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
