@@ -168,6 +168,7 @@ def main(argv):
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
                 masterDict[newContig].append(v)
                 if v in roots:
+                    print "removing {!s} from roots\n".format(v)
                     roots.remove(v)
             fpc.write("\n")
             fpc.close()
@@ -186,7 +187,7 @@ def main(argv):
     rs = sorted(list(roots))
     for r in rs:
         clust = getLeaves(masterDict,r)
-        fOut.write("{!s}: {!s}\n".format(r,clust))
+        fOut.write("{!s}: {!s}\n\n".format(r,clust))
 
 
 if __name__ == "__main__":
