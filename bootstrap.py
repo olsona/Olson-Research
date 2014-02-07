@@ -153,7 +153,7 @@ def main(argv):
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
         l2 = open(fSeed + "-2",'w')
         filesToRM.append(fSeed+"-2")
-        print "Roots at time {!s}:\n {!s}\n".format(i,roots)
+        print "Roots at time {!s}:\n {!s}\n".format(i,sorted(list(roots)))
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             roots.add(newContig)
@@ -164,14 +164,11 @@ def main(argv):
             fpc.write(seq)
             os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
             for v in matchDict[j]:
-                #print v,
+                print v, v in roots
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
                 masterDict[newContig].append(v)
-                #print "removing {!s} from roots\n".format(v)
-                #roots.remove(v)
-                #print
             fpc.write("\n")
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
