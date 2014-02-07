@@ -153,7 +153,6 @@ def main(argv):
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
         l2 = open(fSeed + "-2",'w')
         filesToRM.append(fSeed+"-2")
-        print "Roots at time {!s}:\n {!s}\n".format(i,sorted(list(roots)))
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             roots.add(newContig)
