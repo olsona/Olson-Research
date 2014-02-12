@@ -30,10 +30,6 @@ def namesPosTable(fastaFile):
     return table
 
 
-def readSequenceFromPos(fastaFile):
-    pass
-
-
 def readSequence(fi):
     '''This assumes that only one organism is in a file'''
     f = open(fi,'r')
@@ -84,4 +80,5 @@ def purityOfCluster(cluster, nameList):
 
     ratio = max/len(cluster)
     return ratio, maxName
+
 
