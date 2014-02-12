@@ -137,7 +137,7 @@ def chopRandom(fi, pathOut, avg_size, margin, num_chop):
         st = random.randrange(llim)
         leng = random.randrange(avg_size - margin, avg_size + margin)
         subseq = seq[st:st+leng]
-        f.write(">: {!s}, {!s}bp: {!s} - {!s}\n".\
+        f.write(">{!s}, {!s}bp: {!s} - {!s}\n".\
             format(string.replace(name,"_"," "), sizestr, st, st+leng))
         #f.write(">: {!s}\n".format(name))
         ct = 0
