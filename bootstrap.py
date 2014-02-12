@@ -141,6 +141,7 @@ def main(argv):
         contigNames = lns[1].split(",")
         for row in range(2,len(lns)):
             l = lns[row]
+            print l
             ind = int(l.rstrip().split(" ,")[0].split(":")[1])
             u2 = dbNames[ind]
             u1 = contigNames[row-2]
