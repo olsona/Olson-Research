@@ -140,7 +140,7 @@ def main(argv):
         dbNames = lns[0].split(",")
         contigNames = lns[1].split(",")
         for row in range(2,len(lns)):
-            l = lns[x]
+            l = lns[row]
             ind = l.rstrip().split(" ,")[0].split(":")[1]
             u2 = dbNames[ind]
             u1 = contigNames[row-2]
