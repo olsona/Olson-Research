@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint, pickle
+import sys, getopt, string, os, re, pprint
 from bootstrapConstants import *
 from bootstrapUtils import *
 
@@ -102,12 +102,10 @@ def main(argv):
     ensureDir(genePath)
     leng = len(coolingSchedule)
     for i in range(leng):
-        #for i in [0]:
         workingFile = fNext
         thr = int(coolingSchedule[i])
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
-        #print("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         fNext = bgr
 
@@ -118,19 +116,18 @@ def main(argv):
     masterDict = {}
     roots = set()
     ct = 0 
-    fOut = open(outputFile,'a')
-
+    fOutC = open(outputFile+"clusters",'w')
+    fOutD = open(outputFile+"distances",'w')
+    
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     for i in range(leng-1,-1,-1):
     #for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         DB = "{!s}_{!s}_DB".format(baseName,i)
-        #print("{!s}rait -new -i {!s}-2 -o {!s}-{!s} >/dev/null 2>&1".format(raiPath, fSeed, DB, i))
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Match ith contigs to DB
         matches = "{!s}_{!s}_matches".format(baseName,i)
         toMatch = "{!s}_{!s}".format(baseName,i)
-        #print("{!s}rai -I {!s}-1 -d {!s}-{!s} >/dev/null 2>&1".format(raiPath, toMatch, DB, i))
         os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
         short = toMatch.rsplit("/",1)[1]
         os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
@@ -139,15 +136,19 @@ def main(argv):
         # Construct matching dictionary
         matchDict = {}
         fMatch = open(matches,'r')
-        for l in fMatch.readlines():
-            [u1,u2] = l.rstrip().split(" ")
-            #print u1, u2
+        lns = fMatch.readlines()
+        dbNames = lns[0].split(",")
+        contigNames = lns[1].split(",")
+        for row in range(2,len(lns)):
+            l = lns[x]
+            ind = l.rstrip().split(" ,")[0].split(":")[1]
+            u2 = dbNames[ind]
+            u1 = contigNames[row-2]
             if u2 in matchDict.keys():
                 matchDict[u2].append(u1)
             else:
                 matchDict[u2] = [u1]
-    
-        #pprint.pprint(matchDict)
+        fMatch.close()
     
         # Make concatenated seeds for next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
@@ -175,18 +176,27 @@ def main(argv):
             ct += 1
         l2.close()
 
-    #print "\n"
-    
-    # Get rid of files we're not using any more
-    os.system("rm -r {!s}".format(genePath))
-    for i in range(leng+1):
-        os.system("rm {!s}_{!s}*".format(baseName,i))
-
     # process results from main loop to get initial clusters
     rs = sorted(list(roots))
     for r in rs:
         clust = getLeaves(masterDict,r)
-        fOut.write("{!s}: {!s}\n\n".format(r,clust))
+        fOutC.write("{!s}: {!s}\n\n".format(r,clust))
+    fOutC.close()
+
+    #finalDistances = [[0.0 for x in range(len(rs))] for y in range(len(rs))]
+    #fMatch = open(matches,'r')
+    #lns = fMatch.readlines()
+    #for x in range(len(lns)):
+    #    li = lns[x].split(", ")
+    #    for l in li:
+            # NOPE NOPE NOPE
+    #        [kpdafdsjfpv9[reag9[rwhgihdjhgrwjkadgsksdg]]]
+
+
+    # Get rid of files we're not using any more
+    os.system("rm -r {!s}".format(genePath))
+    for i in range(leng+1):
+        os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
