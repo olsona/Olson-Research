@@ -56,7 +56,7 @@ def main(argv):
         print inputFile + "cannot be opened."
         sys.exit(1)
     try:
-        temp = open(outputFile, 'w')
+        temp = open(outputFile+"clusters", 'w')
         temp.close()
     except IOError:
         print outputFile + "cannot be opened."
@@ -183,20 +183,10 @@ def main(argv):
         fOutC.write("{!s}: {!s}\n\n".format(r,clust))
     fOutC.close()
 
-    #finalDistances = [[0.0 for x in range(len(rs))] for y in range(len(rs))]
-    #fMatch = open(matches,'r')
-    #lns = fMatch.readlines()
-    #for x in range(len(lns)):
-    #    li = lns[x].split(", ")
-    #    for l in li:
-            # NOPE NOPE NOPE
-    #        [kpdafdsjfpv9[reag9[rwhgihdjhgrwjkadgsksdg]]]
-
-
     # Get rid of files we're not using any more
     os.system("rm -r {!s}".format(genePath))
-    for i in range(leng+1):
-        os.system("rm {!s}_{!s}*".format(baseName,i))
+    #for i in range(leng+1):
+    #    os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
