@@ -188,7 +188,7 @@ def main(argv):
     # get distances between extant clusters
     toMatch = baseName.rsplit("/",1)[0]+"/l1"
     fSeed = baseName.rsplit("/",1)[0]+"/l2"
-    DB = l2 + "_DB"
+    DB = baseName + "_finalDB"
     matches = baseName+"_finalMatch"
     os.system("ls {!s}* > {!s}".format(genePath,toMatch))
     os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
