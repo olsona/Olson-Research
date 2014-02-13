@@ -181,7 +181,7 @@ def main(argv):
     rs = sorted(list(roots))
     for r in rs:
         clust = getLeaves(masterDict,r)
-        fOutC.write("{!s}: {!s}\n\n".format(r,clust))
+        fOutC.write("{!s}: {!s}\n".format(r,clust))
     fOutC.close()
 
     # get distances between extant clusters
