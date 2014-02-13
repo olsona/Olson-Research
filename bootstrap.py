@@ -185,13 +185,10 @@ def main(argv):
         fOutC.write("{!s}: {!s}\n\n".format(r,clust))
     fOutC.close()
 
-    l1 = open("{!s}_l1".format(baseName),'w')
-    l2 = open("{!s}_l2".format(baseName),'w')
-    for r in rs:
-      l1.write("{!s}{!s}\n".format(genePath,r))
-      l2.write("{!s}\t{!s}{!s}".format(r,genePath,r))
-    l1.close()
-    l2.close()
+    l1 = baseName.split("/")[1]+"/l1"
+    l2 = baseName.split("/")[1]+"/l2"
+    os.system("ls {!s}* > {!s}".format(genePath,l1))
+    os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],l2))
 
     # Get rid of files we're not using any more
     #os.system("rm -r {!s}".format(genePath))
