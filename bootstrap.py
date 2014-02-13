@@ -200,11 +200,6 @@ def main(argv):
     os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
     print("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-    short = toMatch.rsplit("/",1)[1]
-    print("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, matches))
-    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, matches))
-    print("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-    os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
 
 
     # Get rid of files we're not using any more
