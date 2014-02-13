@@ -185,11 +185,19 @@ def main(argv):
         fOutC.write("{!s}: {!s}\n\n".format(r,clust))
     fOutC.close()
 
-    l1 = baseName.rsplit("/",1)[0]+"/l1"
-    print l1
-    l2 = baseName.rsplit("/",1)[0]+"/l2"
-    os.system("ls {!s}* > {!s}".format(genePath,l1))
-    os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],l2))
+    # get distances between extant clusters
+    toMatch = baseName.rsplit("/",1)[0]+"/l1"
+    fSeed = baseName.rsplit("/",1)[0]+"/l2"
+    DB = l2 + "_DB"
+    matches = baseName+"_finalMatch"
+    os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+    os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+    os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+    short = toMatch.rsplit("/",1)[1]
+    os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
+    os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+
 
     # Get rid of files we're not using any more
     #os.system("rm -r {!s}".format(genePath))
