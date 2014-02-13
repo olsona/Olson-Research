@@ -196,8 +196,8 @@ def main(argv):
     print matches
     os.system("ls {!s}* > {!s}".format(genePath,toMatch))
     os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-    print ("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-    os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    print ("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
     print("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     #short = toMatch.rsplit("/",1)[1]
