@@ -190,14 +190,19 @@ def main(argv):
     fSeed = baseName.rsplit("/",1)[0]+"/l2"
     DB = baseName + "_finalDB"
     matches = baseName+"_finalMatch"
-    print toMatch, fSeed, DB, matches
+    print toMatch
+    print fSeed
+    print DB
+    print matches
     os.system("ls {!s}* > {!s}".format(genePath,toMatch))
     os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+    print ("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
     os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    print("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-    short = toMatch.rsplit("/",1)[1]
-    os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
-    os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+    #short = toMatch.rsplit("/",1)[1]
+    #os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
+    #os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
 
 
     # Get rid of files we're not using any more
