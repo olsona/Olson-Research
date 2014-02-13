@@ -198,6 +198,7 @@ def main(argv):
 
     # Get rid of files we're not using any more
     os.system("rm -r {!s}".format(genePath))
+    os.system("rm {!s}_final*".format(baseName))
     for i in range(leng+1):
         os.system("rm {!s}_{!s}*".format(baseName,i))
 
