@@ -115,9 +115,7 @@ def main(argv):
     
     masterDict = {}
     roots = set()
-    ct = 0 
-    fOutC = open(outputFile+"clusters",'w')
-    fOutD = open(outputFile+"distances",'w')
+    ct = 0
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     for i in range(leng-1,-1,-1):
@@ -176,15 +174,27 @@ def main(argv):
             ct += 1
         l2.close()
 
-    # process results from main loop to get initial clusters
+    # process results from main loop to get clusters and distances
+
+    fOutC = open(outputFile+"clusters",'w')
+    fOutD = open(outputFile+"distances",'w')
+
     rs = sorted(list(roots))
     for r in rs:
         clust = getLeaves(masterDict,r)
         fOutC.write("{!s}: {!s}\n\n".format(r,clust))
     fOutC.close()
 
+    l1 = open("{!s}_l1".format(baseName),'w')
+    l2 = open("{!s}_l2".format(baseName),'w')
+    for r in rs:
+      l1.write("{!s}{!s}\n".format(genePath,r))
+      l2.write("{!s}\t{!s}{!s}".format(r,genePath,r))
+    l1.close()
+    l2.close()
+
     # Get rid of files we're not using any more
-    os.system("rm -r {!s}".format(genePath))
+    #os.system("rm -r {!s}".format(genePath))
     #for i in range(leng+1):
     #    os.system("rm {!s}_{!s}*".format(baseName,i))
 
