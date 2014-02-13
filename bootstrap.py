@@ -188,16 +188,10 @@ def main(argv):
     toMatch = baseName.rsplit("/",1)[0]+"/l1"
     fSeed = baseName.rsplit("/",1)[0]+"/l2"
     DB = baseName + "_finalDB"
-    print toMatch
-    print fSeed
-    print DB
-    print matches
     os.system("ls {!s}* > {!s}".format(genePath,toMatch))
     os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-    print ("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-    os.system("{!s}rait -new -i {!s} -o {!s}".format(raiPath, fSeed, DB))
-    print("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-    os.system("{!s}rai -I {!s} -d {!s}".format(raiPath, toMatch, DB))
+    os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     short = toMatch.rsplit("/",1)[1]
     os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"distances")) # moves results to results folder
     os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
