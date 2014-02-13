@@ -177,7 +177,6 @@ def main(argv):
     # process results from main loop to get clusters and distances
 
     fOutC = open(outputFile+"clusters",'w')
-    fOutD = open(outputFile+"distances",'w')
 
     rs = sorted(list(roots))
     for r in rs:
@@ -189,7 +188,6 @@ def main(argv):
     toMatch = baseName.rsplit("/",1)[0]+"/l1"
     fSeed = baseName.rsplit("/",1)[0]+"/l2"
     DB = baseName + "_finalDB"
-    matches = baseName+"_finalMatch"
     print toMatch
     print fSeed
     print DB
@@ -201,13 +199,13 @@ def main(argv):
     print("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     os.system("{!s}rai -I {!s} -d {!s}".format(raiPath, toMatch, DB))
     short = toMatch.rsplit("/",1)[1]
-    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
+    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"distances")) # moves results to results folder
     os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
 
     # Get rid of files we're not using any more
-    #os.system("rm -r {!s}".format(genePath))
-    #for i in range(leng+1):
-    #    os.system("rm {!s}_{!s}*".format(baseName,i))
+    os.system("rm -r {!s}".format(genePath))
+    for i in range(leng+1):
+        os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
