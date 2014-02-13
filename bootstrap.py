@@ -185,9 +185,9 @@ def main(argv):
         fOutC.write("{!s}: {!s}\n\n".format(r,clust))
     fOutC.close()
 
-    l1 = baseName.split("/")[1]+"/l1"
+    l1 = baseName.split("/")[-1]+"/l1"
     print l1
-    l2 = baseName.split("/")[1]+"/l2"
+    l2 = baseName.split("/")[-1]+"/l2"
     os.system("ls {!s}* > {!s}".format(genePath,l1))
     os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],l2))
 
