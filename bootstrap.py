@@ -190,6 +190,7 @@ def main(argv):
     fSeed = baseName.rsplit("/",1)[0]+"/l2"
     DB = baseName + "_finalDB"
     matches = baseName+"_finalMatch"
+    print toMatch, fSeed, DB, matches
     os.system("ls {!s}* > {!s}".format(genePath,toMatch))
     os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
     os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
