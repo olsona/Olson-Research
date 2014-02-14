@@ -100,12 +100,13 @@ def purityWholeOutput(inFile, nameList, outFile):
                     repDict[nL] += 1.0
                     if repDict[nL] > max:
                         max = repDict[nL]
-                        maxName = r
+                        maxName = nL
                     break
         ratio = max/float(len(cluster))
         out.write("{!s}: {!f}% {!s}\n".format(nm, ratio, maxName))
     f.close()
     out.close()
+
 
 def makeDistanceMatrix(scoreFile):
     import numpy
