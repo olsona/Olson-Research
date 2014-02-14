@@ -103,7 +103,7 @@ def purityWholeOutput(inFile, nameList, outFile):
                         maxName = nL
                     break
         ratio = max/float(len(ls))
-        out.write("{!s}:\t{:.2%}\t{!s}\n".format(nm, ratio, maxName))
+        out.write("{!s}:\t{:3.2%}\t{!s}\n".format(nm, ratio, maxName))
     f.close()
     out.close()
 
