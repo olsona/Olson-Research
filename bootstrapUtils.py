@@ -78,7 +78,47 @@ def purityOfCluster(cluster, nameList):
             max = repDict[r]
             maxName = r
 
-    ratio = max/len(cluster)
+    ratio = max/(double)len(cluster)
     return ratio, maxName
 
 
+def purityWholeOutput(inFile, nameList, outFile):
+    import string
+    f = open(inFile, 'r')
+    out = open(outFile, 'w')
+    lns = f.readlines()
+    for li in lns:
+        repDict = {nL: 0.0 for nL in nameList}
+        max = 0.0
+        maxName = ''
+        fstBrk = li.rstrip().split(": ")
+        nm = fstBrk[0]
+        ls = fstBrk[1].split(", ")
+        for l in ls:
+            for nL in nameList:
+                if string.find(l,nL) != -1:
+                    repDict[nL] += 1.0
+                    if repDict[nL] > max:
+                        max = repDict[nL]
+                        maxName = r
+                    break
+        ratio = max/(double)len(cluster)
+        out.write("{!s}: {!f}% {!s}\n".format(nm, ratio, maxName))
+    f.close()
+    out.close()
+
+def makeDistanceMatrix(scoreFile):
+    import numpy
+    f = open(scoreFile,'r')
+    lns = f.readlines()
+    rows = len(lns)-2
+    cols = len(lns[2].split(", "))
+    dists = numpy.zeros((rows,cols))
+    for r in range(rows):
+        li = lns[r+2].split(", ")
+        for l in li:
+            [sStr, cStr] = l.split(":")
+            s = double(sStr)
+            c = int(cStr)
+            dists[r,c] = s
+    return dists
