@@ -102,7 +102,7 @@ def purityWholeOutput(inFile, nameList, outFile):
                         max = repDict[nL]
                         maxName = nL
                     break
-        ratio = max/float(len(cluster))
+        ratio = max/float(len(ls))
         out.write("{!s}: {!f}% {!s}\n".format(nm, ratio, maxName))
     f.close()
     out.close()
