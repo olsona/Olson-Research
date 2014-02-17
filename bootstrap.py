@@ -151,8 +151,7 @@ def main(argv):
             else:
                 matchDict[u2] = [u1]
             # check correctness
-            cl = getLeaves(masterDict, u2)
-            cor = checkCorrectMatchClusterMax(u1, cl)
+            cor = checkCorrectMatchOlsonFormat(u2,u1)
             if cor == 1:    # correct
                 rightDists.append(dist)
             else:           # incorrect

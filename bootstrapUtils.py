@@ -140,3 +140,11 @@ def checkCorrectMatchKnown(match, name):
         return 1
     else:
         return 0
+
+
+def checkCorrectMatchOlsonFormat(match,contig):
+    import string
+    if string.rsplit(match,'_',2)[0]==string.rsplit(contig,'_',2)[0]:
+        return 1
+    else:
+        return 0
