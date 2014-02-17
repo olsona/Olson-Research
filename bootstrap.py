@@ -116,6 +116,8 @@ def main(argv):
     masterDict = {}
     roots = set()
     ct = 0
+    rightDists = []
+    wrongDists = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     for i in range(leng-1,-1,-1):
@@ -139,13 +141,22 @@ def main(argv):
         contigNames = lns[1].rstrip().split(",")
         for row in range(2,len(lns)):
             l = lns[row]
-            ind = int(l.rstrip().split(", ")[0].split(":")[1])
+            fst = l.rstrip().split(", ")[0].split(":")
+            ind = int(fst[1])
+            dist = float(fst[0])
             u2 = dbNames[ind]
             u1 = contigNames[row-2]
             if u2 in matchDict.keys():
                 matchDict[u2].append(u1)
             else:
                 matchDict[u2] = [u1]
+            # check correctness
+            cl = getLeaves(masterDict, u2)
+            cor = checkCorrectMatchClusterMax(u1, cl)
+            if cor == 1:    # correct
+                rightDists.append(dist)
+            else:           # incorrect
+                wrongDists.append(dist)
         fMatch.close()
     
         # Make concatenated seeds for next DB
@@ -193,16 +204,27 @@ def main(argv):
     os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
     os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
     short = toMatch.rsplit("/",1)[1]
-    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_distances")) # moves results to results folder
+    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
     os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
+    fOutD = open("{!s}_distances".format(outputFile))
+    fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+    for r in fDists:
+        fOutD.write(",".join(r)+"\n")
+    fOutD.close()
+
+    # get right/wrong distance distributions
+    fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
+    fOutDiff.write("Correct:\n" + ",".join(rightDists) + "\n")
+    fOutDiff.write("Incorrect:\n" + ",".join(wrongDists) + "\n")
+    fOutDiff.close()
 
     # Get rid of files we're not using any more
-    os.system("rm -r {!s}".format(genePath))
-    os.system("rm {!s}".format(DB))
-    os.system("rm {!s}".format(toMatch))
-    os.system("rm {!s}".format(fSeed))
-    for i in range(leng+1):
-        os.system("rm {!s}_{!s}*".format(baseName,i))
+    #os.system("rm -r {!s}".format(genePath))
+    #os.system("rm {!s}".format(DB))
+    #os.system("rm {!s}".format(toMatch))
+    #os.system("rm {!s}".format(fSeed))
+    #for i in range(leng+1):
+    #    os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":

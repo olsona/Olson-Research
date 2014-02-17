@@ -65,20 +65,19 @@ def getLeaves(inDict, root):
 def purityOfCluster(cluster, nameList):
     '''Returns the percentage representation and identify of most common name out of the whole cluster, where the possible names are given in nameList.'''
     import string
-    repDict = {nL: 0.0 for nL in nameList}
+    repDict = {nL: 0 for nL in nameList}
+    max = 0
+    maxName = ''
     for c in cluster:
         for nL in nameList:
             if string.find(c,nL) != -1:
-                repDict[nL] += 1.0
+                repDict[nL] += 1
+                if repDict[nL] > max:
+                    max =repDict[nL]
+                    maxName = nL
                 break
-    max = 0.0
-    maxName = ''
-    for r in repDict:
-        if repDict[r] > max:
-            max = repDict[r]
-            maxName = r
 
-    ratio = max/float(len(cluster))
+    ratio = float(max)/float(len(cluster))
     return ratio, maxName
 
 
@@ -88,8 +87,8 @@ def purityWholeOutput(inFile, nameList, outFile):
     out = open(outFile, 'w')
     lns = f.readlines()
     for li in lns:
-        repDict = {nL: 0.0 for nL in nameList}
-        max = 0.0
+        repDict = {nL: 0 for nL in nameList}
+        max = 0
         maxName = ''
         fstBrk = li.rstrip().split(": ")
         nm = fstBrk[0]
@@ -97,24 +96,23 @@ def purityWholeOutput(inFile, nameList, outFile):
         for l in ls:
             for nL in nameList:
                 if string.find(l,nL) != -1:
-                    repDict[nL] += 1.0
+                    repDict[nL] += 1
                     if repDict[nL] > max:
                         max = repDict[nL]
                         maxName = nL
                     break
-        ratio = max/float(len(ls))
+        ratio = float(max)/float(len(ls))
         out.write("{!s}:\t{:.2%}\t{!s}\n".format(nm, ratio, maxName))
     f.close()
     out.close()
 
 
 def makeDistanceMatrix(scoreFile):
-    import numpy
     f = open(scoreFile,'r')
     lns = f.readlines()
     rows = len(lns)-2
     cols = len(lns[2].split(", "))
-    dists = numpy.zeros((rows,cols))
+    dists = [[0.0 for c in cols] for r in rows]
     for r in range(rows):
         li = lns[r+2].split(", ")
         for l in li:
@@ -123,3 +121,20 @@ def makeDistanceMatrix(scoreFile):
             c = int(cStr)
             dists[r,c] = s
     return dists
+
+
+def checkCorrectMatchClusterMax(match, cluster):
+    import string
+    _, name = purityOfCluster(cluster)
+    if string.find(match, name) != 1:
+        return 1
+    else
+        return 0
+
+
+def checkCorrectMatchKnown(match, name)
+    import string
+    if string.find(match,name) != 1:
+        return 1
+    else
+        return 0
