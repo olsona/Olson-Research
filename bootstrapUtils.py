@@ -117,7 +117,7 @@ def makeDistanceMatrix(scoreFile):
         li = lns[r+2].split(", ")
         for l in li:
             [sStr, cStr] = l.split(":")
-            s = double(sStr)
+            s = float(sStr)
             c = int(cStr)
             dists[r,c] = s
     return dists
