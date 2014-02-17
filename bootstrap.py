@@ -205,7 +205,7 @@ def main(argv):
     short = toMatch.rsplit("/",1)[1]
     os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
     os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-    fOutD = open("{!s}_distances".format(outputFile))
+    fOutD = open("{!s}_distances".format(outputFile),'w')
     fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
     for row in fDists:
         fOutD.write(",".join(str(r) for r in row)+"\n")
