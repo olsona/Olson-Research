@@ -52,8 +52,6 @@ def readSequence(fi):
 
 def getLeaves(inDict, root):
     leaves = []
-    print inDict
-    print root
     for l in inDict[root]:
         if l in inDict.keys():
             res = getLeaves(inDict,l)
