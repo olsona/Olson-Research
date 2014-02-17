@@ -128,7 +128,7 @@ def checkCorrectMatchClusterMax(match, cluster):
     _, name = purityOfCluster(cluster)
     if string.find(match, name) != 1:
         return 1
-    else
+    else:
         return 0
 
 
@@ -136,5 +136,5 @@ def checkCorrectMatchKnown(match, name)
     import string
     if string.find(match,name) != 1:
         return 1
-    else
+    else:
         return 0
