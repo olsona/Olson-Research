@@ -158,6 +158,7 @@ def main(argv):
             else:           # incorrect
                 wrongDists.append(dist)
         fMatch.close()
+        print matchDict
     
         # Make concatenated seeds for next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
