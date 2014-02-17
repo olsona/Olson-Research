@@ -207,8 +207,8 @@ def main(argv):
     os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
     fOutD = open("{!s}_distances".format(outputFile))
     fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-    for r in fDists:
-        fOutD.write(",".join(r)+"\n")
+    for row in fDists:
+        fOutD.write(",".join(str(r) for r in row)+"\n")
     fOutD.close()
 
     # get right/wrong distance distributions
