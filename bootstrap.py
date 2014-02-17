@@ -213,8 +213,8 @@ def main(argv):
 
     # get right/wrong distance distributions
     fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
-    fOutDiff.write("Correct:\n" + ",".join(rightDists) + "\n")
-    fOutDiff.write("Incorrect:\n" + ",".join(wrongDists) + "\n")
+    fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
+    fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
     fOutDiff.close()
 
     # Get rid of files we're not using any more
