@@ -112,7 +112,7 @@ def makeDistanceMatrix(scoreFile):
     lns = f.readlines()
     rows = len(lns)-2
     cols = len(lns[2].split(", "))
-    dists = [[0.0 for c in cols] for r in rows]
+    dists = [[0.0 for c in range(cols)] for r in range(rows)]
     for r in range(rows):
         li = lns[r+2].split(", ")
         for l in li:
