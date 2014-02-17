@@ -150,6 +150,7 @@ def main(argv):
                 matchDict[u2].append(u1)
             else:
                 matchDict[u2] = [u1]
+            print matchDict
             # check correctness
             cl = getLeaves(masterDict, u2)
             cor = checkCorrectMatchClusterMax(u1, cl)
@@ -158,7 +159,6 @@ def main(argv):
             else:           # incorrect
                 wrongDists.append(dist)
         fMatch.close()
-        print matchDict
     
         # Make concatenated seeds for next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
