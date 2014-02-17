@@ -150,7 +150,6 @@ def main(argv):
                 matchDict[u2].append(u1)
             else:
                 matchDict[u2] = [u1]
-            print matchDict
             # check correctness
             cl = getLeaves(masterDict, u2)
             cor = checkCorrectMatchClusterMax(u1, cl)
