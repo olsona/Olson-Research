@@ -155,6 +155,7 @@ def main(argv):
             if cor == 1:    # correct
                 rightDists.append(dist)
             else:           # incorrect
+                print "{!s} and {!s} do not match".format(u2, u1)
                 wrongDists.append(dist)
         fMatch.close()
     
