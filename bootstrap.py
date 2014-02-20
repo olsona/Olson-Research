@@ -165,7 +165,7 @@ def main(argv):
             bestMatch = l.rstrip().split(", ")[0].split(":")
             index = int(bestMatch[1])
             #distance = float(bestMatch[0])
-            parent = dbNames[ind]
+            parent = dbNames[index]
             child = contigNames[row-2]
             if parent in matchDict:
                 matchDict[parent].append(child)
