@@ -211,9 +211,12 @@ def main(argv):
     fOutC.close()
 
     # get distances between extant clusters
-    #toMatch = baseName.rsplit("/",1)[0]+"/l1"
-    #fSeed = baseName.rsplit("/",1)[0]+"/l2"
-    #DB = baseName + "_finalDB"
+    toMatch = baseName.rsplit("/",1)[0]+"/l1"
+    fSeed = baseName.rsplit("/",1)[0]+"/l2"
+    DB = baseName + "_finalDB"
+    print toMatch
+    print fSeed
+    print DB
     #os.system("ls {!s}* > {!s}".format(genePath,toMatch))
     #os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
     #os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
@@ -234,12 +237,12 @@ def main(argv):
     fOutDiff.close()
 
     # Get rid of files we're not using any more
-    #os.system("rm -r {!s}".format(genePath))
+    os.system("rm -r {!s}".format(genePath))
     #os.system("rm {!s}".format(DB))
     #os.system("rm {!s}".format(toMatch))
     #os.system("rm {!s}".format(fSeed))
-    #for i in range(leng+1):
-    #    os.system("rm {!s}_{!s}*".format(baseName,i))
+    for i in range(leng+1):
+        os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
