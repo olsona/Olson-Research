@@ -104,9 +104,9 @@ def main(argv):
         thr = int(coolingSchedule[i])*1000
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
-        print("Thr = {!s}".format(thr))
-        print("Bgr = {!s}".format(bgr))
-        print("Smlr = {!s}".format(smlr))
+        #print("Thr = {!s}".format(thr))
+        #print("Bgr = {!s}".format(bgr))
+        #print("Smlr = {!s}".format(smlr))
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
         fNext = bgr
 
@@ -125,9 +125,6 @@ def main(argv):
         allClusters[nm] = cl
         co = Contig(nm,fi,myCluster=cl)
         allContigs[nm] = co
-
-    for c in allClusters:
-        print allClusters[c]
 
     ct = 0
     
@@ -174,12 +171,14 @@ def main(argv):
     
         print "All Clusters:"
         for c in allClusters:
-            print allClusters[c] + "\n"
+            print allClusters[c]
+            print
         
 
         print "\nAll Contigs:"
         for c in allContigs:
-            print allContigs[c] + "\n"
+            print allContigs[c]
+            print
 
         fMatch.close()
     
