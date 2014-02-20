@@ -100,11 +100,11 @@ def main(argv):
     ensureDir(genePath)
     leng = len(coolingSchedule)
     for i in range(leng):
-        print coolingSchedule[i]
         workingFile = fNext
         thr = int(coolingSchedule[i])
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
+        print("Thr = {!s}".format(thr))
         print("Bgr = {!s}".format(bgr))
         print("Smlr = {!s}".format(smlr))
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
@@ -118,7 +118,7 @@ def main(argv):
     allContigs = {}
     f = open(fSeed+"-2",'r')
     for l in f.readlines():
-        sp = l.rstrip().split("/t")
+        sp = l.rstrip().split("\t")
         print sp
         nm = sp[0]
         fi = sp[1]
