@@ -196,7 +196,7 @@ def main(argv):
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
-    l2.close()
+        l2.close()
 
     for c in allClusters:
         print allClusters[c]
