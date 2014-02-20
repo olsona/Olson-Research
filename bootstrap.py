@@ -171,43 +171,52 @@ def main(argv):
     
         print "All Clusters:"
         for c in allClusters:
-            print allClusters[c]
-            print
+            print allClusters[c].seed
         
 
         print "\nAll Contigs:"
         for c in allContigs:
-            print allContigs[c]
-            print
+            print allContigs[c].name
 
         fMatch.close()
     
         # Make concatenated seeds for next DB
         #fSeed = "{!s}_{!s}_seed".format(baseName, i)
         #l2 = open(fSeed + "-2",'w')
+
+        print matchDict
         
-        #for j in matchDict.keys():
-            #cl = allContigs[j].myCluster
+        for j in matchDict.keys():
+            cl = allContigs[j].myCluster
             #print j
             #print cl
-            #newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
+            newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             #masterDict[newContig] = [j]
             #fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             #fpc.write(">{!s}\n".format(newContig))
             #_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             #fpc.write(seq)
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
-            #nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig))
-            #for v in matchDict[j]:
+            nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig),myCluster = cl)
+            cl.addNode(parent = newContig, child = j)
+            for v in matchDict[j]:
+                cl.addNode(parent = newContig, child = v)
             #    _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
             #    fpc.write(seq)
                 #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-                #masterDict[newContig].append(v)
+            #    masterDict[newContig].append(v)
+            allContigs[newContig] = nCo
             #fpc.write("\n")
             #fpc.close()
             #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             #ct += 1
     #l2.close()
+
+    print "Clusters after one iteration"
+
+    for c in allClusters:
+        print allClusters[c]
+        print
 
     # process results from main loop to get clusters and distances
 
