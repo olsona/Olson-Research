@@ -118,7 +118,7 @@ def main(argv):
     allContigs = {}
     f = open(fSeed+"-2",'r')
     for l in f.readlines():
-        print sp
+        sp = l.rstrip().split("\t")
         nm = sp[0]
         fi = sp[1]
         cl = Cluster(nm)
