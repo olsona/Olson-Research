@@ -101,13 +101,13 @@ def main(argv):
     leng = len(coolingSchedule)
     for i in range(leng):
         workingFile = fNext
-        thr = int(coolingSchedule[i])
+        thr = int(coolingSchedule[i])*1000
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
         print("Thr = {!s}".format(thr))
         print("Bgr = {!s}".format(bgr))
         print("Smlr = {!s}".format(smlr))
-        os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
+        os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
         fNext = bgr
 
     # Make initial seed file
@@ -118,7 +118,6 @@ def main(argv):
     allContigs = {}
     f = open(fSeed+"-2",'r')
     for l in f.readlines():
-        sp = l.rstrip().split("\t")
         print sp
         nm = sp[0]
         fi = sp[1]
@@ -140,7 +139,7 @@ def main(argv):
         toMatch = "{!s}_{!s}".format(baseName,i)
         f = open(toMatch+"-2",'r')
         for l in f.readlines():
-            sp = l.rstrip().split("/t")
+            sp = l.rstrip().split("\t")
             nm = sp[0]
             fi = sp[1]
             co = Contig(nm,fi)
