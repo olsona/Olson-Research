@@ -170,7 +170,8 @@ def main(argv):
             else:
                 matchDict[parent] = [child]
             # check correctness of match
-            if checkCorrectMatchOlsonFormat(parent, child) == 1:
+            cl = allContigs[parent].myCluster
+            if checkCorrectMatchOlsonFormat(cl.seed, child) == 1:
                 rightDists.append(distance)
             else:
                 wrongDists.append(distance)
