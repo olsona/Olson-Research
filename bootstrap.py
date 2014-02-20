@@ -174,6 +174,7 @@ def main(argv):
             if checkCorrectMatchOlsonFormat(cl.seed, child) == 1:
                 rightDists.append(distance)
             else:
+                print cl.seed, child
                 wrongDists.append(distance)
 
         fMatch.close()
