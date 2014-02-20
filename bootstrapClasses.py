@@ -33,7 +33,7 @@ class Cluster:
             self.dict[parent].append(child)
         else:
             self.dict[parent] = [child]
-        print self.dict[parent]
+        print self.dict
 
 
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
