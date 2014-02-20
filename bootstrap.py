@@ -178,27 +178,27 @@ def main(argv):
         fMatch.close()
     
         # Make concatenated seeds for next DB
-        fSeed = "{!s}_{!s}_seed".format(baseName, i)
-        l2 = open(fSeed + "-2",'w')
-        for j in matchDict.keys():
-            newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-            masterDict[newContig] = [j]
-            fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
-            fpc.write(">{!s}\n".format(newContig))
-            _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
-            fpc.write(seq)
+        #fSeed = "{!s}_{!s}_seed".format(baseName, i)
+        #l2 = open(fSeed + "-2",'w')
+        #for j in matchDict.keys():
+        #    newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
+        #    masterDict[newContig] = [j]
+        #    fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
+        #    fpc.write(">{!s}\n".format(newContig))
+        #    _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
+        #    fpc.write(seq)
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
-            nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig))
-            for v in matchDict[j]:
-                _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
-                fpc.write(seq)
+        #    nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig))
+        #    for v in matchDict[j]:
+        #        _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
+        #        fpc.write(seq)
                 #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-                masterDict[newContig].append(v)
-            fpc.write("\n")
-            fpc.close()
-            l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
-            ct += 1
-        l2.close()
+        #        masterDict[newContig].append(v)
+        #    fpc.write("\n")
+        #    fpc.close()
+        #    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
+        #    ct += 1
+        #l2.close()
 
     # process results from main loop to get clusters and distances
 
