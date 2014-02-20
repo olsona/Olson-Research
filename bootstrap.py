@@ -174,12 +174,12 @@ def main(argv):
     
         print "All Clusters:"
         for c in allClusters:
-            print allClusters[c]
+            print allClusters[c] + "\n"
+        
 
-
-        print "All Contigs:"
+        print "\nAll Contigs:"
         for c in allContigs:
-            print allContigs[c]
+            print allContigs[c] + "\n"
 
         fMatch.close()
     
