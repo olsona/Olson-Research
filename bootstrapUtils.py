@@ -52,14 +52,17 @@ def readSequence(fi):
 
 def getLeaves(inDict, root):
     leaves = []
-    for l in inDict[root]:
-        if l in inDict.keys():
-            res = getLeaves(inDict,l)
-            for r in res:
-                leaves.append(r)
-        else:
-            leaves.append(l)
-    return leaves
+    if inDict[root] is None:
+        return None
+    else:
+        for l in inDict[root]:
+            if l in inDict.keys():
+                res = getLeaves(inDict,l)
+                for r in res:
+                    leaves.append(r)
+            else:
+                leaves.append(l)
+        return leaves
 
 
 def purityOfCluster(cluster, nameList):
