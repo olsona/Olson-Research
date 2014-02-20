@@ -100,7 +100,7 @@ def main(argv):
     ensureDir(genePath)
     leng = len(coolingSchedule)
     for i in range(leng):
-        print i
+        print coolingSchedule[i]
         workingFile = fNext
         thr = int(coolingSchedule[i])
         bgr = "{!s}_{!s}_next".format(baseName,i)
@@ -119,6 +119,7 @@ def main(argv):
     f = open(fSeed+"-2",'r')
     for l in f.readlines():
         sp = l.rstrip().split("/t")
+        print sp
         nm = sp[0]
         fi = sp[1]
         cl = Cluster(nm)
