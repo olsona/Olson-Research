@@ -193,6 +193,7 @@ def main(argv):
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
             nCo = Contig(newContig,"{!s}{!s}.fna".format(genePath,newContig),myCluster = cl)
             print nCo
+            cl.root = newContig
             cl.addNode(newContig, j)
             for v in matchDict[j]:
                 cl.addNode(newContig, v)
