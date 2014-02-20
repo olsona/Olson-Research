@@ -181,9 +181,6 @@ def main(argv):
 
         for j in matchDict.keys():
             cl = allContigs[j].myCluster
-            print
-            print j
-            print cl.seed
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             #fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             #fpc.write(">{!s}\n".format(newContig))
@@ -191,7 +188,6 @@ def main(argv):
             #fpc.write(seq)
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
             nCo = Contig(newContig,"{!s}{!s}.fna".format(genePath,newContig),myCluster = cl)
-            print nCo
             cl.root = newContig
             cl.addNode(newContig, j)
             for v in matchDict[j]:
@@ -200,13 +196,15 @@ def main(argv):
             #    fpc.write(seq)
                 #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
             #    masterDict[newContig].append(v)
-            print cl.get_leaves()
             allContigs[newContig] = nCo
             #fpc.write("\n")
             #fpc.close()
             #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
     #l2.close()
+    for c in allClusters:
+        print allClusters[c]
+        print
 
     #print "Clusters after one iteration"
     #for c in allClusters:
