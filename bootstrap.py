@@ -178,7 +178,7 @@ def main(argv):
         print
 
         for c in allContigs:
-            print allContigs[c]xx
+            print allContigs[c]
 
         fMatch.close()
     
