@@ -155,6 +155,7 @@ def main(argv):
         matchDict = {}
         fMatch = open(matches,'r')
         lns = fMatch.readlines()
+        print lns[0].rstrip().split(",")
         dbNames = lns[0].rstrip().split(",")
         contigNames = lns[1].rstrip().split(",")
         for row in range(2,len(lns)):
