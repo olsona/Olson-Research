@@ -181,6 +181,7 @@ def main(argv):
 
         for j in matchDict.keys():
             cl = allContigs[j].myCluster
+            print
             print j
             print cl.seed
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
@@ -206,11 +207,10 @@ def main(argv):
             ct += 1
     #l2.close()
 
-    print "Clusters after one iteration"
-
-    for c in allClusters:
-        print allClusters[c]
-        print
+    #print "Clusters after one iteration"
+    #for c in allClusters:
+        #print allClusters[c]
+        #print
 
     # process results from main loop to get clusters and distances
 
