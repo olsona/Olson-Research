@@ -120,10 +120,9 @@ def main(argv):
     for l in f.readlines():
         sp = l.rstrip().split("\t")
         nm = sp[0]
-        fi = sp[1]
         cl = Cluster(nm)
         allClusters[nm] = cl
-        co = Contig(nm,fi,myCluster=cl)
+        co = Contig(nm,myCluster=cl)
         allContigs[nm] = co
 
     ct = 0
@@ -189,15 +188,15 @@ def main(argv):
             fpc.write(">{!s}\n".format(newContig))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
-            #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
-            nCo = Contig(newContig,"{!s}{!s}.fna".format(genePath,newContig),myCluster = cl)
+            os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+            nCo = Contig(newContig,myCluster = cl)
             cl.root = newContig
             cl.addNode(newContig, j)
             for v in matchDict[j]:
                 cl.addNode(newContig, v)
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
-                #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+                os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
             allContigs[newContig] = nCo
             fpc.write("\n")
             fpc.close()

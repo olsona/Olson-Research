@@ -38,9 +38,8 @@ class Cluster:
 
 
 class Contig:
-    def __init__(self, name, file, myCluster=None, good_matches=None):
+    def __init__(self, name, myCluster=None, good_matches=None):
         self.name = name
-        self.file = file
         if myCluster is None:
             self.myCluster = None
         else:
@@ -51,4 +50,4 @@ class Contig:
             self.good_matches = good_matches
 
     def __str__(self):
-        return "Name: {!s}\nFile: {!s}\nCluster: {!s}".format(self.name, self.file, self.myCluster)
+        return "Name: {!s}\nFile: {!s}\nCluster: {!s}".format(self.name, self.myCluster)
