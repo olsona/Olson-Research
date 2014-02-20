@@ -126,11 +126,15 @@ def main(argv):
         co = Contig(nm,fi,cluster=cl)
         allContigs[nm] = co
 
+    for c in allClusters:
+        print c
+
     ct = 0
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     #for i in range(leng-1,-1,-1):
     for i in [leng-1]:
+        print coolingSchedule[i]*1000
         # Make DB out of fSeed, whatever it is right now
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
@@ -168,8 +172,8 @@ def main(argv):
             else:
                 matchDict[parent] = [child]
         
-        for cl in allClusters:
-            print cl
+        for c in allClusters:
+            print c
         
         fMatch.close()
     
