@@ -127,7 +127,7 @@ def main(argv):
         allContigs[nm] = co
 
     for c in allClusters:
-        print c.root, c.get_leaves()
+        print allClusters[c]
 
     ct = 0
     
@@ -173,7 +173,7 @@ def main(argv):
                 matchDict[parent] = [child]
         
         for c in allClusters:
-            print c
+            print allClusters[c]
         
         fMatch.close()
     
