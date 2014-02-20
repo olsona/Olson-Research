@@ -127,11 +127,11 @@ def main(argv):
         allContigs[nm] = co
 
     ct = 0
+    rightDists = []
+    wrongDists = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     for i in range(leng-1,-1,-1):
-    #for i in [leng-1]:
-        print coolingSchedule[i]*1000
         # Make DB out of fSeed, whatever it is right now
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
@@ -162,13 +162,18 @@ def main(argv):
             l = lns[row]
             bestMatch = l.rstrip().split(", ")[0].split(":")
             index = int(bestMatch[1])
-            #distance = float(bestMatch[0])
+            distance = float(bestMatch[0])
             parent = dbNames[index]
             child = contigNames[row-2]
             if parent in matchDict:
                 matchDict[parent].append(child)
             else:
                 matchDict[parent] = [child]
+            # check correctness of match
+            if checkCorrectMatchOlsonFormat(parent, child) == 1:
+                rightDists.append(distance)
+            else:
+                wrongDists.append(distance)
 
         fMatch.close()
     
@@ -198,34 +203,34 @@ def main(argv):
             ct += 1
         l2.close()
 
-    for c in allClusters:
-        print allClusters[c]
-        print
-
     # process results from main loop to get clusters and distances
+    fOutC = open("{!s}_clusters".format(outputFile),'w')
+    for c in allClusters:
+        print allClusters[c].get_leaves()
+    fOutC.close()
 
     # get distances between extant clusters
-    #toMatch = baseName.rsplit("/",1)[0]+"/l1"
-    #fSeed = baseName.rsplit("/",1)[0]+"/l2"
-    #DB = baseName + "_finalDB"
-    #os.system("ls {!s}* > {!s}".format(genePath,toMatch))
-    #os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-    #os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-    #os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-    #short = toMatch.rsplit("/",1)[1]
-    #os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
-    #os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-    #fOutD = open("{!s}_distances".format(outputFile),'w')
-    #fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-    #for row in fDists:
-    #    fOutD.write(",".join(str(r) for r in row)+"\n")
-    #fOutD.close()
+    toMatch = baseName.rsplit("/",1)[0]+"/l1"
+    fSeed = baseName.rsplit("/",1)[0]+"/l2"
+    DB = baseName + "_finalDB"
+    os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+    os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+    os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+    short = toMatch.rsplit("/",1)[1]
+    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
+    os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
+    fOutD = open("{!s}_distances".format(outputFile),'w')
+    fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+    for row in fDists:
+        fOutD.write(",".join(str(r) for r in row)+"\n")
+    fOutD.close()
 
     # get right/wrong distance distributions
-    #fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
-    #fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
-    #fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
-    #fOutDiff.close()
+    fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
+    fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
+    fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
+    fOutDiff.close()
 
     # Get rid of files we're not using any more
     #os.system("rm -r {!s}".format(genePath))
