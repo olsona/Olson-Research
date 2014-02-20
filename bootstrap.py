@@ -193,13 +193,14 @@ def main(argv):
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
             nCo = Contig(newContig,"{!s}{!s}.fna".format(genePath,newContig),myCluster = cl)
             print nCo
-            cl.addNode(parent = newContig, child = j)
+            cl.addNode(newContig, j)
             for v in matchDict[j]:
-                cl.addNode(parent = newContig, child = v)
+                cl.addNode(newContig, v)
             #    _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
             #    fpc.write(seq)
                 #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
             #    masterDict[newContig].append(v)
+            print cl.get_leaves()
             allContigs[newContig] = nCo
             #fpc.write("\n")
             #fpc.close()
