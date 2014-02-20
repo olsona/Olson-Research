@@ -127,7 +127,7 @@ def main(argv):
         allContigs[nm] = co
 
     for c in allClusters:
-        print c
+        print c.root, c.get_leaves()
 
     ct = 0
     
