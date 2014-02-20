@@ -203,7 +203,7 @@ def main(argv):
             #fpc.write("\n")
             #fpc.close()
             #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
-            #ct += 1
+            ct += 1
     #l2.close()
 
     print "Clusters after one iteration"
