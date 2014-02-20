@@ -171,12 +171,13 @@ def main(argv):
                 matchDict[parent].append(child)
             else:
                 matchDict[parent] = [child]
-        
+    
+        print "All Clusters:"
         for c in allClusters:
             print allClusters[c]
 
-        print
 
+        print "All Contigs:"
         for c in allContigs:
             print allContigs[c]
 
@@ -185,12 +186,12 @@ def main(argv):
         # Make concatenated seeds for next DB
         #fSeed = "{!s}_{!s}_seed".format(baseName, i)
         #l2 = open(fSeed + "-2",'w')
-        for j in matchDict.keys():
-            cl = allContigs[j].myCluster
-            print j
-            print cl
-            newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-            print newContig
+        
+        #for j in matchDict.keys():
+            #cl = allContigs[j].myCluster
+            #print j
+            #print cl
+            #newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             #masterDict[newContig] = [j]
             #fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             #fpc.write(">{!s}\n".format(newContig))
