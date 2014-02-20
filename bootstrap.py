@@ -5,6 +5,7 @@
 import sys, getopt, string, os, re, pprint
 from bootstrapConstants import *
 from bootstrapUtils import *
+from bootstrapClasses import *
 
 def main(argv):
     # get inputs, check validity
@@ -68,8 +69,6 @@ def main(argv):
         print raiPath+"rait cannot be opened."
         sys.exit(1)
 
-    filesToRM = []
-
     # properly format input file
     f = open(inputFile, 'r')
     baseName = inputFile.rsplit(".",1)[0]
@@ -78,7 +77,6 @@ def main(argv):
         # convert to contiguous line AND tabbed format
         newName = baseName+"_TAB.fa"
         fN = open(newName,'w')
-        filesToRM.append(newName)
         s = 0
         while ln:
             if ln[0] == '>': # deal with name lines
@@ -102,38 +100,57 @@ def main(argv):
     ensureDir(genePath)
     leng = len(coolingSchedule)
     for i in range(leng):
+        print i
         workingFile = fNext
         thr = int(coolingSchedule[i])
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
+        print("Bgr = {!s}".format(bgr))
+        print("Smlr = {!s}".format(smlr))
         os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr*1000, genePath, workingFile, smlr, bgr))
         fNext = bgr
 
     # Make initial seed file
     fSeed = "{!s}_{!s}_seed".format(baseName, leng)
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
-    
-    masterDict = {}
-    roots = set()
+    # initialize clusters and contigs
+    allClusters = {}
+    allContigs = {}
+    f = open(fSeed+"-2",'r')
+    for l in f.readlines():
+        sp = l.rstrip().split("/t")
+        nm = sp[0]
+        fi = sp[1]
+        cl = Cluster(nm)
+        allClusters[nm] = cl
+        co = Contig(nm,fi,cluster=cl)
+        allContigs[nm] = co
+
     ct = 0
-    rightDists = []
-    wrongDists = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    for i in range(leng-1,-1,-1):
-    #for i in [leng-1]:
+    #for i in range(leng-1,-1,-1):
+    for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-        # Match ith contigs to DB
+        # Process contigs to match
         matches = "{!s}_{!s}_matches".format(baseName,i)
         toMatch = "{!s}_{!s}".format(baseName,i)
+        f = open(toMatch+"-2",'r')
+        for l in f.readlines():
+            sp = l.rstrip().split("/t")
+            nm = sp[0]
+            fi = sp[1]
+            co = Contig(nm,fi)
+            allContigs[nm] = co
+        # Match ith contigs to DB
         os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
         short = toMatch.rsplit("/",1)[1]
         os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
         os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
         
-        # Construct matching dictionary
+        # Construct matching dictionary for internal use
         matchDict = {}
         fMatch = open(matches,'r')
         lns = fMatch.readlines()
@@ -141,44 +158,38 @@ def main(argv):
         contigNames = lns[1].rstrip().split(",")
         for row in range(2,len(lns)):
             l = lns[row]
-            fst = l.rstrip().split(", ")[0].split(":")
-            ind = int(fst[1])
-            dist = float(fst[0])
-            u2 = dbNames[ind]
-            u1 = contigNames[row-2]
-            if u2 in matchDict.keys():
-                matchDict[u2].append(u1)
+            bestMatch = l.rstrip().split(", ")[0].split(":")
+            index = int(bestMatch[1])
+            #distance = float(bestMatch[0])
+            parent = dbNames[ind]
+            child = contigNames[row-2]
+            if parent in matchDict:
+                matchDict[parent].append(child)
             else:
-                matchDict[u2] = [u1]
-            # check correctness
-            cor = checkCorrectMatchOlsonFormat(u2,u1)
-            if cor == 1:    # correct
-                rightDists.append(dist)
-            else:           # incorrect
-                print "{!s} and {!s} do not match".format(u2, u1)
-                wrongDists.append(dist)
+                matchDict[parent] = [child]
+        
+        for cl in allClusters:
+            print cl
+        
         fMatch.close()
     
         # Make concatenated seeds for next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
         l2 = open(fSeed + "-2",'w')
-        filesToRM.append(fSeed+"-2")
         for j in matchDict.keys():
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-            roots.add(newContig)
             masterDict[newContig] = [j]
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             fpc.write(">{!s}\n".format(newContig))
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
-            os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+            #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+            nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig))
             for v in matchDict[j]:
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
-                os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+                #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
                 masterDict[newContig].append(v)
-            if j in roots:
-                roots.remove(j)
             fpc.write("\n")
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
@@ -187,36 +198,28 @@ def main(argv):
 
     # process results from main loop to get clusters and distances
 
-    fOutC = open(outputFile+"_clusters",'w')
-
-    rs = sorted(list(roots))
-    for r in rs:
-        clust = getLeaves(masterDict,r)
-        fOutC.write("{!s}: {!s}\n".format(r,clust))
-    fOutC.close()
-
     # get distances between extant clusters
-    toMatch = baseName.rsplit("/",1)[0]+"/l1"
-    fSeed = baseName.rsplit("/",1)[0]+"/l2"
-    DB = baseName + "_finalDB"
-    os.system("ls {!s}* > {!s}".format(genePath,toMatch))
-    os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-    os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-    os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-    short = toMatch.rsplit("/",1)[1]
-    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
-    os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-    fOutD = open("{!s}_distances".format(outputFile),'w')
-    fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-    for row in fDists:
-        fOutD.write(",".join(str(r) for r in row)+"\n")
-    fOutD.close()
+    #toMatch = baseName.rsplit("/",1)[0]+"/l1"
+    #fSeed = baseName.rsplit("/",1)[0]+"/l2"
+    #DB = baseName + "_finalDB"
+    #os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+    #os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+    #os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    #os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+    #short = toMatch.rsplit("/",1)[1]
+    #os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
+    #os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
+    #fOutD = open("{!s}_distances".format(outputFile),'w')
+    #fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+    #for row in fDists:
+    #    fOutD.write(",".join(str(r) for r in row)+"\n")
+    #fOutD.close()
 
     # get right/wrong distance distributions
-    fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
-    fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
-    fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
-    fOutDiff.close()
+    #fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
+    #fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
+    #fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
+    #fOutDiff.close()
 
     # Get rid of files we're not using any more
     #os.system("rm -r {!s}".format(genePath))
