@@ -176,13 +176,13 @@ def main(argv):
         #l2 = open(fSeed + "-2",'w')
 
         for k in matchDict:
-            print k, matchDict[k]
+            print k,":",matchDict[k]
             print
 
         for j in matchDict.keys():
             cl = allContigs[j].myCluster
-            #print j
-            #print cl
+            print j
+            print cl.seed
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             #masterDict[newContig] = [j]
             #fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
