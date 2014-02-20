@@ -5,7 +5,7 @@ class Cluster:
         self.root = root
         if tree is None:
             self.tree = {}
-            self.tree[self.root] = None
+            self.tree[self.root] = []
         else:
             self.tree = dict
 
