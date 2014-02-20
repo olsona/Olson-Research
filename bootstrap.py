@@ -168,15 +168,6 @@ def main(argv):
                 matchDict[parent].append(child)
             else:
                 matchDict[parent] = [child]
-    
-        print "All Clusters:"
-        for c in allClusters:
-            print allClusters[c].seed
-        
-
-        print "\nAll Contigs:"
-        for c in allContigs:
-            print allContigs[c].name
 
         fMatch.close()
     
@@ -184,8 +175,10 @@ def main(argv):
         #fSeed = "{!s}_{!s}_seed".format(baseName, i)
         #l2 = open(fSeed + "-2",'w')
 
-        print matchDict
-        
+        for k in matchDict:
+            print k, matchDict[k]
+            print
+
         for j in matchDict.keys():
             cl = allContigs[j].myCluster
             #print j
@@ -197,7 +190,7 @@ def main(argv):
             #_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             #fpc.write(seq)
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
-            nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig),myCluster = cl)
+            nCo = Contig(newContig,"{!s}{!s}.fna".format(genePath,newContig),myCluster = cl)
             cl.addNode(parent = newContig, child = j)
             for v in matchDict[j]:
                 cl.addNode(parent = newContig, child = v)
