@@ -13,7 +13,7 @@ class Cluster:
             self.root = root
 
     def __str__(self):
-        return "Seed: {!s}\nLeaves: {!s}".format(self.seed,self.get_leaves())
+        return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.get_leaves())
 
     def get_leaves(self):
         if self.root is None or self.dict is None:
