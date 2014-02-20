@@ -185,7 +185,6 @@ def main(argv):
             print j
             print cl.seed
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-            #masterDict[newContig] = [j]
             #fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
             #fpc.write(">{!s}\n".format(newContig))
             #_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))

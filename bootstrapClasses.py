@@ -28,12 +28,10 @@ class Cluster:
             return purityOfCluster(dict, names)
 
     def addNode(self, parent, child):
-        print "I am trying to add a node"
         if parent in self.dict:
             self.dict[parent].append(child)
         else:
             self.dict[parent] = [child]
-        print self.dict
 
 
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
