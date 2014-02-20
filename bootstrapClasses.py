@@ -1,40 +1,50 @@
 from bootstrapUtils import *
 
 class Cluster:
-    def __init__(self, root, tree=None):
-        self.root = root
+    def __init__(self, seed, dict = None, root = None):
+        self.seed = seed
         if tree is None:
-            self.tree = {}
-            self.tree[self.root] = None
+            self.dict = {}
         else:
-            self.tree = dict
+            self.dict = dict
+        if root is None:
+            self.root = None
+        else:
+            self.root = root
 
     def __str__(self):
-        leaves = [self.root]
-        leaves.append(self.get_leaves())
-        return "Root: {!s}\nCluster: {!s}".format(self.root,leaves)
+        return "Seed: {!s}\nCluster: {!s}".format(self.seed,self.get_leaves())
 
     def get_leaves(self):
-        return getLeaves(self.tree, self.root)
+        if self.root is None or self.dict is None:
+            return []
+        else:
+            return getLeaves(self.dict, self.root)
 
     def purityMax(self, names):
-        return purityOfCluster(tree, names)
+        if self.dict is None:
+            return None, None
+        else:
+            return purityOfCluster(dict, names)
 
     def addNode(self, parent, child):
-        if parent in self.tree:
-            self.tree[parent].append(child)
+        if parent in self.dict:
+            self.dict[parent].append(child)
         else:
-            self.tree[parent] = [child]
+            self.dict[parent] = [child]
+
+
+# THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
 
 
 class Contig:
-    def __init__(self, name, file, cluster=None, good_matches=None):
+    def __init__(self, name, file, myCluster=None, good_matches=None):
         self.name = name
         self.file = file
-        if cluster is None:
-            self.cluster = None
+        if myCluster is None:
+            self.myCluster = None
         else:
-            self.cluster = cluster
+            self.myCluster = myCluster
         if good_matches is None:
             self.good_matches = []
         else:

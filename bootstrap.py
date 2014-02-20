@@ -123,7 +123,7 @@ def main(argv):
         fi = sp[1]
         cl = Cluster(nm)
         allClusters[nm] = cl
-        co = Contig(nm,fi,cluster=cl)
+        co = Contig(nm,fi,myCluster=cl)
         allContigs[nm] = co
 
     for c in allClusters:
@@ -174,31 +174,40 @@ def main(argv):
         
         for c in allClusters:
             print allClusters[c]
-        
+
+        print
+
+        for c in allContigs:
+            print allContigs[c]xx
+
         fMatch.close()
     
         # Make concatenated seeds for next DB
         #fSeed = "{!s}_{!s}_seed".format(baseName, i)
         #l2 = open(fSeed + "-2",'w')
-        #for j in matchDict.keys():
-        #    newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
-        #    masterDict[newContig] = [j]
-        #    fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
-        #    fpc.write(">{!s}\n".format(newContig))
-        #    _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
-        #    fpc.write(seq)
+        for j in matchDict.keys():
+            cl = allContigs[j].myCluster
+            print j
+            print cl
+            newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
+            print newContig
+            #masterDict[newContig] = [j]
+            #fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
+            #fpc.write(">{!s}\n".format(newContig))
+            #_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
+            #fpc.write(seq)
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
-        #    nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig))
-        #    for v in matchDict[j]:
-        #        _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
-        #        fpc.write(seq)
+            #nCo = Contig(newContig,"{!s}{!s}.fna}".format(genePath,newContig))
+            #for v in matchDict[j]:
+            #    _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
+            #    fpc.write(seq)
                 #os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-        #        masterDict[newContig].append(v)
-        #    fpc.write("\n")
-        #    fpc.close()
-        #    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
-        #    ct += 1
-        #l2.close()
+                #masterDict[newContig].append(v)
+            #fpc.write("\n")
+            #fpc.close()
+            #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
+            #ct += 1
+    #l2.close()
 
     # process results from main loop to get clusters and distances
 
