@@ -10,7 +10,8 @@ class Cluster:
             self.tree = dict
 
     def __str__(self):
-        al = [self.root].append(self.get_leaves())
+        al = [self.root]
+        al.append(self.get_leaves())
         return "Root: {!s}\nCluster: {!s}".format(self.root,al)
 
     def get_leaves(self):
