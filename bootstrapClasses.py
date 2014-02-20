@@ -3,7 +3,7 @@ from bootstrapUtils import *
 class Cluster:
     def __init__(self, seed, dict = None, root = None):
         self.seed = seed
-        if tree is None:
+        if dict is None:
             self.dict = {}
         else:
             self.dict = dict
