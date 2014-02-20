@@ -191,6 +191,7 @@ def main(argv):
             #fpc.write(seq)
             #os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
             nCo = Contig(newContig,"{!s}{!s}.fna".format(genePath,newContig),myCluster = cl)
+            print nCo
             cl.addNode(parent = newContig, child = j)
             for v in matchDict[j]:
                 cl.addNode(parent = newContig, child = v)
