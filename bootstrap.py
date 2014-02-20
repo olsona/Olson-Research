@@ -155,7 +155,6 @@ def main(argv):
         matchDict = {}
         fMatch = open(matches,'r')
         lns = fMatch.readlines()
-        print matches
         dbNames = lns[0].rstrip().split(",")
         contigNames = lns[1].rstrip().split(",")
         for row in range(2,len(lns)):
@@ -206,7 +205,7 @@ def main(argv):
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
     for c in allClusters:
-        print allClusters[c].get_leaves()
+        fOutC.write("{!s}\n".format(allClusters[c].get_leaves())
     fOutC.close()
 
     # get distances between extant clusters
