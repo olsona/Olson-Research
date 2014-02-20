@@ -49,3 +49,6 @@ class Contig:
             self.good_matches = []
         else:
             self.good_matches = good_matches
+
+    def __str__(self):
+        return "Name: {!s}\nFile: {!s}\nCluster: {!s}".format(self.name, self.file, self.myCluster)
