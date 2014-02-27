@@ -1,3 +1,5 @@
 #!/usr/bin/perl
-my $input = @ARGV;
-printf $input . "\n";
+foreach (@ARGV) {
+    print $_;
+    print "\n";
+};
