@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 my $input = $ARGV[0];
 my $output = $ARGV[1];
+printf $output . "\n";
 my $name = substr($input, 0, -7);
 $ct = 0;
 open(IN, $input);
