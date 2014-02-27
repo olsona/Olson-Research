@@ -10,7 +10,7 @@ def dist(infile):
     max = 0
     for i in range(num/2):
         lens[i] = len(lines[(i*2)+1])
-        if lens[i] < max:
+        if lens[i] > max:
             max = lens[i]
     mmax = int(math.ceil(max/1000))
     print mmax
