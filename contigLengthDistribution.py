@@ -14,7 +14,7 @@ def dist(infile):
             max = lens[i]
     mmax = int(math.ceil(max/1000))
     print mmax
-    bins = [i*1000 for i in range(mmax)]
+    bins = [i*1000 for i in range(mmax+1)]
     print bins
-    pyplot.hist(lens,bins=bins)
+    pyplot.hist(lens)
     pyplot.show()
