@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 my ($input, $output) = @ARGV;
 open(IN, $input);
-open(OUT, $output);
+open(OUT, '>', $output);
 my $name = substr($input, 0, -7);
 my $ct = 0;
 while (<IN>) {
