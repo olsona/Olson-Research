@@ -1,10 +1,9 @@
 #!/usr/bin/perl
 my ($input, $output) = @ARGV;
-printf $output . "\n";
-my $name = substr($input, 0, -7);
-$ct = 0;
 open(IN, $input);
 open(OUT, $output);
+my $name = substr($input, 0, -7);
+my $ct = 0;
 while (<IN>) {
     chomp;
     ($a,$sz,$c,$d,$e,$f,$g) = split("\t");
