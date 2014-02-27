@@ -7,7 +7,7 @@ my $ct = 0;
 while (<IN>) {
     chomp;
     ($a,$sz,$c,$d,$e,$f,$g) = split("\t");
-    print OUT "$name_$sz_$ct\n$g\n";
+    print OUT "$name\_$sz\_$ct\n$g\n";
     $ct++;
 }
 close(IN);
