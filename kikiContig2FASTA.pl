@@ -1,5 +1,2 @@
 #!/usr/bin/perl
-foreach (@ARGV) {
-    print $_;
-    print "\n";
-};
+printf $ARGV[0];
