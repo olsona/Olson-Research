@@ -1,2 +1,3 @@
 #!/usr/bin/perl
-printf $ARGV[0];
+my $input = $ARGV[0];
+printf $input;
