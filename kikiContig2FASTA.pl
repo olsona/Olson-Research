@@ -1,6 +1,5 @@
 #!/usr/bin/perl
-my ($input, $output) = @ARGV;
+my $input = @ARGV;
 open(IN, $input);
-open(OUT, '>', $output);
-name=substr($name, 0, -7);
+name=substr($input, 0, -7);
 echo $name;

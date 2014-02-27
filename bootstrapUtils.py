@@ -143,9 +143,31 @@ def checkCorrectMatchKnown(match, name):
         return 0
 
 
-def checkCorrectMatchOlsonFormat(match,contig):
+def checkCorrectSpeciesOlsonFormat(match,contig):
     import string
     if string.rsplit(match,'_',2)[0]==string.rsplit(contig,'_',2)[0]:
         return 1
     else:
         return 0
+
+
+def checkCorrectGenusOlsonFormat(match,contig):
+    import string
+    if string.split(match,'_')[0]==string.split(contig,'_')[0]:
+        return 1
+    else:
+        return 0
+
+
+def getMatchesAboveThreshold(inline, threshold):
+    ln = inline.rstrip().split(", ")
+    out = []
+    for i in range(len(ln)):
+        info = ln[i].split(":")
+        match = int(info[0])
+        dist = float(info[1])
+        if dist >= threshold:
+            out.append([match,dist])
+        else:
+            break
+    return out

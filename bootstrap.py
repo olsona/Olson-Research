@@ -168,13 +168,13 @@ def main(argv):
                 matchDict[parent].append(child)
             else:
                 matchDict[parent] = [child]
-            # check correctness of match
+            # *** check correctness of match
             cl = allContigs[parent].myCluster
-            if checkCorrectMatchOlsonFormat(cl.seed, child) == 1:
+            if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
                 rightDists.append(distance)
             else:
-                print cl.seed, child
                 wrongDists.append(distance)
+            # ***
 
         fMatch.close()
     
@@ -230,11 +230,12 @@ def main(argv):
         fOutD.write(",".join(str(r) for r in row)+"\n")
     fOutD.close()
 
-    # get right/wrong distance distributions
+    # get right/wrong distance distributions ***
     fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
     fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
     fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
     fOutDiff.close()
+    # ***
 
     # Get rid of files we're not using any more
     os.system("rm -r {!s}".format(genePath))
