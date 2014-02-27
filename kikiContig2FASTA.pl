@@ -1,6 +1,5 @@
 #!/usr/bin/perl
-my $input = $ARGV[0];
-my $output = $ARGV[1];
+my ($input, $output) = @ARGV;
 printf $output . "\n";
 my $name = substr($input, 0, -7);
 $ct = 0;
