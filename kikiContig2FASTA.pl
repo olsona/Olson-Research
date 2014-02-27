@@ -1,3 +1,3 @@
 #!/usr/bin/perl
-my $input = @ARGV;
+my $input = $ARGV;
 printf $input . "\n";
