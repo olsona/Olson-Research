@@ -2,7 +2,7 @@
 my $input = $ARGV[0];
 my $output = $ARGV[1];
 my $name = substr($input, 0, -7);
-my $ct = 0;
+$ct = 0;
 open(IN, $input);
 open(OUT, $output);
 while (<IN>) {
