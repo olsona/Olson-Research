@@ -1,4 +1,4 @@
 #!/usr/bin/perl
 my $input = $ARGV[0];
-my $name = substr($input, 0, -7);
-printf $name;
+my $name = split(substr($input, 0, -7),"/")[-1];
+printf $name . "/n";
