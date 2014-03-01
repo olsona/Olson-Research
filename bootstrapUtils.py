@@ -171,3 +171,23 @@ def getMatchesAboveThreshold(inline, threshold):
         else:
             break
     return out
+
+def getMatchesWithinPercentage(inline, pct):
+    ln = inline.rstrip().split(", ")
+    out = []
+    #find best score
+    info = ln[0].split(":")
+    match = int(info[0])
+    best = float(info[1])
+    out.append([match,best])
+    threshold = best*(1.0-float(pct)/100.0)
+    #find all scores within pct of
+    for i in range(1,len(ln)):
+        info = ln[i].split(":")
+        match = int(info[0])
+        dist = float(info[1])
+        if dist >= threshold:
+            out.append([match,dist])
+        else:
+            break
+    return out
