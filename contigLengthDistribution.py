@@ -12,6 +12,7 @@ def dist(infile):
         lens[i] = len(lines[(i*2)+1])
         if lens[i] > max:
             max = lens[i]
+            print max
     mmax = int(math.ceil(max/1000))
     bins = [i*1000 for i in range(mmax+1)]
     pyplot.hist(lens,bins,log=True)
