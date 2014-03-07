@@ -128,6 +128,7 @@ def main(argv):
     ct = 0
     rightDists = []
     wrongDists = []
+    thresh = myThreshold
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     for i in range(leng-1,-1,-1):
@@ -168,7 +169,7 @@ def main(argv):
             parent = dbNames[index]
             child = contigNames[row-2]
             #print distance
-            if distance > myThreshold: # check if contig is close enough to add
+            if distance > thresh: # check if contig is close enough to add
                 if parent in matchDict:
                     matchDict[parent].append(child)
                 else:
@@ -218,7 +219,7 @@ def main(argv):
             allContigs[j] = co
             l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
-        myThreshold += 0.25
+        thresh += 0.25
 
     # process results from main loop to get clusters and distances
     #fOutC = open("{!s}_clusters".format(outputFile),'w')
