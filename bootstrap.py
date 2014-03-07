@@ -180,6 +180,8 @@ def main(argv):
             else:
                 wrongDists.append(distance)
             # ***
+        
+        pprint(matchDict)
 
         fMatch.close()
     
