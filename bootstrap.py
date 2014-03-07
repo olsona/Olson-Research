@@ -174,6 +174,7 @@ def main(argv):
                     matchDict[parent] = [child]
             else:
                 newClusters.append(child)
+                print child
             # *** check correctness of match
             cl = allContigs[parent].myCluster
             if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
@@ -181,8 +182,6 @@ def main(argv):
             else:
                 wrongDists.append(distance)
             # ***
-        
-        pprint.pprint(matchDict)
 
         fMatch.close()
     
