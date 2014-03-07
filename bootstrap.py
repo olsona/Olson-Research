@@ -166,6 +166,7 @@ def main(argv):
             distance = float(bestMatch[0])
             parent = dbNames[index]
             child = contigNames[row-2]
+            print distance
             if distance > myThreshold: # check if contig is close enough to add
                 if parent in matchDict:
                     matchDict[parent].append(child)
