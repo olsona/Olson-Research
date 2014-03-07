@@ -167,7 +167,7 @@ def main(argv):
             distance = float(bestMatch[0])
             parent = dbNames[index]
             child = contigNames[row-2]
-            print distance
+            #print distance
             if distance > myThreshold: # check if contig is close enough to add
                 if parent in matchDict:
                     matchDict[parent].append(child)
@@ -218,6 +218,7 @@ def main(argv):
             allContigs[j] = co
             l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
+        threshold += 0.25
 
     # process results from main loop to get clusters and distances
     #fOutC = open("{!s}_clusters".format(outputFile),'w')
