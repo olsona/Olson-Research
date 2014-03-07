@@ -11,3 +11,5 @@ bigUsageString = '-i, --ifile\t\tInput metagenomics FASTA file\n'+\
                 '-p, --path\t\tPath to RAIphy'
                 
 defaultSchedule = [1,2,5,10,20,50,100]
+
+myThreshold = 0.0

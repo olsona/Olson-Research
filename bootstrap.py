@@ -101,7 +101,7 @@ def main(argv):
     leng = len(coolingSchedule)
     for i in range(leng):
         workingFile = fNext
-        thr = int(coolingSchedule[i])*1000
+        thr = int(float(coolingSchedule[i])*1000.0) # so you can have a threshold of 1500
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
         #print("Thr = {!s}".format(thr))
@@ -130,7 +130,8 @@ def main(argv):
     wrongDists = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    for i in range(leng-1,-1,-1):
+    #for i in range(leng-1,-1,-1):
+    for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         print coolingSchedule[i]*1000
         DB = "{!s}_{!s}_DB".format(baseName,i)
@@ -153,6 +154,7 @@ def main(argv):
         
         # Construct matching dictionary for internal use
         matchDict = {}
+        newClusters = []
         fMatch = open(matches,'r')
         lns = fMatch.readlines()
         dbNames = lns[0].rstrip().split(",")
@@ -164,23 +166,27 @@ def main(argv):
             distance = float(bestMatch[0])
             parent = dbNames[index]
             child = contigNames[row-2]
-            if parent in matchDict:
-                matchDict[parent].append(child)
+            if distance > myThreshold: # check if contig is close enough to add
+                if parent in matchDict:
+                    matchDict[parent].append(child)
+                else:
+                    matchDict[parent] = [child]
             else:
-                matchDict[parent] = [child]
+                newClusters.append(child)
             # *** check correctness of match
             cl = allContigs[parent].myCluster
             if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
-                rightDists.append(distance)
+                    rightDists.append(distance)
             else:
                 wrongDists.append(distance)
             # ***
 
         fMatch.close()
     
-        # Make concatenated seeds for next DB
+        # Prepare next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
         l2 = open(fSeed + "-2",'w')
+        # Make concatenated seeds
         for j in matchDict.keys():
             cl = allContigs[j].myCluster
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
@@ -202,6 +208,9 @@ def main(argv):
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
+        for j in newClusters:
+            print j;
+
         l2.close()
 
     # process results from main loop to get clusters and distances
