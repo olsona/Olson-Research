@@ -213,7 +213,7 @@ def main(argv):
             allClusters[j] = cl
             co = Contig(j,myCluster=cl)
             allContigs[j] = co
-            l2.write("{!s}\t{!s}{!s}.fna\n").format(j,genePath,j)
+            l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j)
 
         l2.close()
 
