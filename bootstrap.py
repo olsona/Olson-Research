@@ -218,7 +218,7 @@ def main(argv):
             allContigs[j] = co
             l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
-        threshold += 0.25
+        myThreshold += 0.25
 
     # process results from main loop to get clusters and distances
     #fOutC = open("{!s}_clusters".format(outputFile),'w')
