@@ -134,6 +134,7 @@ def main(argv):
     for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         print coolingSchedule[i]*1000
+        print fSeed
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Process contigs to match
@@ -252,12 +253,12 @@ def main(argv):
     # ***
 
     # Get rid of files we're not using any more
-    os.system("rm -r {!s}".format(genePath))
+    #os.system("rm -r {!s}".format(genePath))
     #os.system("rm {!s}".format(DB))
     #os.system("rm {!s}".format(toMatch))
     #os.system("rm {!s}".format(fSeed))
-    for i in range(leng+1):
-        os.system("rm {!s}_{!s}*".format(baseName,i))
+    #for i in range(leng+1):
+    #    os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
