@@ -209,7 +209,11 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         for j in newClusters:
-            print j;
+            cl = Cluster(j)
+            allClusters[j] = cl
+            co = Contig(j,myCluster=cl)
+            allContigs[j] = co
+            l2.write("{!s}\t{!s}{!s}.fna\n").format(j,genePath,j)
 
         l2.close()
 
