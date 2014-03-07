@@ -130,8 +130,8 @@ def main(argv):
     wrongDists = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    #for i in range(leng-1,-1,-1):
-    for i in [leng-1]:
+    for i in range(leng-1,-1,-1):
+    #for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         print coolingSchedule[i]*1000
         print fSeed
