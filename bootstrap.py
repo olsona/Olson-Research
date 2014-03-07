@@ -181,7 +181,7 @@ def main(argv):
                 wrongDists.append(distance)
             # ***
         
-        pprint(matchDict)
+        pprint.pprint(matchDict)
 
         fMatch.close()
     
