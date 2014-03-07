@@ -219,7 +219,7 @@ def main(argv):
             allContigs[j] = co
             l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
-        thresh += 0.25
+        thresh += 0.4 #scores change!
 
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
