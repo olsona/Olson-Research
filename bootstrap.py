@@ -219,43 +219,43 @@ def main(argv):
         l2.close()
 
     # process results from main loop to get clusters and distances
-    fOutC = open("{!s}_clusters".format(outputFile),'w')
-    for c in allClusters:
-        fOutC.write("{!s}\n".format(allClusters[c].get_leaves()))
-    fOutC.close()
+    #fOutC = open("{!s}_clusters".format(outputFile),'w')
+    #for c in allClusters:
+    #    fOutC.write("{!s}\n".format(allClusters[c].get_leaves()))
+    #fOutC.close()
 
     # get distances between extant clusters
-    toMatch = baseName.rsplit("/",1)[0]+"/l1"
-    fSeed = baseName.rsplit("/",1)[0]+"/l2"
-    DB = baseName + "_finalDB"
-    print toMatch
-    print fSeed
-    print DB
-    os.system("ls {!s}* > {!s}".format(genePath,toMatch))
-    os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-    os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-    os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-    short = toMatch.rsplit("/",1)[1]
-    os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
-    os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-    fOutD = open("{!s}_distances".format(outputFile),'w')
-    fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-    for row in fDists:
-        fOutD.write(",".join(str(r) for r in row)+"\n")
-    fOutD.close()
+    #toMatch = baseName.rsplit("/",1)[0]+"/l1"
+    #fSeed = baseName.rsplit("/",1)[0]+"/l2"
+    #DB = baseName + "_finalDB"
+    #print toMatch
+    #print fSeed
+    #print DB
+    #os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+    #os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+    #os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+    #os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+    #short = toMatch.rsplit("/",1)[1]
+    #os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
+    #os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
+    #fOutD = open("{!s}_distances".format(outputFile),'w')
+    #fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+    #for row in fDists:
+    #    fOutD.write(",".join(str(r) for r in row)+"\n")
+    #fOutD.close()
 
     # get right/wrong distance distributions ***
-    fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
-    fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
-    fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
-    fOutDiff.close()
+    #fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
+    #fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
+    #fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
+    #fOutDiff.close()
     # ***
 
     # Get rid of files we're not using any more
     os.system("rm -r {!s}".format(genePath))
-    os.system("rm {!s}".format(DB))
-    os.system("rm {!s}".format(toMatch))
-    os.system("rm {!s}".format(fSeed))
+    #os.system("rm {!s}".format(DB))
+    #os.system("rm {!s}".format(toMatch))
+    #os.system("rm {!s}".format(fSeed))
     for i in range(leng+1):
         os.system("rm {!s}_{!s}*".format(baseName,i))
 
