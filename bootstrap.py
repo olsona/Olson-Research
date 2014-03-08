@@ -129,6 +129,7 @@ def main(argv):
     rightDists = []
     wrongDists = []
     thresh = myThreshold
+    newClusters = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
     for i in range(leng-1,-1,-1):
@@ -218,7 +219,6 @@ def main(argv):
             allContigs[j] = co
             l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
-        thresh += 0.33 #scores change!
 
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
