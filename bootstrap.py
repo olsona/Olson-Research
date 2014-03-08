@@ -223,7 +223,7 @@ def main(argv):
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
     for c in allClusters:
-        fOutC.write("{!s}\n".format(allClusters[c])
+        fOutC.write("{!s}\n".format(allClusters[c]))
     fOutC.close()
 
     # get distances between extant clusters
