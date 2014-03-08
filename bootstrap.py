@@ -199,7 +199,7 @@ def main(argv):
             _, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
             fpc.write(seq)
             os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
-            nCo = Contig(newContig,myCluster = cl)
+            nCo = Contig(newContig, myCluster = cl)
             cl.root = newContig
             cl.addNode(newContig, j)
             for v in matchDict[j]:
@@ -224,7 +224,7 @@ def main(argv):
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
     for c in allClusters:
-        fOutC.write("{!s}\n".format(allClusters[c].get_leaves()))
+        fOutC.write("{!s}\n".format(allClusters[c])
     fOutC.close()
 
     # get distances between extant clusters
