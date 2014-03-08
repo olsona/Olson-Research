@@ -176,7 +176,6 @@ def main(argv):
                     matchDict[parent] = [child]
             else:
                 newClusters.append(child)
-                print child
             # *** check correctness of match
             cl = allContigs[parent].myCluster
             if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
