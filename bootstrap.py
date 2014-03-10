@@ -125,8 +125,6 @@ def main(argv):
         co = Contig(nm,myCluster=cl)
         allContigs[nm] = co
 
-    pprint.pprint(allContigs)
-
     ct = 0
     rightDists = []
     wrongDists = []
@@ -157,8 +155,6 @@ def main(argv):
         short = toMatch.rsplit("/",1)[1]
         os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
         os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
-        
-        pprint.pprint(allContigs)
         
         # Construct matching dictionary for internal use
         matchDict = {}
@@ -230,6 +226,7 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         for j in newClusters:
+            print j
             cl = Cluster(j)
             allClusters[j] = cl
             co = allContigs[j]
