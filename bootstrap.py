@@ -237,6 +237,7 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
         for cl in allContigs:
+            print cl
             print allContigs[cl].seed
             print allContigs[cl].closeList
             print
