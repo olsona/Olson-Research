@@ -184,7 +184,7 @@ def main(argv):
             for l in line.rstrip().split(", ")[1:]:
                 entry = l.split(":")
                 dist = float(entry[0])
-                if dist >= (1.0-close)*distance:
+                if dist >= (1.0-close)*bestDist:
                     ind = int(entry[1])
                     name = dbNames[ind]
                     
