@@ -193,9 +193,9 @@ def main(argv):
             # *** check correctness of match
             cl = allContigs[parent].myCluster
             if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
-                    rightDists.append(bestDist)
+                    rightDists.append(bestScore)
             else:
-                wrongDists.append(bestDist)
+                wrongDists.append(bestScore)
             # ***
 
         fMatch.close()
