@@ -41,7 +41,7 @@ class Cluster:
         if self.root is None or self.dict is None:
             return []
         else:
-            return get_leaves(self).append(self.root)
+            return self.get_leaves().append(self.root)
 
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
 
