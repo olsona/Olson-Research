@@ -220,6 +220,7 @@ def main(argv):
 				co = allContigs[v]
 				for m in co.goodMatches:
                     cl.addMatch(m)
+                    print "Match added"
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
