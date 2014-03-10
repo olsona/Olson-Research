@@ -12,4 +12,6 @@ bigUsageString = '-i, --ifile\t\tInput metagenomics FASTA file\n'+\
                 
 defaultSchedule = [1,2,5,10,20,50,100]
 
-myThreshold = -0.75
+matchThreshold = -0.75
+
+closeThreshold = 0.1

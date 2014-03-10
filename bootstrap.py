@@ -125,15 +125,18 @@ def main(argv):
         co = Contig(nm,myCluster=cl)
         allContigs[nm] = co
 
+    pprint.pprint(allContigs)
+
     ct = 0
     rightDists = []
     wrongDists = []
-    thresh = myThreshold
+    thresh = matchThreshold
+    close = closeThreshold
     newClusters = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    for i in range(leng-1,-1,-1):
-    #for i in [leng-1]:
+    #for i in range(leng-1,-1,-1):
+    for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         print coolingSchedule[i]*1000
         print fSeed
@@ -155,6 +158,8 @@ def main(argv):
         os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
         os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
         
+        pprint.pprint(allContigs)
+        
         # Construct matching dictionary for internal use
         matchDict = {}
         newClusters = []
@@ -163,26 +168,32 @@ def main(argv):
         dbNames = lns[0].rstrip().split(",")
         contigNames = lns[1].rstrip().split(",")
         for row in range(2,len(lns)):
-            l = lns[row]
-            bestMatch = l.rstrip().split(", ")[0].split(":")
-            index = int(bestMatch[1])
-            distance = float(bestMatch[0])
-            parent = dbNames[index]
+            line = lns[row]
+            bestMatch = line.rstrip().split(", ")[0].split(":")
+            bestIndex = int(bestMatch[1])
+            bestDist = float(bestMatch[0])
+            parent = dbNames[bestIndex]
             child = contigNames[row-2]
-            #print distance
-            if distance > thresh: # check if contig is close enough to add
+            if bestDist > thresh: # check if contig is close enough to add
                 if parent in matchDict:
                     matchDict[parent].append(child)
                 else:
                     matchDict[parent] = [child]
             else:
                 newClusters.append(child)
+            for l in line.rstrip().split(", ")[1:]:
+                entry = l.split(":")
+                dist = float(entry[0])
+                if dist >= (1.0-close)*distance:
+                    ind = int(entry[1])
+                    name = dbNames[ind]
+                    
             # *** check correctness of match
             cl = allContigs[parent].myCluster
             if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
-                    rightDists.append(distance)
+                    rightDists.append(bestDist)
             else:
-                wrongDists.append(distance)
+                wrongDists.append(bestDist)
             # ***
 
         fMatch.close()
@@ -223,7 +234,7 @@ def main(argv):
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
     for c in allClusters:
-        fOutC.write("{!s}\n".format(allClusters[c]))
+        fOutC.write("{!s}\n".format(allClusters[c].get_All()))
     fOutC.close()
 
     # get distances between extant clusters

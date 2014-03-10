@@ -1,16 +1,20 @@
 from bootstrapUtils import *
 
 class Cluster:
-    def __init__(self, seed, dict = None, root = None):
+    def __init__(self, seed, dict = None, root = None, closeList = None):
         self.seed = seed
         if dict is None:
             self.dict = {}
         else:
             self.dict = dict
         if root is None:
-            self.root = None
+            self.root = self.seed
         else:
             self.root = root
+        if closeList is None:
+            self.closeList = {}
+        else:
+            self.closeList = closeList
 
     def __str__(self):
         return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.get_leaves())
@@ -33,6 +37,11 @@ class Cluster:
         else:
             self.dict[parent] = [child]
 
+    def get_All(self):
+        if self.root is None or self.dict is None:
+            return []
+        else:
+            return get_leaves(self.dict, self.root).append(self.root)
 
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
 
