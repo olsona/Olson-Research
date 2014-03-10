@@ -201,6 +201,7 @@ def main(argv):
         l2 = open(fSeed + "-2",'w')
         # Make concatenated seeds
         for j in matchDict.keys():
+            print j
             cl = allContigs[j].myCluster
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
@@ -226,7 +227,6 @@ def main(argv):
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
         for j in newClusters:
-            print j
             cl = Cluster(j)
             allClusters[j] = cl
             co = allContigs[j]
