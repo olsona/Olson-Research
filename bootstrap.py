@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint, pickle
+import sys, getopt, string, os, re, pprint, pickle, matplotlib.pyplot
 from bootstrapConstants import *
 from bootstrapUtils import *
 from bootstrapClasses import *
@@ -271,6 +271,13 @@ def main(argv):
     # get right/wrong distance distributions ***
     dists={"right":rightDists,"wrong":wrongDists}
     pickle.dump(dists,open("{!s}_right_wrong_distances".format(outputFile),"wb"))
+    for i in rightDists:
+        rdata = rightDists[i]
+        wdata = wrongDists[i]
+        bins = [float(j)/100.0 for j in range(-100,101)]
+        pyplot.hist(rdata, bins, alpha=0.5)
+        pyplot.hist(wdata, bins, alpha=0.5)
+        pyplot.savefig("{!s}.pdf".format(i), bbox_inches='tight')
     # ***
 
     # Get rid of files we're not using any more
