@@ -2,7 +2,8 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint, pickle, matplotlib.pyplot
+import sys, getopt, string, os, re, pprint, pickle
+import matplotlib.pyplot as plt
 from bootstrapConstants import *
 from bootstrapUtils import *
 from bootstrapClasses import *
@@ -278,11 +279,11 @@ def main(argv):
         rdata = rightDists[i]
         wdata = wrongDists[i]
         bins = [float(j)/100.0 for j in range(-100,101)]
-        pyplot.hist(rdata, bins, normed=TRUE, alpha=0.5)
-        pyplot.hist(wdata, bins, normed=TRUE, alpha=0.5)
-        pyplot.xlabel("Score")
-        pyplot.title("Correct vs Incorrect Scores, {!s}".format(i))
-        pyplot.savefig("{!s}.pdf".format(i), bbox_inches='tight')
+        plt.hist(rdata, bins, normed=TRUE, alpha=0.5)
+        plt.hist(wdata, bins, normed=TRUE, alpha=0.5)
+        plt.xlabel("Score")
+        plt.title("Correct vs Incorrect Scores, {!s}".format(i))
+        plt.savefig("{!s}.pdf".format(i), bbox_inches='tight')
     # ***
 
     # Get rid of files we're not using any more
