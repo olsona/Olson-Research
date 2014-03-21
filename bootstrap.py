@@ -2,10 +2,11 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint
+import sys, getopt, string, os, re, pprint, pickle
 from bootstrapConstants import *
 from bootstrapUtils import *
 from bootstrapClasses import *
+#from bootstrapFunctions import *
 
 def main(argv):
     # get inputs, check validity
@@ -13,9 +14,10 @@ def main(argv):
     outputFile = ''
     coolingSchedule = []
     raiPath = ''
+    matchLevel = ''
     # Command line arguments
     try:
-        opts, args = getopt.getopt(argv,"hi:o:r:c:p:",["ifile=","ofile=","reference=","db=","schedule=","path="])
+        opts, args = getopt.getopt(argv,"hi:o:r:c:p:m:",["ifile=","ofile=","reference=","db=","schedule=","path=","matchlevel="])
     except getopt.GetoptError:
         print usageString
         sys.exit(2)
@@ -29,9 +31,11 @@ def main(argv):
         elif opt in ("-o", "--ofile"):
             outputFile = arg
         elif opt in ("-c", "--schedule"):
-            coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
+            coolingSchedule = [float(n) for n in arg.lstrip()[1:-1].split(',')]
         elif opt in ("-p", "--path:"):
             raiPath = arg
+        elif opt in ("-m", "--matchlevel:"):
+            matchLevel = arg
     if len(inputFile) == 0:
         print 'Missing argument: -i'
         print usageString
@@ -46,7 +50,9 @@ def main(argv):
         sys.exit(2)
     if len(coolingSchedule) == 0:
         coolingSchedule = defaultSchedule
-    
+    if len(matchLevel) == 0:
+        matchLevel = 'species'
+
     # Checking validity of inputs
     if raiPath[-1] != "/":
         raiPath = raiPath + "/"
@@ -101,7 +107,7 @@ def main(argv):
     leng = len(coolingSchedule)
     for i in range(leng):
         workingFile = fNext
-        thr = int(float(coolingSchedule[i])*1000.0) # so you can have a threshold of 1500
+        thr = int(float(coolingSchedule[i])*1000.0) # float so you can have a threshold of 1500
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
         #print("Thr = {!s}".format(thr))
@@ -126,18 +132,19 @@ def main(argv):
         allContigs[nm] = co
 
     ct = 0
-    rightDists = []
-    wrongDists = []
+    rightDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
+    wrongDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
     thresh = matchThreshold
     close = closeThreshold
-    newClusters = []
+    #newClusters = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    #for i in range(leng-1,-1,-1):
-    for i in [leng-1]:
+    for i in range(leng-1,-1,-1):
+    #for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         print coolingSchedule[i]*1000
         print fSeed
+        iterString = "{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1])
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Process contigs to match
@@ -163,6 +170,8 @@ def main(argv):
         lns = fMatch.readlines()
         dbNames = lns[0].rstrip().split(",")
         contigNames = lns[1].rstrip().split(",")
+        for d in dbNames:
+            matchDict[d] = []
         for row in range(2,len(lns)):
             line = lns[row]
             bestMatch = line.rstrip().split(", ")[0].split(":")
@@ -171,27 +180,25 @@ def main(argv):
             parent = dbNames[bestIndex]
             child = contigNames[row-2]
             co = allContigs[child]
-            if bestScore > thresh: # check if contig is close enough to add
-                if parent in matchDict:
-                    matchDict[parent].append(child)
-                else:
-                    matchDict[parent] = [child]
-            else:
-                newClusters.append(child)
-            for l in line.rstrip().split(", ")[1:]:
-                entry = l.split(":")
-                score = float(entry[0])
-                if score >= (1.0-close)*bestScore:
-                    ind = int(entry[1])
-                    name = dbNames[ind]
-                    co.goodMatches.append([name,score])
+            #if bestScore > thresh: # check if contig is close enough to add
+                matchDict[parent].append(child)
+            #else:
+            #    newClusters.append(child)
+            #for l in line.rstrip().split(", ")[1:]:
+            #    entry = l.split(":")
+            #    score = float(entry[0])
+            #    if score >= (1.0-close)*bestScore:
+            #        ind = int(entry[1])
+            #        name = dbNames[ind]
+            #        co.goodMatches.append([name,score])
 
             # *** check correctness of match
             cl = allContigs[parent].myCluster
-            if checkCorrectSpeciesOlsonFormat(cl.seed, child) == 1:
-                    rightDists.append(bestScore)
+            correct = correctnessDict[matchLevel](cl.seed, child)
+            if correct == 1:
+                rightDists[iterString].append(bestScore)
             else:
-                wrongDists.append(bestScore)
+                wrongDists[iterString].append(bestScore)
             # ***
 
         fMatch.close()
@@ -226,18 +233,13 @@ def main(argv):
             fpc.close()
             l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
             ct += 1
-        for j in newClusters:
-            cl = Cluster(j)
-            allClusters[j] = cl
-            co = allContigs[j]
-            co.myCluster = cl
-            l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
+        #for j in newClusters:
+        #    cl = Cluster(j)
+        #    allClusters[j] = cl
+        #    co = allContigs[j]
+        #    co.myCluster = cl
+        #    l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
         l2.close()
-        for cl in allContigs:
-            print cl
-            print allContigs[cl].seed
-            print allContigs[cl].closeList
-            print
 
     # process results from main loop to get clusters and distances
     fOutC = open("{!s}_clusters".format(outputFile),'w')
@@ -266,10 +268,8 @@ def main(argv):
     #fOutD.close()
 
     # get right/wrong distance distributions ***
-    #fOutDiff = open("{!s}_right_wrong_distances".format(outputFile),'w')
-    #fOutDiff.write("Correct:\n" + ",".join(str(r) for r in rightDists) + "\n")
-    #fOutDiff.write("Incorrect:\n" + ",".join(str(w) for w in wrongDists) + "\n")
-    #fOutDiff.close()
+    dists={"right":rightDists,"wrong":wrongDists}
+    pickle.dump(dists,open("{!s}_right_wrong_distances".format(outputFile),"wb"))
     # ***
 
     # Get rid of files we're not using any more
