@@ -279,8 +279,8 @@ def main(argv):
         rdata = rightDists[i]
         wdata = wrongDists[i]
         bins = [float(j)/100.0 for j in range(-100,101)]
-        plt.hist(rdata, bins, normed=TRUE, alpha=0.5)
-        plt.hist(wdata, bins, normed=TRUE, alpha=0.5)
+        plt.hist(rdata, bins, normed=True, alpha=0.5)
+        plt.hist(wdata, bins, normed=True, alpha=0.5)
         plt.xlabel("Score")
         plt.title("Correct vs Incorrect Scores, {!s}".format(i))
         plt.savefig("{!s}.pdf".format(i), bbox_inches='tight')
