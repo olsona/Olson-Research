@@ -134,6 +134,7 @@ def main(argv):
     ct = 0
     rightDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
     wrongDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
+    pprint.pprint(rightDists)
     thresh = matchThreshold
     close = closeThreshold
     #newClusters = []
@@ -142,8 +143,8 @@ def main(argv):
     for i in range(leng-1,-1,-1):
     #for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
-        print coolingSchedule[i]*1000
-        print fSeed
+        #print coolingSchedule[i]*1000
+        #print fSeed
         iterString = "{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i-1])
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
@@ -209,7 +210,7 @@ def main(argv):
         l2 = open(fSeed + "-2",'w')
         # Make concatenated seeds
         for j in matchDict.keys():
-            print j
+            #print j
             cl = allContigs[j].myCluster
             newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
             fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
@@ -225,7 +226,7 @@ def main(argv):
                 co = allContigs[v]
                 for m in co.goodMatches:
                     cl.addMatch(m)
-                    print "Match added"
+                    #print "Match added"
                 _, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
                 fpc.write(seq)
                 os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
