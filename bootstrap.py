@@ -132,6 +132,7 @@ def main(argv):
         allContigs[nm] = co
 
     ct = 0
+    print coolingSchedule
     rightDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
     wrongDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
     pprint.pprint(rightDists)
@@ -146,6 +147,7 @@ def main(argv):
         #print coolingSchedule[i]*1000
         #print fSeed
         iterString = "{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i-1])
+        print iterString
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Process contigs to match
