@@ -141,7 +141,7 @@ def main(argv):
     #newClusters = []
     
     # Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
-    for i in range(leng-1,-1,-1):
+    for i in range(leng-1,0,-1):
     #for i in [leng-1]:
         # Make DB out of fSeed, whatever it is right now
         #print coolingSchedule[i]*1000
@@ -278,8 +278,10 @@ def main(argv):
         rdata = rightDists[i]
         wdata = wrongDists[i]
         bins = [float(j)/100.0 for j in range(-100,101)]
-        pyplot.hist(rdata, bins, alpha=0.5)
-        pyplot.hist(wdata, bins, alpha=0.5)
+        pyplot.hist(rdata, bins, normed=TRUE, alpha=0.5)
+        pyplot.hist(wdata, bins, normed=TRUE, alpha=0.5)
+        pyplot.xlabel("Score")
+        pyplot.title("Correct vs Incorrect Scores, {!s}".format(i))
         pyplot.savefig("{!s}.pdf".format(i), bbox_inches='tight')
     # ***
 
