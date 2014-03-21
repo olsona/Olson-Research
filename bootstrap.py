@@ -181,7 +181,8 @@ def main(argv):
             child = contigNames[row-2]
             co = allContigs[child]
             #if bestScore > thresh: # check if contig is close enough to add
-                matchDict[parent].append(child)
+            #    matchDict[parent].append(child)
+            matchDict[parent].append(child)
             #else:
             #    newClusters.append(child)
             #for l in line.rstrip().split(", ")[1:]:
