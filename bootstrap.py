@@ -31,7 +31,7 @@ def main(argv):
         elif opt in ("-o", "--ofile"):
             outputFile = arg
         elif opt in ("-c", "--schedule"):
-            coolingSchedule = [float(n) for n in arg.lstrip()[1:-1].split(',')]
+            coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
         elif opt in ("-p", "--path:"):
             raiPath = arg
         elif opt in ("-m", "--matchlevel:"):
@@ -107,7 +107,7 @@ def main(argv):
     leng = len(coolingSchedule)
     for i in range(leng):
         workingFile = fNext
-        thr = int(float(coolingSchedule[i])*1000.0) # float so you can have a threshold of 1500
+        thr = coolingSchedule[i]*1000
         bgr = "{!s}_{!s}_next".format(baseName,i)
         smlr = "{!s}_{!s}".format(baseName, i)
         #print("Thr = {!s}".format(thr))
