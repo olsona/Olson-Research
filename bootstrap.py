@@ -81,7 +81,7 @@ def main(argv):
 
     # properly format input file
     f = open(inputFile, 'r')
-    baseName = inputFile.rsplit(".",1)[0]
+    baseName = inputFile.rsplit(".",1)[0]+"_working"
     ln = f.readline()
     if string.find(ln,"\t") == -1:
         # convert to contiguous line AND tabbed format
@@ -290,12 +290,12 @@ def main(argv):
     # ***
 
     # Get rid of files we're not using any more
-    #os.system("rm -r {!s}".format(genePath))
-    #os.system("rm {!s}".format(DB))
-    #os.system("rm {!s}".format(toMatch))
-    #os.system("rm {!s}".format(fSeed))
-    #for i in range(leng+1):
-    #    os.system("rm {!s}_{!s}*".format(baseName,i))
+    os.system("rm -r {!s}".format(genePath))
+    os.system("rm {!s}".format(DB))
+    os.system("rm {!s}".format(toMatch))
+    os.system("rm {!s}".format(fSeed))
+    for i in range(leng+1):
+        os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
