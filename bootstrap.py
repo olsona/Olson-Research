@@ -3,6 +3,7 @@
 '''bootstrap.py - wrapper class for my MS project.'''
 
 import sys, getopt, string, os, re, pprint, pickle
+# http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -208,12 +209,13 @@ def main(argv):
         # *** find out correctness distribution
         rdata = rightDists[iterString]
         wdata = wrongDists[iterString]
-        bins = [float(j)/100.0 for j in range(-100,101)]
-        plt.hist(rdata, bins, normed=True, alpha=0.5)
-        plt.hist(wdata, bins, normed=True, alpha=0.5)
+        bins = [float(j)/20.0 for j in range(-20,21)]
+        plt.hist(rdata, bins,normed=1, facecolor='blue',alpha=0.5,label="Right distances")
+        plt.hist(wdata, bins,normed=1, facecolor='red',alpha=0.5,label="Wrong distances")
         plt.xlabel("Score")
         plt.title("Correct vs Incorrect Scores, {!s}".format(iterString))
-        plt.savefig("{!s}.pdf".format(iterString), bbox_inches='tight')
+        plt.legend()
+        plt.savefig("{!s}_{!s}.pdf".format(baseName,iterString), bbox_inches='tight')
         # ***
 
         fMatch.close()
