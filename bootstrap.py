@@ -209,13 +209,14 @@ def main(argv):
         # *** find out correctness distribution
         rdata = rightDists[iterString]
         wdata = wrongDists[iterString]
-        bins = [float(j)/20.0 for j in range(-20,21)]
+        bins = [float(j)/20.0 for j in range(-40,41)]
         plt.hist(rdata, bins,normed=1, facecolor='blue',alpha=0.5,label="Right distances")
         plt.hist(wdata, bins,normed=1, facecolor='red',alpha=0.5,label="Wrong distances")
         plt.xlabel("Score")
         plt.title("Correct vs Incorrect Scores, {!s}".format(iterString))
         plt.legend()
-        plt.savefig("{!s}_{!s}.pdf".format(baseName,iterString), bbox_inches='tight')
+        plt.savefig("{!s}_{!s}.pdf".format(outputFile,iterString), bbox_inches='tight')
+        plt.clf()
         # ***
 
         fMatch.close()
