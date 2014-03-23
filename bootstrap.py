@@ -137,7 +137,7 @@ def main(argv):
 	ct = 0
 	rightDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
 	wrongDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
-    
+	
 	thresh = matchThreshold
 	close = closeThreshold
 	#newClusters = []
@@ -298,8 +298,8 @@ def main(argv):
 	pickle.dump(dists,open("{!s}_right_wrong_distances".format(outputFile),"wb"))
 	# ***
 
-    pickle.dump(allClusters,open("{!s}_clusters_pickle".format(outputFile),"wb"))
-    pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
+	pickle.dump(allClusters,open("{!s}_clusters_pickle".format(outputFile),"wb"))
+	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# Get rid of files we're not using any more
 	os.system("rm -r {!s}".format(genePath))
