@@ -206,8 +206,20 @@ def main(argv):
                 wrongDists[iterString].append(bestScore)
             # ***
 
+        # *** find out correctness distribution
+        rdata = rightDists[iterString]
+        wdata = wrongDists[iterString]
+        bins = [float(j)/100.0 for j in range(-100,101)]
+        print bins
+        plt.hist(rdata, bins, normed=True, alpha=0.5)
+        plt.hist(wdata, bins, normed=True, alpha=0.5)
+        plt.xlabel("Score")
+        plt.title("Correct vs Incorrect Scores, {!s}".format(iterString))
+        plt.savefig("{!s}.pdf".format(iterString), bbox_inches='tight')
+        # ***
+
         fMatch.close()
-    
+
         # Prepare next DB
         fSeed = "{!s}_{!s}_seed".format(baseName, i)
         l2 = open(fSeed + "-2",'w')
@@ -275,15 +287,6 @@ def main(argv):
     # get right/wrong distance distributions ***
     dists={"right":rightDists,"wrong":wrongDists}
     pickle.dump(dists,open("{!s}_right_wrong_distances".format(outputFile),"wb"))
-    for i in rightDists:
-        rdata = rightDists[i]
-        wdata = wrongDists[i]
-        bins = [float(j)/100.0 for j in range(-100,101)]
-        plt.hist(rdata, bins, normed=True, alpha=0.5)
-        plt.hist(wdata, bins, normed=True, alpha=0.5)
-        plt.xlabel("Score")
-        plt.title("Correct vs Incorrect Scores, {!s}".format(i))
-        plt.savefig("{!s}.pdf".format(i), bbox_inches='tight')
     # ***
 
     # Get rid of files we're not using any more
