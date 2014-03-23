@@ -135,8 +135,8 @@ def main(argv):
 		co = Contig(nm,myCluster=cl)
 		allContigs[nm] = co
 	ct = 0
-	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1])).zfill(2):[] for i in range(leng-1)}
-	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1])).zfill(2):[] for i in range(leng-1)}
+	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	pprint.pprint(rightDists)
 	
 	thresh = matchThreshold
