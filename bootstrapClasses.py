@@ -15,7 +15,7 @@ class Cluster:
             self.closeList = {}
         else:
             self.closeList = closeList
-        print self.seed
+        #print self.seed
 
     def __str__(self):
         return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.get_leaves())
