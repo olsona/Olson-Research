@@ -3,6 +3,8 @@
 '''bootstrap.py - wrapper class for my MS project.'''
 
 import sys, getopt, string, os, re, pprint, pickle
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from bootstrapConstants import *
 from bootstrapUtils import *
