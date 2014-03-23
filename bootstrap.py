@@ -110,7 +110,6 @@ def main(argv):
     ensureDir(genePath)
     leng = len(coolingSchedule)
     for i in range(leng):
-        print i
         workingFile = fNext
         thr = coolingSchedule[i]*1000
         bgr = "{!s}_{!s}_next".format(baseName,i)
@@ -122,8 +121,10 @@ def main(argv):
         fNext = bgr
 
     # Make initial seed file
+    print "Hello 1"
     fSeed = "{!s}_{!s}_seed".format(baseName, leng)
     os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
+    print "Hello 2"
     # initialize clusters and contigs
     allClusters = {}
     allContigs = {}
@@ -135,7 +136,7 @@ def main(argv):
         allClusters[nm] = cl
         co = Contig(nm,myCluster=cl)
         allContigs[nm] = co
-
+    print "Hello 3"
     ct = 0
     rightDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
     wrongDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
@@ -152,6 +153,7 @@ def main(argv):
         iterString = "{!s}-{!s}".format(coolingSchedule[i-1],coolingSchedule[i])
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+        print "Hello 4"
         # Process contigs to match
         matches = "{!s}_{!s}_matches".format(baseName,i)
         toMatch = "{!s}_{!s}".format(baseName,i)
