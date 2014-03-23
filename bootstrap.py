@@ -110,6 +110,7 @@ def main(argv):
     ensureDir(genePath)
     leng = len(coolingSchedule)
     for i in range(leng):
+        print i
         workingFile = fNext
         thr = coolingSchedule[i]*1000
         bgr = "{!s}_{!s}_next".format(baseName,i)
