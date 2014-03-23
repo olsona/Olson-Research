@@ -135,10 +135,8 @@ def main(argv):
         allContigs[nm] = co
 
     ct = 0
-    print coolingSchedule
     rightDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
     wrongDists = {"{!s}-{!s}".format(coolingSchedule[i],coolingSchedule[i+1]):[] for i in range(leng-1)}
-    pprint.pprint(rightDists)
     thresh = matchThreshold
     close = closeThreshold
     #newClusters = []
@@ -150,7 +148,6 @@ def main(argv):
         #print coolingSchedule[i]*1000
         #print fSeed
         iterString = "{!s}-{!s}".format(coolingSchedule[i-1],coolingSchedule[i])
-        print iterString
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Process contigs to match
@@ -212,7 +209,6 @@ def main(argv):
         rdata = rightDists[iterString]
         wdata = wrongDists[iterString]
         bins = [float(j)/100.0 for j in range(-100,101)]
-        print bins
         plt.hist(rdata, bins, normed=True, alpha=0.5)
         plt.hist(wdata, bins, normed=True, alpha=0.5)
         plt.xlabel("Score")
