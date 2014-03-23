@@ -137,6 +137,7 @@ def main(argv):
 	ct = 0
 	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1])).zfill(2):[] for i in range(leng-1)}
 	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1])).zfill(2):[] for i in range(leng-1)}
+    pprint.pprint(rightDists)
 	
 	thresh = matchThreshold
 	close = closeThreshold
@@ -218,7 +219,7 @@ def main(argv):
 		plt.legend()
 		plt.savefig("{!s}_{!s}_norm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
-
+        
 		plt.hist(rdata,bins,normed=0,facecolor='blue',alpha=0.5,label="Right distances")
 		plt.hist(wdata,bins,normed=0,facecolor='red',alpha=0.5,label="Wrong distances")
 		plt.xlabel("Score")
@@ -265,6 +266,7 @@ def main(argv):
 		#	 co = allContigs[j]
 		#	 co.myCluster = cl
 		#	 l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
+        print iterString
 		l2.close()
 
 	# process results from main loop to get clusters and distances
