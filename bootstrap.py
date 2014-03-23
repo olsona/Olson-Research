@@ -147,7 +147,7 @@ def main(argv):
         # Make DB out of fSeed, whatever it is right now
         #print coolingSchedule[i]*1000
         #print fSeed
-        iterString = "{!s}-{!s}".format(coolingSchedule[i-1],coolingSchedule[i])
+        iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
         DB = "{!s}_{!s}_DB".format(baseName,i)
         os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
         # Process contigs to match
