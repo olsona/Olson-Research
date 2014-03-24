@@ -56,8 +56,8 @@ def main(argv):
 		coolingSchedule = defaultSchedule
 	if len(matchLevel) == 0:
 		matchLevel = 'species'
-    elif matchLevel != 'genus':
-        matchLevel = 'species'
+	elif matchLevel != 'genus':
+		matchLevel = 'species'
 
 	# Checking validity of inputs
 	if raiPath[-1] != "/":
@@ -206,7 +206,7 @@ def main(argv):
 				rightDists[iterString].append(bestScore)
 			else:
 				wrongDists[iterString].append(bestScore)
-                print cl.seed, child
+				print cl.seed, child
 			# ***
 
 		# *** find out correctness distribution
@@ -226,7 +226,7 @@ def main(argv):
 		plt.hist(wdata,bins,normed=0,facecolor='red',alpha=0.5,label="Wrong distances")
 		plt.xlabel("Score")
 		plt.title("Correct vs Incorrect Scores UNNORMED, {!s}".format(iterString))
-        plt.legend()
+		plt.legend()
 		plt.savefig("{!s}_{!s}_unnorm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
 		# ***
