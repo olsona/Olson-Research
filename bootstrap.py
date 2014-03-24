@@ -149,7 +149,7 @@ def main(argv):
 		
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
-		scoreRAIphy(baseName,i,raiPath,fSeed,matches,allContigs)
+		scoreRAIphy(baseName,i,raiPath,fSeed,matches,toMatch,allContigs)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
