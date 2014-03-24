@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from bootstrapConstants import *
 from bootstrapUtils import *
 from bootstrapClasses import *
-#from bootstrapFunctions import *
+from bootstrapFunctions import *
 
 def main(argv):
 	# get inputs, check validity
@@ -140,38 +140,17 @@ def main(argv):
 	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	
-	thresh = matchThreshold
 	close = closeThreshold
-	#newClusters = []
 	
 	# Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 	for i in range(leng-1,0,-1):
-	#for i in [leng-1]:
 		# Make DB out of fSeed, whatever it is right now
-		#print coolingSchedule[i]*1000
-		#print fSeed
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
-		DB = "{!s}_{!s}_DB".format(baseName,i)
-		os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-		# Process contigs to match
-		matches = "{!s}_{!s}_matches".format(baseName,i)
-		toMatch = "{!s}_{!s}".format(baseName,i)
-		f = open(toMatch+"-2",'r')
-		for l in f.readlines():
-			sp = l.rstrip().split("\t")
-			nm = sp[0]
-			fi = sp[1]
-			co = Contig(nm,fi)
-			allContigs[nm] = co
-		# Match ith contigs to DB
-		os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
-		short = toMatch.rsplit("/",1)[1]
-		os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
-		os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+		
+        scoreRAIphy(baseName,i,raiPath,fSeed)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
-		newClusters = []
 		fMatch = open(matches,'r')
 		lns = fMatch.readlines()
 		dbNames = lns[0].rstrip().split(",")
@@ -186,11 +165,7 @@ def main(argv):
 			parent = dbNames[bestIndex]
 			child = contigNames[row-2]
 			co = allContigs[child]
-			#if bestScore > thresh: # check if contig is close enough to add
-			#	 matchDict[parent].append(child)
 			matchDict[parent].append(child)
-			#else:
-			#	 newClusters.append(child)
 			for l in line.rstrip().split(", ")[1:]:
 				 entry = l.split(":")
 				 score = float(entry[0])
@@ -206,7 +181,6 @@ def main(argv):
 				rightDists[iterString].append(bestScore)
 			else:
 				wrongDists[iterString].append(bestScore)
-				print cl.seed, child
 			# ***
 
 		# *** find out correctness distribution
@@ -263,12 +237,6 @@ def main(argv):
 			fpc.close()
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
-		#for j in newClusters:
-		#	 cl = Cluster(j)
-		#	 allClusters[j] = cl
-		#	 co = allContigs[j]
-		#	 co.myCluster = cl
-		#	 l2.write("{!s}\t{!s}{!s}.fna\n".format(j,genePath,j))
 		print iterString
 		l2.close()
 

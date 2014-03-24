@@ -23,3 +23,7 @@ correctnessDict = {
     "species":  checkCorrectSpeciesOlsonFormat,
     "genus":    checkCorrectGenusOlsonFormat,
 }
+
+scoringMethodDict = {
+    "raiphy":   scoreRAIphy,
+}
