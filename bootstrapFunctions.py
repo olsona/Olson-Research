@@ -1,12 +1,10 @@
 import os, sys
 from bootstrapClasses import *
 
-def scoreRAIphy(baseName,i,raiPath,fSeed,allContigs):
+def scoreRAIphy(baseName,i,raiPath,fSeed,matches,toMatch,allContigs):
 	DB = "{!s}_{!s}_DB".format(baseName,i)
 	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
 	# Process contigs to match
-	matches = "{!s}_{!s}_matches".format(baseName,i)
-	toMatch = "{!s}_{!s}".format(baseName,i)
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
