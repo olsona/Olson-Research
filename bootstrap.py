@@ -147,7 +147,7 @@ def main(argv):
 		# Make DB out of fSeed, whatever it is right now
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
-		scoreRAIphy(baseName,i,raiPath,fSeed)
+		scoreRAIphy(baseName,i,raiPath,fSeed,allContigs)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
