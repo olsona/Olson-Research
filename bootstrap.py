@@ -144,7 +144,6 @@ def main(argv):
 	
 	# Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 	for i in range(leng-1,0,-1):
-		# Make DB out of fSeed, whatever it is right now
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
 		DB = "{!s}_{!s}_DB".format(baseName,i)
@@ -169,7 +168,7 @@ def main(argv):
 			child = contigNames[row-2]
 			co = allContigs[child]
 			matchDict[parent].append(child)
-			for l in line.rstrip().split(", ")[1:]:
+			for l in line.rstrip().split(", ")[0:]:
 				 entry = l.split(":")
 				 score = float(entry[0])
 				 if score >= (1.0-close)*bestScore:
