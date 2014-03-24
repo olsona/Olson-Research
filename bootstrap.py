@@ -149,8 +149,8 @@ def main(argv):
 		
         DB = "{!s}_{!s}_DB".format(baseName,i)
         matches = "{!s}_{!s}_matches".format(baseName,i)
-		toMatch = "{!s}_{!s}".format(baseName,i)
-		scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs)
+        toMatch = "{!s}_{!s}".format(baseName,i)
+        scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
