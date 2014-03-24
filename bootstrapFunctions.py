@@ -1,3 +1,5 @@
+import os, sys
+
 def scoreRAIphy(baseName,i,raiPath,fSeed):
 	DB = "{!s}_{!s}_DB".format(baseName,i)
 	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
