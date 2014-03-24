@@ -148,7 +148,7 @@ def main(argv):
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
         DB = "{!s}_{!s}_DB".format(baseName,i)
-		matches = "{!s}_{!s}_matches".format(baseName,i)
+        matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
 		scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs)
 		
