@@ -56,6 +56,8 @@ def main(argv):
 		coolingSchedule = defaultSchedule
 	if len(matchLevel) == 0:
 		matchLevel = 'species'
+    elif matchLevel != 'genus':
+        matchLevel = 'species'
 
 	# Checking validity of inputs
 	if raiPath[-1] != "/":
@@ -137,7 +139,6 @@ def main(argv):
 	ct = 0
 	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	pprint.pprint(rightDists)
 	
 	thresh = matchThreshold
 	close = closeThreshold
@@ -205,6 +206,7 @@ def main(argv):
 				rightDists[iterString].append(bestScore)
 			else:
 				wrongDists[iterString].append(bestScore)
+                print cl.seed, child
 			# ***
 
 		# *** find out correctness distribution
@@ -224,6 +226,7 @@ def main(argv):
 		plt.hist(wdata,bins,normed=0,facecolor='red',alpha=0.5,label="Wrong distances")
 		plt.xlabel("Score")
 		plt.title("Correct vs Incorrect Scores UNNORMED, {!s}".format(iterString))
+        plt.legend()
 		plt.savefig("{!s}_{!s}_unnorm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
 		# ***
@@ -297,7 +300,7 @@ def main(argv):
 
 	# get right/wrong distance distributions ***
 	dists={"right":rightDists,"wrong":wrongDists}
-	pickle.dump(dists,open("{!s}_right_wrong_distances".format(outputFile),"wb"))
+	pickle.dump(dists,open("{!s}_right_wrong_distances_pickle".format(outputFile),"wb"))
 	# ***
 
 	pickle.dump(allClusters,open("{!s}_clusters_pickle".format(outputFile),"wb"))
