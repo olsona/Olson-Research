@@ -181,6 +181,7 @@ def main(argv):
 			correct = correctnessDict[matchLevel](cl.seed, child)
 			if correct == 1:
 				rightDists[iterString].append(bestScore)
+                print cl.seed, child
 			else:
 				wrongDists[iterString].append(bestScore)
 			# ***
