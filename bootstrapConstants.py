@@ -1,4 +1,5 @@
 from bootstrapUtils import *
+from bootstrapFunctions import *
 
 myMethods = ['raiphy']
 
