@@ -195,7 +195,7 @@ def main(argv):
 		mymax = max(max(rdata),max(wdata))
 		mymin = min(min(rdata),min(wdata))
 		
-		bins = numpy.linspace(mymin,mymax,100)
+		bins = numpy.linspace(mymin,mymax,40)
 		
 		plt.hist(rdata, bins, normed=1, facecolor='blue', alpha=0.5, label="Right distances")
 		plt.hist(wdata, bins, normed=1, facecolor='red', alpha=0.5, label="Wrong distances")
