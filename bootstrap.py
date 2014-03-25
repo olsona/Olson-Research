@@ -151,7 +151,7 @@ def main(argv):
 		toMatch = "{!s}_{!s}".format(baseName,i)
 		scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs)
 		
-        pprint.pprint(allClusters)
+                pprint.pprint(allClusters)
         
 		# Construct matching dictionary for internal use
 		matchDict = {}
