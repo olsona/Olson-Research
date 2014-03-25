@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint, pickle
+import sys, getopt, string, os, re, pprint, pickle, numpy
 # http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib
 matplotlib.use('Agg')
@@ -191,17 +191,11 @@ def main(argv):
 		# *** find out correctness distribution
 		rdata = rightDists[iterString]
 		wdata = wrongDists[iterString]
-		bins = [float(j)/20.0 for j in range(-60,61)]
 		
-		rsum = 0.0
-		for d in rdata:
-		    rsum += d
-		wsum = 0.0
-		for d in wdata:
-		    wsum += d
+		mymax = max(max(rdata),max(wdata))
+		mymin = min(min(rdata),min(wdata))
 		
-		print rsum, wsum
-		
+		bins = numpy.linspace(mymin,mymax,100)
 		
 		plt.hist(rdata, bins, normed=1, facecolor='blue', alpha=0.5, label="Right distances")
 		plt.hist(wdata, bins, normed=1, facecolor='red', alpha=0.5, label="Wrong distances")
