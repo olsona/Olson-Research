@@ -1,8 +1,9 @@
-import os, sys
+import os
 from bootstrapClasses import *
 
 def scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs):
-	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+	# os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
+	os.system("{!s}rait -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
 	# Process contigs to match
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
