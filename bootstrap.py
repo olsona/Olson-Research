@@ -191,24 +191,28 @@ def main(argv):
 		# *** find out correctness distribution
 		rdata = rightDists[iterString]
 		wdata = wrongDists[iterString]
-		bins = [float(j)/20.0 for j in range(-40,41)]
+		bins = [float(j)/20.0 for j in range(-60,61)]
 		
-		plt.hist(rdata, bins,normed=1, facecolor='blue',alpha=0.5,label="Right distances")
-		plt.hist(wdata, bins,normed=1, facecolor='red',alpha=0.5,label="Wrong distances")
+		plt.hist(rdata, bins, normed=1, facecolor='blue', alpha=0.5, label="Right distances")
+		plt.hist(wdata, bins, normed=1, facecolor='red', alpha=0.5, label="Wrong distances")
 		plt.xlabel("Score")
 		plt.title("Correct vs Incorrect Scores NORMED, {!s}".format(iterString))
 		plt.legend()
 		plt.savefig("{!s}_{!s}_norm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
 		
-		plt.hist(rdata,bins,normed=0,facecolor='blue',alpha=0.5,label="Right distances")
-		plt.hist(wdata,bins,normed=0,facecolor='red',alpha=0.5,label="Wrong distances")
+		print "Normed graphed"
+		
+		plt.hist(rdata,bins, normed=0, facecolor='blue', alpha=0.5, label="Right distances")
+		plt.hist(wdata,bins, normed=0, facecolor='red', alpha=0.5, label="Wrong distances")
 		plt.xlabel("Score")
 		plt.title("Correct vs Incorrect Scores UNNORMED, {!s}".format(iterString))
 		plt.legend()
 		plt.savefig("{!s}_{!s}_unnorm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
 		# ***
+		
+                print "Unnormed graphed"
 
 		fMatch.close()
 
