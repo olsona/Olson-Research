@@ -195,10 +195,10 @@ def main(argv):
 		
 		rsum = 0.0
 		for d in rdata:
-		    rsum += rdata[d]
+		    rsum += d
 		wsum = 0.0
 		for d in wdata:
-		    wsum += wdata[d]
+		    wsum += d
 		
 		print rsum, wsum
 		
