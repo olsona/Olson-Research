@@ -150,8 +150,6 @@ def main(argv):
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
 		scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs)
-		
-                pprint.pprint(allClusters)
         
 		# Construct matching dictionary for internal use
 		matchDict = {}
@@ -177,7 +175,7 @@ def main(argv):
 					 ind = int(entry[1])
 					 name = dbNames[ind]
 					 mco = allContigs[name]
-					 mcl = allClusters[mco]
+					 mcl = mo.myCluster
 					 clnm = mcl.seed
 					 co.goodMatches.append([clnm,score])
 
@@ -186,7 +184,6 @@ def main(argv):
 			correct = correctnessDict[matchLevel](cl.seed, child)
 			if correct == 1:
 				rightDists[iterString].append(bestScore)
-				print cl.seed, child
 			else:
 				wrongDists[iterString].append(bestScore)
 			# ***
