@@ -175,7 +175,7 @@ def main(argv):
 					 ind = int(entry[1])
 					 name = dbNames[ind]
 					 mcl = allClusters[name]
-					 clnm = mc.seed
+					 clnm = mcl.seed
 					 co.goodMatches.append([clnm,score])
 
 			# *** check correctness of match
