@@ -133,7 +133,7 @@ sub init {
     getopts("p:k:m");
     unless (@ARGV){
         print("\nUsage: countKmer.pl [-k 6 -p 4 -m] sequence_1.fa [sequence_2.fa ...]\n",
-        "\tFor each possible words in the kmer of lenght -k,\n",
+        "\tFor each possible words in the kmer of length -k,\n",
         "\tcount the number of time they are found in the fasta sequence file\n",
         "\t-k\tsize of the kmer to analyze. Default 6\n",
         "\t-m\twill count all possible kmer per sequences.\n",

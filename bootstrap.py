@@ -174,7 +174,8 @@ def main(argv):
 				 if score >= (1.0-close)*bestScore:
 					 ind = int(entry[1])
 					 name = dbNames[ind]
-					 mcl = allClusters[name]
+					 mco = allContigs[name]
+                     mcl = allClusters[mco]
 					 clnm = mcl.seed
 					 co.goodMatches.append([clnm,score])
 
