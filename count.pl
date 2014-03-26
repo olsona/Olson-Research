@@ -226,8 +226,8 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $Nw1h1 = $kminus1Counts->{$w1h_1};
         my $Nw2h = $kminus1Counts->{$w2h};
         my $Nw2h1 = $kminus2Counts->{$w2h_1};
-        my $Nhathat = ($Nw1h1+$Nw2h)/$Nw2h;
-		printf $resultsfh ":%.10f", $Nhathat;
+        printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
+		printf $resultsfh ":%.d", $Nw;
 	}
 	print $resultsfh "\n";
 
