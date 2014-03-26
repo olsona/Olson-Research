@@ -43,7 +43,7 @@ foreach my $mv (@matchvectors) {
         my $dv = $DBvectors[$i];
         my $cor = corr($mv, $dv);
         my $zc = $cor->query;
-        my %zhash = (cor, $zc, id, $i);
+        my %zhash = ('cor', $zc, 'ind', $i);
         push(@zrec, %zhash);
     }
     my @zsort = (sort byCor @zrec);
@@ -52,7 +52,7 @@ foreach my $mv (@matchvectors) {
 }
 
 sub byCor {
-    $a->{cor} <=> $b->{cor};
+    $a->{'cor'} <=> $b->{'cor'};
 }
 
 close(OUT);
