@@ -15,4 +15,5 @@ foreach my $dbl (@DBlines) {
     my @dbln = split ':', $dbl;
     shift @dbln;
     my @dbv = vector(@dbln);
+    print @dbv;
 }
