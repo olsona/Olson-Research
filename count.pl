@@ -117,8 +117,6 @@ sub countKmer {
 			if ( !exists $beenThere->{$word} ) {
 				# Increment this kmer's count
 				$kmerCounts->{$word}++;
-				# Increment the total count
-				$kmerTotalCount++;
 				# Mark this kmer as seen
 				$beenThere->{$word} = 1;
 			}
@@ -128,8 +126,6 @@ sub countKmer {
 
 			# Increment this kmer's count
 			$kmerCounts->{$word}++;
-			# Increment the total count
-			$kmerTotalCount++;
 		}
 	}
 }
