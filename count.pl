@@ -188,8 +188,8 @@ open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results fi
 my @allKmers = sort keys kmer_generator($KmerSize);
 
 # Write results header
-print $resultsfh 'Name';
-my @results = ();
+#print $resultsfh 'Name';
+#my @results = ();
 #foreach my $kmer (@allKmers) {
 #	print $resultsfh ':' . $kmer;
 #}
@@ -208,7 +208,8 @@ foreach my $inputName (sort keys %$inputFiles) {
 	my @results = ();
 	foreach my $kmer (@allKmers) {
 		my $freq = ( $kmerCounts->{$kmer} / $kmerTotalCount );
-		print $resultsfh ':' . $freq;
+		print $resultsfh ':';
+        printf "%.10f", $freq;
 	}
 	print $resultsfh "\n";
 
