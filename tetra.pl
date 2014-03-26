@@ -35,7 +35,7 @@ print OUT "$dbstr\n";
 my $mstr = join(',',@matchnames);
 print OUT "$mstr\n";
 
-my $dbLen = scalar $dbVectors;
+my $dbLen = scalar @dbVectors;
 
 foreach my $mv (@matchvectors) {
     my %zrec = ();
