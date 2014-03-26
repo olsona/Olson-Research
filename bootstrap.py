@@ -84,6 +84,7 @@ def main(argv):
 	# properly format input file
 	f = open(inputFile, 'r')
 	baseName = inputFile.rsplit(".",1)[0]+"_working"
+	newName = inputFile
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
 	        print "Ah hahahaha"
@@ -104,8 +105,9 @@ def main(argv):
 			else: # genetic lines
 				fN.write(ln.rstrip())
 			ln = f.readline()
+		fN.close()
+		
 	f.close()
-	fN.close()
 
 	# separate out files by size, using sepSizeListDownUp.pl
 	fNext = newName
