@@ -288,7 +288,7 @@ def main(argv):
 	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# Get rid of files we're not using any more
-	os.system("rm -r {!s}".format(genePath))
+	#os.system("rm -r {!s}".format(genePath))
 	#os.system("rm {!s}".format(DB))
 	#os.system("rm {!s}".format(toMatch))
 	#os.system("rm {!s}".format(fSeed))
