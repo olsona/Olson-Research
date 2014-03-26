@@ -2,13 +2,13 @@
 
 use strict;
 use warnings;
-use File::Slurp;
+use Statistics::Basic qw(:all nofill);
 
 my ($DBfile) = @ARGV;
 
 print $DBfile;
 
-my @DBlines = read_file($DBfile, chomp => 1);
+my @DBlines = `cat $DBfile`;
 my @DBvectors = ();
 foreach my $dbl (@DBlines) {
     #print $dbl;
