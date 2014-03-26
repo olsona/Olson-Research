@@ -223,7 +223,11 @@ foreach my $inputName (sort keys %$inputFiles) {
     
         my $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
         
-		printf $resultsfh ":%.10f", $Nhathat;
+        my $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
+        
+        my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
+        
+		printf $resultsfh ":%.10f", $ZM;
 	}
 	print $resultsfh "\n";
 
