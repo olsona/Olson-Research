@@ -146,6 +146,9 @@ def main(argv):
 	for i in range(leng-1,0,-1):
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
+		DB = "{!s}_{!s}_DB".format(baseName,i)
+                matches = "{!s}_{!s}_matches".format(baseName,i)
+                toMatch = "{!s}_{!s}".format(baseName,i)
 		scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
         
 		# Construct matching dictionary for internal use
@@ -287,10 +290,10 @@ def main(argv):
 	# Get rid of files we're not using any more
 	os.system("rm -r {!s}".format(genePath))
 	os.system("rm {!s}".format(DB))
-	#os.system("rm {!s}".format(toMatch))
-	#os.system("rm {!s}".format(fSeed))
-	#for i in range(leng+1):
-	#	os.system("rm {!s}_{!s}*".format(baseName,i))
+	os.system("rm {!s}".format(toMatch))
+	os.system("rm {!s}".format(fSeed))
+	for i in range(leng+1):
+		os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
