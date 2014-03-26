@@ -216,9 +216,9 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $w2h1	= substr($kmer, 1, $h_1-1);
 		my $w2h		= substr($kmer, 1, $h_1);
 		my $Nw		= $k0Counts->{$kmer};
-		my $Nw1h1	= $k1Counts->{$w1h_1};
+		my $Nw1h1	= $k1Counts->{$w1h1};
 		my $Nw2h	= $k1Counts->{$w2h};
-		my $Nw2h1	= $k2Counts->{$w2h_1};
+		my $Nw2h1	= $k2Counts->{$w2h1};
 		printf "%s: %d; %s: %d; %s: %d; %s: %d\n", $kmer, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
 		printf $resultsfh ":%.d", $Nw;
 	}
