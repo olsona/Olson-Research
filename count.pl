@@ -222,7 +222,6 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $w1h_1 = substr $kmer, 0, $h_1;
         my $w2h_1 = substr $kmer, 1, $h_1-1;
         my $w2h = substr $kmer, 1, $h_1;
-        printf "%s %s %s %s\n", $kmer, $w1h_1, $w2h_1, $w2h;
 		my $Nw = $kmerCounts->{$kmer};
         my $Nw1h1 = $kminus1Counts->{$w1h_1};
         my $Nw2h = $kminus1Counts->{$w2h};
