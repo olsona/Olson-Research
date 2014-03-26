@@ -190,10 +190,10 @@ my @allKmers = sort keys kmer_generator($KmerSize);
 # Write results header
 print $resultsfh 'Name';
 my @results = ();
-foreach my $kmer (@allKmers) {
-	print $resultsfh ':' . $kmer;
-}
-print $resultsfh "\n";
+#foreach my $kmer (@allKmers) {
+#	print $resultsfh ':' . $kmer;
+#}
+#print $resultsfh "\n";
 
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
