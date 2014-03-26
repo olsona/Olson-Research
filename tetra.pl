@@ -39,7 +39,7 @@ my $dbLen = @DBvectors;
 
 foreach my $mv (@matchvectors) {
     my %zrec = ();
-    for (my $i=0; $i < dbLen; i++) {
+    foreach my $i (0..$dbLen) {
         my $dv = $DBvectors[$i];
         my $cor = corr($mv, $dv);
         my $zc = $cor->query;
