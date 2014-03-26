@@ -45,14 +45,14 @@ sub processFile {
 
 	#generate all possible word for a k-mer
 	print STDERR "Generating all the posible sequences $KmerSize long\n";
-    
-    my $k = $KmerSize;
-    my $k1 = $KmerSize-1;
-    my $k2 = $KmerSize-2;
-    
-	my $kmerCounts = kmer_generator($k);
-    my $kminus1Counts = kmer_generator($k1);
-    my $kminus2Counts = kmer_generator($k2);
+	
+	my $k0 = $KmerSize;
+	my $k1 = $KmerSize - 1;
+	my $k2 = $KmerSize - 2;
+	
+	my $k0Counts = kmer_generator($k0);
+	my $k1Counts = kmer_generator($k1);
+	my $k2Counts = kmer_generator($k2);
 
 	print STDERR "Counting the number of $KmerSize nt long kmers in $file\n";
 	open(my $FH, $file) || die "Can't open file $file\n";
@@ -67,9 +67,9 @@ sub processFile {
 
 			# Process previous sequence, if exists
 			if (length($seq) > 0) {
-				countKmer(\$seq, $kmerCounts);
-                countKmer(\$seq, $kminus1Counts);
-                countKmer(\$seq, $kminus2Counts);
+				countKmer($k0, $seq, $k0Counts);
+				countKmer($k1, $seq, $k1Counts);
+				countKmer($k2, $seq, $k2Counts);
 			}
 
 			# Setup for reading new sequence
@@ -84,29 +84,25 @@ sub processFile {
 
 	# Process final sequence, if exists
 	if (length($seq) > 0) {
-		countKmer(\$seq, $kmerCounts);
-        countKmer(\$seq, $kminus1Counts);
-        countKmer(\$seq, $kminus2Counts);
+        countKmer($k0, $seq, $k0Counts);
+        countKmer($k1, $seq, $k1Counts);
+        countKmer($k2, $seq, $k2Counts);
 	}
 
 	close($FH);
 
-    my %allKmerInfo = ($k, $kmerCounts, $k1, $kminus1Counts, $k2, $kminus2Counts);
-    
 	# Return results
-	return (%allKmerInfo);
+	return ($k0Counts, $k1Counts, $k2Counts);
 }
 
 sub countKmer {
-	my $seq = ${ $_[0] };
-	my $kmerCounts = $_[1];
-	my $kmerLength = $KmerSize;
+    my ($kmerSize, $seq, $kmerCounts) = @_;
 	my $beenThere = {};
 
 	# Iterate through all kmers in the sequence
-	for (my $i = 0; $i <= (length($seq) - $kmerLength); $i++) {
+	for (my $i = 0; $i <= (length($seq) - $kmerSize); $i++) {
 		# Extract the next kmer from the sequence
-		my $word = substr($seq, $i, $kmerLength);
+		my $word = substr($seq, $i, $kmerSize);
 
 		# Skip unless this word is one of our enumerated kmers
 		next unless exists $kmerCounts->{$word};
@@ -189,9 +185,9 @@ my $inputFiles = readIndex($indexFile);
 open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results file: $!\n";
 
 # Generate list of all kmers for results printing
-my @allKmers = sort keys kmer_generator($KmerSize);
-my @minus1Kmers = sort keys kmer_generator($KmerSize - 1);
-my @minus2Kmers = sort keys kmer_generator($KmerSize - 2);
+my @allK0Kmers = sort keys kmer_generator($KmerSize);
+my @allK1Kmers = sort keys kmer_generator($KmerSize - 1);
+my @allK2Kmers = sort keys kmer_generator($KmerSize - 2);
 
 # Write results header
 #print $resultsfh 'Name';
@@ -209,24 +205,21 @@ foreach my $inputName (sort keys %$inputFiles) {
 	print STDERR "Processing File: $inputName - $inputFile\n";
 
 	# Read the input file
-	my (%kmerInfo) = processFile($inputFile);
-
-    my $kmerCounts = $kmerInfo{$KmerSize};
-    my $kminus1Counts = $kmerInfo{$KmerSize-1};
-    my $kminus2Counts = $kmerInfo{$KmerSize-2};
-    
+	my ($k0Counts, $k1Counts, $k2Counts) = processFile($inputFile);
+	
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
-	foreach my $kmer (@allKmers) {
-        my $w1h_1 = substr $kmer, 0, $h_1;
-        my $w2h_1 = substr $kmer, 1, $h_1-1;
-        my $w2h = substr $kmer, 1, $h_1;
-		my $Nw = $kmerCounts->{$kmer};
-        my $Nw1h1 = $kminus1Counts->{$w1h_1};
-        my $Nw2h = $kminus1Counts->{$w2h};
-        my $Nw2h1 = $kminus2Counts->{$w2h_1};
-        #printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
+	foreach my $kmer (@allK0Kmers) {
+	    # I have no idea what's going on here, what the intention is, etc...
+		my $w1h_1	= substr($kmer, 0, $h_1);
+		my $w2h_1	= substr($kmer, 1, $h_1-1);
+		my $w2h		= substr($kmer, 1, $h_1);
+		my $Nw		= $k0Counts->{$kmer};
+		my $Nw1h1	= $k1Counts->{$w1h_1};
+		my $Nw2h	= $k1Counts->{$w2h};
+		my $Nw2h1	= $k2Counts->{$w2h_1};
+		#printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
 		printf $resultsfh ":%.d", $Nw;
 	}
 	print $resultsfh "\n";
