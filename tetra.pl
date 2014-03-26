@@ -41,6 +41,8 @@ foreach my $mv (@matchvectors) {
     my @zrec = ();
     foreach my $i (0..$dbLen) {
         my $dv = $DBvectors[$i];
+        print "$dv\n";
+        print "$mv\n";
         my $cor = corr($mv, $dv);
         my $zc = $cor->query;
         my %zhash = ('cor', $zc, 'ind', $i);
