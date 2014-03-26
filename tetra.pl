@@ -42,8 +42,7 @@ foreach my $mv (@matchvectors) {
     foreach my $i (0..$dbLen) {
         my $dv = $DBvectors[$i];
         my $cor = corr($mv, $dv);
-        my $zc = $cor->query;
-        my $zrec->{$zc} = $i;
+        my $zrec->{$cor} = $i;
     }
     my @zsort = (sort {$zrec{$a} <=> $zrec{$b}} keys %zrec);
     my $zstr = join(',',@zsort);
