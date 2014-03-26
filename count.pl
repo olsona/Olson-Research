@@ -201,7 +201,7 @@ my @minus2Kmers = sort keys kmer_generator($KmerSize - 2);
 #}
 #print $resultsfh "\n";
 
-my $h_1 = $KmerSize-1
+my $h_1 = $KmerSize-1;
 
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
