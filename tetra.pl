@@ -13,5 +13,5 @@ my @DBvectors = ();
 foreach my $dbl (@DBlines) {
     #print $dbl;
     my @dbln = split ':', $dbl;
-    print $dbln;
+    print @dbln;
 }
