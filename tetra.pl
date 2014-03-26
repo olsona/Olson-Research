@@ -38,15 +38,21 @@ print OUT "$mstr\n";
 my $dbLen = @DBvectors;
 
 foreach my $mv (@matchvectors) {
-    my %zrec = ();
+    my @zrec = ();
     foreach my $i (0..$dbLen) {
         my $dv = $DBvectors[$i];
         my $cor = corr($mv, $dv);
-        my $zrec->{$cor} = $i;
+        my $zc = $cor->query;
+        my %zhash = (cor, $zc, ind, $i);
+        push(@zrec, %zhash);
     }
-    my @zsort = (sort {$zrec{$a} <=> $zrec{$b}} keys %zrec);
-    my $zstr = join(',',@zsort);
+    my @zsort = (sort byCor @zrec);
+    my $zstr = join(', ',@zsort);
     print OUT "$zstr\n";
+}
+
+sub byCor {
+    $a->{cor} <=> $b->{cor};
 }
 
 close(OUT);
