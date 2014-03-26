@@ -18,11 +18,7 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
 	
-def scoreTETRA(DB, fSeed):
-    fi = open(fSeed+'-2', 'r')
-    lines = fi.readlines();
-    os.system("touch {!s}".format(DB))
-    for li in lines:
-        l = li.rstrip().split("\t")
-        os.system("echo -e {!s}: >> {!s}".format(l[0],DB))
-        os.system("perl countKmerFreq.pl -k 4 -mf {!s} >> {!s}".format(l[1],DB))
+def scoreTETRA(fSeed, DB, matches, mDB):
+    os.system("perl count.pl -k 4 -mf {!s}-2 {!s}".format(fSeed,DB))
+    os.system("perl count.pl -k 4 -mf {!s} {!s}".format(matches,mDB))
+    
