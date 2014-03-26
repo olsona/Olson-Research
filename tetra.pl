@@ -39,7 +39,8 @@ foreach my $mv (@matchvectors) {
     my @zres = ();
     foreach my $dv (@DBvectors) {
         my $cor = corr($mv, $dv);
-        push(@zres,$cor);
+        my $zc = $cor->query;
+        push(@zres,$zc);
     }
     my $zstr = join(',',@zres);
     print OUT "$zstr\n";
