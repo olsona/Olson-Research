@@ -35,13 +35,17 @@ print OUT "$dbstr\n";
 my $mstr = join(',',@matchnames);
 print OUT "$mstr\n";
 
+my $dbLen = scalar $dbVectors;
+
 foreach my $mv (@matchvectors) {
-    my @zres = ();
-    foreach my $dv (@DBvectors) {
+    my %zrec = ();
+    for (my $i=0; $i < dbLen; i++) {
+        $dv = $dbVectors[i];
         my $cor = corr($mv, $dv);
         my $zc = $cor->query;
-        push(@zres,$zc);
+        $zrec->{$zc} = $i;
     }
+    my @zsort = (sort {$zrec{$a} <=> $zrec{$b}} keys %zrec);
     my $zstr = join(',',@zres);
     print OUT "$zstr\n";
 }
