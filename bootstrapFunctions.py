@@ -26,6 +26,6 @@ def scoreTETRA(DB, fSeed):
     for li in lines:
         l = li.rstrip().split("\t")
         print "Checking 2 {!s}".format(l[0])
-        os.system("{!s}: >> {!s}".format(l[0],DB))
+        os.system("echo {!s}: >> {!s}".format(l[0],DB))
         print "Checking 3 {!s}".format(l[0])
         #os.system("perl countKmerFreq.pl -k 4 -mf {!s} >> {!s}".format(l[1],DB))
