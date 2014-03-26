@@ -219,7 +219,7 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw1h1	= $k1Counts->{$w1h_1};
 		my $Nw2h	= $k1Counts->{$w2h};
 		my $Nw2h1	= $k2Counts->{$w2h_1};
-		#printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
+		printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
 		printf $resultsfh ":%.d", $Nw;
 	}
 	print $resultsfh "\n";
