@@ -232,7 +232,7 @@ def main(argv):
 			fpc.write(">{!s}\n".format(newContig))
 			_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
 			fpc.write(seq)
-			os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+			#os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
 			nCo = Contig(newContig, myCluster = cl)
 			cl.root = newContig
 			cl.addNode(newContig, j)
