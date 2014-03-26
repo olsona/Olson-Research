@@ -14,5 +14,6 @@ foreach my $dbl (@DBlines) {
     #print $dbl;
     my @dbln = split ':', $dbl;
     shift @dbln;
-    my $dbv = vector($dbln);
+    my $dbv = vector(@dbln);
+    print "$dbv\n";
 }
