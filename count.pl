@@ -208,7 +208,7 @@ foreach my $inputName (sort keys %$inputFiles) {
 	my @results = ();
 	foreach my $kmer (@allKmers) {
 		my $freq = ( $kmerCounts->{$kmer} / $kmerTotalCount );
-		print $resultsfh ":%.10f", $freq;
+		printf $resultsfh ":%.10f", $freq;
 	}
 	print $resultsfh "\n";
 
