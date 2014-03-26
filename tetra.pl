@@ -48,7 +48,7 @@ foreach my $mv (@matchvectors) {
     my @zsort = (sort {$a <=> $b} keys %zrec);
     my @zfull = ();
     foreach my $z (@zsort) {
-        my $str = sprintf("%.8d:%d",$z,$zrec{$z});
+        my $str = sprintf("%.8f:%d",$z,$zrec{$z});
         push(@zfull,$str);
     }
     my $zstr = join(', ',@zfull);
