@@ -18,4 +18,4 @@ foreach my $dbl (@DBlines) {
     push(@DBvectors, $dbv);
 }
 
-print "$DBnames\n";
+print "@DBnames\n";
