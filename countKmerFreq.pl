@@ -118,20 +118,23 @@ sub printHits {
 
 	##print out the hits
 	my ($dir,$pre,$suf) = ($file =~ /(^.+\/|^)(.+)\.(.+$)/);
-	open OUT, ">$pre.hits" || die "Can't create file $pre.hits\n";
+	#open OUT, ">$pre.hits" || die "Can't create file $pre.hits\n";
 
 	for my $key ( sort keys %{$kmer_p} ) {
 		if ($opt_f) {
 			# Output frequencies
 			my $freq = ( $kmer_p->{$key} / $$kmerCount_p );
-			print OUT join($SEP, $key, $freq), "\n";
+			#print OUT join($SEP, $key, $freq), "\n";
+            printf "%.10f:", $freq;
 		} else {
 			# Output raw counts
-			print OUT join($SEP, $key, $kmer_p->{$key}), "\n";
+			#print OUT join($SEP, $key, $kmer_p->{$key}), "\n";
+            print $kmer_p->{$key}, ":";
 		}
 	}
 
-	close OUT;
+	#close OUT;
+    print "\n";
 
 	return(0);
 }

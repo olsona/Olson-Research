@@ -21,7 +21,7 @@ def main(argv):
 	matchLevel = ''
 	# Command line arguments
 	try:
-		opts, args = getopt.getopt(argv,"hi:o:r:c:p:m:",["ifile=","ofile=","reference=","db=","schedule=","path=","matchlevel="])
+		opts, args = getopt.getopt(argv,"hi:o:p:r:m:",["ifile=","ofile=","partition=","raipath=","matchlevel="])
 	except getopt.GetoptError:
 		print usageString
 		sys.exit(2)
@@ -34,9 +34,9 @@ def main(argv):
 			inputFile = arg
 		elif opt in ("-o", "--ofile"):
 			outputFile = arg
-		elif opt in ("-c", "--schedule"):
+		elif opt in ("-p", "--partition"):
 			coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
-		elif opt in ("-p", "--path:"):
+		elif opt in ("-r", "--rpath:"):
 			raiPath = arg
 		elif opt in ("-m", "--matchlevel:"):
 			matchLevel = arg
@@ -146,10 +146,7 @@ def main(argv):
 	for i in range(leng-1,0,-1):
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
-		DB = "{!s}_{!s}_DB".format(baseName,i)
-		matches = "{!s}_{!s}_matches".format(baseName,i)
-		toMatch = "{!s}_{!s}".format(baseName,i)
-		scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs)
+		scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
         
 		# Construct matching dictionary for internal use
 		matchDict = {}
@@ -220,7 +217,7 @@ def main(argv):
 
 		fMatch.close()
 
-		# Prepare next DB
+		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
 		l2 = open(fSeed + "-2",'w')
 		# Make concatenated seeds

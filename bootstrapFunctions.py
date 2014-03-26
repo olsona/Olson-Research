@@ -1,7 +1,7 @@
 import os
-from bootstrapClasses import *
+from bootstrapClasses import Contig
 
-def scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs):
+def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	# os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
 	os.system("{!s}rait -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
 	# Process contigs to match
@@ -17,3 +17,6 @@ def scoreRAIphy(DB,raiPath,fSeed,matches,toMatch,allContigs):
 	short = toMatch.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+	
+def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
+    pass
