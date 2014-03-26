@@ -215,7 +215,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $kminus1Counts = $kmerInfo{$KmerSize-1};
     my $kminus2Counts = $kmerInfo{$KmerSize-2};
     
-    print map { "$_ $h{$_}\n" } keys %kminus1Counts;
+    print map { "$_ $h{$_}\n" } keys $kminus1Counts;
     
 	# Write results
 	print $resultsfh $inputName;
