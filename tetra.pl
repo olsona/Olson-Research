@@ -43,10 +43,10 @@ foreach my $mv (@matchvectors) {
         my $dv = $DBvectors[$i];
         my $cor = corr($mv, $dv);
         my $zc = $cor->query;
-        $zrec->{$zc} = $i;
+        my $zrec->{$zc} = $i;
     }
     my @zsort = (sort {$zrec{$a} <=> $zrec{$b}} keys %zrec);
-    my $zstr = join(',',@zres);
+    my $zstr = join(',',@zsort);
     print OUT "$zstr\n";
 }
 
