@@ -13,5 +13,6 @@ my @DBvectors = ();
 foreach my $dbl (@DBlines) {
     #print $dbl;
     my @dbln = split ':', $dbl;
+    shift @dbln;
     print @dbln;
 }
