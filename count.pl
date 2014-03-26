@@ -215,6 +215,8 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $kminus1Counts = $kmerInfo{$KmerSize-1};
     my $kminus2Counts = $kmerInfo{$KmerSize-2};
     
+    print "$kminus2Counts\n";
+    
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
@@ -226,7 +228,7 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $Nw1h1 = $kminus1Counts->{$w1h_1};
         my $Nw2h = $kminus1Counts->{$w2h};
         my $Nw2h1 = $kminus2Counts->{$w2h_1};
-        printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
+        #printf "%d %d %d %d\n", $Nw, $Nw1h1, $Nw2h, $Nw2h1;
 		printf $resultsfh ":%.d", $Nw;
 	}
 	print $resultsfh "\n";
