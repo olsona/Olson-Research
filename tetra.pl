@@ -39,7 +39,7 @@ my $dbLen = @DBvectors;
 
 foreach my $mv (@matchvectors) {
     my @zrec = ();
-    foreach my $i (0..$dbLen) {
+    foreach my $i (0..$dbLen-1) {
         my $dv = $DBvectors[$i];
         print "$dv\n";
         print "$mv\n";
