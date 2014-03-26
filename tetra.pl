@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-#use Statistics::Basic qw(:all nofill);
+3use Statistics::Basic qw(:all nofill);
 
 my ($DBfile) = @ARGV;
 
@@ -14,5 +14,5 @@ foreach my $dbl (@DBlines) {
     #print $dbl;
     my @dbln = split ':', $dbl;
     shift @dbln;
-    my $dbv = vector(@dbln);
+    my $dbv = vector($dbln);
 }
