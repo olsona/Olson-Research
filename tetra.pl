@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-3use Statistics::Basic qw(:all nofill);
+use Statistics::Basic qw(:all nofill);
 
 my ($DBfile) = @ARGV;
 
