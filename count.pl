@@ -212,8 +212,8 @@ foreach my $inputName (sort keys %$inputFiles) {
 	my (%kmerInfo) = processFile($inputFile);
 
     my $kmerCounts = $kmerInfo{$KmerSize};
-    my $kminus1Counts = $kmerInfo{($KmerSize-1)};
-    my $kminus2Counts = $kmerInfo{($KmerSize-2)};
+    my $kminus1Counts = $kmerInfo{$KmerSize-1};
+    my $kminus2Counts = $kmerInfo{$KmerSize-2};
     
 	# Write results
 	print $resultsfh $inputName;
