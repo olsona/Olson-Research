@@ -212,9 +212,9 @@ foreach my $inputName (sort keys %$inputFiles) {
 	my @results = ();
 	foreach my $w1h (@allK0Kmers) {
 	    # I have no idea what's going on here, what the intention is, etc...
-		my $w1h1	= substr($kmer, 0, $h_1);
-		my $w2h1	= substr($kmer, 1, $h_1-1);
-		my $w2h		= substr($kmer, 1, $h_1);
+		my $w1h1	= substr($w1h, 0, $h_1);
+		my $w2h1	= substr($w1h, 1, $h_1-1);
+		my $w2h		= substr($w1h, 1, $h_1);
         
 		my $Nw		= $k0Counts->{$w1h};
 		my $Nw1h1	= $k1Counts->{$w1h1};
