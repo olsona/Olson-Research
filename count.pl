@@ -45,8 +45,14 @@ sub processFile {
 
 	#generate all possible word for a k-mer
 	print STDERR "Generating all the posible sequences $KmerSize long\n";
-	my $kmerCounts = kmer_generator($KmerSize);
-	my $kmerTotalCount = 0;
+    
+    my $k = $KmerSize;
+    my $k1 = $KmerSize-1;
+    my $k2 = $KmerSize-2;
+    
+	my $kmerCounts = kmer_generator($k);
+    my $kminus1Counts = kmer_generator($k1);
+    my $kminus2Counts = kmer_generator($k2);
 
 	print STDERR "Counting the number of $KmerSize nt long kmers in $file\n";
 	open(my $FH, $file) || die "Can't open file $file\n";
@@ -61,7 +67,9 @@ sub processFile {
 
 			# Process previous sequence, if exists
 			if (length($seq) > 0) {
-				$kmerTotalCount += countKmer(\$seq, $kmerCounts);
+				countKmer(\$seq, $kmerCounts);
+                countKmer(\$seq, $kminus1Counts);
+                countKmer(\$seq, $kminus2Counts);
 			}
 
 			# Setup for reading new sequence
@@ -76,13 +84,17 @@ sub processFile {
 
 	# Process final sequence, if exists
 	if (length($seq) > 0) {
-		$kmerTotalCount += countKmer(\$seq, $kmerCounts);
+		countKmer(\$seq, $kmerCounts);
+        countKmer(\$seq, $kminus1Counts);
+        countKmer(\$seq, $kminus2Counts);
 	}
 
 	close($FH);
 
+    my %allKmerInfo = ($k, $kmerCounts, $k1, $kminus1Counts, $k2, $kminus2Counts);
+    
 	# Return results
-	return ($kmerCounts, $kmerTotalCount);
+	return (%allKmerInfo);
 }
 
 sub countKmer {
@@ -90,7 +102,6 @@ sub countKmer {
 	my $kmerCounts = $_[1];
 	my $kmerLength = $KmerSize;
 	my $beenThere = {};
-	my $kmerTotalCount = 0;
 
 	# Iterate through all kmers in the sequence
 	for (my $i = 0; $i <= (length($seq) - $kmerLength); $i++) {
@@ -121,9 +132,6 @@ sub countKmer {
 			$kmerTotalCount++;
 		}
 	}
-
-	# Return total number of kmers found
-	return $kmerTotalCount;
 }
 
 # Generate a hashref of each kmer possibility
@@ -186,6 +194,8 @@ open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results fi
 
 # Generate list of all kmers for results printing
 my @allKmers = sort keys kmer_generator($KmerSize);
+my @minus1Kmers = sort keys kmer_generator($KmerSize - 1);
+my @minus2Kmers = sort keys kmer_generator($KmerSize - 2);
 
 # Write results header
 #print $resultsfh 'Name';
@@ -195,20 +205,29 @@ my @allKmers = sort keys kmer_generator($KmerSize);
 #}
 #print $resultsfh "\n";
 
+my $h_1 = $KmerSize-1
+
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
 	my $inputFile = $inputFiles->{$inputName};
 	print STDERR "Processing File: $inputName - $inputFile\n";
 
 	# Read the input file
-	my ($kmerCounts, $kmerTotalCount) = processFile($inputFile);
+	my (%kmerInfo) = processFile($inputFile);
 
+    my $kmerCounts = $kmerInfo{$KmerSize};
+    my $kminus1Counts = $kmerInfo{($KmerSize-1)};
+    my $kminus2Counts = $kmerInfo{($KmerSize-2)};
+    
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
 	foreach my $kmer (@allKmers) {
-		my $freq = ( $kmerCounts->{$kmer} / $kmerTotalCount );
-		printf $resultsfh ":%.10f", $freq;
+        #my $w1h_1 = substr $kmer, 0, $h_1;
+        #my $w2h_1 = substr $kmer, 1, $h_1;
+        #my $w2h = substr $kmer, 1, $KmerSize;
+		my $ct = $kmerCounts->{$kmer};
+		printf $resultsfh ":%.10f", $ct;
 	}
 	print $resultsfh "\n";
 
