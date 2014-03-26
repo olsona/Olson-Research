@@ -219,11 +219,12 @@ foreach my $inputName (sort keys %$inputFiles) {
 	print $resultsfh $inputName;
 	my @results = ();
 	foreach my $kmer (@allKmers) {
-        #my $w1h_1 = substr $kmer, 0, $h_1;
-        #my $w2h_1 = substr $kmer, 1, $h_1;
-        #my $w2h = substr $kmer, 1, $KmerSize;
+        my $w1h_1 = substr $kmer, 0, $h_1;
+        my $w2h_1 = substr $kmer, 1, $h_1;
+        my $w2h = substr $kmer, 1, $KmerSize;
+        printf "%s %s %s %s\n", $kmer, $w1h_1, $w2h_1, $w2h;
 		my $ct = $kmerCounts->{$kmer};
-		printf $resultsfh ":%.10f", $ct;
+		printf $resultsfh ":%d", $ct;
 	}
 	print $resultsfh "\n";
 
