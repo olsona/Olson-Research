@@ -45,7 +45,7 @@ foreach my $mv (@matchvectors) {
         my $zc = $cor->query;
         $zrec{$zc} = $i;
     }
-    my @zsort = (sort {$a <=> $b} keys %zrec);
+    my @zsort = (sort {$b <=> $a} keys %zrec);
     my @zfull = ();
     foreach my $z (@zsort) {
         my $str = sprintf("%.8f:%d",$z,$zrec{$z});
