@@ -17,7 +17,7 @@ defaultSchedule = [1,2,5,10,20,50,100]
 
 matchThreshold = -0.5
 
-closeThreshold = 0.2
+closeThreshold = 0.1
 
 #http://my.safaribooksonline.com/book/programming/python/0596007973/python-shortcuts/pythoncook2-chp-4-sect-16
 correctnessDict = {
