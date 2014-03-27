@@ -42,7 +42,7 @@ def main(argv):
 		elif opt in ("-m", "--matchlevel:"):
 			matchLevel = arg
 		elif opt in ("-s", "--score:"):
-		        scoreFunction = arg.lower()
+				scoreFunction = arg.lower()
 	if len(inputFile) == 0:
 		print 'Missing argument: -i'
 		print usageString
@@ -77,12 +77,13 @@ def main(argv):
 	except IOError:
 		print outputFile + "cannot be opened."
 		sys.exit(1)
-	try:
-		temp = open(raiPath+"rait",'r')
-		temp.close()
-	except IOError:
-		print raiPath+"rait cannot be opened."
-		sys.exit(1)
+	if scoreFunction != "tetra":
+		try:
+			temp = open(raiPath+"rait",'r')
+			temp.close()
+		except IOError:
+			print raiPath+"rait cannot be opened."
+			sys.exit(1)
 
 	# properly format input file
 	f = open(inputFile, 'r')
@@ -90,8 +91,8 @@ def main(argv):
 	newName = inputFile
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
-	        print "Ah hahahaha"
-	       # convert to contiguous line AND tabbed format
+			print "Ah hahahaha"
+		   # convert to contiguous line AND tabbed format
 		newName = baseName+"_TAB.fa"
 		fN = open(newName,'w')
 		s = 0
@@ -153,13 +154,13 @@ def main(argv):
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
 		DB = "{!s}_{!s}_DB".format(baseName,i)
-                matches = "{!s}_{!s}_matches".format(baseName,i)
-                toMatch = "{!s}_{!s}".format(baseName,i)
-                if scoreFunction == "tetra":
-                    scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
-                else:
-		    scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
-        
+				matches = "{!s}_{!s}_matches".format(baseName,i)
+				toMatch = "{!s}_{!s}".format(baseName,i)
+				if scoreFunction == "tetra":
+					scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
+				else:
+			scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
+		
 		# Construct matching dictionary for internal use
 		matchDict = {}
 		fMatch = open(matches,'r')
@@ -225,7 +226,7 @@ def main(argv):
 		plt.clf()
 		# ***
 		
-                print "Unnormed graphed"
+				print "Unnormed graphed"
 
 		fMatch.close()
 
