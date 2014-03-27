@@ -95,6 +95,18 @@ sub processFile {
 	return ($k0Counts, $k1Counts, $k2Counts);
 }
 
+sub reverse_complement {
+    #http://code.izzid.com/2011/08/25/How-to-reverse-complement-a-DNA-sequence-in-perl.html
+    my $dna = $_;
+    
+	# reverse the DNA sequence
+    my $revcomp = reverse($dna);
+    
+	# complement the reversed DNA sequence
+    $revcomp =~ tr/ACGTacgt/TGCAtgca/;
+    return $revcomp;
+}
+
 sub countKmer {
     my ($kmerSize, $seq, $kmerCounts) = @_;
 	my $beenThere = {};
@@ -103,6 +115,7 @@ sub countKmer {
 	for (my $i = 0; $i <= (length($seq) - $kmerSize); $i++) {
 		# Extract the next kmer from the sequence
 		my $word = substr($seq, $i, $kmerSize);
+        my $rc = reverse_complement($word);
 
 		# Skip unless this word is one of our enumerated kmers
 		next unless exists $kmerCounts->{$word};
@@ -122,6 +135,7 @@ sub countKmer {
 
 			# Increment this kmer's count
 			$kmerCounts->{$word}++;
+            $kmerCounts->{$rc}++;
 		}
 	}
 }
@@ -219,12 +233,6 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw1h1	= $k1Counts->{$w1h1};
 		my $Nw2h	= $k1Counts->{$w2h};
 		my $Nw2h1	= $k2Counts->{$w2h1};
-        
-        # to avoid divide-by-zero errors
-        $Nw = 1     if $Nw == 0;
-        $Nw1h1 = 1  if $Nw1h1 == 0;
-        $Nw2h = 1   if $Nw2h == 0;
-        $Nw2h1 = 1  if $Nw2h1 == 0;
     
         my $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
         
