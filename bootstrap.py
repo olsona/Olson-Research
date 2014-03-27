@@ -52,7 +52,7 @@ def main(argv):
 		print 'Missing argument: -o'
 		print usageString
 		sys.exit(2)
-	elif len(raiPath) == 0 && scoreFunction != "tetra":
+	elif len(raiPath) == 0 and scoreFunction != "tetra":
 		print 'Missing argument: -r'
 		print usageString
 		sys.exit(2)
