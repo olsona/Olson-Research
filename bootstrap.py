@@ -200,6 +200,7 @@ def main(argv):
 			else:
 				wrongDists[iterString].append(bestScore)
 				log.write("Wrong match: {!s} to {!s}\n".format(child,cl.seed))
+				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 			# ***
 
