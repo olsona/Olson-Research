@@ -97,7 +97,7 @@ sub processFile {
 
 sub reverse_complement {
     #http://code.izzid.com/2011/08/25/How-to-reverse-complement-a-DNA-sequence-in-perl.html
-    my $dna = $_;
+    my $dna = shift;
     
 	# reverse the DNA sequence
     my $revcomp = reverse($dna);
