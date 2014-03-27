@@ -181,10 +181,15 @@ def main(argv):
 			child = contigNames[row-2]
 			co = allContigs[child]
 			matchDict[parent].append(child)
+			mythresh = 0.0
+			if bestScore > 0:
+				mythresh = (1.0-close)*bestScore
+			else:
+				mythresh = (1.0+close)*bestScore
 			for l in line.rstrip().split(", ")[0:]:
 				 entry = l.split(":")
 				 score = float(entry[0])
-				 if score >= (1.0-close)*bestScore:
+				 if score >= mythresh:
 					 ind = int(entry[1])
 					 name = dbNames[ind]
 					 mco = allContigs[name]
