@@ -240,11 +240,9 @@ foreach my $inputName (sort keys %$inputFiles) {
         
         if ($Vhathat < 0.01) {
             printf STDERR "Problem happening with %s\n%s (%d), %s (%d), %s (%d), %s, (%d)\n", $inputFile, $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
-            my $ZM      = NaN
         }
-        else {
-            my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
-        }
+        
+        my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
         
 		printf $resultsfh ":%.10f", $ZM;
 	}
