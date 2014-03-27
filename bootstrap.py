@@ -19,9 +19,10 @@ def main(argv):
 	coolingSchedule = []
 	raiPath = ''
 	matchLevel = ''
+	scoreFunction = ''
 	# Command line arguments
 	try:
-		opts, args = getopt.getopt(argv,"hi:o:p:r:m:",["ifile=","ofile=","partition=","raipath=","matchlevel="])
+		opts, args = getopt.getopt(argv,"hi:o:p:r:m:s:",["ifile=","ofile=","partition=","raipath=","matchlevel=","score="])
 	except getopt.GetoptError:
 		print usageString
 		sys.exit(2)
@@ -40,6 +41,8 @@ def main(argv):
 			raiPath = arg
 		elif opt in ("-m", "--matchlevel:"):
 			matchLevel = arg
+		elif opt in ("-s", "--score:"):
+		        scoreFunction = arg.lower()
 	if len(inputFile) == 0:
 		print 'Missing argument: -i'
 		print usageString
@@ -152,7 +155,10 @@ def main(argv):
 		DB = "{!s}_{!s}_DB".format(baseName,i)
                 matches = "{!s}_{!s}_matches".format(baseName,i)
                 toMatch = "{!s}_{!s}".format(baseName,i)
-		scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
+                if scoreFunction == "tetra":
+                    scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
+                else:
+		    scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
         
 		# Construct matching dictionary for internal use
 		matchDict = {}
