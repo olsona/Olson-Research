@@ -62,15 +62,24 @@ def main(argv):
 		matchLevel = 'species'
 	elif matchLevel != 'genus':
 		matchLevel = 'species'
+	if scoreFunction not in ["raiphy","tetra"]:
+		scoreFunction = "raiphy"
 
 	# Checking validity of inputs
-	if raiPath[-1] != "/":
-		raiPath = raiPath + "/"
+	if scoreFunction == "raiphy":
+		if raiPath[-1] != "/":
+			raiPath = raiPath + "/"
+		try:
+			temp = open(raiPath+"rait",'r')
+			temp.close()
+		except IOError:
+			print raiPath+"rait cannot be opened."
+			sys.exit(1)
 	try:
-		temp = open(inputFile, 'r')
+		temp = open(inputFile, 'r')			
 		temp.close()
 	except IOError:
-		print inputFile + "cannot be opened."
+		print inputFile + "cannot be opened."			
 		sys.exit(1)
 	try:
 		temp = open(outputFile+"_clusters", 'w')
@@ -78,13 +87,6 @@ def main(argv):
 	except IOError:
 		print outputFile + "cannot be opened."
 		sys.exit(1)
-	if scoreFunction != "tetra":
-		try:
-			temp = open(raiPath+"rait",'r')
-			temp.close()
-		except IOError:
-			print raiPath+"rait cannot be opened."
-			sys.exit(1)
 
 	# properly format input file
 	f = open(inputFile, 'r')
