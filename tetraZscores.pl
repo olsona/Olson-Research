@@ -44,7 +44,7 @@ sub processFile {
 	my $file = shift;
 
 	#generate all possible word for a k-mer
-	print STDERR "Generating all the posible sequences $KmerSize long\n";
+	print STDOUT "Generating all the posible sequences $KmerSize long\n";
 	
 	my $k0 = $KmerSize;
 	my $k1 = $KmerSize - 1;
@@ -54,7 +54,7 @@ sub processFile {
 	my $k1Counts = kmer_generator($k1);
 	my $k2Counts = kmer_generator($k2);
 
-	print STDERR "Counting the number of $KmerSize nt long kmers in $file\n";
+	print STDOUT "Counting the number of $KmerSize nt long kmers in $file\n";
 	open(my $FH, $file) || die "Can't open file $file\n";
 	my $inSeq = 0;
 	my $seq = '';
@@ -161,7 +161,7 @@ sub readIndex {
 				die "FATAL: Files with duplicate names in index\n" if exists $inputFiles->{$inputName};
 				$inputFiles->{$inputName} = $inputFile;
 			} else {
-				print STDERR "WARN: Invalid line format in index: $_\n";
+				print STDOUT "WARN: Invalid line format in index: $_\n";
 			}
 		}
 	close($fh);
@@ -202,7 +202,7 @@ my $h_1 = $KmerSize-1;
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
 	my $inputFile = $inputFiles->{$inputName};
-	print STDERR "Processing File: $inputName - $inputFile\n";
+	print STDOUT "Processing File: $inputName - $inputFile\n";
 
 	# Read the input file
 	my ($k0Counts, $k1Counts, $k2Counts) = processFile($inputFile);
@@ -211,7 +211,6 @@ foreach my $inputName (sort keys %$inputFiles) {
 	print $resultsfh $inputName;
 	my @results = ();
 	foreach my $w1h (@allK0Kmers) {
-	    # I have no idea what's going on here, what the intention is, etc...
 		my $w1h1	= substr($w1h, 0, $h_1);
 		my $w2h1	= substr($w1h, 1, $h_1-1);
 		my $w2h		= substr($w1h, 1, $h_1);
