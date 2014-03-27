@@ -219,6 +219,12 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw1h1	= $k1Counts->{$w1h1};
 		my $Nw2h	= $k1Counts->{$w2h};
 		my $Nw2h1	= $k2Counts->{$w2h1};
+        
+        # to avoid divide-by-zero errors
+        $Nw = 1     if $Nw == 0;
+        $Nw1h1 = 1  if $Nw1h1 == 0;
+        $Nw2h = 1   if $Nw2h == 0;
+        $Nw2h1 = 1  if $Nw2h1 == 0;
     
         my $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
         
