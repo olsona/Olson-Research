@@ -150,6 +150,7 @@ def main(argv):
 	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	
 	close = closeThreshold
+	log = open("{!s}_log".format(outFile))
 	
 	# Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 	for i in range(leng-1,0,-1):
@@ -198,6 +199,8 @@ def main(argv):
 				rightDists[iterString].append(bestScore)
 			else:
 				wrongDists[iterString].append(bestScore)
+				log.write("Wrong match: {!s} to {!s}\n".format(child,cl.seed))
+				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 			# ***
 
 		# *** find out correctness distribution

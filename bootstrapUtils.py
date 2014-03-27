@@ -191,3 +191,6 @@ def getMatchesWithinPercentage(inline, pct):
 		else:
 			break
 	return out
+
+def printMismatchInfo():
+	
