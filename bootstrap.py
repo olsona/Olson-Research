@@ -24,6 +24,7 @@ def main(argv):
 	try:
 		opts, args = getopt.getopt(argv,"hi:o:p:r:m:s:",["ifile=","ofile=","partition=","raipath=","matchlevel=","score="])
 	except getopt.GetoptError:
+		print "What the hell"
 		print usageString
 		sys.exit(2)
 	for opt, arg in opts:
@@ -42,7 +43,7 @@ def main(argv):
 		elif opt in ("-m", "--matchlevel:"):
 			matchLevel = arg
 		elif opt in ("-s", "--score:"):
-				scoreFunction = arg.lower()
+			scoreFunction = arg.lower()
 	if len(inputFile) == 0:
 		print 'Missing argument: -i'
 		print usageString
