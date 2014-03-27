@@ -52,8 +52,8 @@ def main(argv):
 		print 'Missing argument: -o'
 		print usageString
 		sys.exit(2)
-	elif len(raiPath) == 0:
-		print 'Missing argument: -p'
+	elif len(raiPath) == 0 && scoreFunction != "tetra":
+		print 'Missing argument: -r'
 		print usageString
 		sys.exit(2)
 	if len(coolingSchedule) == 0:
