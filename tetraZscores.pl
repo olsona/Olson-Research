@@ -229,8 +229,8 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $w2h1	= substr($w1h, 1, $h_1-1);
 		my $w2h		= substr($w1h, 1, $h_1);
         
-		my $Nw		= $k0Counts->{$w1h}+1;
-		my $Nw1h1	= $k1Counts->{$w1h1}+1;
+		my $Nw		= $k0Counts->{$w1h};
+		my $Nw1h1	= $k1Counts->{$w1h1};
 		my $Nw2h	= $k1Counts->{$w2h};
 		my $Nw2h1	= $k2Counts->{$w2h1};
     
