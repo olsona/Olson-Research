@@ -154,11 +154,11 @@ def main(argv):
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
 		
 		DB = "{!s}_{!s}_DB".format(baseName,i)
-				matches = "{!s}_{!s}_matches".format(baseName,i)
-				toMatch = "{!s}_{!s}".format(baseName,i)
-				if scoreFunction == "tetra":
-					scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
-				else:
+		matches = "{!s}_{!s}_matches".format(baseName,i)
+		toMatch = "{!s}_{!s}".format(baseName,i)
+		if scoreFunction == "tetra":
+			scoreTETRA(DB, fSeed, matches, toMatch, allContigs)				
+		else:
 			scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
 		
 		# Construct matching dictionary for internal use
@@ -226,7 +226,7 @@ def main(argv):
 		plt.clf()
 		# ***
 		
-				print "Unnormed graphed"
+		print "Unnormed graphed"
 
 		fMatch.close()
 
