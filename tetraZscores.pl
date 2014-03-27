@@ -231,7 +231,7 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
         
         if ($Vhathat < 0.01) {
-            printf STDERR "Problem happening with %s (%.4f), %s (%.4f), %s (%.4f), %s, (%.4f)\n", $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
+            printf STDERR "Problem happening with %s\n%s (%d), %s (%d), %s (%d), %s, (%d)\n", $inputFile, $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
         }
         
         my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
