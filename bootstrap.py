@@ -91,8 +91,8 @@ def main(argv):
 	newName = inputFile
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
-			print "Ah hahahaha"
-		   # convert to contiguous line AND tabbed format
+		print "Ah hahahaha"
+		# convert to contiguous line AND tabbed format
 		newName = baseName+"_TAB.fa"
 		fN = open(newName,'w')
 		s = 0
