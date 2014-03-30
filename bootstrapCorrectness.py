@@ -47,7 +47,7 @@ def purityOfCluster(cluster, nameList):
 					max =repDict[nL]
 					maxName = nL
 				break
-    
+	
 	ratio = float(max)/float(len(cluster))
 	return ratio, maxName
 
@@ -79,12 +79,12 @@ def purityClusterWholeOutput(inFile, nameList, outFile):
 
 
 def purityAll(inFile, nameList):
-    # http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
+	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
 	import string
 	f = open(inFile, 'r')
 	lns = f.readlines()
-    N = 0
-    R = 0
+	N = 0
+	R = 0
 	for li in lns:
 		repDict = {nL: 0 for nL in nameList}
 		max = 0
@@ -100,53 +100,53 @@ def purityAll(inFile, nameList):
 						max = repDict[nL]
 						maxName = nL
 					break
-        R += max
-        N += len(fstBrk)
-    return float(R)/float(N)
+		R += max
+		N += len(fstBrk)
+	return float(R)/float(N)
 	f.close()
 
 
 def Entropy(clustering):
-    # http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
-    N = 0
-    for c in clustering:
-        N += len(c)
-    sum = 0
-    for c in clustering:
-        p = float(len(c))/float(N)
-        sum += p * log(p)
-    return sum*(-1)
+	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
+	N = 0
+	for c in clustering:
+		N += len(c)
+	sum = 0
+	for c in clustering:
+		p = float(len(c))/float(N)
+		sum += p * log(p)
+	return sum*(-1)
 
 
 def MututalInformation(clustering, classes):
-    # Ground truth is stored in 'classes'
-    # http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
-    K = len(clustering)
-    J = len(classes)
-    N = 0
-    for k in range(K):
-        N += len(clustering[k])
-    sum = 0
-    for k in range(K):
-        wk = clustering[k]
-        for j in range(J):
-            cj = classes[j]
-            wkcj = len(set.intersection(wk,cj))
-            A = float(len(wkcj))/float(N)
-            B = float(N*len(wkcj))/float(len(wk)*len(cj))
-            sum += A*log(B)
-    return sum
+	# Ground truth is stored in 'classes'
+	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
+	K = len(clustering)
+	J = len(classes)
+	N = 0
+	for k in range(K):
+		N += len(clustering[k])
+	sum = 0
+	for k in range(K):
+		wk = clustering[k]
+		for j in range(J):
+			cj = classes[j]
+			wkcj = len(set.intersection(wk,cj))
+			A = float(len(wkcj))/float(N)
+			B = float(N*len(wkcj))/float(len(wk)*len(cj))
+			sum += A*log(B)
+	return sum
 
 
 
 def NMI(clustering, classes):
-    pass
+	pass
 
 
 def RandIndex(correct, computed):
-    pass
-    #return (truePos+trueNeg)/(truePos+trueNeg+falsePos+falseNeg)
+	pass
+	#return (truePos+trueNeg)/(truePos+trueNeg+falsePos+falseNeg)
 
 
 def NMI(correct, computed):
-    pass
+	pass
