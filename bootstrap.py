@@ -11,6 +11,7 @@ from bootstrapConstants import *
 from bootstrapUtils import *
 from bootstrapClasses import *
 from bootstrapFunctions import *
+from bootstrapCorrectness import *
 
 def main(argv):
 	# get inputs, check validity

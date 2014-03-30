@@ -22,5 +22,5 @@ close(IN);
 my $gc = $g+$c;
 
 my $scount = 4 ** $k;
-system("jellyfish count -C -m ${k} -s ${scount} -t ${tcount} ${infile}");
-system("jellyfish dump -c mer_counts_0 > ${countfile}");
+system("jellyfish count -C -m ${k} -s ${scount} -t ${tcount} -o ${countfile}.jf ${infile}");
+system("jellyfish dump -c ${countfile}.jf > ${countfile}");
