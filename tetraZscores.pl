@@ -234,7 +234,7 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw2h	= $k1Counts->{$w2h};
 		my $Nw2h1	= $k2Counts->{$w2h1};
         
-        my $Nhathat = 0
+        my $Nhathat = 0;
         if ($Nw2h1 >= 1) {
             $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
         }
