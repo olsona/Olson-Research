@@ -141,7 +141,7 @@ def MututalInformation(clustering, classes):
 
 def NMI(clustering, classes):
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
-	
+	pass
 
 
 def RandIndex(correct, computed):
