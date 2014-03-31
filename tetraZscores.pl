@@ -235,11 +235,11 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw2h1	= $k2Counts->{$w2h1};
         
         if ($Nw2h1 < 1) {
-            printf STDERR "NNNN Problem happening with %s\n%s (%d), %s (%d), %s (%d), %s (%d)\n", $inputFile, $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
-            printf STDERR "Nw1h1*Nw2h: %d; Nw2h1-Nw1h1: %d; Nw2h1-Nw2h: %d\n", $Nw1h1*$Nw2h, $Nw2h1-$Nw1h1, $Nw2h1-$Nw2h;
+            my $Nhathat = 0;
         }
-    
-        my $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
+        else {
+            my $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
+        }
         
         my $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
         
@@ -250,7 +250,12 @@ foreach my $inputName (sort keys %$inputFiles) {
             print $Vhathat . "\n";
         }
         
-        my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
+        if ($Nhathat == 0) {
+            my $ZM  = 0;
+        }
+        else {
+            my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
+        }
         
         
 		printf $resultsfh ":%.10f", $ZM;
