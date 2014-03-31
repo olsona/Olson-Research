@@ -244,7 +244,7 @@ foreach my $inputName (sort keys %$inputFiles) {
         if ($Vhathat <= 0.01) {
             #printf STDERR "VVVV Problem happening with %s\n%s (%d), %s (%d), %s (%d), %s (%d)\n", $inputFile, $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
             #printf STDERR "Nw1h1*Nw2h: %d; Nw2h1-Nw1h1: %d; Nw2h1-Nw2h: %d\n", $Nw1h1*$Nw2h, $Nw2h1-$Nw1h1, $Nw2h1-$Nw2h;
-            $Vhathat = 0.01;
+            $Vhathat = 1;
             #print $Vhathat . "\n";
         }
         
