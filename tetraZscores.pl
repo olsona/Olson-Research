@@ -235,17 +235,17 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw2h1	= $k2Counts->{$w2h1};
         
         my $Nhathat = 0;
+        my $Vhathat = 0.01;
         if ($Nw2h1 >= 1) {
             $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
+            $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
         }
         
-        my $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
-        
-        if ($Vhathat < 0.01) {
-            printf STDERR "VVVV Problem happening with %s\n%s (%d), %s (%d), %s (%d), %s (%d)\n", $inputFile, $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
-            printf STDERR "Nw1h1*Nw2h: %d; Nw2h1-Nw1h1: %d; Nw2h1-Nw2h: %d\n", $Nw1h1*$Nw2h, $Nw2h1-$Nw1h1, $Nw2h1-$Nw2h;
+        if ($Vhathat <= 0.01) {
+            #printf STDERR "VVVV Problem happening with %s\n%s (%d), %s (%d), %s (%d), %s (%d)\n", $inputFile, $w1h, $Nw, $w1h1, $Nw1h1, $w2h, $Nw2h, $w2h1, $Nw2h1;
+            #printf STDERR "Nw1h1*Nw2h: %d; Nw2h1-Nw1h1: %d; Nw2h1-Nw2h: %d\n", $Nw1h1*$Nw2h, $Nw2h1-$Nw1h1, $Nw2h1-$Nw2h;
             $Vhathat = 0.01;
-            print $Vhathat . "\n";
+            #print $Vhathat . "\n";
         }
         
         my $ZM      = 0;
