@@ -111,7 +111,7 @@ def Entropy(clustering):
 	N = 0
 	for c in clustering:
 		N += len(c)
-	sum = 0
+	sum = 0.0
 	for c in clustering:
 		p = float(len(c))/float(N)
 		sum += p * log(p)
@@ -126,7 +126,7 @@ def MututalInformation(clustering, classes):
 	N = 0
 	for k in range(K):
 		N += len(clustering[k])
-	sum = 0
+	sum = 0.0
 	for k in range(K):
 		wk = clustering[k]
 		for j in range(J):
@@ -140,7 +140,8 @@ def MututalInformation(clustering, classes):
 
 
 def NMI(clustering, classes):
-	pass
+	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
+	
 
 
 def RandIndex(correct, computed):
