@@ -234,11 +234,9 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw2h	= $k1Counts->{$w2h};
 		my $Nw2h1	= $k2Counts->{$w2h1};
         
-        if ($Nw2h1 < 1) {
-            my $Nhathat = 0;
-        }
-        else {
-            my $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
+        my $Nhathat = 0
+        if ($Nw2h1 >= 1) {
+            $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
         }
         
         my $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
@@ -250,13 +248,10 @@ foreach my $inputName (sort keys %$inputFiles) {
             print $Vhathat . "\n";
         }
         
-        if ($Nhathat == 0) {
-            my $ZM  = 0;
+        my $ZM      = 0;
+        if ($Nhathat > 0) {
+            $ZM  = ($Nw-$Nhathat)/sqrt($Vhathat);
         }
-        else {
-            my $ZM      = ($Nw-$Nhathat)/sqrt($Vhathat);
-        }
-        
         
 		printf $resultsfh ":%.10f", $ZM;
 	}
