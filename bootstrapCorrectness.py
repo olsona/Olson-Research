@@ -182,3 +182,6 @@ def AMI(U, V):
 	HV = Entropy(V)
 	E = ExpectedMutualInformation(U,V)
 	return (I-E)/(0.5*(HU+HV)-E)
+	
+	
+#----Actual post-processing computation----#

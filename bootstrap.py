@@ -280,6 +280,7 @@ def main(argv):
 	# process results from main loop to get clusters and distances
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	for c in allClusters:
+		print allClusters[c].root
 		fOutC.write("{!s}\n".format(allClusters[c].getAll()))
 	fOutC.close()
 
