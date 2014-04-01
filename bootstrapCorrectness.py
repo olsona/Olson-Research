@@ -141,6 +141,13 @@ def MutualInformation(U, V):
 				sum += A*math.log(B)
 	return sum
 
+def NMI(U, V):
+	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
+	I = MutualInformation(U, V)
+	HU = Entropy(U)
+	HV = Entropy(V)
+	return (2.0*I)/(HU+HV)
+	
 
 def ExpectedMutualInformation(U,V):
 	# Vinh, Epps, Bailey, (2)
@@ -157,20 +164,15 @@ def ExpectedMutualInformation(U,V):
 			bj = len(V[j])
 			for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
 				if ai != 0 and bj != 0:
-					print ai
 					t1 = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
-					term = float(math.factorial(ai))
-					term /= float(math.factorial(N)*math.factorial(nij))
-					E += t1 * term					
+					print ai, bj, N-ai, N-bj
+					print N, nij, ai-nij,b-nij,N-ai-bj+nij
+					#upper = math.factorial(ai)*math.factorial(bj)*math.factorial(N-ai)*math.factorial(N-bj)
+					#lower = math.factorial(N)*math.factorial(nij)*math.factorial(ai-nij)*math.factorial(bj-nij)*math.factorial(N-ai-bj+nij)
+					#E += t1 * float(upper)/float(lower)	
+					E += t1						
 	return E
 
-def NMI(U, V):
-	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
-	I = MutualInformation(U, V)
-	HU = Entropy(U)
-	HV = Entropy(V)
-	return (2.0*I)/(HU+HV)
-	
 
 def AMI(U, V):
 	# Information Theoretic Measures for Clusterings, Vinh, Epps, Bailey
