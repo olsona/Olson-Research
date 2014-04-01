@@ -106,48 +106,70 @@ def purityAll(inFile, nameList):
 	f.close()
 
 
-def Entropy(clustering):
+def Entropy(U):
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
 	N = 0
-	for c in clustering:
-		N += len(c)
+	for u in U:
+		N += len(u)
 	sum = 0.0
-	for c in clustering:
-		p = float(len(c))/float(N)
+	for u in U:
+		p = float(len(u))/float(N)
 		sum += p * log(p)
 	return sum*(-1)
 
 
-def MututalInformation(clustering, classes):
+def MututalInformation(U, V):
 	# Ground truth is stored in 'classes'
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
-	K = len(clustering)
-	J = len(classes)
+	K = len(U)
+	J = len(V)
 	N = 0
 	for k in range(K):
 		N += len(clustering[k])
 	sum = 0.0
 	for k in range(K):
-		wk = clustering[k]
+		uk = len(U[k])
 		for j in range(J):
-			cj = classes[j]
-			wkcj = len(set.intersection(wk,cj))
-			A = float(len(wkcj))/float(N)
-			B = float(N*len(wkcj))/float(len(wk)*len(cj))
+			vj = len(V[j])
+			ukvj = len(set.intersection(U[k],V[j]))
+			A = float(ukvj)/float(N)
+			B = float(N*ukvj)/float(uk*vj)
 			sum += A*log(B)
 	return sum
 
 
+def ExpectedMutualInformation(U,V):
+	# Vinh, Epps, Bailey, (2)
+	N = 0
+	for u in U:
+		N += len(u)
+	R = len(U)
+	C = len(V)
+	E = 0.0
+	for i in range(R):
+		for j in range(C):
+			ai = len(U[i])			
+			bj = len(V[j])
+			for nij in range(max(ai+bj-N,0), min(ai,bj)+1):
+				t1 = (float(nij)/float(N)) * (log(float(N*nij)/float(ai*bj)))
+				upper = factorial(ai)*factorial(bj)*factorial(N-ai)*factorial(N-bj)
+				lower = factorial(N)*factorial(nij)*factorial(ai-nij)*factorial(bj-nij)*factorial(N-ai-bj+nij)
+				E += ti * float(upper)/float(lower)							
+	return E
 
-def NMI(clustering, classes):
+def NMI(U, V):
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
-	pass
+	I = MutualInformation(U, V)
+	HU = Entropy(U)
+	HV = Entropy(V)
+	return (2.0*I)/(HU+HV)
+	
 
-
-def RandIndex(correct, computed):
-	pass
-	#return (truePos+trueNeg)/(truePos+trueNeg+falsePos+falseNeg)
-
-
-def NMI(correct, computed):
-	pass
+def AMI(U, V)
+	# Information Theoretic Measures for Clusterings, Vinh, Epps, Bailey
+	# AMI_sum
+	I = MutualInformation(U, V)
+	HU = Entropy(U)
+	HV = Entropy(V)
+	E = ExpectedMutualInformation(U,V)
+	return (I-E)/(0.5*(HU+HV)-E)
