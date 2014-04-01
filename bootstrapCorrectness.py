@@ -126,7 +126,7 @@ def MutualInformation(U, V):
 	J = len(V)
 	N = 0
 	for k in range(K):
-		N += len(clustering[k])
+		N += len(U[k])
 	sum = 0.0
 	for k in range(K):
 		uk = len(U[k])
