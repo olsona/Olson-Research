@@ -2,7 +2,8 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint, pickle, numpy
+import sys, getopt, string, os, re, pprint, numpy
+import cPickle as pickle
 # http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib
 matplotlib.use('Agg')
@@ -278,6 +279,7 @@ def main(argv):
 	log.close()
 
 	# process results from main loop to get clusters and distances
+	totalCluster = []
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	for c in allClusters:
 		print "-----"
@@ -285,12 +287,21 @@ def main(argv):
 		l = allClusters[c].getLeaves()
 		print r
 		print l
-		c = [li for li in l]
-		c.append(r)
-		print c
+		cl = [li for li in l]
+		cl.append(r)
+		print cl
 		print "-----\n"
-		fOutC.write("{!s}\n".format(allClusters[c].getAll()))
+		fOutC.write("{!s}\n".format(cl))
+		totalCluster.append(cl)
 	fOutC.close()
+	
+	# get right/wrong distance distributions ***
+	dists={"right":rightDists,"wrong":wrongDists}
+	pickle.dump(dists,open("{!s}_right_wrong_distances_pickle".format(outputFile),"wb"))
+	# ***
+
+	pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
+	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# get distances between extant clusters
 	#toMatch = baseName.rsplit("/",1)[0]+"/l1"
@@ -311,14 +322,6 @@ def main(argv):
 	#for row in fDists:
 	#	 fOutD.write(",".join(str(r) for r in row)+"\n")
 	#fOutD.close()
-
-	# get right/wrong distance distributions ***
-	dists={"right":rightDists,"wrong":wrongDists}
-	pickle.dump(dists,open("{!s}_right_wrong_distances_pickle".format(outputFile),"wb"))
-	# ***
-
-	pickle.dump(allClusters,open("{!s}_clusters_pickle".format(outputFile),"wb"))
-	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s}".format(genePath))
