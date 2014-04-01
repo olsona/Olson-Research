@@ -158,8 +158,9 @@ def ExpectedMutualInformation(U,V):
 			for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
 				if ai != 0 and bj != 0:
 					t1 = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
-					term = math.factorial(ai)*math.factorial(bj)*math.factorial(N-ai)*math.factorial(N-bj)
-					E += t1 * float(term)						
+					term = float(math.factorial(ai))
+					term /= float(math.factorial(N)*math.factorial(nij))
+					E += t1 * term					
 	return E
 
 def NMI(U, V):
