@@ -160,7 +160,7 @@ def ExpectedMutualInformation(U,V):
 					t1 = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
 					upper = math.factorial(ai)*math.factorial(bj)*math.factorial(N-ai)*math.factorial(N-bj)
 					lower = math.factorial(N)*math.factorial(nij)*math.factorial(ai-nij)*math.factorial(bj-nij)*math.factorial(N-ai-bj+nij)
-					E += ti * float(upper)/float(lower)							
+					E += t1 * float(upper)/float(lower)							
 	return E
 
 def NMI(U, V):
