@@ -107,6 +107,7 @@ def purityAll(inFile, nameList):
 
 
 def Entropy(U):
+	import math
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
 	N = 0
 	for u in U:
@@ -114,13 +115,13 @@ def Entropy(U):
 	sum = 0.0
 	for u in U:
 		p = float(len(u))/float(N)
-		sum += p * log(p)
+		sum += p * math.log(p)
 	return sum*(-1)
 
 
 def MututalInformation(U, V):
-	# Ground truth is stored in 'classes'
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
+	import math
 	K = len(U)
 	J = len(V)
 	N = 0
@@ -134,12 +135,13 @@ def MututalInformation(U, V):
 			ukvj = len(set.intersection(U[k],V[j]))
 			A = float(ukvj)/float(N)
 			B = float(N*ukvj)/float(uk*vj)
-			sum += A*log(B)
+			sum += A*math.log(B)
 	return sum
 
 
 def ExpectedMutualInformation(U,V):
 	# Vinh, Epps, Bailey, (2)
+	import math
 	N = 0
 	for u in U:
 		N += len(u)
