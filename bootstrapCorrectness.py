@@ -165,7 +165,7 @@ def NMI(U, V):
 	return (2.0*I)/(HU+HV)
 	
 
-def AMI(U, V)
+def AMI(U, V):
 	# Information Theoretic Measures for Clusterings, Vinh, Epps, Bailey
 	# AMI_sum
 	I = MutualInformation(U, V)
