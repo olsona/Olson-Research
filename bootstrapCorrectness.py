@@ -157,11 +157,9 @@ def ExpectedMutualInformation(U,V):
 			bj = len(V[j])
 			for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
 				if ai != 0 and bj != 0:
-					print float(nij)/float(N)
-					print float(N*nij)/float(ai*bj)
 					t1 = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
-					upper = factorial(ai)*factorial(bj)*factorial(N-ai)*factorial(N-bj)
-					lower = factorial(N)*factorial(nij)*factorial(ai-nij)*factorial(bj-nij)*factorial(N-ai-bj+nij)
+					upper = math.factorial(ai)*math.factorial(bj)*math.factorial(N-ai)*math.factorial(N-bj)
+					lower = math.factorial(N)*math.factorial(nij)*math.factorial(ai-nij)*math.factorial(bj-nij)*math.factorial(N-ai-bj+nij)
 					E += ti * float(upper)/float(lower)							
 	return E
 
