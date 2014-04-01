@@ -285,7 +285,7 @@ def main(argv):
 		l = allClusters[c].getLeaves()
 		print r
 		print l
-		c = [li in l]
+		c = [li for li in l]
 		c.append(r)
 		print c
 		print "-----\n"
