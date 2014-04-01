@@ -132,7 +132,9 @@ def MutualInformation(U, V):
 		uk = len(U[k])
 		for j in range(J):
 			vj = len(V[j])
-			ukvj = len(set.intersection(U[k],V[j]))
+			s1 = set(U[k])
+			s2 = set(V[j])
+			ukvj = len(set.intersection(s1,s2))
 			A = float(ukvj)/float(N)
 			B = float(N*ukvj)/float(uk*vj)
 			sum += A*math.log(B)
