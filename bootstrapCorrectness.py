@@ -119,7 +119,7 @@ def Entropy(U):
 	return sum*(-1)
 
 
-def MututalInformation(U, V):
+def MutualInformation(U, V):
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
 	import math
 	K = len(U)
