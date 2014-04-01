@@ -282,7 +282,7 @@ def main(argv):
 	for c in allClusters:
 		print allClusters[c].root
 		print allClusters[c].dict
-		print allClusters[c].getAll()
+		print allClusters[c].getLeaves()
 		print "\n"
 		fOutC.write("{!s}\n".format(allClusters[c].getAll()))
 	fOutC.close()
