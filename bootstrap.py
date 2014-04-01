@@ -285,7 +285,9 @@ def main(argv):
 		l = allClusters[c].getLeaves()
 		print r
 		print l
-		print l.append(r)
+		c = [li in l]
+		c.append(r)
+		print c
 		print "-----\n"
 		fOutC.write("{!s}\n".format(allClusters[c].getAll()))
 	fOutC.close()
