@@ -281,6 +281,9 @@ def main(argv):
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	for c in allClusters:
 		print allClusters[c].root
+		print allClusters[c].dict
+		print allClusters[c].getAll()
+		print "\n"
 		fOutC.write("{!s}\n".format(allClusters[c].getAll()))
 	fOutC.close()
 
