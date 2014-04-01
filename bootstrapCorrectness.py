@@ -155,7 +155,7 @@ def ExpectedMutualInformation(U,V):
 		for j in range(C):
 			ai = len(U[i])			
 			bj = len(V[j])
-			for nij in range(max(ai+bj-N,0), min(ai,bj)+1):
+			for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
 				if ai != 0 and bj != 0:
 					print float(nij)/float(N)
 					print float(N*nij)/float(ai*bj)
