@@ -62,5 +62,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     #system("rm ${jf2}");
     
     my $kmr4 = getCounts($ct4);
-    print "$_ $kmr4{$_}\n" for (keys %kmr4);
+    foreach (keys %$kmr4){
+        print "\n".$_."\n";
+    }
 }
