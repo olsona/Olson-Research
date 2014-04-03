@@ -98,7 +98,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $kmr3 = getCounts($ct3,3);
     my $kmr2 = getCounts($ct2,2);
     
-    for (keys %$kmr4) {
+    for (sort(keys %$kmr4)) {
         print $_ . "," . $kmr4->{$_} . "\n";
     }
     
