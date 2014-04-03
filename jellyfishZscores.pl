@@ -29,7 +29,7 @@ sub getCounts {
     my $kmrHash;
     open(IN, $inFile);
     while(<IN>) {
-        my ($kmr, $ct) = split("\t");
+        my ($kmr, $ct) = split(" ");
         $kmrHash->{$kmr} = int($ct);
     }
     return $kmrHash;
