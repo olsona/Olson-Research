@@ -19,14 +19,13 @@ def main(argv):
 	inputFile = ''
 	outputFile = ''
 	coolingSchedule = []
-	raiPath = ''
+	computePath = ''
 	matchLevel = ''
 	scoreFunction = ''
 	# Command line arguments
 	try:
-		opts, args = getopt.getopt(argv,"hi:o:p:r:m:s:",["ifile=","ofile=","partition=","raipath=","matchlevel=","score="])
+		opts, args = getopt.getopt(argv,"hi:o:c:p:m:s:",["ifile=","ofile=","cut=","path=","matchlevel=","score="])
 	except getopt.GetoptError:
-		print "What the hell"
 		print usageString
 		sys.exit(2)
 	for opt, arg in opts:
@@ -38,10 +37,10 @@ def main(argv):
 			inputFile = arg
 		elif opt in ("-o", "--ofile"):
 			outputFile = arg
-		elif opt in ("-p", "--partition"):
+		elif opt in ("-c", "--cut"):
 			coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
-		elif opt in ("-r", "--rpath:"):
-			raiPath = arg
+		elif opt in ("-p", "--path:"):
+			computePath = arg
 		elif opt in ("-m", "--matchlevel:"):
 			matchLevel = arg
 		elif opt in ("-s", "--score:"):
@@ -54,8 +53,8 @@ def main(argv):
 		print 'Missing argument: -o'
 		print usageString
 		sys.exit(2)
-	elif len(raiPath) == 0 and scoreFunction != "tetra":
-		print 'Missing argument: -r'
+	elif len(computePath) == 0:
+		print 'Missing argument: -p'
 		print usageString
 		sys.exit(2)
 	if len(coolingSchedule) == 0:
@@ -69,14 +68,22 @@ def main(argv):
 
 	# Checking validity of inputs
 	if scoreFunction == "raiphy":
-		if raiPath[-1] != "/":
-			raiPath = raiPath + "/"
-		try:
-			temp = open(raiPath+"rait",'r')
-			temp.close()
-		except IOError:
-			print raiPath+"rait cannot be opened."
-			sys.exit(1)
+		if computePath[-1] != "/":
+			computePath = computePath + "/"
+		if scoreFunction == "raiphy":
+			try:
+				temp = open(computePath+"rait",'r')
+				temp.close()
+			except IOError:
+				print computePath+"rait cannot be opened."
+				sys.exit(1)
+		#elif scoreFunction == "tetra":
+		#	try:
+		#		temp = open(computePath+"jellyfish",'r')
+		#		temp.close()
+		#	except IOError:
+		#		print computePath+"jellyfish cannot be opened."
+		#		sys.exit(1)
 	try:
 		temp = open(inputFile, 'r')			
 		temp.close()
@@ -161,10 +168,11 @@ def main(argv):
 		DB = "{!s}_{!s}_DB".format(baseName,i)
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
+		scoringMethodDict[scoreFunction](DB, computePath, fSeed, matches, toMatch, allContigs)
 		if scoreFunction == "tetra":
 			scoreTETRA(DB, fSeed, matches, toMatch, allContigs)				
 		else:
-			scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs)
+			scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
@@ -312,8 +320,8 @@ def main(argv):
 	#print DB
 	#os.system("ls {!s}* > {!s}".format(genePath,toMatch))
 	#os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-	#os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
-	#os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+	#os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
+	#os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(computePath, toMatch, DB))
 	#short = toMatch.rsplit("/",1)[1]
 	#os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
 	#os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
@@ -324,12 +332,12 @@ def main(argv):
 	#fOutD.close()
 
 	# Get rid of files we're not using any more
-	#os.system("rm -r {!s}".format(genePath))
-	#os.system("rm {!s}".format(DB))
-	#os.system("rm {!s}".format(toMatch))
-	#os.system("rm {!s}".format(fSeed))
-	#for i in range(leng+1):
-	#	os.system("rm {!s}_{!s}*".format(baseName,i))
+	os.system("rm -r {!s}".format(genePath))
+	os.system("rm {!s}".format(DB))
+	os.system("rm {!s}".format(toMatch))
+	os.system("rm {!s}".format(fSeed))
+	for i in range(leng+1):
+		os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":

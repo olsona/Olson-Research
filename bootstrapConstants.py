@@ -28,4 +28,5 @@ correctnessDict = {
 
 scoringMethodDict = {
 	"raiphy":	scoreRAIphy,
+	"tetra":	scoreTETRA,
 }

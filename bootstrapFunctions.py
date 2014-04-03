@@ -17,7 +17,7 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
 	
-def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
+def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
