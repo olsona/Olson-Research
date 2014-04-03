@@ -25,15 +25,28 @@ sub readIndex {
 
 
 #---MAIN CODE---#
-my ($jellyfishPath, $indexFile, $workingSuffix, $resultsFile) = @ARGV;
+my ($jellyfishPath, $indexFile, $resultsFile) = @ARGV;
 
 my $inputFiles = readIndex($indexFile);
 
 foreach my $inputName (sort keys %$inputFiles) {
     my $inputFile = $inputFiles->{$inputName};
     my $filesize = -s $inputFile;
-    my $hsh4 = int($filesize/4);
-    my $work4 = "${inputFile}_${workingSuffix}_4";
-    print $work4;
-    system("${jellyfishPath}/jellyfish count -m 4 -s ${hsh4} -t 10 -o ${work4} -C ${inputFile}");
+    my $hsh = int($filesize/4);
+    my $jf4 = "${inputFile}_JF_4";
+    my $jf3 = "${inputFile}_JF_3";
+    my $jf2 = "${inputFile}_JF_2";
+    my $ct4 = "${inputFile}_ct_4";
+    my $ct3 = "${inputFile}_ct_3";
+    my $ct2 = "${inputFile}_ct_2";
+    
+    system("${jellyfishPath}/jellyfish count -m 4 -s ${hsh} -t 10 -o ${jf4} -C ${inputFile}");
+    system("${jellyfishPath}/jellyfish dump ${jf4} > ${ct4}");
+    system("rm ${jf4}");
+    system("${jellyfishPath}/jellyfish count -m 3 -s ${hsh} -t 10 -o ${jf3} -C ${inputFile}");
+    system("${jellyfishPath}/jellyfish dump ${jf3} > ${ct3}");
+    system("rm ${jf3}");
+    system("${jellyfishPath}/jellyfish count -m 2 -s ${hsh} -t 10 -o ${jf2} -C ${inputFile}");
+    system("${jellyfishPath}/jellyfish dump ${jf2} > ${ct2}");
+    system("rm ${jf2}");
 }
