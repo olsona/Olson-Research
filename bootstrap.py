@@ -290,15 +290,15 @@ def main(argv):
 	totalCluster = []
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	for c in allClusters:
-		print "-----"
+		#print "-----"
 		r = allClusters[c].root
 		l = allClusters[c].getLeaves()
-		print r
-		print l
+		#print r
+		#print l
 		cl = [li for li in l]
 		cl.append(r)
-		print cl
-		print "-----\n"
+		#print cl
+		#print "-----\n"
 		fOutC.write("{!s}\n".format(cl))
 		totalCluster.append(cl)
 	fOutC.close()
