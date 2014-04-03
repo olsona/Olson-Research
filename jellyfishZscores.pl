@@ -105,9 +105,9 @@ foreach my $inputName (sort keys %$inputFiles) {
     # Generate and write results
     print $resultsfh $inputName;
     foreach my $w1h (@all4mers) {
-        my $w1h1	= substr($w1h, 0, $h_1);
-		my $w2h1	= substr($w1h, 1, $h_1-1);
-		my $w2h		= substr($w1h, 1, $h_1);
+        my $w1h1	= substr($w1h, 0, 3);
+		my $w2h1	= substr($w1h, 1, 2);
+		my $w2h		= substr($w1h, 1, 3);
         
         my $Nw		= $kmr4->{$w1h};
 		my $Nw1h1	= $kmr3->{$w1h1};
