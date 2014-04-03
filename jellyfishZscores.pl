@@ -23,6 +23,17 @@ sub readIndex {
 	return $inputFiles;
 }
 
+sub getCounts {
+    my $inFile = $_;
+    my $kmrHash;
+    open(IN, $inFile);
+    while(<IN>) {
+        my ($kmr, $ct) = split("\t");
+        $kmrHash->{$kmr} = int($ct);
+    }
+    return $kmrHash;
+}
+
 
 #---MAIN CODE---#
 my ($jellyfishPath, $indexFile, $resultsFile) = @ARGV;
@@ -34,19 +45,21 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $filesize = -s $inputFile;
     my $hsh = int($filesize/4);
     my $jf4 = "${inputFile}_JF_4";
-    my $jf3 = "${inputFile}_JF_3";
-    my $jf2 = "${inputFile}_JF_2";
+    #my $jf3 = "${inputFile}_JF_3";
+    #my $jf2 = "${inputFile}_JF_2";
     my $ct4 = "${inputFile}_ct_4";
-    my $ct3 = "${inputFile}_ct_3";
-    my $ct2 = "${inputFile}_ct_2";
+    #my $ct3 = "${inputFile}_ct_3";
+    #my $ct2 = "${inputFile}_ct_2";
     
     system("${jellyfishPath}/jellyfish count -m 4 -s ${hsh} -t 10 -o ${jf4} -C ${inputFile}");
-    system("${jellyfishPath}/jellyfish dump ${jf4} > ${ct4}");
+    system("${jellyfishPath}/jellyfish dump -c ${jf4} > ${ct4}");
     system("rm ${jf4}");
-    system("${jellyfishPath}/jellyfish count -m 3 -s ${hsh} -t 10 -o ${jf3} -C ${inputFile}");
-    system("${jellyfishPath}/jellyfish dump ${jf3} > ${ct3}");
-    system("rm ${jf3}");
-    system("${jellyfishPath}/jellyfish count -m 2 -s ${hsh} -t 10 -o ${jf2} -C ${inputFile}");
-    system("${jellyfishPath}/jellyfish dump ${jf2} > ${ct2}");
-    system("rm ${jf2}");
+    #system("${jellyfishPath}/jellyfish count -m 3 -s ${hsh} -t 10 -o ${jf3} -C ${inputFile}");
+    #system("${jellyfishPath}/jellyfish dump -c ${jf3} > ${ct3}");
+    #system("rm ${jf3}");
+    #system("${jellyfishPath}/jellyfish count -m 2 -s ${hsh} -t 10 -o ${jf2} -C ${inputFile}");
+    #system("${jellyfishPath}/jellyfish dump -c ${jf2} > ${ct2}");
+    #system("rm ${jf2}");
+    
+    my $kmr4 = getCounts($ct4);
 }
