@@ -33,7 +33,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $inputFile = $inputFiles->{$inputName};
     my $filesize = -s $inputFile;
     my $hsh4 = int($filesize/4);
-    my $work4 = "$workingPrefix_$inputFile_4";
+    my $work4 = "${workingPrefix}_${inputFile}_4";
     echo $work4;
-    system("$jellyfish/jellyfish count -m 4 -s $hsh4 -t 10 -o $work4 -C $inputFile");
+    system("$jellyfishPath/jellyfish count -m 4 -s $hsh4 -t 10 -o $work4 -C $inputFile");
 }
