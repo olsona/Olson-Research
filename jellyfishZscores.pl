@@ -66,6 +66,6 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $kmr2 = getCounts($ct2);
     
     foreach my $w1h (sort (keys %$kmr4)) {
-        print $w1h;
+        print $w1h."\n";
     }
 }
