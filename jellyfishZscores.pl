@@ -24,7 +24,8 @@ sub readIndex {
 }
 
 sub getCounts {
-    my $inFile = $_;
+    my ($inFile) = @_;
+    print $inFile;
     my $kmrHash;
     open(IN, $inFile);
     while(<IN>) {
