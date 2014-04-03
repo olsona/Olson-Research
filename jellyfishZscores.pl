@@ -61,7 +61,11 @@ foreach my $inputName (sort keys %$inputFiles) {
     system("${jellyfishPath}/jellyfish dump -c ${jf2} > ${ct2}");
     system("rm ${jf2}");
     
-    #my $kmr4 = getCounts($ct4);
-    #my $kmr3 = getCounts($ct3);
-    #my $kmr2 = getCounts($ct2);
+    my $kmr4 = getCounts($ct4);
+    my $kmr3 = getCounts($ct3);
+    my $kmr2 = getCounts($ct2);
+    
+    foreach $w1h (sort keys %$kmr4) {
+        print $w1h;
+    }
 }
