@@ -44,7 +44,7 @@ sub processFile {
 	my $file = shift;
 
 	#generate all possible word for a k-mer
-	print STDOUT "Generating all the posible sequences $KmerSize long\n";
+	#print STDOUT "Generating all the posible sequences $KmerSize long\n";
 	
 	my $k0 = $KmerSize;
 	my $k1 = $KmerSize - 1;
@@ -54,7 +54,7 @@ sub processFile {
 	my $k1Counts = kmer_generator($k1);
 	my $k2Counts = kmer_generator($k2);
 
-	print STDOUT "Counting the number of $KmerSize nt long kmers in $file\n";
+	#print STDOUT "Counting the number of $KmerSize nt long kmers in $file\n";
 	open(my $FH, $file) || die "Can't open file $file\n";
 	my $inSeq = 0;
 	my $seq = '';
