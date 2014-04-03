@@ -25,7 +25,6 @@ sub readIndex {
 
 sub getCounts {
     my ($inFile) = @_;
-    print $inFile;
     my $kmrHash;
     open(IN, $inFile);
     while(<IN>) {
@@ -63,4 +62,5 @@ foreach my $inputName (sort keys %$inputFiles) {
     #system("rm ${jf2}");
     
     my $kmr4 = getCounts($ct4);
+    print "$_ $kmr4{$_}\n" for (keys %kmr4);
 }
