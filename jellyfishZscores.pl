@@ -63,6 +63,6 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     my $kmr4 = getCounts($ct4);
     foreach (keys %$kmr4){
-        print "\n".$_."\n";
+        print $_.", ".$kmr4->{$_}."/n";
     }
 }
