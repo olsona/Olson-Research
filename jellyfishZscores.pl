@@ -98,38 +98,38 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $kmr3 = getCounts($ct3,3);
     my $kmr2 = getCounts($ct2,2);
     
-    for (sort(keys %$kmr4)) {
-        print $_ . "," . $kmr4->{$_} . "\n";
-    }
+    #for (sort(keys %$kmr4)) {
+    #    print $_ . "," . $kmr4->{$_} . "\n";
+    #}
     
     my @all4mers = sort keys kmer_generator(4);
     
     # Generate and write results
-    #print $resultsfh $inputName;
-    #foreach my $w1h (@all4mers) {
-    #   my $w1h1	= substr($w1h, 0, 3);
-	#	my $w2h1	= substr($w1h, 1, 2);
-	#	my $w2h		= substr($w1h, 1, 3);
+    print $resultsfh $inputName;
+    foreach my $w1h (@all4mers) {
+        my $w1h1	= substr($w1h, 0, 3);
+        my $w2h1	= substr($w1h, 1, 2);
+		my $w2h		= substr($w1h, 1, 3);
         
-    #   my $Nw		= $kmr4->{$w1h};
-	#	my $Nw1h1	= $kmr3->{$w1h1};
-	#	my $Nw2h	= $kmr3->{$w2h};
-	#	my $Nw2h1	= $kmr2->{$w2h1};
+        my $Nw		= $kmr4->{$w1h};
+		my $Nw1h1	= $kmr3->{$w1h1};
+		my $Nw2h	= $kmr3->{$w2h};
+		my $Nw2h1	= $kmr2->{$w2h1};
         
-    #   my $Nhathat = 0;
-    #   my $Vhathat = 0;
-    #   if ($Nw2h1 >= 1) {
-    #       $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
-    #       $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
-    #   }
+        my $Nhathat = 0;
+        my $Vhathat = 0;
+        if ($Nw2h1 >= 1) {
+            $Nhathat = ($Nw1h1*$Nw2h)/$Nw2h1;
+            $Vhathat = (($Nw1h1*$Nw2h)/($Nw2h1*$Nw2h1*$Nw2h1)) * ($Nw2h1-$Nw1h1) * ($Nw2h1-$Nw2h);
+        }
         
-    #   my $ZM      = 0;
-    #   if ($Nhathat > 0 && $Vhathat > 0) {
-    #       $ZM     = ($Nw-$Nhathat)/sqrt($Vhathat);
-    #   }
+        my $ZM      = 0;
+        if ($Nhathat > 0 && $Vhathat > 0) {
+            $ZM     = ($Nw-$Nhathat)/sqrt($Vhathat);
+        }
         
-    #   printf $resultsfh ":%.8f", $ZM;
-    #}
+        printf $resultsfh ":%.8f", $ZM;
+    }
     print $resultsfh "\n";
 }
 
