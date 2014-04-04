@@ -1,6 +1,5 @@
 import os
 from bootstrapClasses import Contig
-from boostrapUtils import makeDistanceMatrix
 
 def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	os.system("{!s}rait -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
@@ -24,11 +23,6 @@ def scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile):
 	short = toMatch.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
 	os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-	fOutD = open("{!s}_distances".format(outputFile),'w')
-	fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-	for row in fDists:
-		 fOutD.write(",".join(str(r) for r in row)+"\n")
-	fOutD.close()
 	
 def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
