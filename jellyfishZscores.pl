@@ -83,7 +83,7 @@ my $inputFiles = readIndex($indexFile);
 # Open results file
 open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results file: $!\n";
 
-my $ct = 0;
+#my $ct = 0;
 # Main loop
 foreach my $inputName (sort keys %$inputFiles) {
     my $inputFile = $inputFiles->{$inputName};
@@ -115,11 +115,11 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $kmr3 = getCounts($ct3,3);
     my $kmr2 = getCounts($ct2,2);
     
-    if ($ct == 0) {
-        for (sort(keys %$kmr4)) {
-            print $_ . "," . $kmr4->{$_} . "\n";
-        }
-    }
+    #if ($ct == 0) {
+    #    for (sort(keys %$kmr4)) {
+    #        print $_ . "," . $kmr4->{$_} . "\n";
+    #    }
+    #}
     
     my @all4mers = sort keys kmer_generator(4);
     
@@ -150,7 +150,7 @@ foreach my $inputName (sort keys %$inputFiles) {
         printf $resultsfh ":%.8f", $ZM;
     }
     print $resultsfh "\n";
-    $ct += 1;
+    #$ct += 1;
 }
 
 close($resultsfh);
