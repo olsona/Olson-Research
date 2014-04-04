@@ -212,6 +212,7 @@ my @allK2Kmers = sort keys kmer_generator($KmerSize - 2);
 #print $resultsfh "\n";
 
 my $h_1 = $KmerSize-1;
+my $ct = 0;
 
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
@@ -221,6 +222,12 @@ foreach my $inputName (sort keys %$inputFiles) {
 	# Read the input file
 	my ($k0Counts, $k1Counts, $k2Counts) = processFile($inputFile);
 	
+    if ($ct == 0) {
+        for (sort(keys %$k0Counts)) {
+            print $_ . "," . $k0Counts->{$_} . "\n";
+        }
+    }
+    
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
@@ -256,7 +263,7 @@ foreach my $inputName (sort keys %$inputFiles) {
 		printf $resultsfh ":%.8f", $ZM;
 	}
 	print $resultsfh "\n";
-
+    $ct += 1;
 }
 
 close($resultsfh);
