@@ -68,6 +68,7 @@ my $inputFiles = readIndex($indexFile);
 # Open results file
 open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results file: $!\n";
 
+my $ct = 0;
 # Main loop
 foreach my $inputName (sort keys %$inputFiles) {
     my $inputFile = $inputFiles->{$inputName};
@@ -117,7 +118,9 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw2h	= $kmr3->{$w2h};
 		my $Nw2h1	= $kmr2->{$w2h1};
         
-        printf "%s, %d\n", $w1h, $Nw;
+        if ($ct == 0) {
+            printf "%s, %d\n", $w1h, $Nw;
+        }
         
         my $Nhathat = 0;
         my $Vhathat = 0;
