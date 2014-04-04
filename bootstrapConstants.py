@@ -27,7 +27,12 @@ correctnessDict = {
 	"genus":	checkCorrectGenusOlsonFormat,
 }
 
-scoringMethodDict = {
+scoringMethod = {
 	"raiphy":	scoreRAIphy,
 	"tetra":	scoreTETRA,
 }
+
+scoringMethodFinal = {
+	"raiphy":	scoreRAIphyFinal,
+	"tetra":	scoreTETRAFinal,
+	}

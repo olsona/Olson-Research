@@ -1,8 +1,8 @@
 import os
 from bootstrapClasses import Contig
+from boostrapUtils import makeDistanceMatrix
 
 def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
-	# os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
 	os.system("{!s}rait -i {!s}-2 -o {!s} >/dev/null 2>&1".format(raiPath, fSeed, DB))
 	# Process contigs to match
 	f = open(toMatch+"-2",'r')
@@ -16,6 +16,19 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	short = toMatch.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+	
+	
+def scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile):
+	os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
+	os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(computePath, toMatch, DB))
+	short = toMatch.rsplit("/",1)[1]
+	os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
+	os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
+	fOutD = open("{!s}_distances".format(outputFile),'w')
+	fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+	for row in fDists:
+		 fOutD.write(",".join(str(r) for r in row)+"\n")
+	fOutD.close()
 	
 def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
@@ -31,3 +44,9 @@ def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	#os.system("perl jellyfishZscores.pl {!s} {!s}-2 {!s} >/dev/null".format(jellyfishPath,toMatch,mDB))
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}".format(DB,mDB,matches))
 	#os.system("rm {!s}".format(mDB))
+	
+def scoreTETRAFinal(DB, fSeed, toMatch, computePath, outputFile):
+	mDB = "{!s}_M".format(DB)
+	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(fSeed,DB))
+	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
+	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted".format(DB, mDB, outputFile))

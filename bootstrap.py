@@ -168,7 +168,7 @@ def main(argv):
 		DB = "{!s}_{!s}_DB".format(baseName,i)
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
-		scoringMethodDict[scoreFunction](DB, computePath, fSeed, matches, toMatch, allContigs)
+		scoringMethod[scoreFunction](DB, computePath, fSeed, matches, toMatch, allContigs)
 		#if scoreFunction == "tetra":
 		#	scoreTETRA(DB, computePath, fSeed, matches, toMatch, allContigs)				
 		#else:
@@ -263,7 +263,7 @@ def main(argv):
 			fpc.write(">{!s}\n".format(newContig))
 			_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
 			fpc.write(seq)
-			#os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+			os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
 			nCo = Contig(newContig, myCluster = cl)
 			cl.root = newContig
 			cl.addNode(newContig, j)
@@ -312,24 +312,17 @@ def main(argv):
 	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# get distances between extant clusters
-	#toMatch = baseName.rsplit("/",1)[0]+"/l1"
-	#fSeed = baseName.rsplit("/",1)[0]+"/l2"
-	#DB = baseName + "_finalDB"
-	#print toMatch
-	#print fSeed
-	#print DB
-	#os.system("ls {!s}* > {!s}".format(genePath,toMatch))
-	#os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-	#os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
-	#os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(computePath, toMatch, DB))
-	#short = toMatch.rsplit("/",1)[1]
-	#os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
-	#os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
-	#fOutD = open("{!s}_distances".format(outputFile),'w')
-	#fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-	#for row in fDists:
-	#	 fOutD.write(",".join(str(r) for r in row)+"\n")
-	#fOutD.close()
+	toMatch = baseName.rsplit("/",1)[0]+"/l1"
+	fSeed = baseName.rsplit("/",1)[0]+"/l2"
+	DB = baseName + "_finalDB"
+	os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+	os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+	scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
+	fOutD = open("{!s}_distances".format(outputFile),'w')
+	fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+	for row in fDists:
+		 fOutD.write(",".join(str(r) for r in row)+"\n")
+	fOutD.close()
 
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s}".format(genePath))

@@ -184,4 +184,39 @@ def AMI(U, V):
 	return (I-E)/(0.5*(HU+HV)-E)
 	
 	
-#----Actual post-processing computation----#
+#----Total post-processing computation----#
+
+def testCorrectnessAll(computedClustering, correctClustering, names, representationThreshold=0.9, outFile):
+	purityInfo = {c:[] for c in computedClustering}
+	totalR = 0
+	totalN = 0
+	# check purity for each cluster
+	for c in computedClustering:
+		pur, max = purityOfCluster(c, names)
+		purityInfo[c] = [pur, max] 
+		l = len(computedClustering[c])
+		totalR += int(pur*l+0.5)
+		totalN += l
+		
+	# total purity
+	totalPurity = R/N
+	
+	# check representation
+	repDict = {n:0 for n in names}
+	for c in purityInfo:
+		[pur, max] = purityInfo[c]
+		if pur >= representationThreshold:
+			repDict[max] += 1
+		
+	# check NMI
+	nmi = NMI(computedClustering, correctClustering)
+	
+	outF = open(outFile, 'w')
+	outF.write("NMI:\t%0.8f\n".format(nmi))
+	outF.write("Total purity:\t%0.8f\n".format(totalPurity))
+	for c in purityInfo:
+		outF.write("Purity of %s:\t%0.8f,%s\n".format(c,purityInfo[c][0],purityInfo[c][1])
+	for n in repDict:
+		outF.write("Representation of %s:\t%d\n".format(n,repDict[n])
+		
+	outF.close()
