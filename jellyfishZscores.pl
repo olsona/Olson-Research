@@ -102,18 +102,20 @@ foreach my $inputName (sort keys %$inputFiles) {
     # Run Jellyfish
     system("${jellyfishPath}/jellyfish count -m 4 -s ${hsh} -t 10 -o ${jf4} ${inputFile}");
     system("${jellyfishPath}/jellyfish dump -c ${jf4} > ${ct4}");
-    #system("rm ${jf4}");
+    system("rm ${jf4}");
     system("${jellyfishPath}/jellyfish count -m 3 -s ${hsh} -t 10 -o ${jf3} ${inputFile}");
     system("${jellyfishPath}/jellyfish dump -c ${jf3} > ${ct3}");
-    #system("rm ${jf3}");
+    system("rm ${jf3}");
     system("${jellyfishPath}/jellyfish count -m 2 -s ${hsh} -t 10 -o ${jf2} ${inputFile}");
     system("${jellyfishPath}/jellyfish dump -c ${jf2} > ${ct2}");
-    #system("rm ${jf2}");
+    system("rm ${jf2}");
     
     # Get results from Jellyfish
     my $kmr4 = getCounts($ct4,4);
     my $kmr3 = getCounts($ct3,3);
     my $kmr2 = getCounts($ct2,2);
+    
+    system("rm ${ct4} ${ct3} ${ct2}");
     
     #if ($ct == 0) {
     #    for (sort(keys %$kmr4)) {
