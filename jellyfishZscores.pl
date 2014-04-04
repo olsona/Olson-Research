@@ -53,6 +53,7 @@ sub getCounts {
     while(<IN>) {
         my ($kmr, $ct) = split(" ");
         $kmrHash->{$kmr} = int($ct);
+        printf "%s, %d\n", $kmr, int($ct);
     }
     return $kmrHash;
 }
