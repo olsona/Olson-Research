@@ -68,7 +68,6 @@ my $inputFiles = readIndex($indexFile);
 # Open results file
 open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results file: $!\n";
 
-my $ct = 0;
 # Main loop
 foreach my $inputName (sort keys %$inputFiles) {
     my $inputFile = $inputFiles->{$inputName};
@@ -85,13 +84,13 @@ foreach my $inputName (sort keys %$inputFiles) {
     my $ct2 = "${inputFile}_ct_2";
     
     # Run Jellyfish
-    system("${jellyfishPath}/jellyfish count -m 4 -s ${hsh} -t 10 -o ${jf4} -C ${inputFile}");
+    system("${jellyfishPath}/jellyfish count -m 4 -s ${hsh} -t 10 -o ${jf4} ${inputFile}");
     system("${jellyfishPath}/jellyfish dump -c ${jf4} > ${ct4}");
     #system("rm ${jf4}");
-    system("${jellyfishPath}/jellyfish count -m 3 -s ${hsh} -t 10 -o ${jf3} -C ${inputFile}");
+    system("${jellyfishPath}/jellyfish count -m 3 -s ${hsh} -t 10 -o ${jf3} ${inputFile}");
     system("${jellyfishPath}/jellyfish dump -c ${jf3} > ${ct3}");
     #system("rm ${jf3}");
-    system("${jellyfishPath}/jellyfish count -m 2 -s ${hsh} -t 10 -o ${jf2} -C ${inputFile}");
+    system("${jellyfishPath}/jellyfish count -m 2 -s ${hsh} -t 10 -o ${jf2} ${inputFile}");
     system("${jellyfishPath}/jellyfish dump -c ${jf2} > ${ct2}");
     #system("rm ${jf2}");
     
@@ -118,10 +117,6 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw2h	= $kmr3->{$w2h};
 		my $Nw2h1	= $kmr2->{$w2h1};
         
-        if ($ct == 0) {
-            printf "%s, %d\n", $w1h, $Nw;
-        }
-        
         my $Nhathat = 0;
         my $Vhathat = 0;
         if ($Nw2h1 >= 1) {
@@ -137,7 +132,6 @@ foreach my $inputName (sort keys %$inputFiles) {
         printf $resultsfh ":%.8f", $ZM;
     }
     print $resultsfh "\n";
-    $ct += 1;
 }
 
 close($resultsfh);
