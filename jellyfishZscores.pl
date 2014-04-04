@@ -51,9 +51,9 @@ sub getCounts {
     my $kmrHash = kmer_generator($kmerSize);
     open(IN, $inFile);
     while(<IN>) {
+        chomp;
         my ($kmr, $ct) = split(" ");
         $kmrHash->{$kmr} = int($ct);
-        printf "%s, %d\n", $kmr, int($ct);
     }
     return $kmrHash;
 }
@@ -116,6 +116,8 @@ foreach my $inputName (sort keys %$inputFiles) {
 		my $Nw1h1	= $kmr3->{$w1h1};
 		my $Nw2h	= $kmr3->{$w2h};
 		my $Nw2h1	= $kmr2->{$w2h1};
+        
+        printf "%s, %d\n", $w1h, $Nw;
         
         my $Nhathat = 0;
         my $Vhathat = 0;
