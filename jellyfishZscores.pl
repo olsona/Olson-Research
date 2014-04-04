@@ -53,9 +53,24 @@ sub getCounts {
     while(<IN>) {
         chomp;
         my ($kmr, $ct) = split(" ");
-        $kmrHash->{$kmr} = int($ct);
+        my $rc = reverse_complement($kmr);
+        $kmrHash->{$kmr} += int($ct);
+        $kmrHash->{$rc} += int($ct);
     }
     return $kmrHash;
+}
+
+
+sub reverse_complement {
+    #http://code.izzid.com/2011/08/25/How-to-reverse-complement-a-DNA-sequence-in-perl.html
+    my $dna = shift;
+    
+	# reverse the DNA sequence
+    my $revcomp = reverse($dna);
+    
+	# complement the reversed DNA sequence
+    $revcomp =~ tr/ACGTacgt/TGCAtgca/;
+    return $revcomp;
 }
 
 
