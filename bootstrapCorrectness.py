@@ -186,7 +186,7 @@ def AMI(U, V):
 	
 #----Total post-processing computation----#
 
-def testCorrectnessAll(computedClustering, correctClustering, names, representationThreshold=0.9, outFile):
+def testCorrectnessAll(computedClustering, correctClustering, names, outFile, representationThreshold=0.9):
 	purityInfo = {c:[] for c in computedClustering}
 	totalR = 0
 	totalN = 0
