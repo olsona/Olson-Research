@@ -91,7 +91,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     # prepare for running Jellyfish
     my $filesize = -s $inputFile;
-    my $hsh = int($filesize/32);
+    my $hsh = int($filesize/8);
     my $jf4 = "${inputFile}_JF_4";
     my $jf3 = "${inputFile}_JF_3";
     my $jf2 = "${inputFile}_JF_2";
