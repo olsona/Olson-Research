@@ -4,15 +4,16 @@ from bootstrapCorrectness import *
 
 myMethods = ['raiphy']
 
-usageString = 'bootstrap.py -i <input file> -o <output file> -p <RAIphy path> '\
-			'[-r <reference database> -c <cooling schedule>]'
+usageString = 'bootstrap.py -i <input file> -o <output file> -p <score computation path> '\
+			'[-c <cut schedule> -s <scoring function>]'
 				
 bigUsageString = '-i, --ifile\t\tInput metagenomics FASTA file\n'+\
 				'-o, --ofile\t\tOutput file\n'+\
-				'-c, --cut\tpartition schedule (optional)\n'+\
+				'-p, --path\t\tPath to extra code for computation\n'+\
+				'-s, --score\t\tScoring function for use (optional)\n'+\
+				'-c, --cut\t\tPartition schedule (optional)\n'+\
 				'\t\t\t	 format: [1,2,5]\n'+\
-				'\t\t\t	 [1,2,5] implies the partition schedule > 5kbp, 2kbp, 1kbp\n'+\
-				'-p, --path\t\tPath to extra code for computation'
+				'\t\t\t	 [1,2,5] implies the partition schedule > 5kbp, 2kbp, 1kbp\n'
 				
 defaultSchedule = [1,2,5,10,20,50,100]
 

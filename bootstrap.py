@@ -77,13 +77,13 @@ def main(argv):
 			except IOError:
 				print computePath+"rait cannot be opened."
 				sys.exit(1)
-		#elif scoreFunction == "tetra":
-		#	try:
-		#		temp = open(computePath+"jellyfish",'r')
-		#		temp.close()
-		#	except IOError:
-		#		print computePath+"jellyfish cannot be opened."
-		#		sys.exit(1)
+		elif scoreFunction == "tetra":
+			try:
+				temp = open(computePath+"jellyfish",'r')
+				temp.close()
+			except IOError:
+				print computePath+"jellyfish cannot be opened."
+				sys.exit(1)
 	try:
 		temp = open(inputFile, 'r')			
 		temp.close()

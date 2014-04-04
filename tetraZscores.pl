@@ -67,9 +67,14 @@ sub processFile {
 
 			# Process previous sequence, if exists
 			if (length($seq) > 0) {
-				countKmer($k0, $seq, $k0Counts);
-				countKmer($k1, $seq, $k1Counts);
-				countKmer($k2, $seq, $k2Counts);
+				#countKmer($k0, $seq, $k0Counts);
+				#countKmer($k1, $seq, $k1Counts);
+				#countKmer($k2, $seq, $k2Counts);
+                
+                #Alex's fast fix
+                $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
+                $k1Counts->{$_}++ foreach unpack('(A' . $k1 . 'X' . ($k1 - 1) . ')*', $seq);
+                $k2Counts->{$_}++ foreach unpack('(A' . $k2 . 'X' . ($k2 - 1) . ')*', $seq);
 			}
 
 			# Setup for reading new sequence
@@ -84,9 +89,14 @@ sub processFile {
 
 	# Process final sequence, if exists
 	if (length($seq) > 0) {
-        countKmer($k0, $seq, $k0Counts);
-        countKmer($k1, $seq, $k1Counts);
-        countKmer($k2, $seq, $k2Counts);
+        #countKmer($k0, $seq, $k0Counts);
+        #countKmer($k1, $seq, $k1Counts);
+        #countKmer($k2, $seq, $k2Counts);
+        
+        #Alex's fast fix
+        $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
+        $k1Counts->{$_}++ foreach unpack('(A' . $k1 . 'X' . ($k1 - 1) . ')*', $seq);
+        $k2Counts->{$_}++ foreach unpack('(A' . $k2 . 'X' . ($k2 - 1) . ')*', $seq);
 	}
 
 	close($FH);
