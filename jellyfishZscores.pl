@@ -135,9 +135,9 @@ foreach my $inputName (sort keys %$inputFiles) {
         }
         
         printf $resultsfh ":%.8f", $ZM;
-        $ct += 1;
     }
     print $resultsfh "\n";
+    $ct += 1;
 }
 
 close($resultsfh);
