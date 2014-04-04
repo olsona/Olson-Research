@@ -169,10 +169,10 @@ def main(argv):
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
 		scoringMethodDict[scoreFunction](DB, computePath, fSeed, matches, toMatch, allContigs)
-		if scoreFunction == "tetra":
-			scoreTETRA(DB, fSeed, matches, toMatch, allContigs)				
-		else:
-			scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
+		#if scoreFunction == "tetra":
+		#	scoreTETRA(DB, computePath, fSeed, matches, toMatch, allContigs)				
+		#else:
+		#	scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
