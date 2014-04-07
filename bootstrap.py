@@ -133,11 +133,14 @@ def main(argv):
 		workingFile = fNext
 		thr = coolingSchedule[i]*1000
 		bgr = "{!s}_{!s}_next".format(baseName,i)
-		smlr = "{!s}_{!s}".format(baseName, i)
-		print("Thr = {!s}".format(thr))
-		print("Bgr = {!s}".format(bgr))
-		print("Smlr = {!s}".format(smlr))
-		os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
+		if i == 0:
+			os.system("perl discardSmlr.pl {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, bgr))
+		else:
+			smlr = "{!s}_{!s}".format(baseName, i)
+			#print("Thr = {!s}".format(thr))
+			#print("Bgr = {!s}".format(bgr))
+			#print("Smlr = {!s}".format(smlr))
+			os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
 		fNext = bgr
 
 	# Make initial seed file
@@ -312,11 +315,11 @@ def main(argv):
 	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# get distances between extant clusters
-	#toMatch = baseName.rsplit("/",1)[0]+"/l1"
-	#fSeed = baseName.rsplit("/",1)[0]+"/l2"
-	#DB = baseName + "_finalDB"
-	#os.system("ls {!s}* > {!s}".format(genePath,toMatch))
-	#os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+	toMatch = baseName.rsplit("/",1)[0]+"/l1"
+	fSeed = baseName.rsplit("/",1)[0]+"/l2"
+	DB = baseName + "_finalDB"
+	os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+	os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
 	#scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
 	#fOutD = open("{!s}_distances".format(outputFile),'w')
 	#fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
