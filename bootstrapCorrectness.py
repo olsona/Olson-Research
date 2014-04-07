@@ -211,6 +211,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 			repDict[max] += 1
 		
 	# check NMI
+	print type(computedClustering)
 	nmi = NMI(computedClustering.values(), correctClustering.values())
 	
 	outF = open(outFile, 'w')
