@@ -194,7 +194,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	for c in computedClustering:
 		#print c
 		#print computedClustering[c]
-		pur, max = purityOfCluster(computedClustering, names)
+		pur, max = purityOfCluster(computedClustering[c], names)
 		print pur, max
 		purityInfo[c] = [pur, max] 
 		l = len(computedClustering[c])
