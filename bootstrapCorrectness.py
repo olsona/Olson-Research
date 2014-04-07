@@ -192,8 +192,8 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	totalN = 0
 	# check purity for each cluster
 	for c in computedClustering:
-		print c
-		print computedClustering[c]
+		#print c
+		#print computedClustering[c]
 		pur, max = purityOfCluster(computedClustering, names)
 		purityInfo[c] = [pur, max] 
 		l = len(computedClustering[c])
