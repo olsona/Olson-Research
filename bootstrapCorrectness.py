@@ -195,13 +195,14 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 		#print c
 		#print computedClustering[c]
 		pur, max = purityOfCluster(computedClustering, names)
+		print pur, max
 		purityInfo[c] = [pur, max] 
 		l = len(computedClustering[c])
 		totalR += int(pur*l+0.5)
 		totalN += l
 		
 	# total purity
-	totalPurity = totalR/totalN
+	totalPurity = float(totalR)/float(totalN)
 	
 	# check representation
 	repDict = {n:0 for n in names}
