@@ -134,9 +134,9 @@ def main(argv):
 		thr = coolingSchedule[i]*1000
 		bgr = "{!s}_{!s}_next".format(baseName,i)
 		smlr = "{!s}_{!s}".format(baseName, i)
-		#print("Thr = {!s}".format(thr))
-		#print("Bgr = {!s}".format(bgr))
-		#print("Smlr = {!s}".format(smlr))
+		print("Thr = {!s}".format(thr))
+		print("Bgr = {!s}".format(bgr))
+		print("Smlr = {!s}".format(smlr))
 		os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
 		fNext = bgr
 
