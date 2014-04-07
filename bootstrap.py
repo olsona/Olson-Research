@@ -312,17 +312,17 @@ def main(argv):
 	pickle.dump(allContigs,open("{!s}_contigs_pickle".format(outputFile),"wb"))
 
 	# get distances between extant clusters
-	toMatch = baseName.rsplit("/",1)[0]+"/l1"
-	fSeed = baseName.rsplit("/",1)[0]+"/l2"
-	DB = baseName + "_finalDB"
-	os.system("ls {!s}* > {!s}".format(genePath,toMatch))
-	os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-	scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
-	fOutD = open("{!s}_distances".format(outputFile),'w')
-	fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-	for row in fDists:
-		 fOutD.write(",".join(str(r) for r in row)+"\n")
-	fOutD.close()
+	#toMatch = baseName.rsplit("/",1)[0]+"/l1"
+	#fSeed = baseName.rsplit("/",1)[0]+"/l2"
+	#DB = baseName + "_finalDB"
+	#os.system("ls {!s}* > {!s}".format(genePath,toMatch))
+	#os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
+	#scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
+	#fOutD = open("{!s}_distances".format(outputFile),'w')
+	#fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+	#for row in fDists:
+	#	 fOutD.write(",".join(str(r) for r in row)+"\n")
+	#fOutD.close()
 
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s}".format(genePath))

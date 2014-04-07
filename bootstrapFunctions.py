@@ -32,8 +32,10 @@ def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 		co = Contig(nm)
 		allContigs[nm] = co
 	mDB = "{!s}_M".format(DB)
-	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
-	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
+	os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
+	os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
+	#os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
+	#os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 	#os.system("perl jellyfishZscores.pl {!s} {!s}-2 {!s} >/dev/null".format(jellyfishPath,fSeed,DB))
 	#os.system("perl jellyfishZscores.pl {!s} {!s}-2 {!s} >/dev/null".format(jellyfishPath,toMatch,mDB))
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}".format(DB,mDB,matches))
@@ -41,6 +43,8 @@ def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	
 def scoreTETRAFinal(DB, fSeed, toMatch, computePath, outputFile):
 	mDB = "{!s}_M".format(DB)
-	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(fSeed,DB))
-	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
+	os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s} {!s} >/dev/null".format(fSeed,DB))
+	os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
+	#os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(fSeed,DB))
+	#os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted".format(DB, mDB, outputFile))
