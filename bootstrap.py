@@ -298,12 +298,12 @@ def main(argv):
 		l = allClusters[c].getLeaves()
 		#print r
 		#print l
-		cl = [li for li in l]
-		cl.append(r)
+		#cl = [li for li in l]
+		#cl.append(r)
 		#print cl
 		#print "-----\n"
 		fOutC.write("{!s}\n".format(cl))
-		totalCluster[r] = cl
+		totalCluster[r] = l
 	fOutC.close()
 	
 	# get right/wrong distance distributions ***
