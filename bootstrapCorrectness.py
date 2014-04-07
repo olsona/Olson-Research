@@ -192,6 +192,8 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	totalN = 0
 	# check purity for each cluster
 	for c in computedClustering:
+		print c
+		print computedClustering[c]
 		pur, max = purityOfCluster(c, names)
 		purityInfo[c] = [pur, max] 
 		l = len(computedClustering[c])
@@ -209,7 +211,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 			repDict[max] += 1
 		
 	# check NMI
-	nmi = NMI(list(computedClustering.values()), list(correctClustering.values()))
+	nmi = NMI(computedClustering, correctClustering)
 	
 	outF = open(outFile, 'w')
 	outF.write("NMI:\t%0.8f\n".format(nmi))
