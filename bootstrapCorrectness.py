@@ -199,7 +199,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 		totalN += l
 		
 	# total purity
-	totalPurity = R/N
+	totalPurity = totalR/totalN
 	
 	# check representation
 	repDict = {n:0 for n in names}
