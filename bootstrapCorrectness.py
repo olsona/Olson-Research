@@ -195,7 +195,6 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 		#print c
 		#print computedClustering[c]
 		pur, max = purityOfCluster(computedClustering[c], names)
-		print pur, max
 		purityInfo[c] = [pur, max] 
 		l = len(computedClustering[c])
 		totalR += int(pur*l+0.5)
@@ -215,10 +214,10 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	nmi = NMI(computedClustering.values(), correctClustering)
 	
 	outF = open(outFile, 'w')
-	outF.write("NMI:\t{0:.8f}\n".format(nmi))
-	outF.write("Total purity:\t{:.8f}\n".format(totalPurity))
+	outF.write("NMI:\t{0:.6f}\n".format(nmi))
+	outF.write("Total purity:\t{:.2f}\n".format(totalPurity*100.0))
 	for c in purityInfo:
-		outF.write("Purity of {!s}:\t{:.8f},{!s}\n".format(c,purityInfo[c][0],purityInfo[c][1]))
+		outF.write("Purity of {!s}:\t{:.2f}, {!s}\n".format(c,purityInfo[c][0]*100.0,purityInfo[c][1]))
 	for n in repDict:
 		outF.write("Representation of {!s}:\t{!s}\n".format(n,repDict[n]))
 		
