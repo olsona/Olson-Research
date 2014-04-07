@@ -290,7 +290,7 @@ def main(argv):
 	log.close()
 
 	# process results from main loop to get clusters and distances
-	totalCluster = []
+	totalCluster = {}
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	for c in allClusters:
 		#print "-----"
@@ -303,7 +303,7 @@ def main(argv):
 		#print cl
 		#print "-----\n"
 		fOutC.write("{!s}\n".format(cl))
-		totalCluster.append(cl)
+		totalCluster[r] = cl
 	fOutC.close()
 	
 	# get right/wrong distance distributions ***
