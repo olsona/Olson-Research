@@ -320,20 +320,20 @@ def main(argv):
 	DB = baseName + "_finalDB"
 	os.system("ls {!s}* > {!s}".format(genePath,toMatch))
 	os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-	#scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
-	#fOutD = open("{!s}_distances".format(outputFile),'w')
-	#fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
-	#for row in fDists:
-	#	 fOutD.write(",".join(str(r) for r in row)+"\n")
-	#fOutD.close()
+	scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
+	fOutD = open("{!s}_distances".format(outputFile),'w')
+	fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
+	for row in fDists:
+		 fOutD.write(",".join(str(r) for r in row)+"\n")
+	fOutD.close()
 
 	# Get rid of files we're not using any more
-	#os.system("rm -r {!s}".format(genePath))
-	#os.system("rm {!s}".format(DB))
-	#os.system("rm {!s}".format(toMatch))
-	#os.system("rm {!s}".format(fSeed))
-	#for i in range(leng+1):
-	#	os.system("rm {!s}_{!s}*".format(baseName,i))
+	os.system("rm -r {!s}".format(genePath))
+	os.system("rm {!s}".format(DB))
+	os.system("rm {!s}".format(toMatch))
+	os.system("rm {!s}".format(fSeed))
+	for i in range(leng+1):
+		os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
