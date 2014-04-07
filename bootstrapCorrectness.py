@@ -214,11 +214,11 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	nmi = NMI(computedClustering.values(), correctClustering)
 	
 	outF = open(outFile, 'w')
-	outF.write("NMI:\t%0.8f\n".format(nmi))
-	outF.write("Total purity:\t%0.8f\n".format(totalPurity))
+	outF.write("NMI:\t{0:.8f}\n".format(nmi))
+	outF.write("Total purity:\t{:.8f}\n".format(totalPurity))
 	for c in purityInfo:
-		outF.write("Purity of %s:\t%0.8f,%s\n".format(c,purityInfo[c][0],purityInfo[c][1]))
+		outF.write("Purity of {!s}:\t{:.8f},{!s}\n".format(c,purityInfo[c][0],purityInfo[c][1]))
 	for n in repDict:
-		outF.write("Representation of %s:\t%d\n".format(n,repDict[n]))
+		outF.write("Representation of {!s}:\t{!s}\n".format(n,repDict[n]))
 		
 	outF.close()
