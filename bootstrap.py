@@ -248,8 +248,6 @@ def main(argv):
 		plt.savefig("{!s}_{!s}_norm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
 		
-		print "Normed graphed"
-		
 		plt.hist(rdata,bins, normed=0, facecolor='blue', alpha=0.5, label="Right distances")
 		plt.hist(wdata,bins, normed=0, facecolor='red', alpha=0.5, label="Wrong distances")
 		plt.xlabel("Score")
@@ -257,10 +255,25 @@ def main(argv):
 		plt.legend()
 		plt.savefig("{!s}_{!s}_unnorm.pdf".format(outputFile,iterString), bbox_inches='tight')
 		plt.clf()
+		
+		rndata = rightNeighborsDists[iterString]
+		wndata = wrongNeighborsDists[iterString]
+		
+		mymax = max(max(rndata),max(wndata))
+		mymin = min(min(rndata),min(wndata))
+		
+		bins = numpy.linspace(mymin,mymax,40)
+		
+		plt.hist(rndata, bins, normed=0, facecolor='blue', alpha=0.5, label="Distances between correct neighbors")
+		plt.hist(wndata, bins, normed=0, facecolor='red', alpha=0.5, lable="Distances between incorrect neighbors")
+		plt.xlable("Score")
+		plt.title("Correct vs Incorrect Neighbors UNNORMED, {!s}".format(iterString))
+		plt.legend()
+		plt.savefig("{!s}_{!s}_neighbors.pdf".format(outputFile,iterString), bbox_inches="tight")
+		plt.clf()
+
 		# ***
 		
-		print "Unnormed graphed"
-
 		fMatch.close()
 
 		# Prepare for next DB creation
