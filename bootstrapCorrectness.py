@@ -167,11 +167,29 @@ def ExpectedMutualInformation(U,V):
 					t1 = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
 					print ai, bj, N-ai, N-bj
 					print N, nij, ai-nij, bj-nij, N-ai-bj+nij
+					lnai = lnFact(ai)
+					lnbj = lnFact(bj)
+					lnNai = lnFact(N-ai)
+					lnNbj = lnFact(N-bj)
+					lnN = lnFact(N)
+					lnnij = lnFact(nij)
+					lnainij = lnFact(ai-nij)
+					lnbjnij = lnFact(bj-nij)
+					lnNaibjnij = lnFact(N-ai-bj+nij)
+					top = lnai + lnbj + lnNai + lnNbj
+					bottom = lnN + lnnij + lnainij + lnbjnij + lnNaibjnij
+					print top/bottom
 					#upper = math.factorial(ai)*math.factorial(bj)*math.factorial(N-ai)*math.factorial(N-bj)
 					#lower = math.factorial(N)*math.factorial(nij)*math.factorial(ai-nij)*math.factorial(bj-nij)*math.factorial(N-ai-bj+nij)
 					#E += t1 * float(upper)/float(lower)	
 					E += t1						
 	return E
+
+
+def lnFact(n):
+	# Stirling's approximation
+	from math import pi, log
+	return n*log(n)-n+0.5*log(2*pi*n)
 
 
 def AMI(U, V):
