@@ -266,7 +266,7 @@ def main(argv):
 		
 		plt.hist(rndata, bins, normed=0, facecolor='blue', alpha=0.5, label="Distances between correct neighbors")
 		plt.hist(wndata, bins, normed=0, facecolor='red', alpha=0.5, label="Distances between incorrect neighbors")
-		plt.xlable("Score")
+		plt.xlabel("Score")
 		plt.title("Correct vs Incorrect Neighbors UNNORMED, {!s}".format(iterString))
 		plt.legend()
 		plt.savefig("{!s}_{!s}_neighbors.pdf".format(outputFile,iterString), bbox_inches="tight")
