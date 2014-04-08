@@ -161,6 +161,9 @@ def main(argv):
 	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	
+	rightNeighborsDists {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	wrongNeighborsDists {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	
 	close = closeThreshold
 	log = open("{!s}_log".format(outputFile),'w')
 	
@@ -200,16 +203,22 @@ def main(argv):
 			else:
 				mythresh = (1.0+close)*bestScore
 			for l in line.rstrip().split(", ")[0:]:
-				 entry = l.split(":")
-				 score = float(entry[0])
-				 if score >= mythresh:
-					 ind = int(entry[1])
-					 name = dbNames[ind]
-					 mco = allContigs[name]
-					 mcl = mco.myCluster
-					 clnm = mcl.seed
-					 co.goodMatches.append([clnm,score])
-
+				entry = l.split(":")
+				score = float(entry[0])
+				if score >= mythresh:
+					ind = int(entry[1])
+					name = dbNames[ind]
+					mco = allContigs[name]
+					mcl = mco.myCluster
+					clnm = mcl.seed
+					co.goodMatches.append([clnm,score])
+					# *** check quality of neighbors 
+					corr = correctnessDict[matchLevel](clnm, child)
+					if corr == 1:
+						rightNeighborsDists[iterString].append(score)
+					else:
+						wrongNeighborsDists[iterString].append(score)
+						
 			# *** check correctness of match
 			cl = allContigs[parent].myCluster
 			correct = correctnessDict[matchLevel](cl.seed, child)
@@ -309,6 +318,11 @@ def main(argv):
 	# get right/wrong distance distributions ***
 	dists={"right":rightDists,"wrong":wrongDists}
 	pickle.dump(dists,open("{!s}_right_wrong_distances_pickle".format(outputFile),"wb"))
+	# ***
+	
+	# get right/wrong distance distributions for neighbors ***
+	neighborDists = {"right":rightNeighborsDists, "wrong":wrongNeighborsDists}
+	pickle.dump(neighborDists,open("{!s}_neighbor_right_wrong_distances_pickle".format(outputFile),"wb"))
 	# ***
 
 	pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
