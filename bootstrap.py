@@ -288,7 +288,7 @@ def main(argv):
 			fpc.write(">{!s}\n".format(newContig))
 			_, seq = readSequence("{!s}{!s}.fna".format(genePath, j))
 			fpc.write(seq)
-			os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
+			#os.system("rm {!s}{!s}.fna".format(genePath,j)) # clear up space
 			nCo = Contig(newContig, myCluster = cl)
 			cl.root = newContig
 			cl.addNode(newContig, j)
@@ -300,7 +300,7 @@ def main(argv):
 					#print "Match added"
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
-				os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
