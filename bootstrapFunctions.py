@@ -24,6 +24,7 @@ def scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile):
 	os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
 	os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
 	
+	
 def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
@@ -36,10 +37,9 @@ def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	#os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
-	#os.system("perl jellyfishZscores.pl {!s} {!s}-2 {!s} >/dev/null".format(jellyfishPath,fSeed,DB))
-	#os.system("perl jellyfishZscores.pl {!s} {!s}-2 {!s} >/dev/null".format(jellyfishPath,toMatch,mDB))
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}".format(DB,mDB,matches))
 	#os.system("rm {!s}".format(mDB))
+	
 	
 def scoreTETRAFinal(DB, fSeed, toMatch, computePath, outputFile):
 	#mDB = "{!s}_M".format(DB)
@@ -48,3 +48,5 @@ def scoreTETRAFinal(DB, fSeed, toMatch, computePath, outputFile):
 	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(fSeed,DB))
 	#os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted".format(DB, DB, outputFile))
+	
+	

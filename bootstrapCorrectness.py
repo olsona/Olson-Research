@@ -140,6 +140,7 @@ def MutualInformation(U, V):
 			if A != 0.0 and B != 0.0:
 				sum += A*math.log(B)
 	return sum
+	
 
 def NMI(U, V):
 	# http://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-clustering-1.html
@@ -180,6 +181,47 @@ def ExpectedMutualInformation(U,V):
 					bottom = lnN + lnnij + lnainij + lnbjnij + lnNaibjnij
 					E += t1 * math.exp(top-bottom)				
 	return E
+
+
+def terribleFactorials(ai, bj, N, nij):
+	import math
+	Nai = N-ai
+	Nbj = N-bj
+	ainij = ai - nij
+	bjnij = bj - nij
+	Naibjnij = N - ai - bj + nij
+	
+	track = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
+	
+	while (N > 1):
+		track /= float(N)
+		track *= float(ai)
+		track /= float(nij)
+		track *= float(bj)
+		track /= float(ainij)
+		track *= float(Nai)
+		track /= float(bjnij)
+		track *= float(Nbj)
+		track /= float(Naibjnij)
+		ai = decrementOlson(ai)
+		bj = decrementOlson(bj)
+		Nai = decrementOlson(Nai)
+		Nbj = decrementOlson(Nbj)
+		N = decrementOlson(N)
+		nij = decrementOlson(nij)
+		ainij = decrementOlson(ainij)
+		bjnij = decrementOlson(bjnij)
+		Naibjnij = decrementOlson(Naibjnij)
+		print track
+		
+	return track
+		
+
+def decrementOlson(x):
+	if x >= 2:
+		return x-1
+	else:
+		return 1
 
 
 def lnFact(n):
