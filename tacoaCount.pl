@@ -9,7 +9,8 @@ use Thread::Queue;
 # Disable buffering of STDOUT
 $| = 1;
 
-our $KmerSize = 5;
+our $KmerSize = 6;
+our $OnlyCountFirstKmerOccurrence = 1;
 
 ####################################################################
 ### Init functions
@@ -18,13 +19,15 @@ sub parseArgs {
 	my $opts = {};
 	getopts('k:m', $opts);
 	$KmerSize = $opts->{'k'} if defined $opts->{'k'};
+	$OnlyCountFirstKmerOccurrence = 0 if defined $opts->{'m'};
 }
 
 sub usage {
 	print <<EOFUSAGE;
-Usage: countKmer.pl [-k 5] <indexFile> <resultsFile>
+Usage: countKmer.pl [-k 6 -m] <indexFile> <resultsFile>
     For each possible words in the kmer of length -k count the number of time they are found in the fasta sequence file
-    -k <size>   size of the kmer to analyze. Default 5
+    -k <size>   size of the kmer to analyze. Default 6
+    -m          will count all possible kmer per sequences. Default: only one kmer is counted per sequence entries
     
     EOFUSAGE
 	exit(1);
