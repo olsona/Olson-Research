@@ -197,6 +197,8 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     my %probs = ('C' => $gcpr/2, 'G' => $gcpr/2, 'A' => (1-$gcpr)/2, 'T' => (1-$gcpr)/2);
     
+    print "\$probs{'C'} = $probs{'C'}\n";
+    
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
@@ -207,7 +209,6 @@ foreach my $inputName (sort keys %$inputFiles) {
             my @strarray = unpack 'C*', $o;
             my $pr = 1.0;
             foreach my $c (@strarray) {
-                printf ":%.8f\n", $probs{$c};
                 $pr *= $probs{$c};
             }
             my $Eo = $pr*$s;
