@@ -16,7 +16,7 @@ our $KmerSize = 5;
 
 sub parseArgs {
 	my $opts = {};
-	getopts('k', $opts);
+	getopts('k:', $opts);
 	$KmerSize = $opts->{'k'} if defined $opts->{'k'};
 }
 
