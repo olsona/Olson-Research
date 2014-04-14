@@ -197,7 +197,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     my %probs = ('C' => $gcpr, 'G' => $gcpr, 'A' => 1-$gcpr, 'T' => 1-$gcpr);
     
-    print %probs
+    print %probs;
     
 	# Write results
 	print $resultsfh $inputName;
