@@ -205,9 +205,9 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $Oo = $kCounts->{$o};
         if ($Oo != 0) {
             my @strarray = unpack 'C*', $o;
-            my $pr = 1;
+            my $pr = 1.0;
             foreach my $c (@strarray) {
-                $pr *= $probs{$c}
+                $pr *= $probs{$c};
             }
             my $Eo = $pr*$s;
             if ($Oo > $Eo) {
