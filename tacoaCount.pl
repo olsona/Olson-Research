@@ -202,10 +202,10 @@ foreach my $inputName (sort keys %$inputFiles) {
 	my @results = ();
 	foreach my $o (@allKmers) {
         my $go = 0;
+        my $pr = 1;
         my $Oo = $kCounts->{$o};
         if ($Oo > 0) {
             my @strarray = unpack 'C*', $o;
-            my $pr = 1.0;
             foreach my $c (@strarray) {
                 printf ":%.8f\t", $pr;
                 printf ":%.8f\n", $probs{$c};
