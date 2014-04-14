@@ -206,13 +206,10 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $Oo = $kCounts->{$o};
         if ($Oo > 0) {
             my @strarray = unpack 'C*', $o;
-            my $arrayct = 0;
             foreach my $c (@strarray) {
-                printf "\n%d\n", $arrayct;
                 printf ":%.8f\t", $pr;
                 printf ":%.8f\t", $probs{$c};
                 $pr *= $probs{$c};
-                $arrayct += 1;
             }
             my $Eo = $pr*$s;
             if ($Oo > $Eo) {
