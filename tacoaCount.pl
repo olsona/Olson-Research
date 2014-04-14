@@ -10,7 +10,6 @@ use Thread::Queue;
 $| = 1;
 
 our $KmerSize = 5;
-our $OnlyCountFirstKmerOccurrence = 1;
 
 ####################################################################
 ### Init functions
@@ -26,7 +25,6 @@ sub usage {
 Usage: countKmer.pl [-k 6] <indexFile> <resultsFile>
     For each possible words in the kmer of length -k count the number of time they are found in the fasta sequence file
     -k <size>   size of the kmer to analyze. Default 5
-    -m          will count all possible kmer per sequences. Default: only one kmer is counted per sequence entries
     
     EOFUSAGE
 	exit(1);
@@ -119,23 +117,10 @@ sub countKmer {
 		# Skip unless this word is one of our enumerated kmers
 		next unless exists $kmerCounts->{$word};
         
-		if ($OnlyCountFirstKmerOccurrence) {
-			# Count only one occurrence of a kmer per sequence
-            
-			if ( !exists $beenThere->{$word} ) {
-				# Increment this kmer's count
-				$kmerCounts->{$word}++;
-				# Mark this kmer as seen
-				$beenThere->{$word} = 1;
-			}
-            
-		} else {
-			# Count all instances of a kmer per sequence
-            
-			# Increment this kmer's count
-			$kmerCounts->{$word}++;
-            $kmerCounts->{$rc}++;
-		}
+        # Count all instances of a kmer per sequence
+        # Increment this kmer's count
+        $kmerCounts->{$word}++;
+        $kmerCounts->{$rc}++;
 	}
 }
 
@@ -210,7 +195,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     my $gcpr = $gc/(2*$s);
     
-    my %probs = ("C", $gcpr, "G", $gcpr, "A", 1-$gcpr, "T", 1-$gcpr);
+    my %probs = ('C', $gcpr, 'G', $gcpr, 'A', 1-$gcpr, 'T', 1-$gcpr);
     
 	# Write results
 	print $resultsfh $inputName;
