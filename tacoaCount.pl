@@ -22,8 +22,8 @@ sub parseArgs {
 
 sub usage {
 	print <<EOFUSAGE;
-Usage: countKmer.pl [-k 6] <indexFile> <resultsFile>
-    For each possible words in the kmer of length -k count the number of time they are found in the fasta sequence file
+Usage: countKmer.pl [-k 5] <indexFile> <resultsFile>
+    For each possible words in the kmer of length -k count the number of times they are found in the fasta sequence file
     -k <size>   size of the kmer to analyze. Default 5
     
     EOFUSAGE
