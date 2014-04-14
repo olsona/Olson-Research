@@ -153,81 +153,37 @@ def NMI(U, V):
 def ExpectedMutualInformation(U,V):
 	# Vinh, Epps, Bailey, (2)
 	import math
+	from decimal import *
+	getcontext().prec = 400
 	N = 0
 	for u in U:
 		N += len(u)
 	R = len(U)
 	C = len(V)
-	E = 0.0
+	E = Decimal(0)
 	for i in range(R):
 		for j in range(C):
 			ai = len(U[i])			
 			bj = len(V[j])
 			for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
 				if ai != 0 and bj != 0:
-					t1 = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
-					print ai, bj, N-ai, N-bj
-					print N, nij, ai-nij, bj-nij, N-ai-bj+nij
-					lnai = lnFact(ai)
-					lnbj = lnFact(bj)
-					lnNai = lnFact(N-ai)
-					lnNbj = lnFact(N-bj)
-					lnN = lnFact(N)
-					lnnij = lnFact(nij)
-					lnainij = lnFact(ai-nij)
-					lnbjnij = lnFact(bj-nij)
-					lnNaibjnij = lnFact(N-ai-bj+nij)
-					top = lnai + lnbj + lnNai + lnNbj
-					bottom = lnN + lnnij + lnainij + lnbjnij + lnNaibjnij
-					E += t1 * math.exp(top-bottom)				
+					t1 = Decimal((float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj))))
+					t2 = Decimal(ncr(N,nij))
+					t2 /= Decimal(ncr(N,ai))
+					t2 *= Decimal(ncr(N-nij,ai-nij))
+					t2 /= Decimal(ncr(N,bj))
+					t2 *= Decimal(ncr(N-ai,bj-nij))
+					E += t1*t2	
 	return E
 
 
-def terribleFactorials(ai, bj, N, nij):
-	import math
-	Nai = N-ai
-	Nbj = N-bj
-	ainij = ai - nij
-	bjnij = bj - nij
-	Naibjnij = N - ai - bj + nij
-	
-	track = (float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj)))
-	
-	while (N > 1):
-		track /= float(N)
-		track *= float(ai)
-		track /= float(nij)
-		track *= float(bj)
-		track /= float(ainij)
-		track *= float(Nai)
-		track /= float(bjnij)
-		track *= float(Nbj)
-		track /= float(Naibjnij)
-		ai = decrementOlson(ai)
-		bj = decrementOlson(bj)
-		Nai = decrementOlson(Nai)
-		Nbj = decrementOlson(Nbj)
-		N = decrementOlson(N)
-		nij = decrementOlson(nij)
-		ainij = decrementOlson(ainij)
-		bjnij = decrementOlson(bjnij)
-		Naibjnij = decrementOlson(Naibjnij)
-		print track
-		
-	return track
-		
-
-def decrementOlson(x):
-	if x >= 2:
-		return x-1
-	else:
-		return 1
-
-
-def lnFact(n):
-	# Ramanujan's approximation
-	from math import pi, log
-	return n*log(n) - n + log(pi)/2. + 3.*log(2.*n)/6. + log(1.+1./(2.*n)+1./(8.*n*n))/6.
+def ncr(n, r):
+	import operator as op
+    r = min(r, n-r)
+    if r == 0: return 1
+    numer = reduce(op.mul, xrange(n, n-r, -1))
+    denom = reduce(op.mul, xrange(1, r+1))
+    return numer//denom
 
 
 def AMI(U, V):

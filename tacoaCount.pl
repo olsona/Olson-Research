@@ -52,6 +52,7 @@ sub processFile {
 	my $inSeq = 0;
 	my $seq = '';
     my $ct = 0;
+    my $gc = 0;
 	while(<$FH>) {
 		# Clean up newlines
 		s/[\r\n]+$//;
@@ -61,9 +62,13 @@ sub processFile {
             
 			# Process previous sequence, if exists
 			if (length($seq) > 0) {
-                print length($seq)
+                
+                $ct += length($seq);
+                
                 #Alex's fast fix
                 $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
+                
+                $gc += ( $seq =~ tr/CG// );
 			}
             
 			# Setup for reading new sequence
@@ -78,17 +83,17 @@ sub processFile {
     
 	# Process final sequence, if exists
 	if (length($seq) > 0) {
-        print length($seq)
+        $ct += length($seq);
+        
         #Alex's fast fix
         $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
-        
+        $gc += ( $seq =~ tr/CG// );
 	}
     
 	close($FH);
     
 	# Return results
-	#return ($k0Counts, $ct);
-    return $k0Counts;
+	return ($k0Counts, $ct, $gc);
 }
 
 sub reverse_complement {
@@ -203,15 +208,33 @@ foreach my $inputName (sort keys %$inputFiles) {
 	print STDOUT "Processing File: $inputName - $inputFile\n";
     
 	# Read the input file
-	my ($kCounts, $s) = processFile($inputFile);
+	my ($kCounts, $s, $gc) = processFile($inputFile);
+    
+    my $gcpr = $gc/(2*$s);
+    
+    my %probs = ("C", $gcpr, "G", $gcpr, "A", 1-$gcpr, "T", 1-$gcpr);
     
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
 	foreach my $o (@allKmers) {
-		
-        
-        
+        my $go = 0;
+        my $Oo = $kCounts->{$o};
+        if ($Oo != 0) {
+            my @strarray = unpack 'C*', $o;
+            my $pr = 1;
+            foreach my $c (@strarray) {
+                $pr *= $probs{$c}
+            }
+            my $Eo = $pr*$s;
+            if ($Oo > $Eo) {
+                $go = $Oo/$Eo;
+            }
+            else {
+                $go = (-1*$Eo)/$Oo;
+            }
+        }
+        printf $resultsfh ":%.8f", $go;
 	}
 	print $resultsfh "\n";
 }

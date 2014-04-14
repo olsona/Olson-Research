@@ -71,8 +71,6 @@ sub processFile {
 				#countKmer($k1, $seq, $k1Counts);
 				#countKmer($k2, $seq, $k2Counts);
                 
-                print length($seq);
-                
                 #Alex's fast fix
                 $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
                 $k1Counts->{$_}++ foreach unpack('(A' . $k1 . 'X' . ($k1 - 1) . ')*', $seq);
@@ -94,8 +92,6 @@ sub processFile {
         #countKmer($k0, $seq, $k0Counts);
         #countKmer($k1, $seq, $k1Counts);
         #countKmer($k2, $seq, $k2Counts);
-        
-        print length($seq);
         
         #Alex's fast fix
         $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
