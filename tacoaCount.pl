@@ -195,7 +195,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     my $gcpr = $gc/(2*$s);
     
-    my %probs = ('C', $gcpr, 'G', $gcpr, 'A', 1-$gcpr, 'T', 1-$gcpr);
+    my %probs = ('C' => $gcpr, 'G' => $gcpr, 'A' => 1-$gcpr, 'T' => 1-$gcpr);
     
 	# Write results
 	print $resultsfh $inputName;
@@ -207,7 +207,7 @@ foreach my $inputName (sort keys %$inputFiles) {
             my @strarray = unpack 'C*', $o;
             my $pr = 1.0;
             foreach my $c (@strarray) {
-                $pr *= %probs{$c};
+                $pr *= $probs{$c};
             }
             my $Eo = $pr*$s;
             if ($Oo > $Eo) {
