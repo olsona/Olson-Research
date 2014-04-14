@@ -207,7 +207,7 @@ foreach my $inputName (sort keys %$inputFiles) {
             my @strarray = unpack 'C*', $o;
             my $pr = 1.0;
             foreach my $c (@strarray) {
-                printf "%:.8f\n", $probs{$c};
+                printf ":%.8f\n", $probs{$c};
                 $pr *= $probs{$c};
             }
             my $Eo = $pr*$s;
