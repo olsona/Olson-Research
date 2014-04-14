@@ -193,11 +193,9 @@ foreach my $inputName (sort keys %$inputFiles) {
 	# Read the input file
 	my ($kCounts, $s, $gc) = processFile($inputFile);
     
-    my $gcpr = $gc/(2*$s);
+    my $gcpr = $gc/$s;
     
-    my %probs = ('C' => $gcpr, 'G' => $gcpr, 'A' => 1-$gcpr, 'T' => 1-$gcpr);
-    
-    print %probs;
+    my %probs = ('C' => $gcpr/2, 'G' => $gcpr/2, 'A' => (1-$gcpr)/2, 'T' => (1-$gcpr)/2);
     
 	# Write results
 	print $resultsfh $inputName;
@@ -209,6 +207,7 @@ foreach my $inputName (sort keys %$inputFiles) {
             my @strarray = unpack 'C*', $o;
             my $pr = 1.0;
             foreach my $c (@strarray) {
+                print $c "\n";
                 $pr *= $probs{$c};
             }
             my $Eo = $pr*$s;
