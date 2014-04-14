@@ -210,7 +210,7 @@ foreach my $inputName (sort keys %$inputFiles) {
         my $pr = 1;
         my $Oo = $kCounts->{$o};
         if ($Oo > 0) {
-            my @strarray = unpack 'A', $o;
+            my @strarray = unpack '(A)*', $o;
             foreach my $c (@strarray) {
                 printf "%.8f\n", $pr;
                 printf "%.8f\n", $probs{$c};
