@@ -29,7 +29,7 @@ Usage: countKmer.pl [-k 6 -m] <indexFile> <resultsFile>
     -k <size>   size of the kmer to analyze. Default 6
     -m          will count all possible kmer per sequences. Default: only one kmer is counted per sequence entries
     
-    EOFUSAGE
+    EOFUSAGE;
 	exit(1);
 }
 
