@@ -195,11 +195,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
     my $gcpr = $gc/$s;
     
-    my %probs = {}
-    $probs{'A'} = (1.0-$gcpr)/2.0;
-    $probs{'T'} = (1.0-$gcpr)/2.0;
-    $probs{'C'} = $gcpr/2.0;
-    $probs{'G'} = $gcpr/2.0;
+    my %probs = ('C', $gcpr/2, 'G', $gcpr/2, 'A' => (1-$gcpr)/2, 'T' => (1-$gcpr)/2);
     
 	# Write results
 	print $resultsfh $inputName;
