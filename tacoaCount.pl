@@ -200,13 +200,12 @@ foreach my $inputName (sort keys %$inputFiles) {
 	# Write results
 	print $resultsfh $inputName;
 	my @results = ();
-    my $pr = 1.0;
 	foreach my $o (@allKmers) {
         my $go = 0;
         my $Oo = $kCounts->{$o};
         if ($Oo > 0) {
             my @strarray = unpack 'C*', $o;
-            $pr = 1.0;
+            my $pr = 1.0;
             foreach my $c (@strarray) {
                 $pr *= %probs{$c};
             }
@@ -215,7 +214,8 @@ foreach my $inputName (sort keys %$inputFiles) {
                 $go = $Oo/$Eo;
             }
             else {
-                $go = (-1*$Eo)/$Oo;
+                $go = $Eo/$Oo;
+                $go *= -1;
             }
         }
         printf $resultsfh ":%.8f", $go;
