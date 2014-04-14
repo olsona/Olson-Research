@@ -210,7 +210,7 @@ foreach my $inputName (sort keys %$inputFiles) {
             foreach my $c (@strarray) {
                 printf "\n%d\n", $arrayct;
                 printf ":%.8f\t", $pr;
-                printf ":%.8f\n", $probs{$c};
+                printf ":%.8f\t", $probs{$c};
                 $pr *= $probs{$c};
                 $arrayct += 1;
             }
