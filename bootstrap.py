@@ -53,7 +53,9 @@ def main(argv):
 		print 'Missing argument: -o'
 		print usageString
 		sys.exit(2)
-	elif len(computePath) == 0:
+	if scoreFunction not in ["raiphy","tetra","tacoa"]:
+		scoreFunction = "raiphy"
+	elif len(computePath) == 0 and scoreFunction == "raiphy":
 		print 'Missing argument: -p'
 		print usageString
 		sys.exit(2)
@@ -63,8 +65,6 @@ def main(argv):
 		matchLevel = 'species'
 	elif matchLevel != 'genus':
 		matchLevel = 'species'
-	if scoreFunction not in ["raiphy","tetra"]:
-		scoreFunction = "raiphy"
 
 	# Checking validity of inputs
 	if scoreFunction == "raiphy":
@@ -76,13 +76,6 @@ def main(argv):
 				temp.close()
 			except IOError:
 				print computePath+"rait cannot be opened."
-				sys.exit(1)
-		elif scoreFunction == "tetra":
-			try:
-				temp = open(computePath+"jellyfish",'r')
-				temp.close()
-			except IOError:
-				print computePath+"jellyfish cannot be opened."
 				sys.exit(1)
 	try:
 		temp = open(inputFile, 'r')			
@@ -174,11 +167,10 @@ def main(argv):
 		DB = "{!s}_{!s}_DB".format(baseName,i)
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
-		scoringMethod[scoreFunction](DB, computePath, fSeed, matches, toMatch, allContigs)
-		#if scoreFunction == "tetra":
-		#	scoreTETRA(DB, computePath, fSeed, matches, toMatch, allContigs)				
-		#else:
-		#	scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
+		if scoreFunction == "raiphy":
+			scoreTETRA(DB, computePath, fSeed, matches, toMatch, allContigs)				
+		else:
+			scoringMethod[scoreFunction](DB, fSeed, matches, toMatch, allContigs)
 		
 		# Construct matching dictionary for internal use
 		matchDict = {}
@@ -347,7 +339,10 @@ def main(argv):
 	DB = baseName + "_finalDB"
 	os.system("ls {!s}* > {!s}".format(genePath,toMatch))
 	os.system("bash ./ListScript.sh {!s} > {!s}".format(genePath[:-1],fSeed))
-	scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, computePath, outputFile)
+	if scoreFunction == "raiphy":
+		scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile)
+	else:
+		scoringMethodFinal[scoreFunction](DB, fSeed, toMatch, outputFile)
 	fOutD = open("{!s}_distances".format(outputFile),'w')
 	fDists = makeDistanceMatrix("{!s}".format(outputFile+"_dists_sorted"))
 	for row in fDists:

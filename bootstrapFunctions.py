@@ -25,7 +25,7 @@ def scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile):
 	os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
 	
 	
-def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
+def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
@@ -41,7 +41,7 @@ def scoreTETRA(DB, jellyfishPath, fSeed, matches, toMatch, allContigs):
 	#os.system("rm {!s}".format(mDB))
 	
 	
-def scoreTETRAFinal(DB, fSeed, toMatch, computePath, outputFile):
+def scoreTETRAFinal(DB, fSeed, toMatch, outputFile):
 	#mDB = "{!s}_M".format(DB)
 	#os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s} {!s} >/dev/null".format(fSeed,DB))
 	#os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
@@ -50,3 +50,19 @@ def scoreTETRAFinal(DB, fSeed, toMatch, computePath, outputFile):
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted".format(DB, DB, outputFile))
 	
 	
+def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
+	f = open(toMatch+"-2",'r')
+	for l in f.readlines():
+		sp = l.rstrip().split("\t")
+		nm = sp[0]
+		co = Contig(nm)
+		allContigs[nm] = co
+	mDB = "{!s}_M".format(DB)
+	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
+	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
+	os.system("perl tacoaDistance.pl {!s} {!s} {!s}".format(DB,mDB,matches))
+	
+	
+def scoreTACOAFinal(DB, fSeed, toMatch, outputFile):
+	os.system("perl tacoaCount.pl -k 4 {!s} {!s} >/dev/null".format(fSeed,DB))
+	os.system("perl tacoaDistance.pl {!s} {!s} {!s}_dists_sorted".format(DB, DB, outputFile))
