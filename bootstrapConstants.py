@@ -30,9 +30,11 @@ correctnessDict = {
 scoringMethod = {
 	"raiphy":	scoreRAIphy,
 	"tetra":	scoreTETRA,
+	"tacoa":	scoreTACOA,
 }
 
 scoringMethodFinal = {
 	"raiphy":	scoreRAIphyFinal,
 	"tetra":	scoreTETRAFinal,
-	}
+	"tacoa":	scoreTACOAFinal,
+}
