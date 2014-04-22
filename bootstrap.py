@@ -168,7 +168,7 @@ def main(argv):
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
 		if scoreFunction == "raiphy":
-			scoreTETRA(DB, computePath, fSeed, matches, toMatch, allContigs)				
+			scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)				
 		else:
 			scoringMethod[scoreFunction](DB, fSeed, matches, toMatch, allContigs)
 		
