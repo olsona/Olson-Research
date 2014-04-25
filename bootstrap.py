@@ -24,7 +24,7 @@ def main(argv):
 	scoreFunction = ''
 	# Command line arguments
 	try:
-		opts, args = getopt.getopt(argv,"hi:o:c:p:m:s:",["ifile=","ofile=","cut=","path=","matchlevel=","score="])
+		opts, args = getopt.getopt(argv,"hi:o:c:p:s:",["ifile=","ofile=","cut=","path=","score="])
 	except getopt.GetoptError:
 		print usageString
 		sys.exit(2)
@@ -41,8 +41,6 @@ def main(argv):
 			coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
 		elif opt in ("-p", "--path:"):
 			computePath = arg
-		elif opt in ("-m", "--matchlevel:"):
-			matchLevel = arg
 		elif opt in ("-s", "--score:"):
 			scoreFunction = arg.lower()
 	if len(inputFile) == 0:
@@ -61,10 +59,8 @@ def main(argv):
 		sys.exit(2)
 	if len(coolingSchedule) == 0:
 		coolingSchedule = defaultSchedule
-	if len(matchLevel) == 0:
-		matchLevel = 'species'
-	elif matchLevel != 'genus':
-		matchLevel = 'species'
+	
+	matchLevel = 'genus'
 
 	# Checking validity of inputs
 	if scoreFunction == "raiphy":

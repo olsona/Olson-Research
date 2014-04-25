@@ -52,6 +52,9 @@ class Cluster:
 		else:
 			self.closeList[name] = [score]
 
+	def addCluster(self, other):
+		pass
+
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
 
 
