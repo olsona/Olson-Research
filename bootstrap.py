@@ -313,7 +313,8 @@ def main(argv):
 		#print cl
 		#print "-----\n"
 		fOutC.write("{!s}\n".format(cl))
-		totalCluster[r] = l
+		#totalCluster[r] = l
+		totalCluster[r] = allClusters[c]
 	fOutC.close()
 	
 	# get right/wrong distance distributions ***
