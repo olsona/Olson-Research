@@ -114,3 +114,32 @@ def getMatchesWithinPercentage(inline, pct):
 		else:
 			break
 	return out
+	
+	
+def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
+	import string
+	import cPickle as pickle
+	cf = open(contigFile,'r')
+	nf = open(nameFile,'r')
+	nameList = nf.readlines()
+	resDict = {name.rstrip():[] for name in nameList}
+	l = cf.readline()
+	while l:
+		if l[0] == ">":
+			#we have a contig name
+			li = l.rstrip()[1:]
+			src = ''
+			for n in nameList:
+				if string.find(li, n) != -1:
+					src = n
+					break
+			len = li.split("_")[-2]
+			if len >= threshold:
+				res[src].append(li)
+		l = cf.readline()
+	nf.close()
+	cf.close()
+	resList = []
+	for r in resDict:
+		resList.append(resDict[r])
+	pickle.dump(resList, open(res,"wb"))

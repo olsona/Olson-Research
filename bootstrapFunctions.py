@@ -37,7 +37,7 @@ def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 	#os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
-	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}".format(DB,mDB,matches))
+	os.system("perl tetraCorrelation.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,matches))
 	#os.system("rm {!s}".format(mDB))
 	
 	
@@ -47,7 +47,7 @@ def scoreTETRAFinal(DB, fSeed, toMatch, outputFile):
 	#os.system("perl tetraZscoresThreaded.pl -k 4 -j 8 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(fSeed,DB))
 	#os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(toMatch,mDB))
-	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted".format(DB, DB, outputFile))
+	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
 	
 	
 def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
@@ -60,9 +60,9 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
 	mDB = "{!s}_M".format(DB)
 	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
-	os.system("perl tacoaDistance.pl {!s} {!s} {!s}".format(DB,mDB,matches))
+	os.system("perl tacoaDistance.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,matches))
 	
 	
 def scoreTACOAFinal(DB, fSeed, toMatch, outputFile):
 	os.system("perl tacoaCount.pl -k 4 {!s} {!s} >/dev/null".format(fSeed,DB))
-	os.system("perl tacoaDistance.pl {!s} {!s} {!s}_dists_sorted".format(DB, DB, outputFile))
+	os.system("perl tacoaDistance.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
