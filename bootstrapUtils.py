@@ -121,9 +121,9 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	import cPickle as pickle
 	cf = open(contigFile,'r')
 	nf = open(nameFile,'r')
-	nameList = nf.readlines()
+	nameList = [n.rstrip() for n in nf.readlines()]
 	print nameList
-	resDict = {name.rstrip():[] for name in nameList}
+	resDict = {name:[] for name in nameList}
 	l = cf.readline()
 	while l:
 		if l[0] == ">":
