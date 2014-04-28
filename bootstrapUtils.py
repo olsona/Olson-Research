@@ -122,6 +122,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	cf = open(contigFile,'r')
 	nf = open(nameFile,'r')
 	nameList = nf.readlines()
+	print nameList
 	resDict = {name.rstrip():[] for name in nameList}
 	l = cf.readline()
 	while l:
