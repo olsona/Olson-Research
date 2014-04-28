@@ -142,4 +142,4 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	resList = []
 	for r in resDict:
 		resList.append(resDict[r])
-	pickle.dump(resList, open(res,"wb"))
+	pickle.dump(resList, open(resList,"wb"))
