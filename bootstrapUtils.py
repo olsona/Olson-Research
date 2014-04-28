@@ -135,7 +135,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 					break
 			len = li.split("_")[-2]
 			if len >= threshold:
-				res[src].append(li)
+				resDict[src].append(li)
 		l = cf.readline()
 	nf.close()
 	cf.close()
