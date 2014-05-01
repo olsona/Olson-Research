@@ -8,14 +8,14 @@ class Cluster:
 		else:
 			self.root = root
 		if dict is None:
-			self.dict = {root:[]}
+			self.dict = {self.root:[]}
 		else:
 			self.dict = dict
 		if closeList is None:
 			self.closeList = {}
 		else:
 			self.closeList = closeList
-		#print self.seed
+		print self.dict[self.root]
 
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.get_leaves())
