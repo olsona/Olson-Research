@@ -211,15 +211,14 @@ def main(argv):
 					name = dbNames[ind]
 					mco = allContigs[name]
 					mcl = mco.myCluster
-					clnm = mcl.seed
 					co.goodMatches.append([clnm,score])
 					# *** check quality of neighbors 
-					corrSeed = correctnessDictSeed[matchLevel](clnm, child)
+					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
 					if corrSeed == 1:
 						rightNeighborsDistsSeed[iterString].append(score)
 					else:
 						wrongNeighborsDistsSeed[iterString].append(score)
-					corrMax = correctnessDictMax[matchLevel](mcl, child, names)
+					corrMax = correctnessDictMax[matchLevel](child, mcl, names)
 					if corrMax == 1:
 						rightNeighborsDistsMax[iterString].append(score)
 					else:
