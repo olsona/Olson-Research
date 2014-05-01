@@ -218,7 +218,7 @@ def main(argv):
 						rightNeighborsDistsSeed[iterString].append(score)
 					else:
 						wrongNeighborsDistsSeed[iterString].append(score)
-					corrMax = correctnessDictMax[matchLevel](mcl, child)
+					corrMax = correctnessDictMax[matchLevel](mcl, child, names)
 					if corrMax == 1:
 						rightNeighborsDistsMax[iterString].append(score)
 					else:
@@ -232,17 +232,17 @@ def main(argv):
 				rightDistsSeed[iterString].append(bestScore)
 			else:
 				wrongDistsSeed[iterString].append(bestScore)
-				log.write("Wrong match: {!s} to {!s}\n".format(child, cl.seed))
+				log.write("Wrong match (seed): {!s} to {!s}\n".format(child, cl.seed))
 				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 				cl = allContigs[parent].myCluster
 				
-			correctM = correctnessDictMax[matchLevel](cl, child)
+			correctM = correctnessDictMax[matchLevel](cl, child, names)
 			if correctM == 1:
 				rightDistsMax[iterString].append(bestScore)
 			else:
 				wrongDistsMax[iterString].append(bestScore)
-				log.write("Wrong match: {!s} to {!s}\n".format(child, cl.seed))
+				log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
 				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 			# ***
@@ -270,6 +270,8 @@ def main(argv):
 		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
 		l2 = open(fSeed + "-2",'w')
+		mergeLogSeed = []
+		mergeLogMax = []
 		# Make concatenated seeds
 		for j in matchDict.keys():
 			#print j
@@ -297,10 +299,12 @@ def main(argv):
 			fpc.close()
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
-		# Merge close clusters
-		#mergeSets = {}
-		#for j in matchDict.keys():
-		#	pass
+			# get info on cluster closeness
+			goodMatchList, total = cl.getMatches(names)
+			mergeLogSeed.append([cl.seed,float(goodMatchList[0][1])/float(total)])
+			_, mymax = cl.purityMax(names)
+			mergeLogSeed.append([mymax, float(goodMatchList[0][1])/float(total)])
+			
 		print iterString + " done"
 		l2.close()
 

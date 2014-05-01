@@ -51,6 +51,19 @@ class Cluster:
 			self.closeList[name].append(score)
 		else:
 			self.closeList[name] = [score]
+			
+	def getMatches(self, nameList):
+		import string
+		matchDict = {name:0 for name in nameList}
+		total = 0
+		for gm in self.closeList:
+			for n in nameList:
+				if string.find(gm, n) != -1:
+					matchDict[n] += 1
+					total += 1
+		#http://stackoverflow.com/a/2258273
+		sorted = sorted(matchDict.items(), key=lamdba x: x[1])
+		return sorted[::-1], total
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]
@@ -59,6 +72,8 @@ class Cluster:
 			self.dict.update(o.dict)
 		self.root = ubercontig
 		self.dict[ubercontig] = subs
+		
+	
 		
 
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
