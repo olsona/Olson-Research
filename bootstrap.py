@@ -157,11 +157,11 @@ def main(argv):
 	rightNeighborsDistsSeed = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	wrongNeighborsDistsSeed = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	
-	rightDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	wrongDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	rightDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-2)}
+	wrongDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-2)}
 	
-	rightNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	wrongNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	rightNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-2)}
+	wrongNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-2)}
 	
 	log = open("{!s}_log".format(outputFile),'w')
 	neighborLog = open("{!s}_neighborlog".format(outputFile),'w')
@@ -212,17 +212,19 @@ def main(argv):
 					mco = allContigs[name]
 					mcl = mco.myCluster
 					co.goodMatches.append([mcl.seed, score])
+					
 					# *** check quality of neighbors 
 					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
 					if corrSeed == 1:
 						rightNeighborsDistsSeed[iterString].append(score)
 					else:
 						wrongNeighborsDistsSeed[iterString].append(score)
-					corrMax = correctnessDictMax[matchLevel](child, mcl, names)
-					if corrMax == 1:
-						rightNeighborsDistsMax[iterString].append(score)
-					else:
-						wrongNeighborsDistsMax[iterString].append(score)
+					if i < leng-1:
+						corrMax = correctnessDictMax[matchLevel](child, mcl, names)
+						if corrMax == 1:
+							rightNeighborsDistsMax[iterString].append(score)
+						else:
+							wrongNeighborsDistsMax[iterString].append(score)
 					# *** 
 					
 			# *** check correctness of match
@@ -236,15 +238,16 @@ def main(argv):
 				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 				cl = allContigs[parent].myCluster
-				
-			correctM = correctnessDictMax[matchLevel](child, cl, names)
-			if correctM == 1:
-				rightDistsMax[iterString].append(bestScore)
-			else:
-				wrongDistsMax[iterString].append(bestScore)
-				log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
-				log.write("Original score: {!s}\n".format(bestScore))
-				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
+			
+			if i < leng-1:	
+				correctM = correctnessDictMax[matchLevel](child, cl, names)
+				if correctM == 1:
+					rightDistsMax[iterString].append(bestScore)
+				else:
+					wrongDistsMax[iterString].append(bestScore)
+					log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
+					log.write("Original score: {!s}\n".format(bestScore))
+					log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 			# ***
 
 		# *** compute correctness distributions
@@ -252,17 +255,18 @@ def main(argv):
 		wdata = wrongDistsSeed[iterString]
 		comparisonPlot(rdata, wdata, iterString, outputFile, "_seed", "Correct distances", "Incorrect Distances")
 		
-		rdata = rightDistsMax[iterString]
-		wdata = wrongDistsMax[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "_max", "Correct distances", "Incorrect Distances")
-		
 		rdata = rightNeighborsDistsSeed[iterString]
 		wdata = wrongNeighborsDistsSeed[iterString]
 		comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
 
-		rdata = rightNeighborsDistsMax[iterString]
-		wdata = wrongNeighborsDistsMax[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
+		if i < leng-1:
+			rdata = rightDistsMax[iterString]
+			wdata = wrongDistsMax[iterString]
+			comparisonPlot(rdata, wdata, iterString, outputFile, "_max", "Correct distances", "Incorrect Distances")
+
+			rdata = rightNeighborsDistsMax[iterString]
+			wdata = wrongNeighborsDistsMax[iterString]
+			comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
 		# ***
 		
 		fMatch.close()
@@ -300,19 +304,21 @@ def main(argv):
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
 			# get info on cluster closeness
-			goodMatchList, total = cl.getMatches(names)
-			bestMatch = goodMatchList[0]
-			mergeLogSeed.append([cl.seed, bestMatch[0], float(bestMatch[1])/float(total)])
-			_, mymax = cl.purityMax(names)
-			mergeLogMax.append([mymax, bestMatch[0], float(bestMatch[1])/float(total)])
+			if i < leng-1:
+				goodMatchList, total = cl.getMatches(names)
+				bestMatch = goodMatchList[0]
+				mergeLogSeed.append([cl.seed, bestMatch[0], float(bestMatch[1])/float(total)])
+				_, mymax = cl.purityMax(names)
+				mergeLogMax.append([mymax, bestMatch[0], float(bestMatch[1])/float(total)])
 			
 		print iterString + " done"
 		l2.close()
 		
-		neighborLog.write(iterstring+"\n")
-		for a in range(len(mergeLogSeed)):
-			neighborLog.write("{!s}, {:03.2f}%:\t{!s}\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogMax[a][0], mergeLogSeed[a][0]))
-		neighborLog.write("\n")
+		if i < leng -1:
+			neighborLog.write(iterstring+"\n")
+			for a in range(len(mergeLogSeed)):
+				neighborLog.write("{!s}, {:03.2f}%:\t{!s}\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogMax[a][0], mergeLogSeed[a][0]))
+			neighborLog.write("\n")
 
 	log.close()
 	neighborLog.close()
