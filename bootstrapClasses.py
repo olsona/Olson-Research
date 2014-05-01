@@ -52,8 +52,14 @@ class Cluster:
 		else:
 			self.closeList[name] = [score]
 
-	def addCluster(self, other):
-		pass
+	def addCluster(self, others, ubercontig):
+		subs = [self.root]
+		for o in others:
+			subs.append(o.root)
+			self.dict.update(o.dict)
+		self.root = ubercontig
+		self.dict[ubercontig] = subs
+		
 
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
 

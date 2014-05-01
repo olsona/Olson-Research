@@ -22,9 +22,14 @@ matchThreshold = -0.5
 closeThreshold = 0.1
 
 #http://my.safaribooksonline.com/book/programming/python/0596007973/python-shortcuts/pythoncook2-chp-4-sect-16
-correctnessDict = {
+correctnessDictSeed = {
 	"species":	checkCorrectSpeciesOlsonFormat,
 	"genus":	checkCorrectGenusOlsonFormat,
+}
+
+correctnessDictMax = {
+	"species":	checkCorrectMatchClusterMaxSpecies,
+	"genus":	checkCorrectMatchClusterMaxGenus,
 }
 
 scoringMethod = {

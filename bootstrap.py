@@ -7,7 +7,6 @@ import cPickle as pickle
 # http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 from bootstrapConstants import *
 from bootstrapUtils import *
 from bootstrapClasses import *
@@ -22,9 +21,11 @@ def main(argv):
 	computePath = ''
 	matchLevel = ''
 	scoreFunction = ''
+	nameFile = ''
+	names = []
 	# Command line arguments
 	try:
-		opts, args = getopt.getopt(argv,"hi:o:c:p:s:",["ifile=","ofile=","cut=","path=","score="])
+		opts, args = getopt.getopt(argv,"hi:o:c:p:s:n:",["ifile=","ofile=","cut=","path=","score=","namefile="])
 	except getopt.GetoptError:
 		print usageString
 		sys.exit(2)
@@ -39,10 +40,14 @@ def main(argv):
 			outputFile = arg
 		elif opt in ("-c", "--cut"):
 			coolingSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
-		elif opt in ("-p", "--path:"):
+		elif opt in ("-p", "--path"):
 			computePath = arg
-		elif opt in ("-s", "--score:"):
+		elif opt in ("-s", "--score"):
 			scoreFunction = arg.lower()
+		elif opt in ("-n", "--namefile"):
+			nameFile = arg
+			nf = open(nameFile,'r')
+			names = [l.rstrip() for l in nf.readlines()]
 	if len(inputFile) == 0:
 		print 'Missing argument: -i'
 		print usageString
@@ -126,9 +131,6 @@ def main(argv):
 			os.system("perl discardSmlr.pl {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, bgr))
 		else:
 			smlr = "{!s}_{!s}".format(baseName, i)
-			#print("Thr = {!s}".format(thr))
-			#print("Bgr = {!s}".format(bgr))
-			#print("Smlr = {!s}".format(smlr))
 			os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
 		fNext = bgr
 
@@ -147,14 +149,24 @@ def main(argv):
 		co = Contig(nm,myCluster=cl)
 		allContigs[nm] = co
 	ct = 0
-	rightDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	wrongDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	
-	rightNeighborsDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	wrongNeighborsDists = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	# ***
+	rightDistsSeed = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	wrongDistsSeed = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	
+	rightNeighborsDistsSeed = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	wrongNeighborsDistsSeed = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	
+	rightDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	wrongDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	
+	rightNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	wrongNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	
+	log = open("{!s}_log".format(outputFile),'w')
+	# ***
 	
 	close = closeThreshold
-	log = open("{!s}_log".format(outputFile),'w')
 	
 	# Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 	for i in range(leng-1,0,-1):
@@ -201,65 +213,56 @@ def main(argv):
 					clnm = mcl.seed
 					co.goodMatches.append([clnm,score])
 					# *** check quality of neighbors 
-					corr = correctnessDict[matchLevel](clnm, child)
-					if corr == 1:
-						rightNeighborsDists[iterString].append(score)
+					corrSeed = correctnessDictSeed[matchLevel](clnm, child)
+					if corrSeed == 1:
+						rightNeighborsDistsSeed[iterString].append(score)
 					else:
-						wrongNeighborsDists[iterString].append(score)
-						
+						wrongNeighborsDistsSeed[iterString].append(score)
+					corrMax = correctnessDictMax[matchlevel](mcl, child)
+					if corrMax == 1:
+						rightNeighborsDistsMax[iterString].append(score)
+					else:
+						wrongNeighborsDistsMax[iterString].append(score)
+					# *** 
+					
 			# *** check correctness of match
 			cl = allContigs[parent].myCluster
-			correct = correctnessDict[matchLevel](cl.seed, child)
-			if correct == 1:
-				rightDists[iterString].append(bestScore)
+			correctS = correctnessDictSeed[matchLevel](cl.seed, child)
+			if correctS == 1:
+				rightDistsSeed[iterString].append(bestScore)
 			else:
-				wrongDists[iterString].append(bestScore)
-				log.write("Wrong match: {!s} to {!s}\n".format(child,cl.seed))
+				wrongDistsSeed[iterString].append(bestScore)
+				log.write("Wrong match: {!s} to {!s}\n".format(child, cl.seed))
+				log.write("Original score: {!s}\n".format(bestScore))
+				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
+				cl = allContigs[parent].myCluster
+				
+			correctM = correctnessDictMax[matchLevel](cl, child)
+			if correctM == 1:
+				rightDistsMax[iterString].append(bestScore)
+			else:
+				wrongDistsMax[iterString].append(bestScore)
+				log.write("Wrong match: {!s} to {!s}\n".format(child, cl.seed))
 				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 			# ***
 
-		# *** find out correctness distribution
-		rdata = rightDists[iterString]
-		wdata = wrongDists[iterString]
+		# *** compute correctness distributions
+		rdata = rightDistsSeed[iterString]
+		wdata = wrongDistsSeed[iterString]
+		comparisonPlot(rdata, wdata, iterString, outputFile, "_seed", "Correct distances", "Incorrect Distances")
 		
-		mymax = max(max(rdata),max(wdata))
-		mymin = min(min(rdata),min(wdata))
+		rdata = rightDistsMax[iterString]
+		wdata = wrongDistsMax[iterString]
+		comparisonPlot(rdata, wdata, iterString, outputFile, "_max", "Correct distances", "Incorrect Distances")
 		
-		bins = numpy.linspace(mymin,mymax,40)
-		
-		plt.hist(rdata, bins, normed=1, facecolor='blue', alpha=0.5, label="Right distances")
-		plt.hist(wdata, bins, normed=1, facecolor='red', alpha=0.5, label="Wrong distances")
-		plt.xlabel("Score")
-		plt.title("Correct vs Incorrect Scores NORMED, {!s}".format(iterString))
-		plt.legend()
-		plt.savefig("{!s}_{!s}_norm.pdf".format(outputFile,iterString), bbox_inches='tight')
-		plt.clf()
-		
-		plt.hist(rdata,bins, normed=0, facecolor='blue', alpha=0.5, label="Right distances")
-		plt.hist(wdata,bins, normed=0, facecolor='red', alpha=0.5, label="Wrong distances")
-		plt.xlabel("Score")
-		plt.title("Correct vs Incorrect Scores UNNORMED, {!s}".format(iterString))
-		plt.legend()
-		plt.savefig("{!s}_{!s}_unnorm.pdf".format(outputFile,iterString), bbox_inches='tight')
-		plt.clf()
-		
-		rndata = rightNeighborsDists[iterString]
-		wndata = wrongNeighborsDists[iterString]
-		
-		mymax = max(max(rndata),max(wndata))
-		mymin = min(min(rndata),min(wndata))
-		
-		bins = numpy.linspace(mymin,mymax,40)
-		
-		plt.hist(rndata, bins, normed=0, facecolor='blue', alpha=0.5, label="Distances between correct neighbors")
-		plt.hist(wndata, bins, normed=0, facecolor='red', alpha=0.5, label="Distances between incorrect neighbors")
-		plt.xlabel("Score")
-		plt.title("Correct vs Incorrect Neighbors UNNORMED, {!s}".format(iterString))
-		plt.legend()
-		plt.savefig("{!s}_{!s}_neighbors.pdf".format(outputFile,iterString), bbox_inches="tight")
-		plt.clf()
+		rdata = rightNeighborsDistsSeed[iterString]
+		wdata = wrongNeighborsDistsSeed[iterString]
+		comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
 
+		rdata = rightNeighborsDistsMax[iterString]
+		wdata = wrongNeighborsDistsMax[iterString]
+		comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
 		# ***
 		
 		fMatch.close()
@@ -294,7 +297,11 @@ def main(argv):
 			fpc.close()
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
-		print iterString
+		# Merge close clusters
+		#mergeSets = {}
+		#for j in matchDict.keys():
+		#	pass
+		print iterString + " done"
 		l2.close()
 
 	log.close()
@@ -306,14 +313,9 @@ def main(argv):
 		#print "-----"
 		r = allClusters[c].root
 		l = allClusters[c].getLeaves()
-		#print r
-		#print l
 		cl = [li for li in l]
 		cl.append(r)
-		#print cl
-		#print "-----\n"
 		fOutC.write("{!s}\n".format(cl))
-		#totalCluster[r] = l
 		totalCluster[r] = allClusters[c]
 	fOutC.close()
 	
@@ -347,12 +349,12 @@ def main(argv):
 	#fOutD.close()
 
 	# Get rid of files we're not using any more
-	#os.system("rm -r {!s}".format(genePath))
-	#os.system("rm {!s}".format(DB))
-	#os.system("rm {!s}".format(toMatch))
-	#os.system("rm {!s}".format(fSeed))
-	#for i in range(leng+1):
-	#	os.system("rm {!s}_{!s}*".format(baseName,i))
+	os.system("rm -r {!s}".format(genePath))
+	os.system("rm {!s}".format(DB))
+	os.system("rm {!s}".format(toMatch))
+	os.system("rm {!s}".format(fSeed))
+	for i in range(leng+1):
+		os.system("rm {!s}_{!s}*".format(baseName,i))
 
 
 if __name__ == "__main__":
