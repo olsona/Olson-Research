@@ -11,10 +11,6 @@ class Cluster:
 			self.dict = {root:[]}
 		else:
 			self.dict = dict
-		if root is None:
-			self.root = self.seed
-		else:
-			self.root = root
 		if closeList is None:
 			self.closeList = {}
 		else:
