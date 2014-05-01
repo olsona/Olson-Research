@@ -228,7 +228,7 @@ def main(argv):
 					
 			# *** check correctness of match
 			cl = allContigs[parent].myCluster
-			correctS = correctnessDictSeed[matchLevel](cl.seed, child)
+			correctS = correctnessDictSeed[matchLevel](child, cl.seed)
 			if correctS == 1:
 				rightDistsSeed[iterString].append(bestScore)
 			else:
@@ -238,7 +238,7 @@ def main(argv):
 				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
 				cl = allContigs[parent].myCluster
 				
-			correctM = correctnessDictMax[matchLevel](cl, child, names)
+			correctM = correctnessDictMax[matchLevel](child, cl, names)
 			if correctM == 1:
 				rightDistsMax[iterString].append(bestScore)
 			else:
