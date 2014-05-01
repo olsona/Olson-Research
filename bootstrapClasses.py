@@ -23,7 +23,9 @@ class Cluster:
 	def getLeaves(self):
 		import pprint
 		pprint.pprint(self.dict)
-		if self.root is None or self.dict is None:
+		if self.root is None:
+			return []
+		elif not any(self.dict):
 			return []
 		else:
 			return getLeaves(self.dict, self.root)
