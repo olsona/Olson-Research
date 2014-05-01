@@ -3,14 +3,13 @@ from bootstrapUtils import *
 class Cluster:
 	def __init__(self, seed, dict = None, root = None, closeList = None):
 		self.seed = seed
-		if dict is None:
-			self.dict = {}
-		else:
+		if dict is not None:
 			self.dict = dict
 		if root is None:
 			self.root = self.seed
 		else:
 			self.root = root
+		self.dict{root} = []
 		if closeList is None:
 			self.closeList = {}
 		else:
@@ -24,8 +23,6 @@ class Cluster:
 		import pprint
 		pprint.pprint(self.dict)
 		if self.root is None:
-			return []
-		elif not any(self.dict):
 			return []
 		else:
 			return getLeaves(self.dict, self.root)
