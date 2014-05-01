@@ -164,6 +164,7 @@ def main(argv):
 	wrongNeighborsDistsMax = {"{!s}-{!s}".format(str(coolingSchedule[i]).zfill(2),str(coolingSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 	
 	log = open("{!s}_log".format(outputFile),'w')
+	neighborLog = open("{!s}_neighborlog".format(outputFile),'w')
 	# ***
 	
 	close = closeThreshold
@@ -301,14 +302,21 @@ def main(argv):
 			ct += 1
 			# get info on cluster closeness
 			goodMatchList, total = cl.getMatches(names)
-			mergeLogSeed.append([cl.seed,float(goodMatchList[0][1])/float(total)])
+			bestMatch = goodMatchList[0]
+			mergeLogSeed.append([cl.seed, bestMatch[0], float(bestMatch[1])/float(total)])
 			_, mymax = cl.purityMax(names)
-			mergeLogSeed.append([mymax, float(goodMatchList[0][1])/float(total)])
+			mergeLogMax.append([mymax, bestMatch[0], float(bestMatch[1])/float(total)])
 			
 		print iterString + " done"
 		l2.close()
+		
+		neighborLog.write(iterstring+"\n")
+		for a in range(len(mergeLogSeed)):
+			neighborLog.write("{!s}, {:03.2f}%:\t{!s}\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogMax[a][0], mergeLogSeed[a][0]))
+		neighborLog.write("\n")
 
 	log.close()
+	neighborLog.close()
 
 	# process results from main loop to get clusters and distances
 	totalCluster = {}
