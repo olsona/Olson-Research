@@ -218,7 +218,6 @@ def main(argv):
 						rightNeighborsDistsSeed[iterString].append(score)
 					else:
 						wrongNeighborsDistsSeed[iterString].append(score)
-					print mcl.root
 					corrMax = correctnessDictMax[matchLevel](child, mcl, names)
 					if corrMax == 1:
 						rightNeighborsDistsMax[iterString].append(score)

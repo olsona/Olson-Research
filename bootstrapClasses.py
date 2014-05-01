@@ -21,6 +21,7 @@ class Cluster:
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.get_leaves())
 
 	def getLeaves(self):
+		print self.root, self.dict[root]
 		if self.root is None or self.dict is None:
 			return []
 		else:
