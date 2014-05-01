@@ -211,7 +211,7 @@ def main(argv):
 					name = dbNames[ind]
 					mco = allContigs[name]
 					mcl = mco.myCluster
-					co.goodMatches.append([mcl.seed,score])
+					co.goodMatches.append([mcl.seed, score])
 					# *** check quality of neighbors 
 					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
 					if corrSeed == 1:
