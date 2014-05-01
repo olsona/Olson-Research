@@ -3,13 +3,18 @@ from bootstrapUtils import *
 class Cluster:
 	def __init__(self, seed, dict = None, root = None, closeList = None):
 		self.seed = seed
-		if dict is not None:
+		if root is None:
+			self.root = self.seed
+		else:
+			self.root = root
+		if dict is None:
+			self.dict = {root:[]}
+		else:
 			self.dict = dict
 		if root is None:
 			self.root = self.seed
 		else:
 			self.root = root
-		self.dict{root} = []
 		if closeList is None:
 			self.closeList = {}
 		else:
