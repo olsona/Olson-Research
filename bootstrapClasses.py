@@ -3,29 +3,30 @@ from bootstrapUtils import *
 class Cluster:
 	def __init__(self, seed, dict = None, root = None, closeList = None):
 		self.seed = seed
+		
 		if root is None:
 			self.root = self.seed
 		else:
 			self.root = root
+			
 		if dict is None:
 			self.dict = {self.root:[]}
 		else:
 			self.dict = dict
+			
 		if closeList is None:
 			self.closeList = {}
 		else:
 			self.closeList = closeList
 
 	def __str__(self):
-		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.get_leaves())
+		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
 
 	def getLeaves(self):
-		import pprint
-		pprint.pprint(self.dict)
 		if self.root is None:
 			return []
 		else:
-			return getLeaves(self.dict, self.root)
+			return getLeavesUtil(self.dict, self.root)
 
 	def purityMax(self, names):
 		if self.dict is None:
@@ -43,7 +44,9 @@ class Cluster:
 		if self.root is None or self.dict is None:
 			return []
 		else:
-			return self.getLeaves().append(self.root)
+			res = self.getLeaves()
+			res.append(self.root)
+			return res
 
 	def addMatch(self, goodMatch):
 		name = goodMatch[0]

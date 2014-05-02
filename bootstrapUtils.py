@@ -50,7 +50,7 @@ def readSequence(fi):
 	f.close()
 
 
-def getLeaves(inDict, root):
+def getLeavesUtil(inDict, root):
 	leaves = []
 	if inDict[root] is None:
 		return leaves
