@@ -55,19 +55,6 @@ class Cluster:
 			self.closeList[name].append(score)
 		else:
 			self.closeList[name] = [score]
-			
-	def getMatches(self, nameList):
-		import string
-		matchDict = {name:0 for name in nameList}
-		total = 0
-		for gm in self.closeList:
-			for n in nameList:
-				if string.find(gm, n) != -1:
-					matchDict[n] += 1
-					total += 1
-		#http://stackoverflow.com/a/2258273
-		sort = sorted(matchDict.items(), key=lambda x: x[1])
-		return sort[::-1], total
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]
