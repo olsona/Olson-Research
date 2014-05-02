@@ -59,7 +59,7 @@ def getLeavesUtil(inDict, root):
 	else:
 		for l in inDict[root]:
 			if l in inDict.keys():
-				res = getLeaves(inDict,l)
+				res = getLeavesUtil(inDict,l)
 				for r in res:
 					leaves.append(r)
 			else:
