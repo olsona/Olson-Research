@@ -337,12 +337,12 @@ def main(argv):
 	fOutC.close()
 	
 	# get right/wrong distance distributions ***
-	dists={"right":rightDists,"wrong":wrongDists}
+	dists={"rightMax":rightDistsMax,"wrongMax":wrongDistsMax, "rightSeed":rightDistsSeed, "wrongSeed":wrongDistsSeed}
 	pickle.dump(dists,open("{!s}_right_wrong_distances_pickle".format(outputFile),"wb"))
 	# ***
 	
 	# get right/wrong distance distributions for neighbors ***
-	neighborDists = {"right":rightNeighborsDists, "wrong":wrongNeighborsDists}
+	neighborDists = {"rightMax":rightNeighborsDistsMax, "wrongMax":wrongNeighborsDistsMax, "rightSeed":rightNeighborsDistsSeed, "wrongSee":rightNeighborsDistsSeed}
 	pickle.dump(neighborDists,open("{!s}_neighbor_right_wrong_distances_pickle".format(outputFile),"wb"))
 	# ***
 
