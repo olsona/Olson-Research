@@ -303,6 +303,9 @@ def main(argv):
 			fpc.close()
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
+			
+			pprint.pprint(cl.dict)
+			
 			# get info on cluster closeness
 			if i < leng-1:
 				goodMatchList, total = cl.getMatches(names)
