@@ -315,7 +315,7 @@ def main(argv):
 		l2.close()
 		
 		if i < leng -1:
-			neighborLog.write(iterstring+"\n")
+			neighborLog.write(iterString+"\n")
 			for a in range(len(mergeLogSeed)):
 				neighborLog.write("{!s}, {:03.2f}%:\t{!s}\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogMax[a][0], mergeLogSeed[a][0]))
 			neighborLog.write("\n")
