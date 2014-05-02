@@ -223,7 +223,7 @@ def main(argv):
 						corrMax = correctnessDictMax[matchLevel](child, mcl, names)
 						if corrMax == 1:
 							rightNeighborsDistsMax[iterString].append(score)
-						else:
+						elif corrMax == 0:
 							wrongNeighborsDistsMax[iterString].append(score)
 					# *** 
 					
@@ -243,7 +243,7 @@ def main(argv):
 				correctM = correctnessDictMax[matchLevel](child, cl, names)
 				if correctM == 1:
 					rightDistsMax[iterString].append(bestScore)
-				else:
+				elif correctM == 0:
 					wrongDistsMax[iterString].append(bestScore)
 					log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
 					log.write("Original score: {!s}\n".format(bestScore))
