@@ -253,20 +253,20 @@ def main(argv):
 		# *** compute correctness distributions
 		rdata = rightDistsSeed[iterString]
 		wdata = wrongDistsSeed[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "_seed", "Correct distances", "Incorrect Distances")
+		comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 		
 		rdata = rightNeighborsDistsSeed[iterString]
 		wdata = wrongNeighborsDistsSeed[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
+		comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
 
 		if i < leng-1:
 			rdata = rightDistsMax[iterString]
 			wdata = wrongDistsMax[iterString]
-			comparisonPlot(rdata, wdata, iterString, outputFile, "_max", "Correct distances", "Incorrect Distances")
+			comparisonPlot(rdata, wdata, iterString, outputFile, "max", "Correct distances", "Incorrect Distances")
 
 			rdata = rightNeighborsDistsMax[iterString]
 			wdata = wrongNeighborsDistsMax[iterString]
-			comparisonPlot(rdata, wdata, iterString, outputFile, "_neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
+			comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
 		# ***
 		
 		fMatch.close()
