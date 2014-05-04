@@ -47,7 +47,11 @@ def main(argv):
 		elif opt in ("-n", "--namefile"):
 			nameFile = arg
 			nf = open(nameFile,'r')
-			names = [l.rstrip() for l in nf.readlines()]
+			names = []
+			for l in nf.readlines():
+			    n = l.rstrip()
+			    if len(n) > 0:
+			        names.append(n)
 	if len(inputFile) == 0:
 		print 'Missing argument: -i'
 		print usageString
