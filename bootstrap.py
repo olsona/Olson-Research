@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re, pprint
+import sys, getopt, string, os, re
 import cPickle as pickle
 # http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib
@@ -307,6 +307,7 @@ def main(argv):
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeList:
 				ratio, best = purityOfCluster(cl.closeList,names)
+				print best
 				mergeLogSeed.append([cl.seed, best, ratio])
 				_,mymax = purityOfCluster(cl.getAll(),names)
 				mergeLogMax.append([mymax, best, ratio])
