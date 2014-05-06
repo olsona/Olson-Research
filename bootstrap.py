@@ -313,8 +313,6 @@ def main(argv):
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
 			
-			print "\n\n"
-			
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeListSeed:
 				print cl.seed
