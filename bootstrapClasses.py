@@ -1,7 +1,7 @@
 from bootstrapUtils import *
 
 class Cluster:
-	def __init__(self, seed, dict = None, root = None, closeList = None):
+	def __init__(self, seed, dict = None, root = None, closeListSeed = None, closeListMax = None):
 		self.seed = seed
 		
 		if root is None:
@@ -14,10 +14,14 @@ class Cluster:
 		else:
 			self.dict = dict
 			
-		if closeList is None:
-			self.closeList = {}
+		if closeListSeed is None:
+			self.closeListSeed = {}
 		else:
-			self.closeList = closeList
+			self.closeListSeed = closeListSeed
+		if closeListMax is None:
+			self.closeListMax = {}
+		else:
+			self.closeListMax = closeListMax
 
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
@@ -48,13 +52,21 @@ class Cluster:
 			res.append(self.root)
 			return res
 
-	def addMatch(self, goodMatch):
+	def addMatchSeed(self, goodMatch):
 		name = goodMatch[0]
 		score = goodMatch[1]
-		if name in self.closeList:
-			self.closeList[name].append(score)
+		if name in self.closeListSeed:
+			self.closeListSeed[name].append(score)
 		else:
-			self.closeList[name] = [score]
+			self.closeListSeed[name] = [score]
+			
+	def addMatchMax(self, goodMatch):
+		name = goodMatch[0]
+		score = goodMatch[1]
+		if name in self.closeListMax:
+			self.closeListMax[name].append(score)
+		else:
+			self.closeListMax[name] = [score]
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]
@@ -71,16 +83,20 @@ class Cluster:
 
 
 class Contig:
-	def __init__(self, name, myCluster=None, goodMatches=None):
+	def __init__(self, name, myCluster=None, goodMatchesSeed=None, goodMatchesMax=None):
 		self.name = name
 		if myCluster is None:
 			self.myCluster = None
 		else:
 			self.myCluster = myCluster
-		if goodMatches is None:
-			self.goodMatches = []
+		if goodMatchesSeed is None:
+			self.goodMatchesSeed = []
 		else:
-			self.goodMatches = goodMatches
+			self.goodMatchesSeed = goodMatchesSeed
+		if goodMatchesMax is None:
+			self.goodMatchesMax = []
+		else:
+			self.goodMatchesMax = goodMatchesMax
 
 	def __str__(self):
 		return "Name: {!s}\nFile: {!s}\nCluster: {!s}".format(self.name, self.myCluster)

@@ -215,8 +215,9 @@ def main(argv):
 					name = dbNames[ind]
 					mco = allContigs[name]
 					mcl = mco.myCluster
-					print mcl.seed
-					co.goodMatches.append([mcl.seed, score])
+					co.goodMatchesSeed.append([mcl.seed, score])
+					_, mclMax = mcl.purityMax(names)
+					co.goodMatchesMax.append([mclMax, score])
 					
 					# *** check quality of neighbors 
 					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
@@ -296,9 +297,11 @@ def main(argv):
 			for v in matchDict[j]:
 				cl.addNode(newContig, v)
 				co = allContigs[v]
-				for m in co.goodMatches:
-					cl.addMatch(m)
+				for m in co.goodMatchesSeed:
+					cl.addMatchSeed(m)
 					#print "Match added"
+				for m in co.goodMatchesMax:
+					cl.addMatchMax(m)
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
@@ -310,8 +313,11 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeList:
-				ratio, best = purityOfCluster(cl.closeList, names)
+				ratio, best = purityOfCluster(cl.closeListSeed, names)
 				mergeLogSeed.append([cl.seed, best, ratio])
+				ratio, best = purityOfCluster(cl.closeListMax, names)
+				_, clMax = cl.purityMax(names)
+				mergeLogMax.append([clMax, best, ratio])
 			
 		print iterString + " done"
 		l2.close()
@@ -321,6 +327,9 @@ def main(argv):
 			for a in range(len(mergeLogSeed)):
 				neighborLog.write("{!s}, {:03.2f}%:\t{!s}\n".format(mergeLogSeed[a][1], mergeLogSeed[a][2]*100.0, mergeLogSeed[a][0]))
 			neighborLog.write("\n")
+			for a in range(len(mergeLogMax)):
+				neighborLog.write("{!s}, {:03.2}%:\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogSeed[a][0]))
+			neighborLog.write("\n\n")
 
 	log.close()
 	neighborLog.close()
