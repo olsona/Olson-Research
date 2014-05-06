@@ -60,11 +60,11 @@ def getLeavesUtil(inDict, root):
 		for l in inDict[root]:
 			if l in inDict.keys():
 				res = getLeavesUtil(inDict,l)
-				print "Res:", res
 				for r in res:
 					leaves.append(r)
 			else:
 				leaves.append(l)
+			print "Leaves:", leaves
 		return leaves
 
 
