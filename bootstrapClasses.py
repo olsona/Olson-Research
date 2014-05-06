@@ -49,13 +49,21 @@ class Cluster:
 			res.append(self.root)
 			return res
 
-	def addMatch(self, goodMatch):
+	def addMatchSeed(self, goodMatch):
 		name = goodMatch[0]
 		score = goodMatch[1]
 		if name in self.closeListSeed:
 			self.closeListSeed[name].append(score)
 		else:
 			self.closeListSeed[name] = [score]
+			
+	def addMatchMax(self, goodMatch):
+		name = goodMatch[0]
+		score = goodMatch[1]
+		if name in self.closeListMax:
+			self.closeListMax[name].append(score)
+		else:
+			self.closeListMax[name] = [score]
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]
