@@ -38,6 +38,7 @@ class Cluster:
 		if self.dict is None:
 			return None, None
 		else:
+			print self.getAll()
 			return purityOfCluster(self.getAll(), names)
 
 	def addNode(self, parent, child):
