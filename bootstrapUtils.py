@@ -54,17 +54,15 @@ def getLeavesUtil(inDict, root):
 	print "\tWorking root:", root
 	leaves = []
 	if inDict[root] is None:
-		return leaves
+		return None
 	elif inDict[root] == []:
-		return leaves
+		return None
 	else:
 		for l in inDict[root]:
-			if l in inDict.keys():
-				res = getLeavesUtil(inDict,l)
-				for r in res:
-					leaves.append(r)
-			else:
-				leaves.append(l)
+			res = getLeavesUtil(inDict,l)
+			for r in res:
+				leaves.append(r)
+			leaves.append(l)
 			print "\tLeaves so far:", leaves
 		return leaves
 
