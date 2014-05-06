@@ -312,7 +312,7 @@ def main(argv):
 			ct += 1
 			
 			# get info on cluster closeness
-			if i < leng-1 and cl.closeList:
+			if i < leng-1 and cl.closeListSeed:
 				ratio, best = purityOfCluster(cl.closeListSeed, names)
 				mergeLogSeed.append([cl.seed, best, ratio])
 				ratio, best = purityOfCluster(cl.closeListMax, names)
