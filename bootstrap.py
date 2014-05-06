@@ -305,6 +305,7 @@ def main(argv):
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+			print cl.closeListSeed
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
@@ -325,7 +326,7 @@ def main(argv):
 		if i < leng -1:
 			neighborLog.write(iterString+"\n")
 			for a in range(len(mergeLogSeed)):
-				neighborLog.write("{!s}:\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogSeed[a][2],mergeLogSeed[a][1],mergeLogMax[a][2],mergeLogMax[a][1]))
+				neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogMax[a][0],mergeLogSeed[a][2],mergeLogSeed[a][1],mergeLogMax[a][2],mergeLogMax[a][1]))
 			neighborLog.write("\n")
 
 	log.close()
