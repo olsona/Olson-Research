@@ -45,7 +45,6 @@ class Cluster:
 		if self.dict is None:
 			return None, None
 		else:
-			#print self.getLeaves(), self.seed
 			return purityOfCluster(self.getAll(), names)
 
 	def addNode(self, parent, child):
@@ -69,6 +68,7 @@ class Cluster:
 			self.closeListSeed[name].append(score)
 		else:
 			self.closeListSeed[name] = [score]
+		print self.closeListSeed.keys()
 			
 	def addMatchMax(self, goodMatch):
 		name = goodMatch[0]
