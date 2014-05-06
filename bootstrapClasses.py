@@ -37,7 +37,7 @@ class Cluster:
 		if self.dict is None:
 			return None, None
 		else:
-			return purityOfCluster(dict, names)
+			return purityOfCluster(self.getAll(), names)
 
 	def addNode(self, parent, child):
 		if parent in self.dict:
