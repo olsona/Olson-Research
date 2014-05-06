@@ -29,10 +29,11 @@ class Cluster:
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
 
 	def getLeaves(self):
+		import pprint
 		if self.root is None:
-			print "no root"
 			return []
 		else:
+			pprint.pprint(self.dict)
 			return getLeavesUtil(self.dict, self.root)
 
 	def purityMax(self, names):

@@ -219,6 +219,7 @@ def main(argv):
 					print str(mcl)
 					_, mclMax = mcl.purityMax(names)
 					co.goodMatchesMax.append([mclMax, score])
+					print "\n"
 					
 					# *** check quality of neighbors 
 					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)

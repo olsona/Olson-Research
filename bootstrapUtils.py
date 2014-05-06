@@ -51,6 +51,7 @@ def readSequence(fi):
 
 
 def getLeavesUtil(inDict, root):
+	print root
 	leaves = []
 	if inDict[root] is None:
 		return leaves
