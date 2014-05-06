@@ -277,11 +277,6 @@ def main(argv):
 		# ***
 		
 		fMatch.close()
-		
-		#for nm in allClusters:
-		#	cl = allClusters[nm]
-		#	print "Seed:", cl.seed, "Root", cl.root
-		#print 
 
 		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
@@ -323,7 +318,7 @@ def main(argv):
 			if i < leng-1 and len(cl.closeListSeed) > 0:
 				ratioS, bestS = purityOfCluster(cl.closeListSeed.keys(), names)
 				mergeLogSeed.append([cl.seed, bestS, ratioS])
-				#print "Seed:", cl.seed, bestS, ratioS
+				print "Seed:", cl.seed, bestS, ratioS
 				#ratioM, bestM = purityOfCluster(cl.closeListMax.keys(), names)
 				#_, clMax = cl.purityMax(names)
 				#mergeLogMax.append([clMax, bestM, ratioM])
