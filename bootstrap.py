@@ -310,10 +310,8 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeList:
-				ratio, best = purityOfCluster(cl.closeList,names)
+				ratio, best = purityOfCluster(cl.closeList, names)
 				mergeLogSeed.append([cl.seed, best, ratio])
-				_,mymax = purityOfCluster(cl.getAll(),names)
-				mergeLogMax.append([mymax, best, ratio])
 			
 		print iterString + " done"
 		l2.close()
@@ -321,7 +319,7 @@ def main(argv):
 		if i < leng -1:
 			neighborLog.write(iterString+"\n")
 			for a in range(len(mergeLogSeed)):
-				neighborLog.write("{!s}, {:03.2f}%:\t{!s}\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogMax[a][0], mergeLogSeed[a][0]))
+				neighborLog.write("{!s}, {:03.2f}%:\t{!s}\n".format(mergeLogSeed[a][1], mergeLogSeed[a][2]*100.0, mergeLogSeed[a][0]))
 			neighborLog.write("\n")
 
 	log.close()
