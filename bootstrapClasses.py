@@ -2,7 +2,7 @@ from bootstrapUtils import *
 from bootstrapCorrectness import *
 
 class Cluster:
-	def __init__(self, seed, dict = None, root = None, closeList = None):
+	def __init__(self, seed, dict = None, root = None, closeListSeed = None, closeListMax = None):
 		self.seed = seed
 		
 		if root is None:
@@ -15,10 +15,15 @@ class Cluster:
 		else:
 			self.dict = dict
 			
-		if closeList is None:
-			self.closeList = {}
+		if closeListSeed is None:
+			self.closeListSeed = {}
 		else:
-			self.closeList = closeList
+			self.closeListSeed = closeListSeed
+			
+		if closeListMax is None:
+			self.closeListMax = {}
+		else:
+			self.closeListMax = closeListMax
 
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
