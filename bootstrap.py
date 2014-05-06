@@ -315,12 +315,13 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeListSeed:
-				print cl.seed
-				ratio, best = purityOfCluster(cl.closeListSeed.keys(), names)
-				mergeLogSeed.append([cl.seed, best, ratio])
-				ratio, best = purityOfCluster(cl.closeListMax.keys(), names)
+				ratioS, bestS = purityOfCluster(cl.closeListSeed.keys(), names)
+				mergeLogSeed.append([cl.seed, bestS, ratioS])
+				print cl.seed, bestS, ratioS
+				ratioM, bestM = purityOfCluster(cl.closeListMax.keys(), names)
 				_, clMax = cl.purityMax(names)
-				mergeLogMax.append([clMax, best, ratio])
+				mergeLogMax.append([clMax, bestM, ratioM])
+				print clMax, bestM, ratioM
 			
 		print iterString + " done"
 		l2.close()
