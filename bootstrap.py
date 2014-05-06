@@ -216,7 +216,7 @@ def main(argv):
 					mco = allContigs[name]
 					mcl = mco.myCluster
 					co.goodMatchesSeed.append([mcl.seed, score])
-					print mcl.seed
+					#print mcl.seed
 					_, mclMax = mcl.purityMax(names)
 					co.goodMatchesMax.append([mclMax, score])
 					
@@ -303,15 +303,19 @@ def main(argv):
 					#print "Match added"
 				for m in co.goodMatchesMax:
 					cl.addMatchMax(m)
-				pprint.pprint(cl.closeListMax)
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
+			print cl.seed
+			pprint.pprint(cl.closeListMax)
+			print "\n"
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
+			
+			print "\n\n"
 			
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeListSeed:
