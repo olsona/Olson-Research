@@ -216,6 +216,7 @@ def main(argv):
 					mco = allContigs[name]
 					mcl = mco.myCluster
 					co.goodMatchesSeed.append([mcl.seed, score])
+					print mcl.seed
 					_, mclMax = mcl.purityMax(names)
 					co.goodMatchesMax.append([mclMax, score])
 					
