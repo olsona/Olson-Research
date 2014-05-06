@@ -33,7 +33,8 @@ class Cluster:
 		if self.root is None:
 			return []
 		else:
-			print self.root
+			print "Root:", self.root
+			print "Dict:"
 			pprint.pprint(self.dict)
 			res = getLeavesUtil(self.dict, self.root)
 			print "Done\n"

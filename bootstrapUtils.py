@@ -51,7 +51,7 @@ def readSequence(fi):
 
 
 def getLeavesUtil(inDict, root):
-	print root
+	print "\tWorking root:", root
 	leaves = []
 	if inDict[root] is None:
 		return leaves
@@ -65,7 +65,7 @@ def getLeavesUtil(inDict, root):
 					leaves.append(r)
 			else:
 				leaves.append(l)
-			print "Leaves:", leaves
+			print "\tLeaves so far:", leaves
 		return leaves
 
 
