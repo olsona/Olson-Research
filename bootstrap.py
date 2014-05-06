@@ -217,7 +217,6 @@ def main(argv):
 					mcl = mco.myCluster
 					co.goodMatchesSeed.append([mcl.seed, score])
 					#print str(mcl)
-					print "purityMax"
 					_, mclMax = mcl.purityMax(names)
 					co.goodMatchesMax.append([mclMax, score])
 					#print "\n"
@@ -322,7 +321,6 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeListSeed) > 0:
-				print "Purity Neighbors"
 				ratioS, bestS = purityOfCluster(cl.closeListSeed.keys(), names)
 				mergeLogSeed.append([cl.seed, bestS, ratioS])
 				#print "Seed:", cl.seed, bestS, ratioS
