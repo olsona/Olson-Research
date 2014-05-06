@@ -1,4 +1,5 @@
 from bootstrapUtils import *
+from bootstrapCorrectness import *
 
 class Cluster:
 	def __init__(self, seed, dict = None, root = None, closeListSeed = None, closeListMax = None):
