@@ -305,7 +305,6 @@ def main(argv):
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-			print cl.closeListSeed
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
@@ -314,9 +313,9 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and cl.closeListSeed:
-				ratio, best = purityOfCluster(cl.closeListSeed, names)
+				ratio, best = purityOfCluster(cl.closeListSeed.keys(), names)
 				mergeLogSeed.append([cl.seed, best, ratio])
-				ratio, best = purityOfCluster(cl.closeListMax, names)
+				ratio, best = purityOfCluster(cl.closeListMax.keys(), names)
 				_, clMax = cl.purityMax(names)
 				mergeLogMax.append([clMax, best, ratio])
 			
