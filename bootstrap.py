@@ -2,7 +2,7 @@
 
 '''bootstrap.py - wrapper class for my MS project.'''
 
-import sys, getopt, string, os, re
+import sys, getopt, string, os, re, pprint
 import cPickle as pickle
 # http://stackoverflow.com/questions/2801882/generating-a-png-with-matplotlib-when-display-is-undefined
 import matplotlib
@@ -303,6 +303,7 @@ def main(argv):
 					#print "Match added"
 				for m in co.goodMatchesMax:
 					cl.addMatchMax(m)
+				pprint.pprint(cl.closeListMax)
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
