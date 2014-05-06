@@ -33,12 +33,12 @@ class Cluster:
 		if self.root is None:
 			return []
 		else:
-			print "Root:", self.root
-			print "Dict:"
-			pprint.pprint(self.dict)
+			#print "Root:", self.root
+			#print "Dict:"
+			#pprint.pprint(self.dict)
 			res = getLeavesUtil(self.dict, self.root)
-			print res
-			print "Done\n"
+			#print res
+			#print "Done\n"
 			return res
 
 	def purityMax(self, names):
