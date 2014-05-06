@@ -51,13 +51,14 @@ def readSequence(fi):
 
 
 def getLeavesUtil(inDict, root):
+	print "\tUtil"
 	print "\tWorking root:", root
 	print "\tKeys for dict:", inDict.keys()
 	leaves = []
-	if inDict[root] is None:
-		return []
+	if root not in inDict:
+		return root
 	elif inDict[root] == []:
-		return []
+		return root
 	else:
 		for l in inDict[root]:
 			res = getLeavesUtil(inDict,l)
