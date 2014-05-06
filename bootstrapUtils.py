@@ -53,8 +53,10 @@ def readSequence(fi):
 def getLeavesUtil(inDict, root):
 	leaves = []
 	if inDict[root] is None:
+		print "Reached end (none): {!s}".format(root)
 		return leaves
 	elif inDict[root] == []:
+		print "Reached end (empty): {!s}".format(root)
 		return leaves
 	else:
 		for l in inDict[root]:
