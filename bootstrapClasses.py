@@ -45,8 +45,6 @@ class Cluster:
 		if self.dict is None:
 			return None, None
 		else:
-			print self.getLeaves()
-			print self.getAll()
 			return purityOfCluster(self.getAll(), names)
 
 	def addNode(self, parent, child):
@@ -60,6 +58,8 @@ class Cluster:
 			return []
 		else:
 			res = self.getLeaves()
+			print res
+			print self.root
 			res.append(self.root)
 			return res
 
