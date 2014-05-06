@@ -58,8 +58,6 @@ class Cluster:
 			return []
 		else:
 			res = self.getLeaves()
-			print "Leaves are:", res
-			print "Root is:", self.root
 			res.append(self.root)
 			return res
 

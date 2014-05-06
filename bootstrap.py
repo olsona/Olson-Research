@@ -278,6 +278,10 @@ def main(argv):
 		# ***
 		
 		fMatch.close()
+		
+		for nm in allClusters:
+			cl = allClusters[nm]
+			print cl.seed, cl.root
 
 		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
