@@ -64,7 +64,6 @@ def getLeavesUtil(inDict, root):
 			res = getLeavesUtil(inDict,l)
 			for r in res:
 				leaves.append(r)
-			leaves.append(l)
 			print "\tLeaves so far:", leaves
 		return leaves
 
