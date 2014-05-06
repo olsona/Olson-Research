@@ -306,9 +306,7 @@ def main(argv):
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-			print cl.seed
-			pprint.pprint(cl.closeListMax)
-			print "\n"
+			print "{!s}: {!s}\n".format(cl.seed, cl.closeListMax.keys())
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
