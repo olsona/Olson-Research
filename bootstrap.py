@@ -318,19 +318,18 @@ def main(argv):
 				ratioS, bestS = purityOfCluster(cl.closeListSeed.keys(), names)
 				mergeLogSeed.append([cl.seed, bestS, ratioS])
 				print "Seed:", cl.seed, bestS, ratioS
-				ratioM, bestM = purityOfCluster(cl.closeListMax.keys(), names)
-				_, clMax = cl.purityMax(names)
-				mergeLogMax.append([clMax, bestM, ratioM])
-				print "Max:", clMax, bestM, ratioM
+				#ratioM, bestM = purityOfCluster(cl.closeListMax.keys(), names)
+				#_, clMax = cl.purityMax(names)
+				#mergeLogMax.append([clMax, bestM, ratioM])
 			
 		print iterString + " done"
 		l2.close()
 		
-		if i < leng -1:
-			neighborLog.write(iterString+"\n")
-			for a in range(len(mergeLogSeed)):
-				neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogMax[a][0],mergeLogSeed[a][2],mergeLogSeed[a][1],mergeLogMax[a][2],mergeLogMax[a][1]))
-			neighborLog.write("\n")
+		#if i < leng -1:
+		#	neighborLog.write(iterString+"\n")
+		#	for a in range(len(mergeLogSeed)):
+		#		neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogMax[a][0],mergeLogSeed[a][2],mergeLogSeed[a][1],mergeLogMax[a][2],mergeLogMax[a][1]))
+		#	neighborLog.write("\n")
 
 	log.close()
 	neighborLog.close()
