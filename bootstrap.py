@@ -281,7 +281,8 @@ def main(argv):
 		
 		for nm in allClusters:
 			cl = allClusters[nm]
-			print cl.seed, cl.root
+			print "Seed:", cl.seed, "Root", cl.root
+		print 
 
 		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
