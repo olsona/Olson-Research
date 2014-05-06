@@ -215,6 +215,7 @@ def main(argv):
 					name = dbNames[ind]
 					mco = allContigs[name]
 					mcl = mco.myCluster
+					print mcl.seed
 					co.goodMatches.append([mcl.seed, score])
 					
 					# *** check quality of neighbors 
@@ -240,8 +241,7 @@ def main(argv):
 				wrongDistsSeed[iterString].append(bestScore)
 				log.write("Wrong match (seed): {!s} to {!s}\n".format(child, cl.seed))
 				log.write("Original score: {!s}\n".format(bestScore))
-				log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
-				cl = allContigs[parent].myCluster
+				log.write("Matches within {!s}%: {!s}\n\n".format(close*100, co.goodMatches))
 			
 			if i < leng-1:	
 				correctM = correctnessDictMax[matchLevel](child, cl, names)
@@ -251,7 +251,7 @@ def main(argv):
 					wrongDistsMax[iterString].append(bestScore)
 					log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
 					log.write("Original score: {!s}\n".format(bestScore))
-					log.write("Matches within {!s}%: {!s}\n\n".format(close*100,co.goodMatches))
+					log.write("Matches within {!s}%: {!s}\n\n".format(close*100, co.goodMatches))
 			# ***
 
 		# *** compute correctness distributions
