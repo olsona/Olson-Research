@@ -324,13 +324,9 @@ def main(argv):
 		
 		if i < leng -1:
 			neighborLog.write(iterString+"\n")
-			neighborLog.write("Neighbor closeness, based on seeds\n")
 			for a in range(len(mergeLogSeed)):
-				neighborLog.write("{!s}, {:03.2f}%:\t{!s}\n".format(mergeLogSeed[a][1], mergeLogSeed[a][2]*100.0, mergeLogSeed[a][0]))
-			neighborLog.write("\nNeighbor closeness, based on max\n")
-			for a in range(len(mergeLogMax)):
-				neighborLog.write("{!s}, {:03.2}%:\t{!s}\n".format(mergeLogMax[a][1], mergeLogMax[a][2]*100.0, mergeLogSeed[a][0]))
-			neighborLog.write("\n\n")
+				neighborLog.write("{!s}:\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogSeed[a][2],mergeLogSeed[a][1],mergeLogMax[a][2],mergeLogMax[a][1]))
+			neighborLog.write("\n")
 
 	log.close()
 	neighborLog.close()

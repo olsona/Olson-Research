@@ -2,7 +2,7 @@ from bootstrapUtils import *
 from bootstrapCorrectness import *
 
 class Cluster:
-	def __init__(self, seed, dict = None, root = None, closeListSeed = None, closeListMax = None):
+	def __init__(self, seed, dict = None, root = None, closeList = None):
 		self.seed = seed
 		
 		if root is None:
@@ -15,14 +15,10 @@ class Cluster:
 		else:
 			self.dict = dict
 			
-		if closeListSeed is None:
-			self.closeListSeed = {}
+		if closeList is None:
+			self.closeList = {}
 		else:
-			self.closeListSeed = closeListSeed
-		if closeListMax is None:
-			self.closeListMax = {}
-		else:
-			self.closeListMax = closeListMax
+			self.closeList = closeList
 
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
@@ -53,21 +49,13 @@ class Cluster:
 			res.append(self.root)
 			return res
 
-	def addMatchSeed(self, goodMatch):
+	def addMatch(self, goodMatch):
 		name = goodMatch[0]
 		score = goodMatch[1]
 		if name in self.closeListSeed:
 			self.closeListSeed[name].append(score)
 		else:
 			self.closeListSeed[name] = [score]
-			
-	def addMatchMax(self, goodMatch):
-		name = goodMatch[0]
-		score = goodMatch[1]
-		if name in self.closeListMax:
-			self.closeListMax[name].append(score)
-		else:
-			self.closeListMax[name] = [score]
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]
