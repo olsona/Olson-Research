@@ -68,7 +68,6 @@ class Cluster:
 			self.closeListSeed[name].append(score)
 		else:
 			self.closeListSeed[name] = [score]
-		print self.closeListSeed.keys()
 			
 	def addMatchMax(self, goodMatch):
 		name = goodMatch[0]
