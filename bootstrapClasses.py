@@ -37,6 +37,7 @@ class Cluster:
 			print "Dict:"
 			pprint.pprint(self.dict)
 			res = getLeavesUtil(self.dict, self.root)
+			print res
 			print "Done\n"
 			return res
 

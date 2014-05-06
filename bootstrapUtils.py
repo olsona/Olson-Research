@@ -56,9 +56,9 @@ def getLeavesUtil(inDict, root):
 	print "\tKeys for dict:", inDict.keys()
 	leaves = []
 	if root not in inDict:
-		return root
+		return [root]
 	elif inDict[root] == []:
-		return root
+		return [root]
 	else:
 		for l in inDict[root]:
 			res = getLeavesUtil(inDict,l)
