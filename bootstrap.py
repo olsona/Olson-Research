@@ -284,7 +284,7 @@ def main(argv):
 		mergeLogMax = []
 		# Make concatenated seeds
 		for j in matchDict.keys():
-			#print j
+			print j
 			cl = allContigs[j].myCluster
 			newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
 			fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
