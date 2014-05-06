@@ -45,7 +45,7 @@ class Cluster:
 		if self.dict is None:
 			return None, None
 		else:
-			print self.getLeaves(), self.seed
+			#print self.getLeaves(), self.seed
 			return purityOfCluster(self.getAll(), names)
 
 	def addNode(self, parent, child):
