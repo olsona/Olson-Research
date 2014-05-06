@@ -58,7 +58,6 @@ class Cluster:
 			return []
 		else:
 			res = self.getLeaves()
-			res.append(self.root)
 			return res
 
 	def addMatchSeed(self, goodMatch):
