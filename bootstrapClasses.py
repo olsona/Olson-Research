@@ -30,6 +30,7 @@ class Cluster:
 
 	def getLeaves(self):
 		if self.root is None:
+			print "no root"
 			return []
 		else:
 			return getLeavesUtil(self.dict, self.root)
