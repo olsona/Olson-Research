@@ -54,9 +54,9 @@ def getLeavesUtil(inDict, root):
 	print "\tWorking root:", root
 	leaves = []
 	if inDict[root] is None:
-		return None
+		return []
 	elif inDict[root] == []:
-		return None
+		return []
 	else:
 		for l in inDict[root]:
 			res = getLeavesUtil(inDict,l)
