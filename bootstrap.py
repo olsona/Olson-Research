@@ -216,10 +216,10 @@ def main(argv):
 					mco = allContigs[name]
 					mcl = mco.myCluster
 					co.goodMatchesSeed.append([mcl.seed, score])
-					print str(mcl)
+					#print str(mcl)
 					_, mclMax = mcl.purityMax(names)
 					co.goodMatchesMax.append([mclMax, score])
-					print "\n"
+					#print "\n"
 					
 					# *** check quality of neighbors 
 					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
@@ -285,7 +285,7 @@ def main(argv):
 		mergeLogMax = []
 		# Make concatenated seeds
 		for j in matchDict.keys():
-			print j
+			#print j
 			cl = allContigs[j].myCluster
 			newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
 			fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
@@ -307,7 +307,7 @@ def main(argv):
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-			print "{!s}: {!s}\n".format(cl.seed, cl.closeListMax.keys())
+			#print "{!s}: {!s}\n".format(cl.seed, cl.closeListMax.keys())
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
