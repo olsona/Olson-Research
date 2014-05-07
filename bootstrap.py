@@ -312,7 +312,7 @@ def main(argv):
 					fpc.close()
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
-					cl.addClusters(bestSCL,newContig)
+					cl.addClusters([bestSCL],newContig)
 					allClusters.pop(bestSCL)
 					ct += 1
 				else:
