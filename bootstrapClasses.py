@@ -92,7 +92,9 @@ class Cluster:
 		for n in repDict:
 			tmp = repDict[n]
 			repDict[n] = float(tmp)/float(total)
-		return repDict
+		sortTuple = sorted(repDict.items(), key=lambda x: x[1])
+		print sortTuple
+		return sortTuple
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]

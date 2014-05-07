@@ -321,8 +321,7 @@ def main(argv):
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeListSeed) > 0:
 				print cl.seed
-				neighborInfo = cl.getNeighborInfo
-				print neighborInfo
+				neighborInfo = cl.getNeighborInfo()
 				for n in neighborInfo:
 					print "\t{:03.2f}%,{!s}".format(n[1]*100.0,n[0])
 				ratioS, bestS = cl.getMostCommonNeighbor()
