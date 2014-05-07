@@ -327,6 +327,7 @@ def main(argv):
 				_, bestMatchMax = bestSCL.purityMax(names)
 				_, clMax = cl.purityMax(names)
 				mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
+			print "\n"
 			
 		print iterString + " done"
 		l2.close()
