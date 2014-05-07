@@ -2,7 +2,7 @@ from bootstrapUtils import *
 from bootstrapCorrectness import *
 
 class Cluster:
-	def __init__(self, seed, dict = None, root = None, closeListSeed = None, closeListMax = None):
+	def __init__(self, seed, dict = None, root = None, closeList = None):
 		self.seed = seed
 		
 		if root is None:
@@ -20,11 +20,6 @@ class Cluster:
 		else:
 			self.closeListSeed = closeListSeed
 			
-		if closeListMax is None:
-			self.closeListMax = {}
-		else:
-			self.closeListMax = closeListMax
-
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
 
@@ -54,21 +49,13 @@ class Cluster:
 			res = self.getLeaves()
 			return res
 
-	def addMatchSeed(self, goodMatch):
+	def addMatch(self, goodMatch):
 		name = goodMatch[0]
 		score = goodMatch[1]
-		if name in self.closeListSeed:
-			self.closeListSeed[name].append(score)
+		if name in self.closeList:
+			self.closeList[name].append(score)
 		else:
-			self.closeListSeed[name] = [score]
-			
-	def addMatchMax(self, goodMatch):
-		name = goodMatch[0]
-		score = goodMatch[1]
-		if name in self.closeListMax:
-			self.closeListMax[name].append(score)
-		else:
-			self.closeListMax[name] = [score]
+			self.closeList[name] = [score]
 			
 	def getMostCommonNeighbor(self):
 		total = 0
@@ -110,20 +97,16 @@ class Cluster:
 
 
 class Contig:
-	def __init__(self, name, myCluster=None, goodMatchesSeed=None, goodMatchesMax=None):
+	def __init__(self, name, myCluster=None, goodMatches=None):
 		self.name = name
 		if myCluster is None:
 			self.myCluster = None
 		else:
 			self.myCluster = myCluster
 		if goodMatchesSeed is None:
-			self.goodMatchesSeed = []
+			self.goodMatches = []
 		else:
-			self.goodMatchesSeed = goodMatchesSeed
-		if goodMatchesMax is None:
-			self.goodMatchesMax = []
-		else:
-			self.goodMatchesMax = goodMatchesMax
+			self.goodMatches = goodMatches
 
 	def __str__(self):
 		return "Name: {!s}\nFile: {!s}\nCluster: {!s}".format(self.name, self.myCluster)

@@ -219,10 +219,10 @@ def main(argv):
 					name = dbNames[ind]
 					mco = allContigs[name]
 					mcl = mco.myCluster
-					co.goodMatchesSeed.append([mcl.seed, score])
+					co.goodMatches.append([mcl.seed, score])
 					#print str(mcl)
-					_, mclMax = mcl.purityMax(names)
-					co.goodMatchesMax.append([mclMax, score])
+					#_, mclMax = mcl.purityMax(names)
+					#co.goodMatchesMax.append([mclMax, score])
 					#print "\n"
 					
 					# *** check quality of neighbors 
@@ -250,15 +250,15 @@ def main(argv):
 				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatchesSeed))
 			
-			if i < leng-1:	
-				correctM = correctnessDictMax[matchLevel](child, cl, names)
-				if correctM == 1:
-					rightDistsMax[iterString].append(bestScore)
-				elif correctM == 0:
-					wrongDistsMax[iterString].append(bestScore)
-					log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
-					log.write("Original score: {!s}\n".format(bestScore))
-					log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatchesMax))
+			#if i < leng-1:	
+			#	correctM = correctnessDictMax[matchLevel](child, cl, names)
+			#	if correctM == 1:
+			#		rightDistsMax[iterString].append(bestScore)
+			#	elif correctM == 0:
+			#		wrongDistsMax[iterString].append(bestScore)
+			#		log.write("Wrong match (max): {!s} to {!s}\n".format(child, cl.seed))
+			#		log.write("Original score: {!s}\n".format(bestScore))
+			#		log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatchesMax))
 			# ***
 		
 		fMatch.close()
@@ -283,15 +283,13 @@ def main(argv):
 			for v in matchDict[j]:
 				cl.addNode(newContig, v)
 				co = allContigs[v]
-				for m in co.goodMatchesSeed:
-					cl.addMatchSeed(m)
-					#print "Match added"
-				for m in co.goodMatchesMax:
-					cl.addMatchMax(m)
+				for m in co.goodMatches:
+					cl.addMatch(m)
+					print "Added match {!s}".format(m[0]),
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-			#print "{!s}: {!s}\n".format(cl.seed, cl.closeListMax.keys())
+			#print "{!s}: {!s}\n".format(cl.seed, cl.closeList.keys())
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
@@ -311,6 +309,8 @@ def main(argv):
 					rightNeighborsDistsSeed[iterString].append(ratioS)
 				else:
 					wrongNeighborsDistsSeed[iterString].append(ratioS)
+		
+		print
 					
 		# *** compute correctness distributions
 		rdata = rightDistsSeed[iterString]
