@@ -311,6 +311,8 @@ def main(argv):
 					rightNeighborsDistsSeed[iterString].append(ratioS)
 				else:
 					wrongNeighborsDistsSeed[iterString].append(ratioS)
+				print ratioS,
+			print
 					
 					
 		# *** compute correctness distributions
