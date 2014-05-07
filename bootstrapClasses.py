@@ -61,7 +61,7 @@ class Cluster:
 		total = 0
 		max = 0
 		maxName = ''
-		for n in self.closeLis:
+		for n in self.closeList:
 			l = len(self.closeList[n])
 			total += l
 			if l > max:
