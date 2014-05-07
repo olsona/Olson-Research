@@ -285,7 +285,6 @@ def main(argv):
 				co = allContigs[v]
 				for m in co.goodMatches:
 					cl.addMatch(m)
-					print "Added match {!s}".format(m[0]),
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
@@ -309,8 +308,6 @@ def main(argv):
 					rightNeighborsDistsSeed[iterString].append(ratioS)
 				else:
 					wrongNeighborsDistsSeed[iterString].append(ratioS)
-		
-		print
 					
 		# *** compute correctness distributions
 		rdata = rightDistsSeed[iterString]
