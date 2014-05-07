@@ -292,7 +292,8 @@ def main(argv):
 			ct += 1
 			
 		# merge clusters as appropriate	
-		for cl in allContigs:
+		for clust in allContigs:
+			cl = allContigs[clust]
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
