@@ -215,7 +215,6 @@ def main(argv):
 				entry = l.split(":")
 				score = float(entry[0])
 				if score >= mythresh:
-					print "hi",
 					ind = int(entry[1])
 					name = dbNames[ind]
 					mco = allContigs[name]
@@ -239,7 +238,6 @@ def main(argv):
 					#	elif corrMax == 0:
 					#		wrongNeighborsDistsMax[iterString].append(score)
 					# *** 
-			print 		
 			# *** check correctness of match
 			cl = allContigs[parent].myCluster
 			correctS = correctnessDictSeed[matchLevel](child, cl.seed)
@@ -318,8 +316,10 @@ def main(argv):
 		if i < leng-1:
 			rdata = rightNeighborsDistsSeed[iterString]
 			wdata = wrongNeighborsDistsSeed[iterString]
-			print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
-			print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
+			#print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
+			#print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
+			print sorted(rdata)
+			print sorted(wdata)
 			comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
 
 		#if i < leng-1:
