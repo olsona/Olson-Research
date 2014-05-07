@@ -322,7 +322,7 @@ def main(argv):
 			if i < leng-1 and len(cl.closeListSeed) > 0:
 				print cl.seed
 				neighborInfo = cl.getNeighborInfo
-				print neighborInfo
+				#print neighborInfo
 				for n in neighborInfo:
 					print "\t{:03.2f}%,{!s}".format(n[1]*100.0,n[0])
 				ratioS, bestS = cl.getMostCommonNeighbor()
