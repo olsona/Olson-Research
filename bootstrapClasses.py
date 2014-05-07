@@ -61,8 +61,8 @@ class Cluster:
 		total = 0
 		max = 0
 		maxName = ''
-		for n in self.closeListSeed:
-			l = len(self.closeListSeed[n])
+		for n in self.closeLis:
+			l = len(self.closeList[n])
 			total += l
 			if l > max:
 				max = l
@@ -71,9 +71,9 @@ class Cluster:
 		
 	def getNeighborInfo(self):
 		total = 0
-		repDict = {n:0 for n in self.closeListSeed}
-		for n in self.closeListSeed:
-			l = len(self.closeListSeed[n])
+		repDict = {n:0 for n in self.closeList}
+		for n in self.closeList:
+			l = len(self.closeList[n])
 			total += l
 			repDict[n] = l
 		for n in repDict:
