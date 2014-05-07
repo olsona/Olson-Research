@@ -319,16 +319,12 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeListSeed) > 0:
-				#print "{!s}:".format(cl.seed)
 				neighborInfo = cl.getNeighborInfo()
-				#for n in neighborInfo:
-				#	print "\t{:03.2f}%,{!s}".format(n[1]*100.0,n[0])
 				ratioS, bestS = cl.getMostCommonNeighbor()
 				bestSCL = allClusters[bestS]
 				_, bestMatchMax = bestSCL.purityMax(names)
 				_, clMax = cl.purityMax(names)
 				mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
-			#print 
 			
 		print iterString + " done"
 		l2.close()
@@ -337,7 +333,11 @@ def main(argv):
 			neighborLog.write(iterString+"\n")
 			for a in range(len(mergeLog)):
 				item = mergeLog[a]
-				neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
+				corr = checkCorrectGenusOlsonFormat(item[0],item[2])
+				if corr == 1:
+					neighborLog.write("{!s} (max {!s}):\n    {:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
+				else:
+					neighborLog.write("{!s} (max {!s}):\nXXXX{:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
 			neighborLog.write("\n")
 
 	log.close()
