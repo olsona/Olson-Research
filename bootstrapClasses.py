@@ -15,10 +15,10 @@ class Cluster:
 		else:
 			self.dict = dict
 			
-		if closeListSeed is None:
-			self.closeListSeed = {}
+		if closeList is None:
+			self.closeList = {}
 		else:
-			self.closeListSeed = closeListSeed
+			self.closeList = closeList
 			
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
