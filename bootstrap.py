@@ -226,17 +226,17 @@ def main(argv):
 					#print "\n"
 					
 					# *** check quality of neighbors 
-					corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
-					if corrSeed == 1:
-						rightNeighborsDistsSeed[iterString].append(score)
-					else:
-						wrongNeighborsDistsSeed[iterString].append(score)
-					if i < leng-1:
-						corrMax = correctnessDictMax[matchLevel](child, mcl, names)
-						if corrMax == 1:
-							rightNeighborsDistsMax[iterString].append(score)
-						elif corrMax == 0:
-							wrongNeighborsDistsMax[iterString].append(score)
+					#corrSeed = correctnessDictSeed[matchLevel](child, mcl.seed)
+					#if corrSeed == 1:
+					#	rightNeighborsDistsSeed[iterString].append(score)
+					#else:
+					#	wrongNeighborsDistsSeed[iterString].append(score)
+					#if i < leng-1:
+					#	corrMax = correctnessDictMax[matchLevel](child, mcl, names)
+					#	if corrMax == 1:
+					#		rightNeighborsDistsMax[iterString].append(score)
+					#	elif corrMax == 0:
+					#		wrongNeighborsDistsMax[iterString].append(score)
 					# *** 
 					
 			# *** check correctness of match
