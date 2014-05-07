@@ -316,8 +316,10 @@ def main(argv):
 		if i < leng-1:
 			rdata = rightNeighborsDistsSeed[iterString]
 			wdata = wrongNeighborsDistsSeed[iterString]
-			print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
-			print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
+			if rdata:
+				print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
+			if wdata:
+				print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
 			#print ",".join("{:03.2f}%".format(d*100.0) for d in sorted(rdata))
 			#print ",".join("{:03.2f}%".format(d*100.0) for d in sorted(wdata))
 			#print len(rdata), len(wdata)
