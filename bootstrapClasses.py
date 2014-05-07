@@ -71,8 +71,9 @@ class Cluster:
 			self.closeListMax[name] = [score]
 			
 	def getMostCommonNeighbor(self):
+		print self.seed
 		for n in self.closeListSeed:
-			print n, len(self.closeListSeed[n])
+			print "\t", n, len(self.closeListSeed[n])
 		total = 0
 		max = 0
 		maxName = ''
