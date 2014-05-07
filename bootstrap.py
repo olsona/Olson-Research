@@ -335,7 +335,7 @@ def main(argv):
 			neighborLog.write(iterString+"\n")
 			for a in range(len(mergeLog)):
 				item = mergeLog[a]
-				neighborLog.write("{!s} (max {!s}):\n\t{:03.2}%, {!s} (max {!s})\n".format(item[0],item[1],item[4],item[2],item[3]))
+				neighborLog.write("{!s} (max {!s}):\n\t{:03.2}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
 			neighborLog.write("\n")
 
 	log.close()
