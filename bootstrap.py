@@ -313,7 +313,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					allClusters.pop(bestSCL)
+					allClusters.pop(bestS)
 					ct += 1
 				else:
 					newContig = cl.root
