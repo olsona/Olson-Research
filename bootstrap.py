@@ -260,25 +260,6 @@ def main(argv):
 					log.write("Original score: {!s}\n".format(bestScore))
 					log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatchesMax))
 			# ***
-
-		# *** compute correctness distributions
-		rdata = rightDistsSeed[iterString]
-		wdata = wrongDistsSeed[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
-		
-		rdata = rightNeighborsDistsSeed[iterString]
-		wdata = wrongNeighborsDistsSeed[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
-
-		if i < leng-1:
-			rdata = rightDistsMax[iterString]
-			wdata = wrongDistsMax[iterString]
-			comparisonPlot(rdata, wdata, iterString, outputFile, "max", "Correct distances", "Incorrect Distances")
-
-			rdata = rightNeighborsDistsMax[iterString]
-			wdata = wrongNeighborsDistsMax[iterString]
-			comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
-		# ***
 		
 		fMatch.close()
 
@@ -321,24 +302,49 @@ def main(argv):
 			if i < leng-1 and len(cl.closeListSeed) > 0:
 				neighborInfo = cl.getNeighborInfo()
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				bestSCL = allClusters[bestS]
-				_, bestMatchMax = bestSCL.purityMax(names)
-				_, clMax = cl.purityMax(names)
-				mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
+				#bestSCL = allClusters[bestS]
+				#_, bestMatchMax = bestSCL.purityMax(names)
+				#_, clMax = cl.purityMax(names)
+				#mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
+				corrSeed = correctnessDictSeed[matchLevel](cl.seed, bestS)
+				if corrSeed == 1:
+					rightNeighborsDistsSeed[iterString].append(ratioS)
+				else:
+					wrongNeighborsDistsSeed[iterString].append(ratioS)
+					
+					
+		# *** compute correctness distributions
+		rdata = rightDistsSeed[iterString]
+		wdata = wrongDistsSeed[iterString]
+		comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+		
+		rdata = rightNeighborsDistsSeed[iterString]
+		wdata = wrongNeighborsDistsSeed[iterString]
+		comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
+
+		#if i < leng-1:
+		#	rdata = rightDistsMax[iterString]
+		#	wdata = wrongDistsMax[iterString]
+		#	comparisonPlot(rdata, wdata, iterString, outputFile, "max", "Correct distances", "Incorrect Distances")
+
+		#	rdata = rightNeighborsDistsMax[iterString]
+		#	wdata = wrongNeighborsDistsMax[iterString]
+		#	comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
+		# ***
 			
 		print iterString + " done"
 		l2.close()
 		
-		if i < leng -1:
-			neighborLog.write(iterString+"\n")
-			for a in range(len(mergeLog)):
-				item = mergeLog[a]
-				corr = checkCorrectGenusOlsonFormat(item[0],item[2])
-				if corr == 1:
-					neighborLog.write("{!s} (max {!s}):\n    {:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
-				else:
-					neighborLog.write("{!s} (max {!s}):\nXXXX{:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
-			neighborLog.write("\n")
+		#if i < leng -1:
+		#	neighborLog.write(iterString+"\n")
+		#	for a in range(len(mergeLog)):
+		#		item = mergeLog[a]
+		#		corr = checkCorrectGenusOlsonFormat(item[0],item[2])
+		#		if corr == 1:
+		#			neighborLog.write("{!s} (max {!s}):\n    {:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
+		#		else:
+		#			neighborLog.write("{!s} (max {!s}):\nXXXX{:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
+		#	neighborLog.write("\n")
 
 	log.close()
 	neighborLog.close()
