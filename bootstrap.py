@@ -332,6 +332,10 @@ def main(argv):
 		#	wdata = wrongNeighborsDistsMax[iterString]
 		#	comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_max", "Distances between correct neighbors", "Distances between incorrect neighbors")
 		# ***
+		
+		for n in allClusters:
+			cl = allClusters[n]
+			cl.closeList = {}
 			
 		print iterString + " done"
 		l2.close()
