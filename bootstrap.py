@@ -297,7 +297,7 @@ def main(argv):
 			ct += 1
 			
 			# get info on cluster closeness
-			if i < leng-1 and len(cl.closeListSeed) > 0:
+			if i < leng-1 and len(cl.closeList) > 0:
 				#neighborInfo = cl.getNeighborInfo()
 				ratioS, bestS = cl.getMostCommonNeighbor()
 				#bestSCL = allClusters[bestS]
