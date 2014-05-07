@@ -215,6 +215,7 @@ def main(argv):
 				entry = l.split(":")
 				score = float(entry[0])
 				if score >= mythresh:
+					print "hi",
 					ind = int(entry[1])
 					name = dbNames[ind]
 					mco = allContigs[name]
@@ -238,7 +239,7 @@ def main(argv):
 					#	elif corrMax == 0:
 					#		wrongNeighborsDistsMax[iterString].append(score)
 					# *** 
-					
+			print 		
 			# *** check correctness of match
 			cl = allContigs[parent].myCluster
 			correctS = correctnessDictSeed[matchLevel](child, cl.seed)
