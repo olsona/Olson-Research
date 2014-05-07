@@ -319,7 +319,7 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeListSeed) > 0:
-				print "{!s}:\n".format(cl.seed)
+				print "{!s}:".format(cl.seed)
 				neighborInfo = cl.getNeighborInfo()
 				for n in neighborInfo:
 					print "\t{:03.2f}%,{!s}".format(n[1]*100.0,n[0])
@@ -328,7 +328,7 @@ def main(argv):
 				_, bestMatchMax = bestSCL.purityMax(names)
 				_, clMax = cl.purityMax(names)
 				mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
-			print "\n"
+			print 
 			
 		print iterString + " done"
 		l2.close()
