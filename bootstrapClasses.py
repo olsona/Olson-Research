@@ -71,9 +71,6 @@ class Cluster:
 			self.closeListMax[name] = [score]
 			
 	def getMostCommonNeighbor(self):
-		print self.seed
-		for n in self.closeListSeed:
-			print "\t", len(self.closeListSeed[n]), n
 		total = 0
 		max = 0
 		maxName = ''
@@ -95,7 +92,8 @@ class Cluster:
 		for n in repDict:
 			tmp = repDict[n]
 			repDict[n] = float(tmp)/float(total)
-		return repDict
+		sortTuple = sorted(repDict.items(), key=lambda x: x[1])
+		return sortTuple
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]
