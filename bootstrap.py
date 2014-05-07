@@ -261,11 +261,10 @@ def main(argv):
 			# ***
 		
 		fMatch.close()
-
+		
 		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
 		l2 = open(fSeed + "-2",'w')
-		mergeLog = []
 		# Make concatenated seeds
 		for j in matchDict.keys():
 			#print j
@@ -287,43 +286,54 @@ def main(argv):
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
 				fpc.write(seq)
 				#os.system("rm {!s}{!s}.fna".format(genePath,v)) # clear up space
-			#print "{!s}: {!s}\n".format(cl.seed, cl.closeList.keys())
 			allContigs[newContig] = nCo
 			fpc.write("\n")
 			fpc.close()
-			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 			ct += 1
 			
+		# merge clusters as appropriate	
+		for cl in allContigs:
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
-				#neighborInfo = cl.getNeighborInfo()
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				#bestSCL = allClusters[bestS]
-				#_, bestMatchMax = bestSCL.purityMax(names)
-				#_, clMax = cl.purityMax(names)
-				#mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
-				corrSeed = correctnessDictSeed[matchLevel](cl.seed, bestS)
-				if corrSeed == 1:
-					rightNeighborsDistsSeed[iterString].append(ratioS)
+				if ratioS > 0.5:
+					myRoot = cl.root
+					bestSCL = allClusters[bestS]
+					bestRoot = bestSCL.root
+					newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
+					fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
+					fpc.write(">{!s}\n".format(newContig))
+					_, seq1 = readSequence("{!s}{!s}.fna".format(genePath, myRoot))
+					fpc.write(seq1)
+					_, seq2 = readSequence("{!s}{!s}.fna".format(genePath, bestRoot))
+					fpc.write(seq2)
+					fpc.write("\n")
+					fpc.close()
+					nCo = Contig(newContig, myCluster = cl)
+					allContigs[newContig] = nCo
+					cl.addClusters(bestSCL,newContig)
+					allClusters.pop(bestSCL)
+					ct += 1
 				else:
-					wrongNeighborsDistsSeed[iterString].append(ratioS)
+					newContig = cl.root
+			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 					
 		# *** compute correctness distributions
 		rdata = rightDistsSeed[iterString]
 		wdata = wrongDistsSeed[iterString]
 		comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 		
-		if i < leng-1:
-			rdata = rightNeighborsDistsSeed[iterString]
-			wdata = wrongNeighborsDistsSeed[iterString]
-			if rdata:
-				print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
-			if wdata:
-				print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
-			#print ",".join("{:03.2f}%".format(d*100.0) for d in sorted(rdata))
-			#print ",".join("{:03.2f}%".format(d*100.0) for d in sorted(wdata))
-			#print len(rdata), len(wdata)
-			comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
+		#if i < leng-1:
+		#	rdata = rightNeighborsDistsSeed[iterString]
+		#	wdata = wrongNeighborsDistsSeed[iterString]
+		#	if rdata:
+		#		print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
+		#	if wdata:
+		#		print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
+		#	print ",".join("{:03.2f}%".format(d*100.0) for d in sorted(rdata))
+		#	print ",".join("{:03.2f}%".format(d*100.0) for d in sorted(wdata))
+		#	print len(rdata), len(wdata)
+		#	comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
 
 		#if i < leng-1:
 		#	rdata = rightDistsMax[iterString]
