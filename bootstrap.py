@@ -285,8 +285,7 @@ def main(argv):
 		# Prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
 		l2 = open(fSeed + "-2",'w')
-		mergeLogSeed = []
-		mergeLogMax = []
+		mergeLog = []
 		# Make concatenated seeds
 		for j in matchDict.keys():
 			#print j
@@ -320,24 +319,24 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeListSeed) > 0:
-				print cl.seed
 				neighborInfo = cl.getNeighborInfo()
 				for n in neighborInfo:
 					print "\t{:03.2f}%,{!s}".format(n[1]*100.0,n[0])
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				print "{!s}:\t{!s}, {:03.2f}%".format(cl.seed, bestS, ratioS*100.0)
-				#mergeLogSeed.append([cl.seed, bestS, ratioS])
-				#_, clMax = cl.purityMax(names)
-				#mergeLogMax.append([clMax, bestM, ratioM])
+				bestSCL = allClusters[bestS]
+				_, bestMatchMax = bestSCL.purityMax(names)
+				_, clMax = cl.purityMax(names)
+				mergeLog.append([cl.seed, clMax, bestS, bestMatchMax, ratioS])
 			
 		print iterString + " done"
 		l2.close()
 		
-		#if i < leng -1:
-		#	neighborLog.write(iterString+"\n")
-		#	for a in range(len(mergeLogSeed)):
-		#		neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogMax[a][0],mergeLogSeed[a][2]*100.0,mergeLogSeed[a][1],mergeLogMax[a][2]*100.0,mergeLogMax[a][1]))
-		#	neighborLog.write("\n")
+		if i < leng -1:
+			neighborLog.write(iterString+"\n")
+			for a in range(len(mergeLog)):
+				item = mergeLog[a]
+				neighborLog.write("{!s} (max {!s}):\n\t{:03.2}%, {!s} (max {!s})\n".format(item[0],item[1],item[4],item[2],item[3]))
+			neighborLog.write("\n")
 
 	log.close()
 	neighborLog.close()
