@@ -311,18 +311,18 @@ def main(argv):
 					rightNeighborsDistsSeed[iterString].append(ratioS)
 				else:
 					wrongNeighborsDistsSeed[iterString].append(ratioS)
-				print "{:01.2f}".format(ratioS),
-		print
-					
 					
 		# *** compute correctness distributions
 		rdata = rightDistsSeed[iterString]
 		wdata = wrongDistsSeed[iterString]
 		comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 		
-		rdata = rightNeighborsDistsSeed[iterString]
-		wdata = wrongNeighborsDistsSeed[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
+		if i < leng-1:
+			rdata = rightNeighborsDistsSeed[iterString]
+			wdata = wrongNeighborsDistsSeed[iterString]
+			print "Right range: {:03.2f}%-{:03.2f}%".format(min(rdata)*100.0, max(rdata)*100.0)
+			print "Wrong range: {:03.2f}%-{:03.2f}%".format(min(wdata)*100.0, max(wdata)*100.0)
+			comparisonPlot(rdata, wdata, iterString, outputFile, "neighbors_seed", "Distances between correct neighbors", "Distances between incorrect neighbors")
 
 		#if i < leng-1:
 		#	rdata = rightDistsMax[iterString]
