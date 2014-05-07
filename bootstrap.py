@@ -248,7 +248,7 @@ def main(argv):
 				wrongDistsSeed[iterString].append(bestScore)
 				log.write("Wrong match (seed): {!s} to {!s}\n".format(child, cl.seed))
 				log.write("Original score: {!s}\n".format(bestScore))
-				log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatchesSeed))
+				log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatches))
 			
 			#if i < leng-1:	
 			#	correctM = correctnessDictMax[matchLevel](child, cl, names)
