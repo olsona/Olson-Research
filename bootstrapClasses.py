@@ -103,7 +103,7 @@ class Contig:
 			self.myCluster = None
 		else:
 			self.myCluster = myCluster
-		if goodMatchesSeed is None:
+		if goodMatches is None:
 			self.goodMatches = []
 		else:
 			self.goodMatches = goodMatches
