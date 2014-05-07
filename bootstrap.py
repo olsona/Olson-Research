@@ -23,9 +23,11 @@ def main(argv):
 	scoreFunction = ''
 	nameFile = ''
 	names = []
+	joinThreshold = 0.1
+	neighborThreshold = 0.1
 	# Command line arguments
 	try:
-		opts, args = getopt.getopt(argv,"hi:o:c:p:s:n:",["ifile=","ofile=","cut=","path=","score=","namefile="])
+		opts, args = getopt.getopt(argv,"hi:o:c:p:s:f:j:n:",["ifile=","ofile=","cut=","path=","score=","namefile=","jointhreshold=","neighborthreshold="])
 	except getopt.GetoptError:
 		print usageString
 		sys.exit(2)
@@ -44,7 +46,11 @@ def main(argv):
 			computePath = arg
 		elif opt in ("-s", "--score"):
 			scoreFunction = arg.lower()
-		elif opt in ("-n", "--namefile"):
+		elif opt in ("-j", "--joiningthreshold"):
+			joinThreshold = float(arg)
+		elif opt in ("-n", "--neighborthreshold"):
+			neighborThreshold = float(arg)
+		elif opt in ("-f", "--namefile"):
 			nameFile = arg
 			nf = open(nameFile,'r')
 			names = []
@@ -171,8 +177,6 @@ def main(argv):
 	neighborLog = open("{!s}_neighborlog".format(outputFile),'w')
 	# ***
 	
-	close = closeThreshold
-	
 	# Main loop: iterate through cooling schedule, creating databases, making matches, and once matches are made, concatenate each seed (pseudo)contig with matched contigs to make next round
 	for i in range(leng-1,0,-1):
 		iterString = "{!s}-{!s}".format(str(coolingSchedule[i-1]).zfill(2),str(coolingSchedule[i]).zfill(2))
@@ -204,9 +208,9 @@ def main(argv):
 			matchDict[parent].append(child)
 			mythresh = 0.0
 			if bestScore > 0:
-				mythresh = (1.0-close)*bestScore
+				mythresh = (1.0-neighborThreshold)*bestScore
 			else:
-				mythresh = (1.0+close)*bestScore
+				mythresh = (1.0+neighborThreshold)*bestScore
 			for l in line.rstrip().split(", ")[0:]:
 				entry = l.split(":")
 				score = float(entry[0])
@@ -316,21 +320,20 @@ def main(argv):
 			
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeListSeed) > 0:
-				ratioS, bestS = purityOfCluster(cl.closeListSeed.keys(), names)
-				mergeLogSeed.append([cl.seed, bestS, ratioS])
-				#print "Seed:", cl.seed, bestS, ratioS
-				ratioM, bestM = purityOfCluster(cl.closeListMax.keys(), names)
-				_, clMax = cl.purityMax(names)
-				mergeLogMax.append([clMax, bestM, ratioM])
+				ratioS, bestS = cl.getMostCommonNeighbor()
+				print "{!s}:\t{!s}, {:03.2f}%".format(cl.seed, bestS, ratioS*100.0)
+				#mergeLogSeed.append([cl.seed, bestS, ratioS])
+				#_, clMax = cl.purityMax(names)
+				#mergeLogMax.append([clMax, bestM, ratioM])
 			
 		print iterString + " done"
 		l2.close()
 		
-		if i < leng -1:
-			neighborLog.write(iterString+"\n")
-			for a in range(len(mergeLogSeed)):
-				neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogMax[a][0],mergeLogSeed[a][2]*100.0,mergeLogSeed[a][1],mergeLogMax[a][2]*100.0,mergeLogMax[a][1]))
-			neighborLog.write("\n")
+		#if i < leng -1:
+		#	neighborLog.write(iterString+"\n")
+		#	for a in range(len(mergeLogSeed)):
+		#		neighborLog.write("{!s} (max {!s}):\n\t{:03.2f}%,{!s}\n\t{:03.2f}%,{!s}\n".format(mergeLogSeed[a][0],mergeLogMax[a][0],mergeLogSeed[a][2]*100.0,mergeLogSeed[a][1],mergeLogMax[a][2]*100.0,mergeLogMax[a][1]))
+		#	neighborLog.write("\n")
 
 	log.close()
 	neighborLog.close()

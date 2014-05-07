@@ -33,13 +33,7 @@ class Cluster:
 		if self.root is None:
 			return []
 		else:
-			#print "Root:", self.root
-			#print "Dict:"
-			#pprint.pprint(self.dict)
-			res = getLeavesUtil(self.dict, self.root)
-			#print res
-			#print "Done\n"
-			return res
+			return getLeavesUtil(self.dict, self.root)
 
 	def purityMax(self, names):
 		if self.dict is None:
@@ -75,6 +69,30 @@ class Cluster:
 			self.closeListMax[name].append(score)
 		else:
 			self.closeListMax[name] = [score]
+			
+	def getMostCommonNeighbor(self):
+		total = 0
+		max = 0
+		maxName = ''
+		for n in self.closeListSeed:
+			l = len(self.closeListSeed[n])
+			total += l
+			if l > max:
+				max = l
+				maxName = n
+		return float(max)/float(total), maxName
+		
+	def getNeighborInfo(self):
+		total = 0
+		repDict = {n:0 for n in self.closeListSeed}
+		for n in self.closeListSeed:
+			l = len(self.closeListSeed[n])
+			total += l
+			repDict[n] = l
+		for n in repDict:
+			tmp = repDict[n]
+			repDict[n] = float(tmp)/float(total)
+		return repDict
 
 	def addCluster(self, others, ubercontig):
 		subs = [self.root]

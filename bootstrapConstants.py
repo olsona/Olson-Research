@@ -15,11 +15,7 @@ bigUsageString = '-i, --ifile\t\tInput metagenomics FASTA file\n'+\
 				'\t\t\t	 format: [1,2,5]\n'+\
 				'\t\t\t	 [1,2,5] implies the partition schedule > 5kbp, 2kbp, 1kbp\n'
 				
-defaultSchedule = [1,2,5,10,20,50,100]
-
-matchThreshold = -0.5
-
-closeThreshold = 0.1
+defaultSchedule = [2,6,10,14,18,22]
 
 #http://my.safaribooksonline.com/book/programming/python/0596007973/python-shortcuts/pythoncook2-chp-4-sect-16
 correctnessDictSeed = {
