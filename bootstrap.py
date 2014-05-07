@@ -292,7 +292,7 @@ def main(argv):
 			ct += 1
 			
 		# merge clusters as appropriate	
-		for clust in allContigs:
+		for clust in allClusters:
 			cl = allContigs[clust]
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
