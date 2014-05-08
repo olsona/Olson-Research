@@ -297,7 +297,7 @@ def main(argv):
 			ct += 1
 			
 		toWrite = set(allClusters.keys())
-		print "keys:", toWrite
+		#print "keys:", toWrite
 		toPop = set()
 		# merge clusters as appropriate	
 		for clust in allClusters:
@@ -328,6 +328,7 @@ def main(argv):
 				else:
 					newContig = cl.root
 			
+		print "toWrite:", toWrite	
 		for item in toWrite:
 			cl = allClusters[item]
 			newContig = cl.root
