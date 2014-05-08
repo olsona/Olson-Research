@@ -231,7 +231,8 @@ def main(argv):
         print iterString + " done"
         for clID in sorted(allClusters.keys()):
             clust = allClusters[clID]
-            print "{!s}: {!s}".format(clID, ",".join(co for co in clust.getLeaves()))
+            print "{!s}:\t{!s}".format(clID, ", ".join(co for co in clust.getLeaves()))
+        print
         print
 	l2.close()
 			
