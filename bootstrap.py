@@ -309,8 +309,9 @@ def main(argv):
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
 				bestIndex = allClustList.index(bestS)
+				print index, bestIndex
 				if ratioS > joinThreshold and bestS not in toPop and bestIndex > index:
-					print index, bestIndex
+					#print index, bestIndex
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
