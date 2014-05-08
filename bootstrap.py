@@ -331,7 +331,7 @@ def main(argv):
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 		
 		for item in toPop:
-			#print "Popped {!s}".format(item)
+			print "Popped {!s}".format(item)
 			allClusters.pop(item)
 					
 		# *** compute correctness distributions
