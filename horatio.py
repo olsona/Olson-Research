@@ -162,7 +162,7 @@ def main(argv):
 	allClusters[nm] = cl
 	allContigs[nm] = co
 	contigs2Clusters[nm] = cl
-	clusters2Contigs[nm] = co
+	clusters2Contigs[nm] = [co]
     newContigCount = 0
 	
     #---MAIN LOOP---#
