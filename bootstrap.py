@@ -318,7 +318,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					#print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
+					print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
 					toPop.add(bestS)
 					toWrite.remove(bestS)
 					ct += 1
@@ -331,7 +331,7 @@ def main(argv):
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 		
 		for item in toPop:
-			print "Popped {!s}".format(item)
+			#print "Popped {!s}".format(item)
 			allClusters.pop(item)
 					
 		# *** compute correctness distributions
