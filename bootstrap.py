@@ -23,7 +23,7 @@ def main(argv):
 	scoreFunction = ''
 	nameFile = ''
 	names = []
-	joinThreshold = 0.1
+	joinThreshold = 0.5
 	neighborThreshold = 0.1
 	# Command line arguments
 	try:
@@ -279,8 +279,10 @@ def main(argv):
 			cl.root = newContig
 			cl.addNode(newContig, j)
 			for v in matchDict[j]:
-				cl.addNode(newContig, v)
 				co = allContigs[v]
+				#matchingScore = sorted(cl.closeList[co])[-1]
+				#if matchingScore > 
+				cl.addNode(newContig, v)
 				for m in co.goodMatches:
 					cl.addMatch(m)
 				_, seq = readSequence("{!s}{!s}.fna".format(genePath, v))
@@ -299,7 +301,7 @@ def main(argv):
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				if ratioS > 0.5:
+				if ratioS > joinThreshold:
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
@@ -315,7 +317,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
+					#print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
 					toPop.add(bestS)
 					toWrite.remove(bestS)
 					ct += 1
@@ -328,7 +330,7 @@ def main(argv):
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 		
 		for item in toPop:
-			print "Popped {!s}".format(item)
+			#print "Popped {!s}".format(item)
 			allClusters.pop(item)
 					
 		# *** compute correctness distributions
