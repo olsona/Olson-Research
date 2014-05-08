@@ -11,6 +11,7 @@ from horatioClasses import Cluster, Contig
 # imports necessary for debugging
 #import matplotlib as mpl
 #mpl.use('Agg')
+import pprint
 
 def main(argv):
     #---PREPROCESSING---#
@@ -228,6 +229,10 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
         
         print iterString + " done"
+        for clseed in allClusters:
+            cl = allClusters[clseed]
+            print "{!s}:".format(clseed),
+            print ",".join(str(c) for c in cl.getLeaves())
 	l2.close()
 			
     #---POSTPROCESSING---#
