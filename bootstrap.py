@@ -200,6 +200,7 @@ def main(argv):
 		for row in range(2,len(lns)):
 			line = lns[row]
 			bestMatch = line.rstrip().split(", ")[0].split(":")
+			print bestMatch
 			bestIndex = int(bestMatch[1])
 			bestScore = float(bestMatch[0])
 			parent = dbNames[bestIndex]
