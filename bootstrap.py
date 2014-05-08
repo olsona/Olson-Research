@@ -292,6 +292,7 @@ def main(argv):
 			ct += 1
 			
 		toWrite = set(allClusters.keys())
+		toPop = set()
 		# merge clusters as appropriate	
 		for clust in allClusters:
 			cl = allClusters[clust]
@@ -314,7 +315,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					allClusters.pop(bestS)
+					toPop.add(bestS)
 					toWrite.remove(bestS)
 					ct += 1
 				else:
@@ -324,6 +325,9 @@ def main(argv):
 			cl = allClusters[item]
 			newContig = cl.root
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
+		
+		for item in toPop:
+			allClusters.pop(item)
 					
 		# *** compute correctness distributions
 		rdata = rightDistsSeed[iterString]
