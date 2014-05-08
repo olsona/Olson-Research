@@ -195,12 +195,14 @@ def main(argv):
 		lns = fMatch.readlines()
 		dbNames = lns[0].rstrip().split(",")
 		contigNames = lns[1].rstrip().split(",")
+		print matches
 		for d in dbNames:
 			matchDict[d] = []
 		for row in range(2,len(lns)):
 			line = lns[row]
 			bestMatch = line.rstrip().split(", ")[0].split(":")
-			print bestMatch
+			if len(bestMatch) < 2:
+				print bestMatch
 			bestIndex = int(bestMatch[1])
 			bestScore = float(bestMatch[0])
 			parent = dbNames[bestIndex]
@@ -318,7 +320,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					print "Adding {!s} and {!s}".format(cl.seed.split("_")[0], bestSCL.seed.split("_")[0])
+					#print "Adding {!s} and {!s}".format(cl.seed.split("_")[0], bestSCL.seed.split("_")[0])
 					toPop.add(bestS)
 					toWrite.remove(bestS)
 					ct += 1
