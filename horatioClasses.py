@@ -20,7 +20,7 @@ class Cluster:
     def __str__(self):
 	return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
 
-    def getLeaves(self):
+    def getAll(self):
 	if self.root is None or self.dict is None:
 	    return []
 	else:
