@@ -87,18 +87,19 @@ def main(argv):
             print "Cannot parse {!s} as a float.".format(ntArg)
             sys.exit(2)
     # ***
-    try:
-        nf = open(nameFile,'r')
-        for l in nf.readlines():
-            n = l.rstrip()
-            if len(n) > 0:
-                names.append(n)
-    except IOError:
-        print 'NameFile {!s} could not be open/read.'.format(nameFile)
-        sys.exit(2)
-    except:
-       print "Unexpected error:", sys.exc_info()[0]
-       sys.exit(2)
+    if nameFile:
+        try:
+            nf = open(nameFile,'r')
+            for l in nf.readlines():
+                n = l.rstrip()
+                if len(n) > 0:
+                    names.append(n)
+        except IOError:
+            print 'NameFile {!s} could not be open/read.'.format(nameFile)
+            sys.exit(2)
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            sys.exit(2)
     # ***
 
     # properly format input metagenome file
