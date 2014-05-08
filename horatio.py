@@ -229,7 +229,7 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
         
         print iterString + " done"
-        for clID in sorted(allClusters.keys()):
+        for clID in sorted(allClusters.keys())[1:5]:
             clust = allClusters[clID]
             print "{!s}:\t{!s}".format(clID, ", ".join(co for co in clust.getLeaves()))
         print
