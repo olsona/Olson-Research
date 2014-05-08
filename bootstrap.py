@@ -297,15 +297,16 @@ def main(argv):
 			ct += 1
 			
 		toWrite = set(allClusters.keys())
+		alreadyDone = set()
 		#print "keys:", toWrite
 		toPop = set()
 		# merge clusters as appropriate	
 		for clust in allClusters:
 			cl = allClusters[clust]
 			# get info on cluster closeness
-			if i < leng-1 and len(cl.closeList) > 0 and cl in toWrite:
+			if i < leng-1 and len(cl.closeList) > 0 and cl not in alreadyDone:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				if ratioS > joinThreshold and bestS in toWrite:
+				if ratioS > joinThreshold and bestS not in alreadyDone:
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
@@ -324,6 +325,8 @@ def main(argv):
 					#print "Adding {!s} and {!s}".format(cl.seed.split("_")[0], bestSCL.seed.split("_")[0])
 					toPop.add(bestS)
 					toWrite.remove(bestS)
+					alreadyDone.add(cl)
+					alreadyDone.add(bestS)
 					ct += 1
 				else:
 					newContig = cl.root
