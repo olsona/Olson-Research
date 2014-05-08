@@ -291,6 +291,7 @@ def main(argv):
 			fpc.close()
 			ct += 1
 			
+		toWrite = set(allClusters.keys())
 		# merge clusters as appropriate	
 		for clust in allClusters:
 			cl = allClusters[clust]
@@ -314,9 +315,14 @@ def main(argv):
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
 					allClusters.pop(bestS)
+					toWrite.remove(bestS)
 					ct += 1
 				else:
 					newContig = cl.root
+			
+		for item in toWrite:
+			cl = allClusters[item]
+			newContig = cl.root
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 					
 		# *** compute correctness distributions
