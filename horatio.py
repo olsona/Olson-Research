@@ -177,7 +177,7 @@ def main(argv):
 	    hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
 	elif scoreFunction == "tetra":
 	    hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
-	elif scoreFunction == "tacoa":
+	elif scoreFunction == "raiphy":
 	    hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 	    
 	# construct matching dictionary for internal use
