@@ -302,7 +302,7 @@ def main(argv):
 		toPop = set()
 		# merge clusters as appropriate	
 		allClustList = allClusters.values()
-		clustDict = [cl.seed: cl for cl in allClustList]
+		clustDict = {cl.seed: cl for cl in allClustList}
 		for index in range(len(allClustList)):
 			cl = allClustList[index]
 			# get info on cluster closeness
