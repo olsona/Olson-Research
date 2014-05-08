@@ -26,6 +26,8 @@ def scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile):
 	
 	
 def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
+	print fSeed
+	print DB
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
