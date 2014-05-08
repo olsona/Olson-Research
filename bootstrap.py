@@ -301,7 +301,7 @@ def main(argv):
 		#print "keys:", toWrite
 		toPop = set()
 		# merge clusters as appropriate	
-		allClustList = sorted(allClusters.keys())
+		allClustList = sorted(allClusters.values())
 		print allClustList
 		for index in range(len(allClustList)):
 			clust = allClustList[index]
@@ -329,7 +329,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
+					#print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
 					toPop.add(bestS)
 					toWrite.remove(bestS)
 					alreadyDone.add(cl)
