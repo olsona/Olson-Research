@@ -303,9 +303,9 @@ def main(argv):
 		for clust in allClusters:
 			cl = allClusters[clust]
 			# get info on cluster closeness
-			if i < leng-1 and len(cl.closeList) > 0 and cl not in toPop:
+			if i < leng-1 and len(cl.closeList) > 0 and cl in toWrite:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				if ratioS > joinThreshold and bestS not in toPop:
+				if ratioS > joinThreshold and bestS in toWrite:
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
