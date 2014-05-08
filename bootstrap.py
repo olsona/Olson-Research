@@ -304,9 +304,10 @@ def main(argv):
 		for clust in allClusters:
 			cl = allClusters[clust]
 			# get info on cluster closeness
-			if i < leng-1 and len(cl.closeList) > 0 and cl not in alreadyDone:
+			if i < leng-1 and len(cl.closeList) > 0 and cl not in toPop:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				if ratioS > joinThreshold and bestS not in alreadyDone:
+				if ratioS > joinThreshold and bestS not in toPop and bestS not in alreadyDone:
+					print cl, bestS
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
@@ -322,16 +323,14 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
-					#print "Adding {!s} and {!s}".format(cl.seed.split("_")[0], bestSCL.seed.split("_")[0])
+					print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
 					toPop.add(bestS)
 					toWrite.remove(bestS)
 					alreadyDone.add(cl)
 					alreadyDone.add(bestS)
 					ct += 1
-				else:
-					newContig = cl.root
-			
-		print "toWrite:", i, ":", len(toWrite)
+		
+		#print "toWrite:", i, ":", len(toWrite)
 		for item in toWrite:
 			cl = allClusters[item]
 			newContig = cl.root
@@ -342,9 +341,9 @@ def main(argv):
 			allClusters.pop(item)
 					
 		# *** compute correctness distributions
-		rdata = rightDistsSeed[iterString]
-		wdata = wrongDistsSeed[iterString]
-		comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+		#rdata = rightDistsSeed[iterString]
+		#wdata = wrongDistsSeed[iterString]
+		#comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 		
 		#if i < leng-1:
 		#	rdata = rightNeighborsDistsSeed[iterString]
