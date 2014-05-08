@@ -34,7 +34,6 @@ def main(argv):
 	print hcon.usageString
 	sys.exit(2)
     for opt, arg in opts:
-        print opt, arg
 	if opt == '-h': #user needs help
 	    print hcon.usageString
 	    print hcon.bigUsageString
