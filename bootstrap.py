@@ -309,7 +309,7 @@ def main(argv):
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				print cl.seed, bestS
+				#print cl.seed, bestS
 				bestIndex = allClustList.index(bestS)
 				#print index, bestIndex
 				if ratioS > joinThreshold and bestS not in toPop:
