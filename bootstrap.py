@@ -301,7 +301,7 @@ def main(argv):
 		#print "keys:", toWrite
 		toPop = set()
 		# merge clusters as appropriate	
-		allClustList = [cl.seed for cl in allClusters.values()]
+		allClustList = sorted([cl.seed for cl in allClusters.values()])
 		print allClustList
 		for index in range(len(allClustList)):
 			clust = allClustList[index]
