@@ -200,6 +200,9 @@ def main(argv):
 	    
 	fMatching.close()
 	    
+	for co in sorted(contigs2Clusters):
+            print "{!s}: {!s}".format(co, contigs2Clusters[co].seed)
+            
 	# create new seeds through concatenation and prepare for next DB creation
 	fSeed = "{!s}_{!s}_seed".format(baseName, i)
 	l2 = open(fSeed + "-2",'w')
@@ -229,8 +232,6 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
         
         print iterString + " done"
-        for co in sorted(contigs2Clusters):
-            print "{!s}: {!s}".format(co, contigs2Clusters[co].seed)
 	l2.close()
 			
     #---POSTPROCESSING---#
