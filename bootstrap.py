@@ -301,13 +301,16 @@ def main(argv):
 		#print "keys:", toWrite
 		toPop = set()
 		# merge clusters as appropriate	
-		for clust in allClusters:
+		allClustList = allClusters.keys()
+		for index in range(len(allClustList)):
+			clust = allClustList[index]
 			cl = allClusters[clust]
 			# get info on cluster closeness
-			if i < leng-1 and len(cl.closeList) > 0 and cl not in toPop:
+			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				if ratioS > joinThreshold and bestS not in toPop and bestS not in alreadyDone:
-					print cl, bestS
+				bestIndex = allClustList.index(bestS)
+				if ratioS > joinThreshold and bestS not in toPop and bestIndex > index:
+					print index, bestIndex
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
