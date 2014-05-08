@@ -229,8 +229,8 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
         
         print iterString + " done"
-        for co in contigs2Clusters:
-            print "{!s}: {!s}".format(co, str(contigs2Clusters[co]))
+        for co in sorted(contigs2Clusters):
+            print "{!s}: {!s}".format(co, contigs2Clusters[co].seed)
 	l2.close()
 			
     #---POSTPROCESSING---#
