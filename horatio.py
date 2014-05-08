@@ -217,7 +217,7 @@ def main(argv):
 	    #os.system("rm {!s}{!s}.fna".format(genePath,seed)) # clear up space
 	    nCo = Contig(newContigName)
 	    allContigs[newContigName] = nCo
-	    contigs2Clusters[nCo] = cl
+	    contigs2Clusters[newContigName] = cl
 	    clusters2Contigs[cl.seed].append(nCo)
 	    cl.root = newContigName
 	    cl.addNode(newContigName, seed)
