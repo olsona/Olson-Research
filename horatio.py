@@ -199,9 +199,6 @@ def main(argv):
 	    matchDict[dbItem].append(queryItem)
 	    
 	fMatching.close()
-	    
-	for co in sorted(contigs2Clusters):
-            print "{!s}: {!s}".format(co, contigs2Clusters[co].seed)
             
 	# create new seeds through concatenation and prepare for next DB creation
 	fSeed = "{!s}_{!s}_seed".format(baseName, i)
@@ -232,6 +229,10 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
         
         print iterString + " done"
+        for clID in allClusters:
+            clust = allClusters[clID]
+            print "{!s}: {!s}".format(clID, clust.getLeaves())
+        print
 	l2.close()
 			
     #---POSTPROCESSING---#
