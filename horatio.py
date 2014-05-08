@@ -4,6 +4,7 @@
 import sys, getopt, string, re, os
 import horatioConstants as hcon
 import horatioUtils as hutil
+import horatioFunctions as hfun
 from horatioClasses import Cluster, Contig
 #import cPickle as pickle
 
@@ -172,10 +173,12 @@ def main(argv):
         DB = "{!s}_{!s}_DB".format(baseName,i)
 	matches = "{!s}_{!s}_matches".format(baseName,i)
 	toMatch = "{!s}_{!s}".format(baseName,i)
-	if scoreFunction == "raiphy":
-	    hcon.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)				
-	else:
-	    hcon.scoringMethod[scoreFunction](DB, fSeed, matches, toMatch, allContigs)
+	if scoreFunction == "tacoa":
+	    hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
+	elif scoreFunction == "tetra":
+	    hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
+	elif scoreFunction == "tacoa":
+	    hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 	    
 	# construct matching dictionary for internal use
 	matchDict = {}
