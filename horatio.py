@@ -75,16 +75,18 @@ def main(argv):
 	sys.exit(2)
     if len(cutSchedule) == 0:
 	cutSchedule = hcon.defaultSchedule
-    try:
-        joinThreshold = float(jtArg)
-    except ValueError:
-        print "Cannot parse {!s} as a float.".format(jtArg)
-        sys.exit(2)
-    try:
-        neighborThreshold = float(ntArg)
-    except ValueError:
-        print "Cannot parse {!s} as a float.".format(ntArg)
-        sys.exit(2)
+    if jtArg:
+        try:
+            joinThreshold = float(jtArg)
+        except ValueError:
+            print "Cannot parse {!s} as a float.".format(jtArg)
+            sys.exit(2)
+    if ntArg:
+        try:
+            neighborThreshold = float(ntArg)
+        except ValueError:
+            print "Cannot parse {!s} as a float.".format(ntArg)
+            sys.exit(2)
     # ***
     try:
         nf = open(nameFile,'r')
