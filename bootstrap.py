@@ -303,7 +303,7 @@ def main(argv):
 		for clust in allClusters:
 			cl = allClusters[clust]
 			# get info on cluster closeness
-			if i < leng-1 and len(cl.closeList) > 0:
+			if i < leng-1 and len(cl.closeList) > 0 and cl not in toPop:
 				ratioS, bestS = cl.getMostCommonNeighbor()
 				if ratioS > joinThreshold:
 					myRoot = cl.root
