@@ -165,9 +165,6 @@ def main(argv):
 	contigs2Clusters[nm] = cl
 	clusters2Contigs[nm] = [co]
     newContigCount = 0
-	
-    for seed in allClusters:
-        print seed
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
@@ -232,9 +229,8 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
         
         print iterString + " done"
-        for clseed in allClusters:
-            cl = allClusters[clseed]
-            print "{!s}:{!s}".format(clseed, ",".join(str(c) for c in cl.getLeaves()))
+        for co in contigs2Clusters:
+            print "{!s}: {!s}".format(co, str(contigs2Clusters[co]))
 	l2.close()
 			
     #---POSTPROCESSING---#
