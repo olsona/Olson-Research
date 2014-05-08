@@ -187,8 +187,6 @@ def main(argv):
 	lns = fMatching.readlines()
 	dbNames = lns[0].rstrip().split(",")
 	queryNames = lns[1].rstrip().split(",")
-	for d in dbNames:
-	    matchDict[d] = []
 	for row in range(2,len(lns)):
 	    line = lns[row]
 	    bestMatch = line.rstrip().split(", ")[0].split(":")
@@ -196,8 +194,11 @@ def main(argv):
 	    #bestScore = float(bestMatch[0])
 	    dbItem = dbNames[bestIndex]
 	    queryItem = queryNames[row-2]
-	    matchDict[dbItem].append(queryItem)
-	    
+	    if dbItem in matchDict:
+	        matchDict[dbItem].append(queryItem)
+	    else:
+	        matchDict[dbItem] = [queryItem]
+ 	    
 	pprint.pprint(matchDict)
 	
 	fMatching.close()
