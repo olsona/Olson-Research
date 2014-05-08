@@ -214,7 +214,7 @@ def main(argv):
 	    nCo = Contig(newContigName)
 	    allContigs[newContigName] = nCo
 	    contigs2Clusters[nCo] = cl
-	    clusters2Contigs[cl].append(nCo)
+	    clusters2Contigs[cl.seed].append(nCo)
 	    cl.root = newContigName
 	    cl.addNode(newContigName, seed)
 	    # concatenate all sequences from all matching children
