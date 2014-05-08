@@ -166,6 +166,9 @@ def main(argv):
 	clusters2Contigs[nm] = [co]
     newContigCount = 0
 	
+    for seed in allClusters:
+        print seed
+
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
         iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),str(cutSchedule[i]).zfill(2))
@@ -231,8 +234,7 @@ def main(argv):
         print iterString + " done"
         for clseed in allClusters:
             cl = allClusters[clseed]
-            print "{!s}:".format(clseed),
-            print ",".join(str(c) for c in cl.getLeaves())
+            print "{!s}:{!s}".format(clseed, ",".join(str(c) for c in cl.getLeaves()))
 	l2.close()
 			
     #---POSTPROCESSING---#
