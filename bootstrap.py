@@ -315,6 +315,7 @@ def main(argv):
 					nCo = Contig(newContig, myCluster = cl)
 					allContigs[newContig] = nCo
 					cl.addClusters([bestSCL],newContig)
+					print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
 					toPop.add(bestS)
 					toWrite.remove(bestS)
 					ct += 1
