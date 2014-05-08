@@ -233,6 +233,7 @@ def main(argv):
             clust = allClusters[clID]
             print "{!s}:\t".format(clID),
             pprint.pprint(clust.dict)
+            print clust.getAll()
         print
         print
 	l2.close()
