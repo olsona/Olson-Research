@@ -302,18 +302,20 @@ def main(argv):
 		toPop = set()
 		# merge clusters as appropriate	
 		allClustList = allClusters.values()
-		for cl in allClustList:
+		clustDict = [cl.seed:cl for cl in allClustList]
+		for index in range(len(allClustList)):
+			cl = allClustList[index]
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
 				print cl.seed, bestS
 				bestIndex = allClustList.index(bestS)
-				#print index, bestIndex
-				if ratioS > joinThreshold and bestS not in toPop:
+				print index, bestIndex
+				if ratioS > joinThreshold and bestS not in toPop and bestIndex > index:
 					#print index, bestIndex
 					myRoot = cl.root
-					bestSCL = allClusters[bestS]
-					bestRoot = bestSCL.root
+					bestCl = clustDict[bestS]
+					bestRoot = bestCL.root
 					newContig = "pseudocontig_"+"{!s}".format(ct).zfill(3)
 					fpc = open("{!s}{!s}.fna".format(genePath,newContig),'w')
 					fpc.write(">{!s}\n".format(newContig))
@@ -329,19 +331,20 @@ def main(argv):
 					#print "Adding {!s} and {!s}".format(cl.seed, bestSCL.seed)
 					toPop.add(bestS)
 					toWrite.remove(bestS)
-					alreadyDone.add(cl)
-					alreadyDone.add(bestS)
+					for contig in allClusters:
+						if allClusters[contig] == bestS:
+							allClusters[contig] = cl
+							contig.myCluster = cl
 					ct += 1
 		
 		#print "toWrite:", i, ":", len(toWrite)
-		for item in toWrite:
-			cl = allClusters[item]
+		for cl in toWrite:
 			newContig = cl.root
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContig,genePath,newContig))
 		
-		for item in toPop:
+		#for item in toPop:
 			#print "Popped {!s}".format(item)
-			allClusters.pop(item)
+			#allClusters.pop(item)
 					
 		# *** compute correctness distributions
 		#rdata = rightDistsSeed[iterString]

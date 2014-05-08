@@ -82,9 +82,9 @@ class Cluster:
 		sortTuple = sorted(repDict.items(), key=lambda x: x[1])
 		return sortTuple[::-1]
 
-	def addClusters(self, others, ubercontig):
+	def addClusters(self, otherClusters, ubercontig):
 		subs = [self.root]
-		for o in others:
+		for o in otherClusters:
 			subs.append(o.root)
 			self.dict.update(o.dict)
 		self.root = ubercontig
