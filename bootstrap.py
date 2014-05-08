@@ -297,6 +297,7 @@ def main(argv):
 			ct += 1
 			
 		toWrite = set(allClusters.keys())
+		print toWrite
 		toPop = set()
 		# merge clusters as appropriate	
 		for clust in allClusters:
