@@ -302,13 +302,14 @@ def main(argv):
 		toPop = set()
 		# merge clusters as appropriate	
 		allClustList = sorted(allClusters.keys())
+		print allClustList
 		for index in range(len(allClustList)):
 			clust = allClustList[index]
 			cl = allClusters[clust]
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				print cl, bestS
+				print cl.seed, bestS
 				bestIndex = allClustList.index(bestS)
 				#print index, bestIndex
 				if ratioS > joinThreshold and bestS not in toPop:
