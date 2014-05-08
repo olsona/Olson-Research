@@ -331,7 +331,7 @@ def main(argv):
 				else:
 					newContig = cl.root
 			
-		print "toWrite:", i, ":", toWrite	
+		print "toWrite:", i, ":", len(toWrite)
 		for item in toWrite:
 			cl = allClusters[item]
 			newContig = cl.root
