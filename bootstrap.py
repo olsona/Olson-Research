@@ -103,7 +103,7 @@ def main(argv):
 
 	# properly format input file
 	f = open(inputFile, 'r')
-	baseName = inputFile.rsplit(".",1)[0]+"_working"
+	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
 	newName = inputFile
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
