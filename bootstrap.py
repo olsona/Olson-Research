@@ -305,7 +305,7 @@ def main(argv):
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0 and cl not in toPop:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				if ratioS > joinThreshold:
+				if ratioS > joinThreshold and bestS not in toPop:
 					myRoot = cl.root
 					bestSCL = allClusters[bestS]
 					bestRoot = bestSCL.root
