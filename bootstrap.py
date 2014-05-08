@@ -296,20 +296,17 @@ def main(argv):
 			fpc.close()
 			ct += 1
 			
-		toWrite = set(allClusters.keys())
+		toWrite = set(allClusters.values())
 		alreadyDone = set()
 		#print "keys:", toWrite
 		toPop = set()
 		# merge clusters as appropriate	
-		allClustList = sorted([cl.seed for cl in allClusters.values()])
-		print allClustList
-		for index in range(len(allClustList)):
-			clust = allClustList[index]
-			cl = allClusters[clust]
+		allClustList = allClusters.values()
+		for cl in allClustList:
 			# get info on cluster closeness
 			if i < leng-1 and len(cl.closeList) > 0:
 				ratioS, bestS = cl.getMostCommonNeighbor()
-				#print cl.seed, bestS
+				print cl.seed, bestS
 				bestIndex = allClustList.index(bestS)
 				#print index, bestIndex
 				if ratioS > joinThreshold and bestS not in toPop:
