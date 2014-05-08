@@ -234,7 +234,7 @@ def main(argv):
             print "{!s}:\t".format(clID),
             pprint.pprint(clust.dict)
             print clust.getAll()
-        print
+            print
         print
 	l2.close()
 			
