@@ -95,12 +95,9 @@ def main(argv):
             print "Cannot parse {!s} as a float.".format(ntArg)
             sys.exit(2)
     if stArg:
-        print stArg.rstrip().lstrip()
         try:
-            l = stArg.rstrip().lstrip()
-            if len(l.split(",")) == len(cutSchedule)-1:
-                splitThreshold = [float(a) for a in l.split(",")]
-            else:
+            splitThreshold = [float(n) for n in arg.lstrip()[1:-1].split(',')]
+            if len(splitThreshold) != len(cutSchedule)-1:
                 print "Incorrect number of thresholds."
                 sys.exit(2)
         except ValueError, IOError:
