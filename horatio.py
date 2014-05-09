@@ -225,7 +225,7 @@ def main(argv):
 	           matchDict[dbItem].append(queryItem)
 	       else:
 	           matchDict[dbItem] = [queryItem]
-            clName = contigs2Clusters[dbItem]
+            clName = contigs2Clusters[dbItem].seed
             isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
             if isCorrect:
                 rightDistsSeed[iterString].append(bestScore)
