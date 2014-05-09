@@ -192,7 +192,6 @@ def main(argv):
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
-        print i
         iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
             str(cutSchedule[i]).zfill(2))
         
@@ -221,7 +220,7 @@ def main(argv):
 	    bestScore = float(bestMatch[0])
 	    dbItem = dbNames[bestIndex]
 	    queryItem = queryNames[row-2]
-	    if bestScore < splitThreshold[i]:
+	    if bestScore < splitThreshold[i-1]:
 	        newSeeds.append(queryItem)
 	    else:
 	       if dbItem in matchDict:
