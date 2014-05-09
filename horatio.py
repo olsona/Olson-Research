@@ -187,8 +187,8 @@ def main(argv):
     newContigCount = 0
 
     # ***
-    rightDistsSeed = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-    wrongDistsSeed = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
@@ -231,9 +231,9 @@ def main(argv):
             clName = contigs2Clusters[dbItem].seed
             isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
             if isCorrect:
-                rightDistsSeed[iterString].append(bestScore)
+                rightDists[iterString].append(bestScore)
             else:
-                wrongDistsSeed[iterString].append(bestScore)
+                wrongDists[iterString].append(bestScore)
 	
 	fMatching.close()
             
@@ -274,8 +274,12 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 	 
 	# *** compute correctness distributions
-	rdata = rightDistsSeed[iterString]
-	wdata = wrongDistsSeed[iterString]
+	rdata = rightDists[iterString]
+	wdata = wrongDists[iterString]
+	if rdata:
+	    print "Right: {03.2f}-{03.2f}".format(min(rdata),max(rdata))
+	if wdata:
+	    print "Wrong: {03.2f}-{03.2f}".format(min(wdata),max(wdata))
 	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
