@@ -299,7 +299,7 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 	    
 	for cl in sorted(allClusters.keys()):
-	    print "{!s}: {!s}".format(cl, sorted(allClusters[cl].closeDist.keys()))
+	    print "{!s}: {!s}".format(cl, sorted(allClusters[cl].closeDict.keys()))
 	 
 	# *** compute correctness distributions
 	#rdata = rightDists[iterString]
