@@ -229,7 +229,7 @@ def main(argv):
 	    # check for other good matches to queryItem
 	    myThresh = 0.0
 	    queryContig = allContigs[queryItem]
-	    matchCluster = contigs2Clusters[dbItem]
+	    #matchCluster = contigs2Clusters[dbItem]
 	    if bestScore > 0:
 	        myThresh = (1.0-neighborThreshold)*bestScore
 	    else:
@@ -243,8 +243,8 @@ def main(argv):
 	            neighborCluster = contigs2Clusters[neighborName]
 	            queryContig.goodMatches.append([neighborCluster.seed,score])
 	    # ***
-	    print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
-	       matchCluster.seed, [m[0] for m in queryContig.goodMatches])
+	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
+	    #   matchCluster.seed, [m[0] for m in queryContig.goodMatches])
 	    # ***
 	            
 	    # ***
@@ -280,27 +280,35 @@ def main(argv):
 	    for child in matchDict[seed]:
 	        co = allContigs[child]
 		cl.addNode(newContigName, child)
+		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
+		fNewContig.write(seq)
+		# add neighbors
+		for m in co.goodMatches:
+		    cl.addMatch(m)
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
 	    newContigCount += 1
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
-	# add in seeds that weren't close enough
+	# add split seeds to DB
 	for nSeed in newSeeds:
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    contigs2Clusters[nSeed] = cl
 	    clusters2Contigs[nSeed] = [co]
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
+	    
+	for cl in sorted(allClusters.keys()):
+	    print "{!s}: {!s}".format(cl, sorted(allClusters[cl].closeDist.keys()))
 	 
 	# *** compute correctness distributions
-	rdata = rightDists[iterString]
-	wdata = wrongDists[iterString]
-	if rdata:
-	    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
-	if wdata:
-	    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
-	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+	#rdata = rightDists[iterString]
+	#wdata = wrongDists[iterString]
+	#if rdata:
+	#    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
+	#if wdata:
+	#    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
+	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
         print iterString + " done"

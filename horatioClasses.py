@@ -2,7 +2,7 @@ import horatioUtils as hutil
 #from bootstrapCorrectness import *
 
 class Cluster:
-    def __init__(self, seed, dict = None, root = None, closeList = None):
+    def __init__(self, seed, dict = None, root = None, closeDict = None):
 	self.seed = seed
 	if root is None:
 	    self.root = self.seed
@@ -12,10 +12,10 @@ class Cluster:
 	    self.dict = {self.root:[]}
 	else:
 	    self.dict = dict	
-	if closeList is None:
-	    self.closeList = {}
+	if closeDict is None:
+	    self.closeDict = {}
 	else:
-	    self.closeList = closeList
+	    self.closeDict = closeDict
 			
     def __str__(self):
 	return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
@@ -37,16 +37,16 @@ class Cluster:
 	name = goodMatch[0]
 	score = goodMatch[1]
 	if name in self.closeList:
-	    self.closeList[name].append(score)
+	    self.closeDict[name].append(score)
 	else:
-	    self.closeList[name] = [score]
+	    self.closeDict[name] = [score]
 			
     def getMostCommonNeighbor(self):
 	total = 0
 	max = 0
 	maxName = ''
-	for n in self.closeList:
-	    l = len(self.closeList[n])
+	for n in self.closeDict:
+	    l = len(self.closeDict[n])
 	    total += l
 	    if l > max:
 	        max = l
@@ -55,9 +55,9 @@ class Cluster:
 		
     def getNeighborInfo(self):
 	total = 0
-	repDict = {n:0 for n in self.closeList}
-	for n in self.closeList:
-	    l = len(self.closeList[n])
+	repDict = {n:0 for n in self.closeDict}
+	for n in self.closeDict:
+	    l = len(self.closeDict[n])
 	    total += l
 	    repDict[n] = l
 	for n in repDict:
