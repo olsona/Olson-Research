@@ -240,7 +240,7 @@ def main(argv):
 	        if score >= myThresh:
 	            neighborInd = int(entry[1])
 	            neighborName = dbNames[neighborInd]
-	            neighborCluster = allClusters[neighborName]
+	            neighborCluster = contigs2Clusters[neighborName]
 	            queryContig.goodMatches.append([neighborCluster.seed,score])
 	    # ***
 	    print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
