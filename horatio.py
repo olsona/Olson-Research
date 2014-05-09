@@ -95,6 +95,7 @@ def main(argv):
             print "Cannot parse {!s} as a float.".format(ntArg)
             sys.exit(2)
     if stArg:
+        print stArg.rstrip().lstrip()
         try:
             l = stArg.rstrip().lstrip()
             if len(l.split(",")) == len(cutSchedule)-1:
