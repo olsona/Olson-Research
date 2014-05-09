@@ -36,7 +36,7 @@ class Cluster:
     def addMatch(self, goodMatch):
 	name = goodMatch[0]
 	score = goodMatch[1]
-	if name in self.closeList:
+	if name in self.closeDict:
 	    self.closeDict[name].append(score)
 	else:
 	    self.closeDict[name] = [score]
