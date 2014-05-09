@@ -176,8 +176,8 @@ def main(argv):
     f = open(fSeed+"-2",'r')
     for l in f.readlines():
         sp = l.rstrip().split("\t")
-   	nm = sp[0]      # nm is the name of the contig
-	cl = Cluster(nm) # starting a new cluster cl with nm as its seed
+   	nm = sp[0]        # nm is the name of the contig
+	cl = Cluster(nm)  # starting a new cluster cl with nm as its seed
 	co = Contig(nm)
 	allClusters[nm] = cl
 	allContigs[nm] = co
@@ -226,12 +226,33 @@ def main(argv):
 	           matchDict[dbItem].append(queryItem)
 	       else:
 	           matchDict[dbItem] = [queryItem]
+	    # check for other good matches to queryItem
+	    myThresh = 0.0
+	    queryContig = allContigs[queryItem]
+	    matchCluster = contigs2Clusters[dbItem]
+	    if bestScore > 0:
+	        myThresh = (1.0-neighborThreshold)*bestScore
+	    else:
+	        myThresh = (1.0+neighborThreshold)*bestScore
+	    for l in line.rstrip().split(", ")[1:]:
+	        entry = l.split(":")
+	        score = float(entry[0])
+	        if score >= myThresh:
+	            neighborInd = int(entry[1])
+	            neighborName = dbNames[neighborInd]
+	            neighborCluster = allClusters[neighborName]
+	            queryContig.goodMatches.append([neighborCluster.seed,score])
+	    print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
+	       matchCluster.seed, [m[0] for m in queryContig.goodMatches])
+	            
+	    # ***
             clName = contigs2Clusters[dbItem].seed
             isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
             if isCorrect:
                 rightDists[iterString].append(bestScore)
             else:
                 wrongDists[iterString].append(bestScore)
+            # ***
 	
 	fMatching.close()
             
