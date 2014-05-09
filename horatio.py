@@ -229,7 +229,7 @@ def main(argv):
 	    # check for other good matches to queryItem
 	    myThresh = 0.0
 	    queryContig = allContigs[queryItem]
-	    #matchCluster = contigs2Clusters[dbItem]
+	    matchCluster = contigs2Clusters[dbItem]
 	    if bestScore > 0:
 	        myThresh = (1.0-neighborThreshold)*bestScore
 	    else:
@@ -243,8 +243,8 @@ def main(argv):
 	            neighborCluster = contigs2Clusters[neighborName]
 	            queryContig.goodMatches.append([neighborCluster.seed,score])
 	    # ***
-	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
-	    #   matchCluster.seed, [m[0] for m in queryContig.goodMatches])
+	    print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
+	       matchCluster.seed, [m[0] for m in queryContig.goodMatches])
 	    # ***
 	            
 	    # ***
