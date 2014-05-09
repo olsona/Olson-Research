@@ -8,10 +8,11 @@ import horatioFunctions as hfun
 from horatioClasses import Cluster, Contig
 #import cPickle as pickle
 
-# imports necessary for debugging
-#import matplotlib as mpl
-#mpl.use('Agg')
-import pprint
+# imports necessary for debugging and correctness
+import matplotlib as mpl
+mpl.use('Agg')
+import horatioCorrectness as hcorr
+#import pprint
 
 def main(argv):
     #---PREPROCESSING---#
@@ -27,11 +28,14 @@ def main(argv):
     joinThreshold = 0.5
     ntArg = ''
     neighborThreshold = 0.1
-    matchLevel = 'genus' #***
-	
+    splitThreshold = []
+    stArg = ''	
+    #matchLevel = 'genus' #***
     # get inputs
     try:
-	opts, args = getopt.getopt(argv,"hi:o:c:p:s:f:j:n:",["ifile=","ofile=","cut=","path=","score=","namefile=","jointhreshold=","neighborthreshold="])
+	opts, args = getopt.getopt(argv,"hi:o:c:p:s:f:j:n:l:",["ifile=","ofile=",\
+	   "cut=","path=","score=","namefile=","jointhreshold=",\
+	   "neighborthreshold=","splitthreshold="])
     except getopt.GetoptError:
 	print hcon.usageString
 	sys.exit(2)
@@ -41,19 +45,21 @@ def main(argv):
 	    print hcon.bigUsageString
 	    sys.exit()
         elif opt in ("-i", "--ifile"):     # input file
-	   inputFile = arg
+	    inputFile = arg
 	elif opt in ("-o", "--ofile"):     # output file
-	   outputFile = arg
+	    outputFile = arg
 	elif opt in ("-c", "--cut"):       # cut schedule
-	   cutSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
+	    cutSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
 	elif opt in ("-s", "--score"):     # score function
-	   scoreFunction = arg.lower()
+	    scoreFunction = arg.lower()
 	elif opt in ("-p", "--path"):      # compute path (only used for RAIphy scoring)
-	   computePath = arg
+	    computePath = arg
 	elif opt in ("-j", "--joiningthreshold"):  # joinThreshold, for cluster joining
-	   jtArg = arg
+	    jtArg = arg
 	elif opt in ("-n", "--neighborthreshold"): # neighborThreshold, for counting a cluster as a neighbor
-	   ntArg = arg
+	    ntArg = arg
+	elif opt in ("-l", "--splitthreshold:"):   # splitThreshold, for starting a new cluster
+	    stArg = arg
 	# ***
 	elif opt in ("-f", "--namefile"):  # *** FOR CORRECTNESS TESTING ONLY
 	   nameFile = arg
@@ -88,6 +94,15 @@ def main(argv):
         except ValueError:
             print "Cannot parse {!s} as a float.".format(ntArg)
             sys.exit(2)
+    if stArg:
+        try:
+            l = stArg.rstrip().lstrip()
+            splitThreshold = [float(a) for a in l.split(",")]
+        except ValueError, IOError:
+            print "Cannot parse {!s} as a list of floats.".format(stArg)
+            sys.exit(2)
+    else:
+        splitThreshold = [-1000.0] * len(cutSchedule)
     # ***
     if nameFile:
         try:
@@ -140,10 +155,12 @@ def main(argv):
 	thr = cutSchedule[i]*1000
 	bgr = "{!s}_{!s}_next".format(baseName,i)
 	if i == 0:
-	    os.system("perl discardSmlr.pl {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, bgr))
+	    os.system("perl discardSmlr.pl {!s} {!s} {!s} {!s}".\
+	       format(thr, genePath, workingFile, bgr))
 	else:
 	    smlr = "{!s}_{!s}".format(baseName, i)
-	    os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".format(thr, genePath, workingFile, smlr, bgr))
+	    os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".\
+	       format(thr, genePath, workingFile, smlr, bgr))
 	fNext = bgr
 	
     # make initial seed file
@@ -166,9 +183,15 @@ def main(argv):
 	clusters2Contigs[nm] = [co]
     newContigCount = 0
 
+    # ***
+    rightDistsSeed = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    wrongDistsSeed = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    log = open("{!s}_log".format(outputFile),'w')
+
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
-        iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),str(cutSchedule[i]).zfill(2))
+        iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
+            str(cutSchedule[i]).zfill(2))
         
         # create DB and query files, apply user-supplied scoring function to them
         DB = "{!s}_{!s}_DB".format(baseName,i)
@@ -187,19 +210,27 @@ def main(argv):
 	lns = fMatching.readlines()
 	dbNames = lns[0].rstrip().split(",")
 	queryNames = lns[1].rstrip().split(",")
+	newSeeds = []
 	for row in range(2,len(lns)):
 	    line = lns[row]
 	    bestMatch = line.rstrip().split(", ")[0].split(":")
 	    bestIndex = int(bestMatch[1])
-	    #bestScore = float(bestMatch[0])
+	    bestScore = float(bestMatch[0])
 	    dbItem = dbNames[bestIndex]
 	    queryItem = queryNames[row-2]
-	    if dbItem in matchDict:
-	        matchDict[dbItem].append(queryItem)
+	    if bestScore < splitThreshold[i]:
+	        newSeeds.append(queryItem)
 	    else:
-	        matchDict[dbItem] = [queryItem]
- 	    
-	pprint.pprint(matchDict)
+	       if dbItem in matchDict:
+	           matchDict[dbItem].append(queryItem)
+	       else:
+	           matchDict[dbItem] = [queryItem]
+            clName = contigs2Clusters[dbItem]
+            isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
+            if isCorrect:
+                rightDistsSeed[iterString].append(bestScore)
+            else:
+                wrongDistsSeed[iterString].append(bestScore)
 	
 	fMatching.close()
             
@@ -230,15 +261,21 @@ def main(argv):
 	    fNewContig.close()
 	    newContigCount += 1
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+	# add in seeds that weren't close enough
+	for nseed in newSeeds:
+	    co = allContigs[nseed]
+	    cl = Cluster(nseed)
+	    contigs2Clusters[nseed] = cl
+	    clusters2Contigs[nseed] = co
+	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nseed, genePath, nseed))
+	 
+	# *** compute correctness distributions
+	rdata = rightDistsSeed[iterString]
+	wdata = wrongDistsSeed[iterString]
+	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+	# ***   
         
         print iterString + " done"
-        #for clID in sorted(allClusters.keys())[1:5]:
-        #    clust = allClusters[clID]
-        #    print "{!s}:\t".format(clID),
-        #    pprint.pprint(clust.dict)
-        #    print clust.getAll()
-        #    print
-        #print
 	l2.close()
 			
     #---POSTPROCESSING---#
