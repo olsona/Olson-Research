@@ -97,6 +97,7 @@ def main(argv):
     if stArg:
         try:
             splitThreshold = [float(n) for n in arg.lstrip()[1:-1].split(',')]
+            print splitThreshold
             if len(splitThreshold) != len(cutSchedule)-1:
                 print "Incorrect number of thresholds."
                 sys.exit(2)
