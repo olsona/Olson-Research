@@ -274,9 +274,9 @@ def main(argv):
 	rdata = rightDists[iterString]
 	wdata = wrongDists[iterString]
 	if rdata:
-	    print "Right: {:03.2f}-{:03.2f}".format(min(rdata),max(rdata))
+	    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
 	if wdata:
-	    print "Wrong: {:03.2f}-{:03.2f}".format(min(wdata),max(wdata))
+	    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
 	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
