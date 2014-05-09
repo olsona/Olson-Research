@@ -97,7 +97,6 @@ def main(argv):
     if stArg:
         try:
             splitThreshold = [float(n) for n in arg.lstrip()[1:-1].split(',')]
-            print splitThreshold
             if len(splitThreshold) != len(cutSchedule)-1:
                 print "Incorrect number of thresholds."
                 sys.exit(2)
@@ -222,7 +221,6 @@ def main(argv):
 	    queryItem = queryNames[row-2]
 	    if bestScore < splitThreshold[i-1]:
 	        newSeeds.append(queryItem)
-	        print "{!s}\t{!s}: not a high enough score.".format(queryItem,dbItem)
 	    else:
 	       if dbItem in matchDict:
 	           matchDict[dbItem].append(queryItem)
@@ -266,7 +264,6 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add in seeds that weren't close enough
 	for nSeed in newSeeds:
-	    print nSeed
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    contigs2Clusters[nSeed] = cl
