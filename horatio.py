@@ -242,8 +242,10 @@ def main(argv):
 	            neighborName = dbNames[neighborInd]
 	            neighborCluster = allClusters[neighborName]
 	            queryContig.goodMatches.append([neighborCluster.seed,score])
+	    # ***
 	    print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
 	       matchCluster.seed, [m[0] for m in queryContig.goodMatches])
+	    # ***
 	            
 	    # ***
             clName = contigs2Clusters[dbItem].seed
