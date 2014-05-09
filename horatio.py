@@ -172,8 +172,8 @@ def main(argv):
     # initialize clusters and contigs
     allClusters = {}      # a dict matching cluster seeds to clusters themselves
     allContigs = {}       # a dict matching contig names to contigs themselves
-    contigs2Clusters = {} # matches contig names to cluster names
-    clusters2Contigs = {} # matches cluster seeds (aka names) to contig names
+    contigs2Clusters = {} # matches contig names to clusters
+    clusters2Contigs = {} # matches cluster seeds (aka names) to a list of contigs
     f = open(fSeed+"-2",'r')
     for l in f.readlines():
         sp = l.rstrip().split("\t")
@@ -222,7 +222,7 @@ def main(argv):
 	    queryItem = queryNames[row-2]
 	    if bestScore < splitThreshold[i-1]:
 	        newSeeds.append(queryItem)
-	        print "{!s},{!s}: not a high enough score.".format(queryItem,dbItem)
+	        print "{!s}\t{!s}: not a high enough score.".format(queryItem,dbItem)
 	    else:
 	       if dbItem in matchDict:
 	           matchDict[dbItem].append(queryItem)
@@ -270,7 +270,7 @@ def main(argv):
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    contigs2Clusters[nSeed] = cl
-	    clusters2Contigs[nSeed] = co
+	    clusters2Contigs[nSeed] = [co]
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 	 
 	# *** compute correctness distributions
