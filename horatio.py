@@ -294,6 +294,7 @@ def main(argv):
 	for nSeed in newSeeds:
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
+	    allClusters[nSeed] = cl
 	    contigs2Clusters[nSeed] = cl
 	    clusters2Contigs[nSeed] = [co]
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
