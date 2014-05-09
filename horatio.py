@@ -222,6 +222,7 @@ def main(argv):
 	    queryItem = queryNames[row-2]
 	    if bestScore < splitThreshold[i-1]:
 	        newSeeds.append(queryItem)
+	        print "{!s},{!s}: not a high enough score.".format(queryItem,dbItem)
 	    else:
 	       if dbItem in matchDict:
 	           matchDict[dbItem].append(queryItem)
