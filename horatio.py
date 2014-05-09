@@ -97,12 +97,16 @@ def main(argv):
     if stArg:
         try:
             l = stArg.rstrip().lstrip()
-            splitThreshold = [float(a) for a in l.split(",")]
+            if len(l.split(",")) == len(cutSchedule)-1:
+                splitThreshold = [float(a) for a in l.split(",")]
+            else:
+                print "Incorrect number of thresholds."
+                sys.exit(2)
         except ValueError, IOError:
             print "Cannot parse {!s} as a list of floats.".format(stArg)
             sys.exit(2)
     else:
-        splitThreshold = [-1000.0] * len(cutSchedule)
+        splitThreshold = [-1000.0] * (len(cutSchedule)-1)
     # ***
     if nameFile:
         try:
@@ -186,7 +190,6 @@ def main(argv):
     # ***
     rightDistsSeed = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
     wrongDistsSeed = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-    log = open("{!s}_log".format(outputFile),'w')
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
@@ -262,12 +265,13 @@ def main(argv):
 	    newContigCount += 1
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add in seeds that weren't close enough
-	for nseed in newSeeds:
-	    co = allContigs[nseed]
-	    cl = Cluster(nseed)
-	    contigs2Clusters[nseed] = cl
-	    clusters2Contigs[nseed] = co
-	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nseed, genePath, nseed))
+	for nSeed in newSeeds:
+	    print nSeed
+	    co = allContigs[nSeed]
+	    cl = Cluster(nSeed)
+	    contigs2Clusters[nSeed] = cl
+	    clusters2Contigs[nSeed] = co
+	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 	 
 	# *** compute correctness distributions
 	rdata = rightDistsSeed[iterString]
