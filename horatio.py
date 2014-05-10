@@ -310,16 +310,18 @@ def main(argv):
 	    clustA = allClusters[sortedClusterIDs[a]]
 	    ratio, nameB = clustA.getMostCommonNeighbor()
 	    indB = sortedClusterIDs.index(nameB)
-	    if ratio >= joinThreshold and indB > a:
-	        print "Joining {!s} and {!s}".format(nameA,nameB)
-	        # search through partition to see if nameA or nameB are already there
-	        for p in partition:
-	            if nameA in p or nameB in p:
-	                p.add(nameA)
-	                p.add(nameB)
-	                break
-	        newSet = set([nameA,nameB])
-	        partition.append(newSet)
+	    if ratio >= joinThreshold:
+	        print nameA, nameB, ratio
+	        if indB > a:
+	            print "Joining {!s} and {!s}".format(nameA,nameB)
+	            # search through partition to see if nameA or nameB are already there
+	            for p in partition:
+	                if nameA in p or nameB in p:
+	                    p.add(nameA)
+	                    p.add(nameB)
+	                    break
+	            newSet = set([nameA,nameB])
+	            partition.append(newSet)
 	print "\nPartition:"
 	for p in partition:
 	    print "\t* "+", ".join(c for c in p)
