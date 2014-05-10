@@ -340,7 +340,7 @@ def main(argv):
 	    fNewContig.write(seq)
 	    for rCl in restClust:
 	        co = allContigs[rCl.root]
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co))
+		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
 		fNewContig.write(seq)
 		for m in co.goodMatches:
 		    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
