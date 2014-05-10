@@ -76,8 +76,7 @@ class Cluster:
 	    self.dict.update(o.dict)  # add in o's neighbors
 	self.root = ubercontig
 	self.dict[ubercontig] = subs
-	
-	
+        
     # ***
     #def purityMax(self, names):
     #	if self.dict is None:
