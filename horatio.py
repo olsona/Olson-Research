@@ -332,8 +332,8 @@ def main(argv):
 	    mainClID = pList[0]
 	    mainClust = allClusters[mainClID]
 	    restClust = [allClusters[ID] for ID in pList[1:]]
-	    print "\nMain: {!s}".format(mainClust.seed)
-	    print "Rest: {!s}".format(", ".join([c.seed for c in restClust]))
+	    print "Main: {!s}".format(mainClust.seed)
+	    print "Rest: {!s}\n".format(", ".join([c.seed for c in restClust]))
 	    # make ubercontig
 	 #   newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 	 #   fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
