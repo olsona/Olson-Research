@@ -357,7 +357,7 @@ def main(argv):
 	            clusters2Contigs[mainClust.seed].append(con)
 	            contigs2Clusters[con] = mainClust
 	        clusters2Contigs.pop(rCl.seed)
-	        allClusters.pop(rCl)
+	        allClusters.pop(rCl.seed)
 	
 	# finally write root contigs to db index file
 	for clID in allClusters:
