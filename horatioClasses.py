@@ -71,6 +71,7 @@ class Cluster:
     def addClusters(self, otherClusters, ubercontig):
 	subs = [self.root]
 	for o in otherClusters:
+	    print "Adding {!s} to {!s}".format(o.seed, self.seed)
 	    subs.append(o.root)
 	    self.dict.update(o.dict)  # add in o's neighbors
 	self.root = ubercontig
