@@ -290,7 +290,7 @@ def main(argv):
 	    fNewContig.write("\n")
 	    fNewContig.close()
 	    newContigCount += 1
-	    l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add split seeds to DB
 	for nSeed in newSeeds:
 	    print nSeed
@@ -299,7 +299,7 @@ def main(argv):
 	    allClusters[nSeed] = cl
 	    contigs2Clusters[nSeed] = cl
 	    clusters2Contigs[nSeed] = [co]
-	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
+	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 	    
 	# go through clusters again, evaluate what clusters should be joined
 	# identify edges (make simplifying assumption that if A is a neighbor of B, then B is a neighbor of A)
@@ -332,40 +332,38 @@ def main(argv):
 	    mainClID = pList[0]
 	    mainClust = allClusters[mainClID]
 	    restClust = [allClusters[ID] for ID in pList[1:]]
-	    print "Main: {!s}".format(mainClust.seed)
-	    print "Rest: {!s}\n".format(", ".join([c.seed for c in restClust]))
 	    # make ubercontig
-	 #   newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-	 #   fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
-	 #   fNewContig.write(">{!s}\n".format(newContigName))
-	 #   _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
-	 #   fNewContig.write(seq)
-	 #   for rCl in restClust:
-	 #       co = allContigs[rCl.root]
-		#_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co))
-		#fNewContig.write(seq)
-		#for m in co.goodMatches:
-		#    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
-		## os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
-	 #   fNewContig.write("\n")
-	 #   fNewContig.close()
-	 #   newContigCount += 1
+	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+	    fNewContig.write(">{!s}\n".format(newContigName))
+	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
+	    fNewContig.write(seq)
+	    for rCl in restClust:
+	        co = allContigs[rCl.root]
+		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co))
+		fNewContig.write(seq)
+		for m in co.goodMatches:
+		    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+	    fNewContig.write("\n")
+	    fNewContig.close()
+	    newContigCount += 1
 	    # add clusters
-	    #mainClust.addClusters(restClust, newContigName)
+	    mainClust.addClusters(restClust, newContigName)
 	    # remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
-	    #for rCl in restClust:
-	    #    contigNames = clusters2Contigs[rCl.seed]
-	    #    for con in contigNames:
-	    #        clusters2Contigs[mainClust.seed].append(con)
-	    #        contigs2Clusters[con] = mainClust
-	    #    clusters2Contigs.pop(rCl.seed)
-	    #    allClusters.pop(rCl)
+	    for rCl in restClust:
+	        contigNames = clusters2Contigs[rCl.seed]
+	        for con in contigNames:
+	            clusters2Contigs[mainClust.seed].append(con)
+	            contigs2Clusters[con] = mainClust
+	        clusters2Contigs.pop(rCl.seed)
+	        allClusters.pop(rCl)
 	
-	## finally write root contigs to db index file
-	#for clID in allClusters:
-	#    clust = allClusters[clID]
-	#    root = clust.root
-	#    l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
+	# finally write root contigs to db index file
+	for clID in allClusters:
+	    clust = allClusters[clID]
+	    root = clust.root
+	    l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 	 
 	# *** compute correctness distributions
 	#rdata = rightDists[iterString]
