@@ -229,11 +229,12 @@ def main(argv):
 	    # check for other good matches to queryItem
 	    myThresh = 0.0
 	    queryContig = allContigs[queryItem]
-	    matchCluster = contigs2Clusters[dbItem]
+	    # matchCluster = contigs2Clusters[dbItem]  # ***
 	    if bestScore > 0:
 	        myThresh = (1.0-neighborThreshold)*bestScore
 	    else:
 	        myThresh = (1.0+neighborThreshold)*bestScore
+	    # check for neighbors
 	    for l in line.rstrip().split(", ")[1:]:
 	        entry = l.split(":")
 	        score = float(entry[0])
@@ -243,8 +244,8 @@ def main(argv):
 	            neighborCluster = contigs2Clusters[neighborName]
 	            queryContig.goodMatches.append([neighborCluster.seed,score])
 	    # ***
-	    print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
-	       matchCluster.seed, [m[0] for m in queryContig.goodMatches])
+	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
+	    #   matchCluster.seed, [m[0] for m in queryContig.goodMatches])
 	    # ***
 	            
 	    # ***
@@ -261,7 +262,7 @@ def main(argv):
 	# create new seeds through concatenation and prepare for next DB creation
 	fSeed = "{!s}_{!s}_seed".format(baseName, i)
 	l2 = open(fSeed + "-2",'w')
-	# Make concatenated seeds, add to DB index list
+	# Make concatenated seeds
 	for seed in matchDict.keys():
 	    cl = contigs2Clusters[seed]
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
@@ -300,8 +301,67 @@ def main(argv):
 	    clusters2Contigs[nSeed] = [co]
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 	    
-	for cl in sorted(allClusters.keys()):
-	    print "{!s}: {!s}".format(cl, sorted(allClusters[cl].closeDict.keys()))
+	# go through clusters again, evaluate what clusters should be joined
+	# identify edges (make simplifying assumption that if A is a neighbor of B, then B is a neighbor of A)
+	partition = []
+	sortedClusterIDs = sorted(allClusters.keys())
+	for a in range(len(sortedClusterIDs)):
+	    nameA = sortedClusterIDs[a]
+	    clustA = allClusters[sortedClusterIDs[a]]
+	    ratio, nameB = clustA.getMostCommonNeighbor()
+	    print nameA, nameB, ratio
+	    if ratio >= joinThreshold:
+	        # search through partition to see if nameA or nameB are already there
+	        for p in partition:
+	            if nameA in p or nameB in p:
+	                partition[p].add(nameA)
+	                partition[p].add(nameB)
+	                print "Joined {!s} and {!s}".format(nameA,nameB)
+	                break
+	        newSet = set([nameA,nameB])
+	        partition.append(newSet)
+	print
+	print partition
+	print     
+	                                           
+	# iterate through partition of clusters and merge as appropriate
+	#for p in partition:
+	#    pList = list(p)
+	#    mainClID = pList[0]
+	#    mainClust = allClusters[mainClID]
+	#    restClust = [allClusters[ID] for ID in pList[1:]]
+	#    # TODO: make ubercontig
+	#    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+	#    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+	#    fNewContig.write(">{!s}\n".format(newContigName))
+	#    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
+	#    fNewContig.write(seq)
+	#    for rCl in restClust:
+	#        co = allContigs[rCl.root]
+	#	_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co))
+	#	fNewContig.write(seq)
+	#	for m in co.goodMatches:
+	#	    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+	#	# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+	#    fNewContig.write("\n")
+	#    fNewContig.close()
+	#    newContigCount += 1
+	#    # add clusters
+	#    mainClust.addClusters(restClust, newContigName)
+	#    # remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
+	#    for rCl in restClust:
+	#        contigNames = clusters2Contigs[rCl.seed]
+	#        for con in contigNames:
+	#            clusters2Contigs[mainClust.seed].append(con)
+	#            contigs2Clusters[con] = mainClust
+	#        clusters2Contigs.pop(rCl.seed)
+	#        allClusters.pop(rCl)
+	#
+	## finally write root contigs to db index file
+	#for clID in allClusters:
+	#    clust = allClusters[clID]
+	#    root = clust.root
+	#    l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 	 
 	# *** compute correctness distributions
 	#rdata = rightDists[iterString]

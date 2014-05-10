@@ -32,7 +32,6 @@ class Cluster:
 	else:
 	    self.dict[parent] = [child]
 
-
     def addMatch(self, goodMatch):
 	name = goodMatch[0]
 	score = goodMatch[1]
@@ -70,9 +69,10 @@ class Cluster:
 	subs = [self.root]
 	for o in otherClusters:
 	    subs.append(o.root)
-	self.dict.update(o.dict)
+	    self.dict.update(o.dict)  # add in o's neighbors
 	self.root = ubercontig
 	self.dict[ubercontig] = subs
+	
 	
     # ***
     #def purityMax(self, names):
