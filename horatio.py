@@ -310,7 +310,6 @@ def main(argv):
 	    clustA = allClusters[sortedClusterIDs[a]]
 	    ratio, nameB = clustA.getMostCommonNeighbor()
 	    if ratio >= joinThreshold:
-	        print nameA, nameB, ratio
 	        indB = sortedClusterIDs.index(nameB)
 	        if indB > a:
 	            print "Joining {!s} and {!s}".format(nameA,nameB)
