@@ -313,10 +313,10 @@ def main(argv):
 	    if ratio >= joinThreshold:
 	        # search through partition to see if nameA or nameB are already there
 	        for p in partition:
+	            print "Joining {!s} and {!s}".format(nameA,nameB)
 	            if nameA in p or nameB in p:
 	                p.add(nameA)
 	                p.add(nameB)
-	                print "Joined {!s} and {!s}".format(nameA,nameB)
 	                break
 	        newSet = set([nameA,nameB])
 	        partition.append(newSet)
