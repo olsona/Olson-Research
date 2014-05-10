@@ -50,7 +50,10 @@ class Cluster:
 	    if l > max:
 	        max = l
 	        maxName = n
-	return float(max)/float(total), maxName
+	if total:
+	    return float(max)/float(total), maxName
+	else:
+	    return 0.0, '-' 
 		
     def getNeighborInfo(self):
 	total = 0
