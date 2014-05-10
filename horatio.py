@@ -311,9 +311,9 @@ def main(argv):
 	    ratio, nameB = clustA.getMostCommonNeighbor()
 	    print nameA, nameB, ratio
 	    if ratio >= joinThreshold:
+	        print "Joining {!s} and {!s}".format(nameA,nameB)
 	        # search through partition to see if nameA or nameB are already there
 	        for p in partition:
-	            print "Joining {!s} and {!s}".format(nameA,nameB)
 	            if nameA in p or nameB in p:
 	                p.add(nameA)
 	                p.add(nameB)
