@@ -320,8 +320,9 @@ def main(argv):
 	                break
 	        newSet = set([nameA,nameB])
 	        partition.append(newSet)
-	print
-	print partition
+	print "\nPartition:"
+	for p in partition:
+	    print "\t"+", ".join(c for c in p)
 	print     
 	                                           
 	# iterate through partition of clusters and merge as appropriate
