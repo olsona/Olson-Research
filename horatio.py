@@ -333,7 +333,7 @@ def main(argv):
 	    mainClust = allClusters[mainClID]
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    print "Main: {!s}".format(mainClust.seed)
-	    print "Rest: {!s}".format(", ".join(c.seed) for c in restClust)
+	    print "Rest: {!s}".format(", ".join([c.seed for c in restClust]))
 	    # make ubercontig
 	 #   newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 	 #   fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
