@@ -293,7 +293,7 @@ def main(argv):
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add split seeds to DB
 	for nSeed in newSeeds:
-	    print "{!s} is a new seed".format(nSeed)
+	    #print "{!s} is a new seed".format(nSeed)
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    allClusters[nSeed] = cl
@@ -308,7 +308,7 @@ def main(argv):
 	    clust = allClusters[clID]
 	    ratio, nameB = clust.getMostCommonNeighbor()
 	    if ratio >= joinThreshold:
-	        print "Edge between {!s} and {!s}".format(clID,nameB)
+	        #print "Edge between {!s} and {!s}".format(clID,nameB)
 	        if clID in graph:
 	            graph[clID].add(nameB)
 	        else:
@@ -317,9 +317,9 @@ def main(argv):
 	            graph[nameB].add(clID)
 	        else:
 	            graph[nameB] = set([clID])
-	print "Graph"           
-	pprint.pprint(graph)
-	print
+	#print "Graph"           
+	#pprint.pprint(graph)
+	#print
 	    
         # DFS on clusters to find all connected components
         partition = []
@@ -330,17 +330,17 @@ def main(argv):
                 if len(component) > 1:
                     partition.append(component)
                 metaVisited = metaVisited | component
-        print "Partition"
-        for p in partition:
-            print "\t*{!s}".format(", ".join(p))
-        print
+        #print "Partition"
+        #for p in partition:
+            #print "\t*{!s}".format(", ".join(p))
+        #print
         
-	print "Iterating:"                                           
+	#print "Iterating:"                                           
 	# iterate through partition of clusters and merge as appropriate
-	for p in partition:
+        for p in partition:
 	    pList = list(p)
 	    mainClID = pList[0]
-	    print mainClID
+	    #print mainClID
 	    mainClust = allClusters[mainClID]
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
@@ -372,9 +372,9 @@ def main(argv):
 	            contigs2Clusters[con] = mainClust
 	        clusters2Contigs.pop(rCl.seed)
 	        allClusters.pop(rCl.seed)
-	        print "Popped {!s}".format(rCl.seed)
+	        #print "Popped {!s}".format(rCl.seed)
 	
-	print ", ".join([c for c in sorted(allClusters.keys())])
+	#print ", ".join([c for c in sorted(allClusters.keys())])
 	
 	# finally write root contigs to db index file
 	for clID in allClusters:
