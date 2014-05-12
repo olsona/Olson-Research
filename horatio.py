@@ -56,7 +56,7 @@ def main(argv):
         nameFile = args.names
 
     # check inputs for validity
-    if scoreFunction == "raiphy" and (computePath is None or len(computePath) == 0):
+    if scoreFunction == "raiphy" and computePath is None:
 	print 'Missing argument: -p'
 	print hcon.usageString
 	sys.exit(2)
