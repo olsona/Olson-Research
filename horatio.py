@@ -381,7 +381,7 @@ def main(argv):
 	    clust = allClusters[clID]
 	    root = clust.root
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
-	    clust.closeList = {}
+	    clust.closeDict = {}
 	 
 	# *** compute correctness distributions
 	#rdata = rightDists[iterString]
