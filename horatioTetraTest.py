@@ -16,23 +16,27 @@ def main(argv):
         elif opt == "-o":
             out = arg	
     
-    jList = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
-    nList = [0.01,0.02,0.05,0.1,0.2]
+    #jList = [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9]
+    jList = [0.5]
+    #nList = [0.01,0.02,0.05,0.1,0.2]
+    nList = [0.02]
     tList = [[2,4,6,8,10,12,14,16,18,20,22],\
                 [2,4,6,8,10,14,18,22],\
                 [2,6,10,14,18,22],\
                 [4,8,12,16,20]]
-    sList = [0.4,0.45,0.5,0.55,0.6]
+    #sList = [0.4,0.45,0.5,0.55,0.6]
+    sList = [0.5]
     for j in jList:
         for n in nList:
             for t in tList:
                 for s in sList:
                     splitList = [s]*(len(t)-1)
-                    print "python horatio.py -i {!s} -o {!s} -c {!s} -s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
-                        out, t, n, j, splitList)
-                    #os.system("python horatio.py -i {!s} -o {!s} -c {!s}"\
-                    #    +"-s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
-                    #    out, t, n, j, splitList))
+                    #print "python horatio.py -i {!s} -o {!s} -c {!s} -s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
+                    #    out, t, n, j, splitList)
+                    myOut = "{!s}_n_{!s}_j_{!s}_c_{!s}_l_{!s}".format(out,n,j,t,splitList)
+                    os.system("python horatio.py -i {!s} -o {!s} -c {!s}"\
+                        +"-s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
+                        myOut, t, n, j, splitList))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
