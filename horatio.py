@@ -316,6 +316,9 @@ def main(argv):
 	            graph[nameB].add(clID)
 	        else:
 	            graph[nameB] = set([clID])
+	print "Graph"           
+	pprint.pprint(graph)
+	print
 	    
         # DFS on clusters to find all connected components
         partition = []
@@ -326,9 +329,11 @@ def main(argv):
                 if len(component) > 1:
                     partition.append(component)
                 metaVisited = metaVisited | component
+        print "Partition"
+        print partition
+        print
         
-        print ", ".join([c for c in sorted(allClusters.keys())])
-	                                           
+	print "Iterating:"                                           
 	# iterate through partition of clusters and merge as appropriate
 	for p in partition:
 	    pList = list(p)
