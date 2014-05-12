@@ -311,11 +311,11 @@ def main(argv):
 	        if clID in graph:
 	            graph[clID].add(nameB)
 	        else:
-	           graph[clID] = set(nameB)
+	           graph[clID] = set([nameB])
 	        if nameB in graph:
 	            graph[nameB].add(clID)
 	        else:
-	            graph[nameB] = set(clID)
+	            graph[nameB] = set([clID])
 	            
 	print "Graph:"            
 	pprint.pprint(graph)
