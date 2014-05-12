@@ -39,7 +39,7 @@ class Cluster:
 	    self.closeDict[name].append(score)
 	else:
 	    self.closeDict[name] = [score]
-	print "{!s} neighbors {!s}".format(self.seed, name)
+	#print "{!s} neighbors {!s}".format(self.seed, name)
 			
     def getMostCommonNeighbor(self):
 	total = 0
@@ -72,7 +72,7 @@ class Cluster:
     def addClusters(self, otherClusters, ubercontig):
 	subs = [self.root]
 	for o in otherClusters:
-	    print "Adding {!s} to {!s}".format(o.seed, self.seed)
+	    #print "Adding {!s} to {!s}".format(o.seed, self.seed)
 	    subs.append(o.root)
 	    self.dict.update(o.dict)  # add in o's neighbors
 	self.root = ubercontig
