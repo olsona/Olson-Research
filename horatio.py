@@ -42,7 +42,7 @@ def main(argv):
     parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float)
     parser.add_argument("-j","--join", help="Joining threshold",type=float)
     parser.add_argument("-l","--split", help="Split threshold")
-    parser.add_argument("-n","--names", help="Name file")
+    parser.add_argument("-f","--names", help="Name file")
     args = parser.parse_args()
     inputFile = args.input
     outputFile = args.output
