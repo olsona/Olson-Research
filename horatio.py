@@ -293,7 +293,7 @@ def main(argv):
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add split seeds to DB
 	for nSeed in newSeeds:
-	    print nSeed
+	    #print nSeed
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    allClusters[nSeed] = cl
@@ -335,6 +335,9 @@ def main(argv):
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+	    newContig = Contig[newContigName]
+	    contigs2Clusters[newContigName] = mainClust
+	    clusters2Contigs[mainClust].append(newContig)
 	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
 	    fNewContig.write(">{!s}\n".format(newContigName))
 	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
