@@ -6,6 +6,7 @@ import horatioConstants as hcon
 import horatioUtils as hutil
 import horatioFunctions as hfun
 from horatioClasses import Cluster, Contig
+import argparse
 #import cPickle as pickle
 
 # imports necessary for debugging and correctness
@@ -32,39 +33,59 @@ def main(argv):
     stArg = ''	
     #matchLevel = 'genus' #***
     # get inputs
-    try:
-	opts, args = getopt.getopt(argv,"hi:o:c:p:s:f:j:n:l:",["ifile=","ofile=",\
-	   "cut=","path=","score=","namefile=","jointhreshold=",\
-	   "neighborthreshold=","splitthreshold="])
-    except getopt.GetoptError:
-	print hcon.usageString
-	sys.exit(2)
-    for opt, arg in opts:
-        print opt, arg
-	if opt == '-h': #user needs help
-	    print hcon.usageString
-	    print hcon.bigUsageString
-	    sys.exit()
-        elif opt in ("-i", "--ifile"):     # input file
-	    inputFile = arg
-	elif opt in ("-o", "--ofile"):     # output file
-	    outputFile = arg
-	elif opt in ("-c", "--cut"):       # cut schedule
-	    cutSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
-	elif opt in ("-s", "--score"):     # score function
-	    scoreFunction = arg.lower()
-	elif opt in ("-p", "--path"):      # compute path (only used for RAIphy scoring)
-	    computePath = arg
-	elif opt in ("-j", "--joiningthreshold"):  # joinThreshold, for cluster joining
-	    jtArg = arg
-	elif opt in ("-n", "--neighborthreshold"): # neighborThreshold, for counting a cluster as a neighbor
-	    ntArg = arg
-	elif opt in ("-l", "--splitthreshold:"):   # splitThreshold, for starting a new cluster
-	    stArg = arg
-	# ***
-	elif opt in ("-f", "--namefile"):  # *** FOR CORRECTNESS TESTING ONLY
-	   nameFile = arg
-	# ***
+    parser = argparse.ArgumentParser(description="Read in arguments for horatio.py")
+    parser.add_argument("-i","--input", help="Input .fasta file")
+    parser.add_argument("-o","--output", help="Prefix for all output files")
+    parser.add_argument("-c","--cut", help="Cut schedule")
+    parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'])
+    parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
+    parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float)
+    parser.add_argument("-j","--join", help="Joining threshold",type=float)
+    parser.add_argument("-s","--split", help="Split threshold")
+    parser.add_argument("-n","--names", help="Name file")
+    args = parser.parse_args()
+    inputFile = args.input
+    outputFile = args.output
+    cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
+    if args.score:
+        scoreFunction = args.score
+    else:
+        scoreFunction = 'raiphy'
+    computePath = args.path
+    
+ #   try:
+	#opts, args = getopt.getopt(argv,"hi:o:c:p:s:f:j:n:l:",["ifile=","ofile=",\
+	#   "cut=","path=","score=","namefile=","jointhreshold=",\
+	#   "neighborthreshold=","splitthreshold="])
+ #   except getopt.GetoptError:
+	#print hcon.usageString
+	#sys.exit(2)
+ #   for opt, arg in opts:
+ #       print opt, arg
+	#if opt == '-h': #user needs help
+	#    print hcon.usageString
+	#    print hcon.bigUsageString
+	#    sys.exit()
+ #       elif opt in ("-i", "--ifile"):     # input file
+	#    inputFile = arg
+	#elif opt in ("-o", "--ofile"):     # output file
+	#    outputFile = arg
+	#elif opt in ("-c", "--cut"):       # cut schedule
+	#    cutSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
+	#elif opt in ("-s", "--score"):     # score function
+	#    scoreFunction = arg.lower()
+	#elif opt in ("-p", "--path"):      # compute path (only used for RAIphy scoring)
+	#    computePath = arg
+	#elif opt in ("-j", "--joiningthreshold"):  # joinThreshold, for cluster joining
+	#    jtArg = arg
+	#elif opt in ("-n", "--neighborthreshold"): # neighborThreshold, for counting a cluster as a neighbor
+	#    ntArg = arg
+	#elif opt in ("-l", "--splitthreshold:"):   # splitThreshold, for starting a new cluster
+	#    stArg = arg
+	## ***
+	#elif opt in ("-f", "--namefile"):  # *** FOR CORRECTNESS TESTING ONLY
+	#   nameFile = arg
+	## ***
 
     # check inputs for validity
     if len(inputFile) == 0: # no input file provided
