@@ -293,7 +293,7 @@ def main(argv):
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add split seeds to DB
 	for nSeed in newSeeds:
-	    #print nSeed
+	    print nSeed
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    allClusters[nSeed] = cl
