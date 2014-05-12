@@ -308,6 +308,7 @@ def main(argv):
 	    clust = allClusters[clID]
 	    ratio, nameB = clust.getMostCommonNeighbor()
 	    if ratio >= joinThreshold:
+	        print "Edge between {!s} and {!s}".format(clID,nameB)
 	        if clID in graph:
 	            graph[clID].add(nameB)
 	        else:
@@ -330,7 +331,8 @@ def main(argv):
                     partition.append(component)
                 metaVisited = metaVisited | component
         print "Partition"
-        print partition
+        for p in partition:
+            print "\t*{!s}".format(", ".join(p))
         print
         
 	print "Iterating:"                                           
