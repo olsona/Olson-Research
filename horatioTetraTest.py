@@ -24,11 +24,11 @@ def main(argv):
                 [4,8,12,16,20]]
     sList = [0.4,0.45,0.5,0.55,0.6]
     for j in jList:
-        print j  
         for n in nList:
             for t in tList:
                 for s in sList:
                     splitList = [s]*len(t)
+                    print j, n, t, splitList
                     #print "python horatio.py -i {!s} -o {!s} -c {!s}"\
                     #    +"-s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
                     #    out, t, n, j, splitList)
