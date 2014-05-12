@@ -326,6 +326,8 @@ def main(argv):
                 if len(component) > 1:
                     partition.append(component)
                 metaVisited = metaVisited | component
+        
+        print ", ".join([c for c in sorted(allClusters.keys())])
 	                                           
 	# iterate through partition of clusters and merge as appropriate
 	for p in partition:
