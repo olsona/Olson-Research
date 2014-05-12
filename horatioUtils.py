@@ -114,6 +114,16 @@ def getMatchesWithinPercentage(inline, pct):
 	    break
     return out
 	
+
+def dfs(graph, start, visited=None):
+    # http://eddmann.com/posts/depth-first-search-and-breadth-first-search-in-python/
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    for next in graph[start] - visited:
+        dfs(graph, next, visited)
+    return visited     		
+	
 	
 def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
     import string

@@ -12,7 +12,7 @@ from horatioClasses import Cluster, Contig
 import matplotlib as mpl
 mpl.use('Agg')
 import horatioCorrectness as hcorr
-#import pprint
+import pprint
 
 def main(argv):
     #---PREPROCESSING---#
@@ -303,61 +303,71 @@ def main(argv):
 	    
 	# go through clusters again, evaluate what clusters should be joined
 	# identify edges (make simplifying assumption that if A is a neighbor of B, then B is a neighbor of A)
-	partition = []
-	sortedClusterIDs = sorted(allClusters.keys())
-	for a in range(len(sortedClusterIDs)):
-	    nameA = sortedClusterIDs[a]
-	    clustA = allClusters[sortedClusterIDs[a]]
-	    ratio, nameB = clustA.getMostCommonNeighbor()
+	graph = {}
+	for clID in allClusters:
+	    clust = allClusters[clID]
+	    ratio, nameB = clust.getMostCommonNeighbor()
 	    if ratio >= joinThreshold:
-	        indB = sortedClusterIDs.index(nameB)
-	        if indB > a:
-	            print "Joining {!s} and {!s}".format(nameA,nameB)
-	            # search through partition to see if nameA or nameB are already there
-	            for p in partition:
-	                if nameA in p or nameB in p:
-	                    p.add(nameA)
-	                    p.add(nameB)
-	                    break
-	            newSet = set([nameA,nameB])
-	            partition.append(newSet)
-	print "\nPartition:"
-	for p in partition:
-	    print "\t* "+", ".join(c for c in p)
-	print     
+	        if clID in graph:
+	            graph[clID].add(nameB)
+	        else:
+	           graph[clID] = set(nameB)
+	        if nameB in graph:
+	            graph[nameB].add(clID)
+	        else:
+	            graph[nameB] = set(clID)
+	            
+	print "Graph:"            
+	pprint.pprint(graph)
+	    
+        # DFS on clusters 
+        partition = []
+        metaVisited = set()
+        for root in graph:
+            if root not in metaVisited:
+                component = hutil.dfs(graph,root)
+                if len(component) > 1:
+                    partition.append(component)
+                metaVisited = metaVisited | component
+        
+        print "Partition:"
+        for p in partition:
+            print "\t*{!s}".format(", ".join(p))
+        print
+        
 	                                           
 	# iterate through partition of clusters and merge as appropriate
-	for p in partition:
-	    pList = list(p)
-	    mainClID = pList[0]
-	    mainClust = allClusters[mainClID]
-	    restClust = [allClusters[ID] for ID in pList[1:]]
-	    # make ubercontig
-	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
-	    fNewContig.write(">{!s}\n".format(newContigName))
-	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
-	    fNewContig.write(seq)
-	    for rCl in restClust:
-	        co = allContigs[rCl.root]
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
-		fNewContig.write(seq)
-		for m in co.goodMatches:
-		    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
-		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
-	    fNewContig.write("\n")
-	    fNewContig.close()
-	    newContigCount += 1
-	    # add clusters
-	    mainClust.addClusters(restClust, newContigName)
-	    # remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
-	    for rCl in restClust:
-	        contigNames = clusters2Contigs[rCl.seed]
-	        for con in contigNames:
-	            clusters2Contigs[mainClust.seed].append(con)
-	            contigs2Clusters[con] = mainClust
-	        clusters2Contigs.pop(rCl.seed)
-	        allClusters.pop(rCl.seed)
+	#for p in partition:
+	#    pList = list(p)
+	#    mainClID = pList[0]
+	#    mainClust = allClusters[mainClID]
+	#    restClust = [allClusters[ID] for ID in pList[1:]]
+	#    # make ubercontig
+	#    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+	#    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+	#    fNewContig.write(">{!s}\n".format(newContigName))
+	#    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
+	#    fNewContig.write(seq)
+	#    for rCl in restClust:
+	#        co = allContigs[rCl.root]
+	#	_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
+	#	fNewContig.write(seq)
+	#	for m in co.goodMatches:
+	#	    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+	#	# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+	#    fNewContig.write("\n")
+	#    fNewContig.close()
+	#    newContigCount += 1
+	#    # add clusters
+	#    mainClust.addClusters(restClust, newContigName)
+	#    # remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
+	#    for rCl in restClust:
+	#        contigNames = clusters2Contigs[rCl.seed]
+	#        for con in contigNames:
+	#            clusters2Contigs[mainClust.seed].append(con)
+	#            contigs2Clusters[con] = mainClust
+	#        clusters2Contigs.pop(rCl.seed)
+	#        allClusters.pop(rCl.seed)
 	
 	# finally write root contigs to db index file
 	for clID in allClusters:
