@@ -34,7 +34,7 @@ def main(argv):
     #matchLevel = 'genus' #***
     # get inputs
     parser = argparse.ArgumentParser(description="Read in arguments for horatio.py")
-    parser.add_argument("-i","--input", help="Input .fasta file", required=True)
+    parser.add_argument("-i","--input", help="Input .fasta file", required=True, metavar="input")
     parser.add_argument("-o","--output", help="Prefix for all output files", required=True)
     parser.add_argument("-c","--cut", help="Cut schedule",default='[2,6,10,14,18,22]')
     parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='raiphy')
