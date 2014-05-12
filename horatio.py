@@ -335,7 +335,7 @@ def main(argv):
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-	    newContig = Contig[newContigName]
+	    newContig = Contig(newContigName)
 	    contigs2Clusters[newContigName] = mainClust
 	    clusters2Contigs[mainClust].append(newContig)
 	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
