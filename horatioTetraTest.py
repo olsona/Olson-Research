@@ -32,7 +32,7 @@ def main(argv):
             for t in tList:
                 for s in sList:
                     splitList = [s]*(len(t)-1)
-                    myOut = "{!s}_n_{!s}_j_{!s}_c_{!s}_l_{!s}".format(out,n,j,t,splitList)
+                    myOut = "{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,n,j,t,splitList)
                     print "python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
                         myOut, n, j, t, splitList)
                     os.system("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
