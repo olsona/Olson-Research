@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 # imports necessary for functioning
-import sys, getopt, string, re, os
+import sys, string, re, os
 import horatioConstants as hcon
 import horatioUtils as hutil
 import horatioFunctions as hfun
@@ -25,114 +25,44 @@ def main(argv):
     scoreFunction = ''
     nameFile = ''
     names = []
-    jtArg = ''
     joinThreshold = 0.5
-    ntArg = ''
     neighborThreshold = 0.1
     splitThreshold = []
-    stArg = ''	
     #matchLevel = 'genus' #***
     # get inputs
     parser = argparse.ArgumentParser(description="Read in arguments for horatio.py")
-    parser.add_argument("-i","--input", help="Input .fasta file", required=True, metavar="INPUT")
-    parser.add_argument("-o","--output", help="Prefix for all output files", required=True, metavar="OUTPUT")
+    parser.add_argument("-i","--input", help="Input .fasta file", required=True)
+    parser.add_argument("-o","--output", help="Prefix for all output files", required=True)
     parser.add_argument("-c","--cut", help="Cut schedule", required=True)
     parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='raiphy')
     parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
     parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
     parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
-    parser.add_argument("-l","--split", help="Split threshold", required=True)
+    parser.add_argument("-l","--split", help="Split threshold")
     parser.add_argument("-f","--names", help="Name file")
     args = parser.parse_args()
     inputFile = args.input
     outputFile = args.output
-    scoringFunction = args.score
+    scoreFunction = args.score
     cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
-    splitThreshold = [float(n) for n in args.cut.lstrip()[1:-1].split(',')]
+    if args.split:
+        splitThreshold = [float(n) for n in args.split.lstrip()[1:-1].split(',')]
+    else:
+        splitThreshold = [-1000.0]*(len(cutSchedule)-1)
     computePath = args.path
-    print inputFile
-    print outputFile
-    print scoringFunction
-    print cutSchedule
-    print splitThreshold
-    print computePath
-    
-    exit(0)
-    
- #   try:
-	#opts, args = getopt.getopt(argv,"hi:o:c:p:s:f:j:n:l:",["ifile=","ofile=",\
-	#   "cut=","path=","score=","namefile=","jointhreshold=",\
-	#   "neighborthreshold=","splitthreshold="])
- #   except getopt.GetoptError:
-	#print hcon.usageString
-	#sys.exit(2)
- #   for opt, arg in opts:
- #       print opt, arg
-	#if opt == '-h': #user needs help
-	#    print hcon.usageString
-	#    print hcon.bigUsageString
-	#    sys.exit()
- #       elif opt in ("-i", "--ifile"):     # input file
-	#    inputFile = arg
-	#elif opt in ("-o", "--ofile"):     # output file
-	#    outputFile = arg
-	#elif opt in ("-c", "--cut"):       # cut schedule
-	#    cutSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
-	#elif opt in ("-s", "--score"):     # score function
-	#    scoreFunction = arg.lower()
-	#elif opt in ("-p", "--path"):      # compute path (only used for RAIphy scoring)
-	#    computePath = arg
-	#elif opt in ("-j", "--joiningthreshold"):  # joinThreshold, for cluster joining
-	#    jtArg = arg
-	#elif opt in ("-n", "--neighborthreshold"): # neighborThreshold, for counting a cluster as a neighbor
-	#    ntArg = arg
-	#elif opt in ("-l", "--splitthreshold:"):   # splitThreshold, for starting a new cluster
-	#    stArg = arg
-	## ***
-	#elif opt in ("-f", "--namefile"):  # *** FOR CORRECTNESS TESTING ONLY
-	#   nameFile = arg
-	## ***
+    joinThreshold = args.join
+    neighborThreshold = args.neighbor
+    if args.names:
+        nameFile = args.names
 
     # check inputs for validity
-    if len(inputFile) == 0: # no input file provided
-        print 'Missing argument: -i'
-        print hcon.usageString
-        sys.exit(2)
-    elif len(outputFile) == 0:
-	print 'Missing argument: -o'
-	print hcon.usageString
-	sys.exit(2)
-    if scoreFunction not in ["raiphy","tetra","tacoa"]:
-	scoreFunction = "raiphy"
-    elif len(computePath) == 0 and scoreFunction == "raiphy":
+    if len(computePath) == 0 and scoreFunction == "raiphy":
 	print 'Missing argument: -p'
 	print hcon.usageString
 	sys.exit(2)
-    if len(cutSchedule) == 0:
-	cutSchedule = hcon.defaultSchedule
-    if jtArg:
-        try:
-            joinThreshold = float(jtArg)
-        except ValueError:
-            print "Cannot parse {!s} as a float.".format(jtArg)
-            sys.exit(2)
-    if ntArg:
-        try:
-            neighborThreshold = float(ntArg)
-        except ValueError:
-            print "Cannot parse {!s} as a float.".format(ntArg)
-            sys.exit(2)
-    if stArg:
-        try:
-            splitThreshold = [float(n) for n in arg.lstrip()[1:-1].split(',')]
-            if len(splitThreshold) != len(cutSchedule)-1:
-                print "Incorrect number of thresholds."
-                sys.exit(2)
-        except ValueError, IOError:
-            print "Cannot parse {!s} as a list of floats.".format(stArg)
-            sys.exit(2)
-    else:
-        splitThreshold = [-1000.0] * (len(cutSchedule)-1)
+    if len(splitThreshold) != len(cutSchedule) -1:
+        print "Incorrect number of split thresholds."
+        sys.exit(2)
     # ***
     if nameFile:
         try:
@@ -148,8 +78,6 @@ def main(argv):
             print "Unexpected error:", sys.exc_info()[0]
             sys.exit(2)
     # ***
-
-    print scoreFunction
 
     # properly format input metagenome file
     f = open(inputFile, 'r')
@@ -414,13 +342,13 @@ def main(argv):
 	    clust.closeDict = {}
 	 
 	# *** compute correctness distributions
-	#rdata = rightDists[iterString]
-	#wdata = wrongDists[iterString]
-	#if rdata:
-	#    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
-	#if wdata:
-	#    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
-	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+	rdata = rightDists[iterString]
+	wdata = wrongDists[iterString]
+	if rdata:
+	    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
+	if wdata:
+	    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
+	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
         print iterString + " done"
