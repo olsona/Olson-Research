@@ -12,7 +12,7 @@ from horatioClasses import Cluster, Contig
 import matplotlib as mpl
 mpl.use('Agg')
 import horatioCorrectness as hcorr
-import pprint
+#import pprint
 
 def main(argv):
     #---PREPROCESSING---#
