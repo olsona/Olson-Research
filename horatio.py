@@ -34,23 +34,19 @@ def main(argv):
     #matchLevel = 'genus' #***
     # get inputs
     parser = argparse.ArgumentParser(description="Read in arguments for horatio.py")
-    parser.add_argument("-i","--input", help="Input .fasta file")
-    parser.add_argument("-o","--output", help="Prefix for all output files")
-    parser.add_argument("-c","--cut", help="Cut schedule")
-    parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'])
+    parser.add_argument("-i","--input", help="Input .fasta file", required=True)
+    parser.add_argument("-o","--output", help="Prefix for all output files", required=True)
+    parser.add_argument("-c","--cut", help="Cut schedule",default='[2,6,10,14,18,22]')
+    parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='raiphy')
     parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
-    parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float)
-    parser.add_argument("-j","--join", help="Joining threshold",type=float)
-    parser.add_argument("-l","--split", help="Split threshold")
+    parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
+    parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
+    parser.add_argument("-l","--split", help="Split threshold", required=True)
     parser.add_argument("-f","--names", help="Name file")
     args = parser.parse_args()
     inputFile = args.input
     outputFile = args.output
     cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
-    if args.score:
-        scoreFunction = args.score
-    else:
-        scoreFunction = 'raiphy'
     computePath = args.path
     
  #   try:
