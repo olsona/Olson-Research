@@ -39,6 +39,7 @@ class Cluster:
 	    self.closeDict[name].append(score)
 	else:
 	    self.closeDict[name] = [score]
+	print "{!s} neighbors {!s}".format(self.seed, name)
 			
     def getMostCommonNeighbor(self):
 	total = 0
