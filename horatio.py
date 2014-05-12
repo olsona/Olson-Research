@@ -36,7 +36,7 @@ def main(argv):
     parser = argparse.ArgumentParser(description="Read in arguments for horatio.py")
     parser.add_argument("-i","--input", help="Input .fasta file", required=True, metavar="INPUT")
     parser.add_argument("-o","--output", help="Prefix for all output files", required=True, metavar="OUTPUT")
-    parser.add_argument("-c","--cut", help="Cut schedule",default='[2,6,10,14,18,22]')
+    parser.add_argument("-c","--cut", help="Cut schedule", required=True)
     parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='raiphy')
     parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
     parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
@@ -48,13 +48,14 @@ def main(argv):
     outputFile = args.output
     scoringFunction = args.score
     cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
+    splitThreshold = [float(n) for n in args.cut.lstrip()[1:-1].split(',')]
     computePath = args.path
     print inputFile
     print outputFile
     print scoringFunction
     print cutSchedule
+    print splitThreshold
     print computePath
-    print
     
     exit(0)
     
