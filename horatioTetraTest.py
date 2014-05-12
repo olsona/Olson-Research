@@ -31,9 +31,12 @@ def main(argv):
             for t in tList:
                 for s in sList:
                     splitList = [s]*len(t)
-                    os.system("python horatio.py -i {!s}/{!s} -o {!s} -c {!s}"\
+                    print "python horatio.py -i {!s}/{!s} -o {!s} -c {!s}"\
                         +"-s tetra -n {!s} -j {!s} -l {!s}".format(DIR,metagenome,\
-                        out, t, n, j, splitList))
+                        out, t, n, j, splitList)
+                    #os.system("python horatio.py -i {!s}/{!s} -o {!s} -c {!s}"\
+                    #    +"-s tetra -n {!s} -j {!s} -l {!s}".format(DIR,metagenome,\
+                    #    out, t, n, j, splitList))
 
 if __name__ == "__main__":
     main(sys.argv[1:])
