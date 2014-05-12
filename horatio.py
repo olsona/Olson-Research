@@ -52,7 +52,6 @@ def main(argv):
 	    cutSchedule = [int(n) for n in arg.lstrip()[1:-1].split(',')]
 	elif opt in ("-s", "--score"):     # score function
 	    scoreFunction = arg.lower()
-	    print scoreFunction
 	elif opt in ("-p", "--path"):      # compute path (only used for RAIphy scoring)
 	    computePath = arg
 	elif opt in ("-j", "--joiningthreshold"):  # joinThreshold, for cluster joining
@@ -121,6 +120,8 @@ def main(argv):
             print "Unexpected error:", sys.exc_info()[0]
             sys.exit(2)
     # ***
+
+    print scoreFunction
 
     # properly format input metagenome file
     f = open(inputFile, 'r')
