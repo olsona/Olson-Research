@@ -337,7 +337,7 @@ def main(argv):
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 	    newContig = Contig(newContigName)
 	    contigs2Clusters[newContigName] = mainClust
-	    clusters2Contigs[mainClust].append(newContig)
+	    clusters2Contigs[mainClID].append(newContig)
 	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
 	    fNewContig.write(">{!s}\n".format(newContigName))
 	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
