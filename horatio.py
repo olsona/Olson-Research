@@ -365,6 +365,9 @@ def main(argv):
 	            contigs2Clusters[con] = mainClust
 	        clusters2Contigs.pop(rCl.seed)
 	        allClusters.pop(rCl.seed)
+	        print "Popped {!s}".format(rCl.seed)
+	
+	print ", ".join([c for c in sorted(allClusters.keys())])
 	
 	# finally write root contigs to db index file
 	for clID in allClusters:
