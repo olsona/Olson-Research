@@ -3,19 +3,16 @@
 import sys, os, getopt
 
 def main(argv):
-    DIR = ''
-    metagenome = ''
+    myfile = ''
     out = ''
     try:
-	opts, args = getopt.getopt(argv,"d:m:o:")
+	opts, args = getopt.getopt(argv,"f:o:")
     except getopt.GetoptError:
 	sys.exit(2)
         
     for opt, arg in opts:
-        if opt == "-d":
-            DIR = arg  
-        elif opt == "-m":
-            metagenome = arg 	
+        if opt == "-f":	
+            myfile = arg
         elif opt == "-o":
             out = arg	
     
@@ -27,15 +24,16 @@ def main(argv):
                 [4,8,12,16,20]]
     sList = [0.4,0.45,0.5,0.55,0.6]
     for j in jList:
+        print j  
         for n in nList:
             for t in tList:
                 for s in sList:
                     splitList = [s]*len(t)
-                    print "python horatio.py -i {!s}/{!s} -o {!s} -c {!s}"\
-                        +"-s tetra -n {!s} -j {!s} -l {!s}".format(DIR,metagenome,\
-                        out, t, n, j, splitList)
-                    #os.system("python horatio.py -i {!s}/{!s} -o {!s} -c {!s}"\
-                    #    +"-s tetra -n {!s} -j {!s} -l {!s}".format(DIR,metagenome,\
+                    #print "python horatio.py -i {!s} -o {!s} -c {!s}"\
+                    #    +"-s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
+                    #    out, t, n, j, splitList)
+                    #os.system("python horatio.py -i {!s} -o {!s} -c {!s}"\
+                    #    +"-s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
                     #    out, t, n, j, splitList))
 
 if __name__ == "__main__":
