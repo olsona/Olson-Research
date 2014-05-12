@@ -41,7 +41,7 @@ def main(argv):
     parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
     parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float)
     parser.add_argument("-j","--join", help="Joining threshold",type=float)
-    parser.add_argument("-s","--split", help="Split threshold")
+    parser.add_argument("-l","--split", help="Split threshold")
     parser.add_argument("-n","--names", help="Name file")
     args = parser.parse_args()
     inputFile = args.input
