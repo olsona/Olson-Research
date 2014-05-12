@@ -333,6 +333,7 @@ def main(argv):
 	for p in partition:
 	    pList = list(p)
 	    mainClID = pList[0]
+	    print mainClID
 	    mainClust = allClusters[mainClID]
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
