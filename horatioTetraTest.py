@@ -31,10 +31,10 @@ def main(argv):
             for t in tList:
                 for s in sList:
                     splitList = [s]*(len(t)-1)
-                    #print "python horatio.py -i {!s} -o {!s} -c {!s} -s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
-                    #    out, t, n, j, splitList)
+                    print "python horatio.py -i {!s} -o {!s} -c {!s} -s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
+                        out, t, n, j, splitList)
                     myOut = "{!s}_n_{!s}_j_{!s}_c_{!s}_l_{!s}".format(out,n,j,t,splitList)
-                    os.system("python horatio.py -i {!s} -o {!s} -c {!s} -s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
+                    os.system("time python horatio.py -i {!s} -o {!s} -c {!s} -s tetra -n {!s} -j {!s} -l {!s}".format(myfile,\
                         myOut, t, n, j, splitList))
 
 if __name__ == "__main__":
