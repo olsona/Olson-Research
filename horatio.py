@@ -316,11 +316,8 @@ def main(argv):
 	            graph[nameB].add(clID)
 	        else:
 	            graph[nameB] = set([clID])
-	            
-	print "Graph:"            
-	pprint.pprint(graph)
 	    
-        # DFS on clusters 
+        # DFS on clusters to find all connected components
         partition = []
         metaVisited = set()
         for root in graph:
@@ -329,45 +326,39 @@ def main(argv):
                 if len(component) > 1:
                     partition.append(component)
                 metaVisited = metaVisited | component
-        
-        print "Partition:"
-        for p in partition:
-            print "\t*{!s}".format(", ".join(p))
-        print
-        
 	                                           
 	# iterate through partition of clusters and merge as appropriate
-	#for p in partition:
-	#    pList = list(p)
-	#    mainClID = pList[0]
-	#    mainClust = allClusters[mainClID]
-	#    restClust = [allClusters[ID] for ID in pList[1:]]
-	#    # make ubercontig
-	#    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-	#    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
-	#    fNewContig.write(">{!s}\n".format(newContigName))
-	#    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
-	#    fNewContig.write(seq)
-	#    for rCl in restClust:
-	#        co = allContigs[rCl.root]
-	#	_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
-	#	fNewContig.write(seq)
-	#	for m in co.goodMatches:
-	#	    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
-	#	# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
-	#    fNewContig.write("\n")
-	#    fNewContig.close()
-	#    newContigCount += 1
-	#    # add clusters
-	#    mainClust.addClusters(restClust, newContigName)
-	#    # remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
-	#    for rCl in restClust:
-	#        contigNames = clusters2Contigs[rCl.seed]
-	#        for con in contigNames:
-	#            clusters2Contigs[mainClust.seed].append(con)
-	#            contigs2Clusters[con] = mainClust
-	#        clusters2Contigs.pop(rCl.seed)
-	#        allClusters.pop(rCl.seed)
+	for p in partition:
+	    pList = list(p)
+	    mainClID = pList[0]
+	    mainClust = allClusters[mainClID]
+	    restClust = [allClusters[ID] for ID in pList[1:]]
+	    # make ubercontig
+	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+	    fNewContig.write(">{!s}\n".format(newContigName))
+	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
+	    fNewContig.write(seq)
+	    for rCl in restClust:
+	        co = allContigs[rCl.root]
+		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
+		fNewContig.write(seq)
+		for m in co.goodMatches:
+		    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+	    fNewContig.write("\n")
+	    fNewContig.close()
+	    newContigCount += 1
+	    # add clusters
+	    mainClust.addClusters(restClust, newContigName)
+	    # remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
+	    for rCl in restClust:
+	        contigNames = clusters2Contigs[rCl.seed]
+	        for con in contigNames:
+	            clusters2Contigs[mainClust.seed].append(con)
+	            contigs2Clusters[con] = mainClust
+	        clusters2Contigs.pop(rCl.seed)
+	        allClusters.pop(rCl.seed)
 	
 	# finally write root contigs to db index file
 	for clID in allClusters:
