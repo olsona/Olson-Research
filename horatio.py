@@ -351,7 +351,7 @@ def main(argv):
 	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
-        print iterString + " done"
+        #print iterString + " done"
 	l2.close()
 			
     #---POSTPROCESSING---#
