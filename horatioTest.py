@@ -44,7 +44,7 @@ def main(argv):
                         os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
                             format(myfile, myOut, score, n, j, tStr, sStr))
                         end = time.time()
-                        print end-start
+                        print "{!02.2f} minutes".format((end-start)/60.0)
 
     fOut.close()            
 
