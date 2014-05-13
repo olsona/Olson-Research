@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import sys, os, getopt
+import sys, os, getopt, time
 
 def main(argv):
     myfile = ''
@@ -40,8 +40,11 @@ def main(argv):
                         myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,score,n,j,t,s)
                         print "-s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
                             format(score, n, j, tStr, sStr)
+                        start = time.time()
                         os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
                             format(myfile, myOut, score, n, j, tStr, sStr))
+                        end = time.time()
+                        print end-start
 
     fOut.close()            
 
