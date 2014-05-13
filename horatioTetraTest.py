@@ -40,7 +40,7 @@ def main(argv):
                     myOut = "{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,n,j,tStr,s)
                     print "python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
                         myOut, n, j, tStr, sStr)
-                    os.system("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
+                    os.system("python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
                         myOut, n, j, tStr, sStr))
 
     fOut.close()            
