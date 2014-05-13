@@ -38,8 +38,8 @@ def main(argv):
                         tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
                         sStr = "["+",".join([str(si) for si in splitList])+"]"
                         myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,score,n,j,t,s)
-                        print "python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
-                            format(myfile,myOut, score, n, j, tStr, sStr)
+                        print "-s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
+                            format(score, n, j, tStr, sStr)
                         os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
                             format(myfile, myOut, score, n, j, tStr, sStr))
 
