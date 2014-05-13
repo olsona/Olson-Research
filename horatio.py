@@ -251,7 +251,7 @@ def main(argv):
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	# add split seeds to DB
 	for nSeed in newSeeds:
-	    #print "{!s} is a new seed".format(nSeed)
+	    print "{!s} is a new seed".format(nSeed)
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    allClusters[nSeed] = cl
@@ -302,6 +302,7 @@ def main(argv):
 	    mainClust = allClusters[mainClID]
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
+	    print "Merged contig: {!s}".format(newContigName)
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 	    newContig = Contig(newContigName)
 	    contigs2Clusters[newContigName] = mainClust
@@ -360,7 +361,7 @@ def main(argv):
     for c in allClusters:
 	#print "-----"
 	r = allClusters[c].root
-	l = allClusters[c].getLeaves()
+	l = allClusters[c].getAll()
 	cl = [li for li in l]
 	cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
