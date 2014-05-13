@@ -35,7 +35,7 @@ def main(argv):
             for t in tDict:
                 for s in sList:
                     splitList = [s]*(len(t)-1)
-                    tStr = "["+",".join([str(ti) for ti in t])+"]"
+                    tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
                     sStr = "["+",".join([str(si) for si in splitList])+"]"
                     myOut = "{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,n,j,t,s)
                     print "python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
