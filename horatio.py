@@ -342,13 +342,13 @@ def main(argv):
 	    clust.closeDict = {}
 	 
 	# *** compute correctness distributions
-	rdata = rightDists[iterString]
-	wdata = wrongDists[iterString]
-	if rdata:
-	    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
-	if wdata:
-	    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
-	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+	#rdata = rightDists[iterString]
+	#wdata = wrongDists[iterString]
+	#if rdata:
+	#    print "Right ({!s}): {:03.2f}-{:03.2f}".format(len(rdata),min(rdata),max(rdata))
+	#if wdata:
+	#    print "Wrong ({!s}): {:03.2f}-{:03.2f}".format(len(wdata),min(wdata),max(wdata))
+	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
         print iterString + " done"
