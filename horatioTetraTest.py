@@ -34,7 +34,7 @@ def main(argv):
         for n in nList:
             for t in tDict:
                 for s in sList:
-                    splitList = [s]*(len(t)-1)
+                    splitList = [s]*(len(tDict[t])-1)
                     tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
                     sStr = "["+",".join([str(si) for si in splitList])+"]"
                     myOut = "{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,n,j,t,s)
