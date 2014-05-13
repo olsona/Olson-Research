@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
-import sys, getopt
-import subprocess
+import sys, os, getopt
 
 def main(argv):
     myfile = ''
@@ -39,13 +38,11 @@ def main(argv):
                     tStr = "["+",".join([str(ti) for ti in t])+"]"
                     sStr = "["+",".join([str(si) for si in splitList])+"]"
                     myOut = "{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,n,j,tStr,s)
-                    #print "python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
-                    #    myOut, n, j, tStr, sStr)
-                    #os.system("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
-                    #    myOut, n, j, tStr, sStr))
-                    output = subprocess.check_output("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile, myOut, n, j, tStr, sStr),shell=True)
-                    print "Output: {!s}".format(output)
-                    fOut.write("N: {:01.2f}\tJ: {:01.2f}\tS: {:01.2f}\tT: {!s}\tt: {!s}\n".format(n,j,s, tStr,output))
+                    print "python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
+                        myOut, n, j, tStr, sStr)
+                    os.system("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
+                        myOut, n, j, tStr, sStr))
+
     fOut.close()            
 
 if __name__ == "__main__":

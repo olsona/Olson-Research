@@ -315,7 +315,7 @@ def main(argv):
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
 		fNewContig.write(seq)
 		for m in co.goodMatches:
-		    mainClust.add(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+		    mainClust.addMatch(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
