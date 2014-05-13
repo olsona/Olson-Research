@@ -43,7 +43,7 @@ def main(argv):
                     #    myOut, n, j, tStr, sStr)
                     #os.system("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile,\
                     #    myOut, n, j, tStr, sStr))
-                    output = subprocess.check_output("python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile, myOut, n, j, tStr, sStr),shell=True)
+                    output = subprocess.check_output("time python horatio.py -i {!s} -o {!s} -s tetra -n {!s} -j {!s} -c {!s} -l {!s}".format(myfile, myOut, n, j, tStr, sStr),shell=True)
                     print "Output: {!s}".format(output)
                     fOut.write("N: {:01.2f}\tJ: {:01.2f}\tS: {:01.2f}\tT: {!s}\tt: {!s}\n".format(n,j,s, tStr,output))
     fOut.close()            
