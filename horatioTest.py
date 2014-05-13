@@ -37,6 +37,7 @@ def main(argv):
                         splitList = [s]*(len(tDict[t])-1)
                         tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
                         sStr = "["+",".join([str(si) for si in splitList])+"]"
+                        print "{!s},{!s},{!s},{!s},{!s},". format(score, n, j, tStr, sStr)
                         myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,score,n,j,t,s)
                         fOut.write("{!s},{!s},{!s},{!s},{!s},".\
                             format(score, n, j, tStr, sStr))
@@ -44,7 +45,7 @@ def main(argv):
                         os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
                             format(myfile, myOut, score, n, j, tStr, sStr))
                         end = time.time()
-                        fOut.write("{03.2f}\n".format(end-start))
+                        fOut.write("{:03.2f}\n".format(end-start))
 
     fOut.close()            
 
