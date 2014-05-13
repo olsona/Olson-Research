@@ -7,12 +7,12 @@ import horatioUtils as hutil
 import horatioFunctions as hfun
 from horatioClasses import Cluster, Contig
 import argparse
-#import cPickle as pickle
+import cPickle as pickle
 
 # imports necessary for debugging and correctness
-import matplotlib as mpl
-mpl.use('Agg')
-import horatioCorrectness as hcorr
+#import matplotlib as mpl
+#mpl.use('Agg')
+#import horatioCorrectness as hcorr
 #import pprint
 
 def main(argv):
@@ -144,8 +144,8 @@ def main(argv):
     newContigCount = 0
 
     # ***
-    rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-    wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    #rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    #wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
@@ -207,12 +207,12 @@ def main(argv):
 	    # ***
 	            
 	    # ***
-            clName = contigs2Clusters[dbItem].seed
-            isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
-            if isCorrect:
-                rightDists[iterString].append(bestScore)
-            else:
-                wrongDists[iterString].append(bestScore)
+            #clName = contigs2Clusters[dbItem].seed
+            #isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
+            #if isCorrect:
+            #    rightDists[iterString].append(bestScore)
+            #else:
+            #    wrongDists[iterString].append(bestScore)
             # ***
 	
 	fMatching.close()
@@ -351,10 +351,23 @@ def main(argv):
 	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
-        #print iterString + " done"
+        print iterString + " done"
 	l2.close()
 			
     #---POSTPROCESSING---#
+    totalCluster = {}
+    fOutC = open("{!s}_clusters".format(outputFile),'w')
+    for c in allClusters:
+	#print "-----"
+	r = allClusters[c].root
+	l = allClusters[c].getLeaves()
+	cl = [li for li in l]
+	cl.append(r)
+	fOutC.write("{!s}\n".format(cl))
+	totalCluster[r] = allClusters[c]
+    fOutC.close()
+    pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
+    
 
 if __name__ == "__main__":
     main(sys.argv[1:])
