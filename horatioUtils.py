@@ -150,7 +150,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	    leng = int(li.split("_")[-2])
 	    if leng >= threshold:
 	        resDict[src].append(li)
-	    l = cf.readline()
+	l = cf.readline()
     nf.close()
     cf.close()
     pickle.dump(resDict, open(out,"wb"))
