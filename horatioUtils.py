@@ -153,4 +153,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	l = cf.readline()
     nf.close()
     cf.close()
-    pickle.dump(resDict, open(out,"wb"))
+    resList = []
+    for r in resDict:
+        resList.append(resDict[r])
+    pickle.dump(resList, open(out,"wb"))
