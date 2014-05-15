@@ -140,7 +140,8 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	    li = l.rstrip()[1:]
 	    src = ''
 	    for n in nameList:
-	        if len(n) > 0 and string.find(li, n) != -1:
+	        print n
+	        if string.find(li, n) != -1:
 	            src = n
 	            break
 	    len = int(li.split("_")[-2])
