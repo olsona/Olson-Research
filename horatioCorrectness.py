@@ -385,8 +385,9 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
     
 # to process an entire folder    
 def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
-    import glob, string
+    import glob, string, pprint
     import cPickle as pickle
+    from horatioClasses import Cluster
     
     cutDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
             'lowClose': [2,4,6,8,10,14,18,22],
@@ -430,7 +431,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
         jInd = fileSplit.index("J")
         j = float(fileSplit[jInd+1])
         cInd = fileSplit.index("C")
-        cText = fileSplit([cInd+1])
+        cText = fileSplit[cInd+1]
         cut = cutDict[cText]
         lInd = fileSplit.index("L")
         l = float(fileSplit[lInd+1])
@@ -441,27 +442,38 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
         
         repDict = {na:0 for na in names}
         
-        inClust = pickle.load(open(fi,"rb"))
+        inClustPre = pickle.load(open(fi,"rb"))
+        inClust = []
+        for i in inClustPre:
+            inClust.append(inClustPre[i].getAll())
         TPDict = {na:0 for na in names}
         FPDict = {na:0 for na in names}
         for cl in inClust:
-            repDict = {nL: 0 for nL in nameList}
+            repDict = {nL: 0 for nL in names}
             maxNo = 0
             maxName = ''
             for c in cl:
-                for nL in nameList:
+                #print c
+                for nL in names:
                     if string.find(c,nL) != -1:
                         repDict[nL] += 1
-                for nL in repDict:
-                    if repDict[nL] > maxNo:
-                        maxNo = repDict[nL]
-                        maxName = nL
-                tp = maxNo
-                fp = len(cl) - tp
-                if float(tp)/float(len(cl)) > threshold:
-                    repDict[maxName] += 1
-                    TPDict[maxName] = tp
-                    FPDict[maxName] = fp
+                        break
+            #pprint.pprint(repDict)
+            for nL in repDict:
+                if repDict[nL] > maxNo:
+                    maxNo = repDict[nL]
+                    maxName = nL
+            tp = maxNo
+            #print tp
+            fp = len(cl) - tp
+            if float(tp)/float(len(cl)) > threshold:
+                repDict[maxName] += 1
+                TPDict[maxName] = tp
+                FPDict[maxName] = fp
+        #print
+        #print
+        
+        #pprint.pprint(TPDict)
         
         #SnDict = {na:0 for na in names}
         #SpDict = {na:0 for na in names}
@@ -469,17 +481,28 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
         TPAll = 0
         FPAll = 0
         for na in names:
-            if ZDict[na] and TPDict[na]:     # tacoa p 13 "The overall specificity is computed over those classes that have a defined specificity value"
-                ZAll += ZDict[na]
-                TPAll += TPDict[na]
-                FPAll += FPDict[na]
+            #if ZDict[na] and TPDict[na]:     # tacoa p 13 "The overall specificity is computed over those classes that have a defined specificity value"
+            ZAll += ZDict[na]
+            TPAll += TPDict[na]
+            FPAll += FPDict[na]
             #SnDict[na] = float(TPDict[na])/float(ZDict[na])               # tacoa (8)
             #SpDict[na] = float(TPDict[na])/float(TPDict[na]+FPDict[na])   # tacoa (9)
         
         SnAll = float(TPAll)/float(ZAll)
         SpAll = float(TPAll)/float(TPAll+FPAll)
         
-        nmi = NMI(inClust, corrClust)
+        repNo = 0
+        for r in repDict:
+            if repDict[r]:
+                repNo += 1
+        repFrac = float(repNo)/float(len(names))
         
-        outF.write("{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s}".\
-            format(mText,mAbund,score,n,j,cText,l,SnAll,SpAll,nmi))
+        nmi = NMI(inClust, corrClust)
+        ami = AMI(inClust, corrClust)
+        #nmi = 0.0
+        
+        outF.write("{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s}\n".\
+            format(mText,mAbund,score,n,j,cText,l,SnAll,SpAll,repFrac,nmi,ami))
+            
+        print "done"
+    outF.close()
