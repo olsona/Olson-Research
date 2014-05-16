@@ -385,7 +385,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
     
 # to process an entire folder    
 def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
-    import glob, string, pprint
+    import glob, string, time
     import cPickle as pickle
     from horatioClasses import Cluster
     
@@ -420,6 +420,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
     
     fileList = glob.glob("{!s}/*_pickle".format(inFolder))
     for fi in fileList:
+        start = time.time()
         # get information from filename
         fileName = fi.split("/")[-1]
         fileSplit = fileName.split("_")
@@ -503,6 +504,6 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
         
         outF.write("{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s}\n".\
             format(mText,mAbund,score,n,j,cText,l,SnAll,SpAll,repFrac,nmi,ami))
-            
-        print "done"
+        end = time.time()
+        print "done, {!s}".format((end-start)/60.0)
     outF.close()
