@@ -15,6 +15,8 @@ def main(argv):
             myfile = arg
         elif opt == "-o":
             out = arg	
+        elif opt == "-p":
+            path = arg
     
     outlog = out + "_log"
     fOut = open(outlog,'w')
@@ -42,8 +44,8 @@ def main(argv):
                         fOut.write("{!s},{!s},{!s},{!s},{!s},".\
                             format(score, n, j, tStr, sStr))
                         start = time.time()
-                        os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s}".\
-                            format(myfile, myOut, score, n, j, tStr, sStr))
+                        os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s}".\
+                            format(myfile, myOut, score, n, j, tStr, sStr, path))
                         end = time.time()
                         fOut.write("{:03.2f}\n".format(end-start))
 

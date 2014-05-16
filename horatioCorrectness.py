@@ -78,6 +78,7 @@ def comparisonPlot(rdata, wdata, iterString, outputFile, suffix, rlabel, wlabel)
 #----Evaluation post-computation----#
 def purityOfCluster(clusterElements, nameList):
     '''Returns the ratio representation and identity of most common name out of the whole cluster, where the possible names are given in nameList.'''
+    # aka specificity
     import string
     repDict = {nL: 0 for nL in nameList}
     max = 0
@@ -95,6 +96,7 @@ def purityOfCluster(clusterElements, nameList):
 	
 def purityOfClusterByLength(cluster, nameList):
     '''Returns the ratio representation (by length) and identity of most common name out of the whole cluster, where the possible names are given in nameList.'''
+    #aka specificity
     if cluster is None:
 	return 0.0, '-'
     else:
@@ -116,8 +118,43 @@ def purityOfClusterByLength(cluster, nameList):
 	ratio = float(maxLen)/float(totalLen)
 	return ratio, maxName
 	
+
+def sensitivityCluster(inCluster, correctClustering, threshold, nameList):
+    # tacoa_review, eqn (8)
+    import string
+    ZDict = {name:0 for name in nameList}
+    TPDict = {name:0 for name in nameList}
+    # get number of contigs that *should* be classified for each name (Zi)
+    for cl in correctClustering:
+	rep = cl[0]
+	corName = ''
+	for name in nameList:
+	    if string.find(rep,name) != -1:
+	        corName = name
+	        break
+	Z[corName] = len(cl)
+    # iterate through inFile, find clusters that have purity above a threshold, and count true positives (TPi)
+    for cl in inCluster:
+        repDict = {nL: 0 for nL in nameList}
+	for c in cl:
+	    for nL in nameList:
+		if string.find(l,nL) != -1:
+		    repDict[nL] += 1
+	for nL in repDict:
+	    if repDict[nL] > max:
+		max = repDict[nL]
+		maxName = nL
+	ratio = float(max)/float(len(ls))
+	if ratio >= threshold:
+	    TPDict[maxName] += max
+	# compute sensitivity
+	SnDict = {name: 0.0 for name in nameList}
+	for name in nameList:
+	   SnDict[name] = TPDict[name]/ZDict[name]
+	return SnDict	
 	
-def sensitivity(inFile, correctClustering, threshold, nameList):
+	
+def sensitivityPrintedFile(inFile, correctClustering, threshold, nameList):
     # tacoa_review, eqn (8)
     import string
     f = open(inFile, 'r')
@@ -143,7 +180,7 @@ def sensitivity(inFile, correctClustering, threshold, nameList):
 	for l in ls:
 	    for nL in nameList:
 		if string.find(l,nL) != -1:
-			repDict[nL] += 1
+		    repDict[nL] += 1
 	for nL in repDict:
 	    if repDict[nL] > max:
 		max = repDict[nL]
@@ -192,6 +229,7 @@ def precision(inFile, threshold, nameList):
 	
 	
 def purityClusterWholeOutput(inFile, nameList, outFile):
+    #aka specificity
     import string
     f = open(inFile, 'r')
     out = open(outFile, 'w')
@@ -344,3 +382,104 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	outF.write("Representation of {!s}:\t{!s}\n".format(n,repDict[n]))
 		
     outF.close()
+    
+# to process an entire folder    
+def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
+    import glob, string
+    import cPickle as pickle
+    
+    cutDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
+            'lowClose': [2,4,6,8,10,14,18,22],
+            '2by4': [2,6,10,14,18,22],
+            '4by4': [4,8,12,16,20]}
+            
+    names = []
+    nf = open(nameFile,'r')
+    for li in nf.readlines():
+        nm = li.rstrip()
+        if len(nm) > 0:
+            names.append(nm)
+            
+    outF = open(outFile,'w')
+    
+    # get Z values for each correct clustering
+    corrList = glob.glob("{!s}*".format(correctFilePrefix))
+    corrDict = {int(cf.split("_gt")[1][0:-1]):cf for cf in corrList}
+    corrZ = {no:{na: 0 for na in names} for no in corrDict}
+    for no in corrDict:
+        clustering = pickle.load(open(corrDict[no],'rb'))
+        for cl in clustering:
+            rep = cl[0]
+            corName = ''
+            for nm in names:
+                if string.find(rep,nm) != -1:
+                    corName = nm
+                    break
+            corrZ[no][corName] = len(cl)
+    
+    fileList = glob.glob("{!s}/*_pickle".format(inFolder))
+    for fi in fileList:
+        # get information from filename
+        fileName = fi.split("/")[-1]
+        fileSplit = fileName.split("_")
+        mText = fileSplit[0]
+        mAbund = fileSplit[1]
+        score = fileSplit[2]
+        nInd = fileSplit.index("N")
+        n = float(fileSplit[nInd+1])
+        jInd = fileSplit.index("J")
+        j = float(fileSplit[jInd+1])
+        cInd = fileSplit.index("C")
+        cText = fileSplit([cInd+1])
+        cut = cutDict[cText]
+        lInd = fileSplit.index("L")
+        l = float(fileSplit[lInd+1])
+        
+        corrClustName = corrDict[cut[0]]
+        corrClust = pickle.load(open(corrClustName,'rb'))
+        ZDict = corrZ[cut[0]]
+        
+        repDict = {na:0 for na in names}
+        
+        inClust = pickle.load(open(fi,"rb"))
+        TPDict = {na:0 for na in names}
+        FPDict = {na:0 for na in names}
+        for cl in inClust:
+            repDict = {nL: 0 for nL in nameList}
+            maxNo = 0
+            maxName = ''
+            for c in cl:
+                for nL in nameList:
+                    if string.find(c,nL) != -1:
+                        repDict[nL] += 1
+                for nL in repDict:
+                    if repDict[nL] > maxNo:
+                        maxNo = repDict[nL]
+                        maxName = nL
+                tp = maxNo
+                fp = len(cl) - tp
+                if float(tp)/float(len(cl)) > threshold:
+                    repDict[maxName] += 1
+                    TPDict[maxName] = tp
+                    FPDict[maxName] = fp
+        
+        #SnDict = {na:0 for na in names}
+        #SpDict = {na:0 for na in names}
+        ZAll = 0
+        TPAll = 0
+        FPAll = 0
+        for na in names:
+            if ZDict[na] and TPDict[na]:     # tacoa p 13 "The overall specificity is computed over those classes that have a defined specificity value"
+                ZAll += ZDict[na]
+                TPAll += TPDict[na]
+                FPAll += FPDict[na]
+            #SnDict[na] = float(TPDict[na])/float(ZDict[na])               # tacoa (8)
+            #SpDict[na] = float(TPDict[na])/float(TPDict[na]+FPDict[na])   # tacoa (9)
+        
+        SnAll = float(TPAll)/float(ZAll)
+        SpAll = float(TPAll)/float(TPAll+FPAll)
+        
+        nmi = NMI(inClust, corrClust)
+        
+        outF.write("{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s}".\
+            format(mText,mAbund,score,n,j,cText,l,SnAll,SpAll,nmi))
