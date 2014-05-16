@@ -499,11 +499,11 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
         repFrac = float(repNo)/float(len(names))
         
         nmi = NMI(inClust, corrClust)
-        ami = AMI(inClust, corrClust)
+        #ami = AMI(inClust, corrClust)
         #nmi = 0.0
         
-        outF.write("{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s}\n".\
-            format(mText,mAbund,score,n,j,cText,l,SnAll,SpAll,repFrac,nmi,ami))
+        outF.write("{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s},{!s}\n".\
+            format(mText,mAbund,score,n,j,cText,l,SnAll,SpAll,repFrac,nmi))
         end = time.time()
         print "done, {!s}".format((end-start)/60.0)
     outF.close()
