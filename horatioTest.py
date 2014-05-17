@@ -43,13 +43,15 @@ def main(argv):
                         print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
                         myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,score,n,j,t,s)
                         fOut.write("{!s},{!s},{!s},{!s},{!s},".\
-                            format(score, n, j, tStr, sStr))
+                            format(score, n, j, tStr, sStr)),
                         start = time.time()
                         os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s}".\
                             format(myfile, myOut, score, n, j, tStr, sStr, path))
                         end = time.time()
                         fOut.write("{:03.2f}\n".format(end-start))
-                        print "{:03.2f}\n".format(end-start)
+                        minutes = int((end-start)/60.0)
+                        secs = int((end-start)-60.0*minutes)
+                        print "{!s}:{!s}\n".format(minutes,secs)
 
     fOut.close()            
 
