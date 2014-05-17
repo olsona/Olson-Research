@@ -53,7 +53,7 @@ def main(argv):
                     fOut.write("{:03.2f}\n".format(end-start))
                     minutes = int((end-start)/60.0)
                     secs = int((end-start)-60.0*minutes)
-                    print "{!s}:{!s}\n".format(minutes,secs)
+                    print "{!s}:{!s}\n".format(minutes,str(secs).zfill(2))
 
     fOut.close()            
 
