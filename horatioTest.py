@@ -30,7 +30,7 @@ def main(argv):
     sDict = {'tacoa': [0.3,0.4,0.5],
             'tetra': [0.2,0.4,0.6,0.8],
             'raiphy': [-17.0,-16.0,-15.0,-14.0]}
-    for score in sDict:
+    for score in sorted(sDict.keys()):
         sList = sDict[score]
         for t in tDict:
             for s in sList:
@@ -48,6 +48,7 @@ def main(argv):
                             format(myfile, myOut, score, n, j, tStr, sStr, path))
                         end = time.time()
                         fOut.write("{:03.2f}\n".format(end-start))
+                        print "{:03.2f}\n".format(end-start)
 
     fOut.close()            
 
