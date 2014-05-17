@@ -6,7 +6,7 @@ def main(argv):
     myfile = ''
     out = ''
     try:
-	opts, args = getopt.getopt(argv,"f:o:")
+	opts, args = getopt.getopt(argv,"f:o:p:")
     except getopt.GetoptError:
 	sys.exit(2)
         
