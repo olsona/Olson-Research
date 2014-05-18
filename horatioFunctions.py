@@ -55,21 +55,21 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
     mDB = "{!s}_M".format(DB)
 
     #print("  Running1: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(fSeed,DB))
-    d1 = os.path.getsize(fSeed+"-2")
+    #d1 = os.path.getsize(fSeed+"-2")
     #os.system("du -h {!s}-2".format(fSeed))
     os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
     
     #print("  Running2: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(toMatch,mDB))
-    d2 = os.path.getsize(toMatch+"-2")
+    #d2 = os.path.getsize(toMatch+"-2")
     #os.system("du -h {!s}-2".format(toMatch))
     os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 
     #print("  Running3: perl tacoaDistance.pl {!s} {!s} {!s}".format(DB,mDB,matches))
-    d3 = os.path.getsize(DB)
-    d4 = os.path.getsize(mDB)
+    #d3 = os.path.getsize(DB)
+    #d4 = os.path.getsize(mDB)
     #os.system("du -h {!s} {!s}".format(DB, mDB))
     os.system("perl tacoaDistance.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,matches))
-    print "{:2.2e} {:2.2e} {:2.2e} {:2.2e}".format(d1,d2,d3,d4)
+    #print "{:2.2e} {:2.2e} {:2.2e} {:2.2e}".format(d1,d2,d3,d4)
 	
 	
 def scoreTACOAFinal(DB, fSeed, toMatch, outputFile):

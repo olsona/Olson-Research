@@ -29,9 +29,9 @@ def main(argv):
             'lowClose': [2,4,6,8,10,14,18,22],
             '2by4': [2,6,10,14,18,22],
             '4by4': [4,8,12,16,20]}
-    sDict = {'tacoa': [0.3,0.4,0.5],
-            'tetra': [0.2,0.4,0.6,0.8],
-            'raiphy': [-17.0,-16.0,-15.0,-14.0]}
+    sDict = {'tacoa': [0.3,0.35,0.4],
+            'tetra': [0.2,0.4,0.6],
+            'raiphy': [-17.0,-16.5,-16.0]}
     #for score in sorted(sDict.keys()):
     sList = sDict[score]
     for t in tDict:
