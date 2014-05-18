@@ -54,17 +54,21 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
 	allContigs[nm] = co
     mDB = "{!s}_M".format(DB)
 
-    print("  Running1: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(fSeed,DB))
+    #print("  Running1: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(fSeed,DB))
+    print "First"
     os.system("du -h {!s}-2".format(fSeed))
     os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 
-    print("  Running2: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(toMatch,mDB))
+    print "Second"
+    #print("  Running2: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(toMatch,mDB))
     os.system("du -h {!s}-2".format(toMatch))
     os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 
-    print("  Running3: perl tacoaDistance.pl {!s} {!s} {!s}".format(DB,mDB,matches))
-    os.system("du -h {!s}".format(DB, mDB))
+    print "Third"
+    #print("  Running3: perl tacoaDistance.pl {!s} {!s} {!s}".format(DB,mDB,matches))
+    os.system("du -h {!s} {!s}".format(DB, mDB))
     os.system("perl tacoaDistance.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,matches))
+    print
 	
 	
 def scoreTACOAFinal(DB, fSeed, toMatch, outputFile):
