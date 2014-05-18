@@ -55,11 +55,11 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
     mDB = "{!s}_M".format(DB)
 
     print("  Running1: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(fSeed,DB))
-    os.system("du -h {!s}".format(fSeed))
+    os.system("du -h {!s}-2".format(fSeed))
     os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 
     print("  Running2: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(toMatch,mDB))
-    os.system("du -h {!s}".format(toMatch))
+    os.system("du -h {!s}-2".format(toMatch))
     os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 
     print("  Running3: perl tacoaDistance.pl {!s} {!s} {!s}".format(DB,mDB,matches))
