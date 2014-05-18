@@ -69,7 +69,7 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
     d4 = os.path.getsize(mDB)
     #os.system("du -h {!s} {!s}".format(DB, mDB))
     os.system("perl tacoaDistance.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,matches))
-    print "{:2e} {:2e} {:2e} {:2e}".format(d1,d2,d3,d4)
+    print "{:2.2e} {:2.2e} {:2.2e} {:2.2e}".format(d1,d2,d3,d4)
 	
 	
 def scoreTACOAFinal(DB, fSeed, toMatch, outputFile):
