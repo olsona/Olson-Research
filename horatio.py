@@ -156,7 +156,7 @@ def main(argv):
         DB = "{!s}_{!s}_DB".format(baseName,i)
 	matches = "{!s}_{!s}_matches".format(baseName,i)
 	toMatch = "{!s}_{!s}".format(baseName,i)
-	os.system("ls -l {!s} {!s}".format(matches,toMatch))
+	os.system("ls -l {!s} {!s}".format(matches,toMatch+"-2"))
 	if scoreFunction == "tacoa":
 	    hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
 	elif scoreFunction == "tetra":
