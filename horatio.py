@@ -220,7 +220,7 @@ def main(argv):
 	l2 = open(fSeed + "-2",'w')
 	# Make concatenated seeds
 	for seed in matchDict.keys():
-	    print seed
+	    #print seed
 	    cl = contigs2Clusters[seed]
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
@@ -296,7 +296,7 @@ def main(argv):
 	# iterate through partition of clusters and merge as appropriate
         for p in partition:
 	    pList = list(p)
-	    print "Merging:" + str(pList)
+	    #print "Merging:" + str(pList)
 	    mainClID = pList[0]
 	    #print mainClID
 	    mainClust = allClusters[mainClID]
