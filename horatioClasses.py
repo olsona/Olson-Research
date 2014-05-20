@@ -24,19 +24,19 @@ class Cluster:
 	if self.root is None or self.dict is None:
 	    return []
 	else:
-	    return hutil.getLeavesScoreTree(self.dict, self.root)
+	    return getLeavesScoreTree(self.dict, self.root)
 	    
     def getAllScores(self):
         if self.root is None or self.dict is None:
             return []
         else:
-            return hutil.getScoresAll(self.dict)
+            return getScoresAll(self.dict)
             
     def getLeafScores(self):
         if self.root is None or self.dict is None:
             return []
         else:
-            return hutil.getScoresLeaves(self.dict)
+            return getScoresLeaves(self.dict)
     
     def addNode(self, parent, child, score):
 	if parent in self.dict:
@@ -89,7 +89,7 @@ class Cluster:
 	    self.dict.update(o.dict)  # add in o's neighbors
 	self.root = ubercontig
 	self.dict[ubercontig] = subs
-        
+    
     # ***
     #def purityMax(self, names):
     #	if self.dict is None:
@@ -99,6 +99,54 @@ class Cluster:
     # ***
 		
 # THE TREES ARE UPSIDE DOWN!  dict[j] is all of the *parents* of j!
+
+def getLeavesUtil(inDict, root):
+    leaves = []
+    if root not in inDict:
+	return [root]
+    elif inDict[root] == []:
+	return [root]
+    else:
+	for l in inDict[root]:
+	    res = getLeavesUtil(inDict,l)
+	    for r in res:
+	        leaves.append(r)
+	return leaves
+
+
+def getLeavesScoreTree(inDict, root):
+    leaves = []
+    if root not in inDict:
+	return [root]
+    elif inDict[root] == []:
+	return [root]
+    else:
+	for l in inDict[root]:
+	    res = getLeavesScoreTree(inDict,l[0])
+	    for r in res:
+	        leaves.append(r)
+	return leaves
+
+
+def getScoresAll(inDict):
+    scores = []
+    for l in inDict:
+	res = inDict[l]
+	print res
+	for r in res:
+	    print "\t" + str(r)
+	    scores.append(r[1])
+    return scores
+        
+        
+def getScoresLeaves(inDict):
+    scores = []
+    for l in inDict:
+        res = inDict[l]
+        for r in res:
+            if r[0] not in inDict:
+                scores.append(r[1])
+    return scores
 
 
 class Contig:

@@ -50,55 +50,6 @@ def readSequence(fi):
     return seq_name, concat
 
 
-def getLeavesUtil(inDict, root):
-    leaves = []
-    if root not in inDict:
-	return [root]
-    elif inDict[root] == []:
-	return [root]
-    else:
-	for l in inDict[root]:
-	    res = getLeavesUtil(inDict,l)
-	    for r in res:
-	        leaves.append(r)
-	return leaves
-
-
-def getLeavesScoreTree(inDict, root):
-    leaves = []
-    if root not in inDict:
-	return [root]
-    elif inDict[root] == []:
-	return [root]
-    else:
-	for l in inDict[root]:
-	    res = getLeavesScoreTree(inDict,l[0])
-	    for r in res:
-	        leaves.append(r)
-	return leaves
-
-
-def getScoresAll(inDict):
-    scores = []
-    for l in inDict:
-	res = inDict[l]
-	print res
-	for r in res:
-	    print "\t" + str(r)
-	    scores.append(r[1])
-    return scores
-        
-        
-def getScoresLeaves(inDict):
-    scores = []
-    for l in inDict:
-        res = inDict[l]
-        for r in res:
-            if r[0] not in inDict:
-                scores.append(r[1])
-    return scores
-
-
 def makeDistanceMatrix(scoreFile):
     f = open(scoreFile,'r')
     lns = f.readlines()
