@@ -296,6 +296,7 @@ def main(argv):
 	# iterate through partition of clusters and merge as appropriate
         for p in partition:
 	    pList = list(p)
+	    print "Merging:" + str(pList)
 	    mainClID = pList[0]
 	    #print mainClID
 	    mainClust = allClusters[mainClID]
