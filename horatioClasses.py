@@ -122,7 +122,10 @@ def getLeavesScoreTree(inDict, root):
 	return [root]
     else:
 	for l in inDict[root]:
-	    res = getLeavesScoreTree(inDict,l[0])
+	    if isinstance(l, basestring):
+	        res = getLeavesScoreTree(inDict,l)
+	    else:
+	       res = getLeavesScoreTree(inDict,l[0])
 	    for r in res:
 	        leaves.append(r)
 	return leaves
@@ -135,7 +138,8 @@ def getScoresAll(inDict):
 	print res
 	for r in res:
 	    print "\t" + str(r)
-	    scores.append(r[1])
+	    if not isinstance(r, basestring):
+	       scores.append(r[1])
     return scores
         
         
@@ -144,8 +148,9 @@ def getScoresLeaves(inDict):
     for l in inDict:
         res = inDict[l]
         for r in res:
-            if r[0] not in inDict:
-                scores.append(r[1])
+            if not isinstance(r, basestring):
+                if r[0] not in inDict:
+                    scores.append(r[1])
     return scores
 
 
