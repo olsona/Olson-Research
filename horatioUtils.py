@@ -84,7 +84,7 @@ def getScoresAll(inDict):
 	res = inDict[l]
 	print res
 	for r in res:
-	    print "\t" + r
+	    print "\t" + str(r)
 	    scores.append(r[1])
     return scores
         
