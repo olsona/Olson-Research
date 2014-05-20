@@ -302,37 +302,60 @@ def NMI(U, V):
 def ExpectedMutualInformation(U,V):
     # Vinh, Epps, Bailey, (2)
     import math
-    getcontext().prec = 400
+    getcontext().prec = 20
+    #getcontext().Emax = 2000
     N = 0
     for u in U:
         N += len(u)
     R = len(U)
+    print R
     C = len(V)
-    E = Decimal(0)
+    print C
+    E = Decimal(0.0)
+    start = time.time()
     for i in range(R):
+        if i % 10 == 0:
+            print "  i=", i, " runtime=", (time.time() - start)
+            start = time.time()
 	for j in range(C):
-	    ai = len(U[i])			
+	    ai = len(U[i])
+	    if ai:
+	        #print "ai: ", N, ai;
+	        ncr_Nai = Decimal(ncr(N,ai))
+	        #print "{:2.2e}".format(ncr_Nai)			
 	    bj = len(V[j])
+	    if bj:
+	        #print "bj:", N, bj
+	        ncr_Nbj = Decimal(ncr(N,bj))
+	        #print "{:2.2e}".format(ncr_Nbj)
 	    for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
 	        if ai != 0 and bj != 0:
-	            t1 = Decimal((float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj))))
+ 	            t1 = Decimal((float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj))))
 	            t2 = Decimal(ncr(N,nij))
-	            t2 /= Decimal(ncr(N,ai))
+	            t2 /= ncr_Nai
 	            t2 *= Decimal(ncr(N-nij,ai-nij))
-	            t2 /= Decimal(ncr(N,bj))
+	            t2 /= ncr_Nbj
 	            t2 *= Decimal(ncr(N-ai,bj-nij))
 	            E += t1*t2	
+
     return E
 	
-	
+ncr_memo = {}	
 def ncr(n, r):
     # http://stackoverflow.com/questions/4941753/is-there-a-math-ncr-function-in-python
     import operator as op
+    #return 1.0
+    #print n, r
     r = min(r, n-r)
     if r == 0: return 1
-    numer = reduce(op.mul, xrange(n, n-r, -1))
-    denom = reduce(op.mul, xrange(1, r+1))
-    return numer//denom
+    nrtuple = tuple([n,r])
+    if nrtuple not in ncr_memo:
+        numer = reduce(op.mul, xrange(n, n-r, -1))
+        denom = reduce(op.mul, xrange(1, r+1))
+        ncr_memo[nrtuple] = numer//denom
+    #print "{:2.2e}".format(ncr_memo[nrtuple])
+    return ncr_memo[nrtuple]
+    #return 1.0
 	
 	
 def AMI(U, V):
@@ -385,8 +408,8 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
     
     
 # to process an entire folder    
-def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
-    import glob, string
+def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshold, outFile):
+    import glob, string, time
     import cPickle as pickle
     from horatioClasses import Cluster
     
@@ -403,7 +426,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
             names.append(nm)
             
     outF = open(outFile,'w')
-    outF.write("Source:Abundance:Score:Cut:N:J:L:Threshold:AvgClustSize:MinClustSize:MaxClustSize:NMI:SnNo:SpNo:RepNo:SnLen:SpLen:RepLen\n")
+    #outF.write("Source;Abundance;Score;Cut;N;J;L;Threshold;SizeThreshold;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen\n")
     
     # get Z values for each correct clustering
     corrList = glob.glob("{!s}*".format(correctFilePrefix))
@@ -426,9 +449,16 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
     
     clustMemList = []
     
+    ctr = 0
+    
     fileList = glob.glob("{!s}/*_pickle".format(inFolder))
+    start = time.time()
     for fi in fileList:
         #start = time.time()
+        if ctr % 10 == 0:
+            ntime = time.time()
+            print "   i = {:d}, {:.2f}s".format(ctr,ntime-start)
+            start = time.time()
         # get information from filename
         fileName = fi.split("/")[-1]
         fileSplit = fileName.split("_")
@@ -483,22 +513,23 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
                 if myRepDictNo[nL] > maxNo:
                     maxNo = myRepDictNo[nL]
                     maxNoName = nL
-            for nL in myRepDictLen:
-                if myRepDictLen[nL] > maxLen:
-                    maxLen = myRepDictLen[nL]
-                    maxLenName = nL
-            tpn = maxNo
-            fpn = len(cl) - tpn
-            tpl = maxLen
-            fpl = totalLen - tpl
-            if float(tpn)/float(len(cl)) > threshold:
-                repDictNo[maxNoName] += 1
-                TPDictNo[maxNoName] += tpn
-                FPDictNo[maxNoName] += fpn
-            if float(tpl)/float(totalLen) > threshold:
-                repDictLen[maxLenName] += 1
-                TPDictLen[maxLenName] += tpl
-                FPDictLen[maxLenName] += fpl
+            if len(cl) >= sizeThreshold:
+                for nL in myRepDictLen:
+                    if myRepDictLen[nL] > maxLen:
+                        maxLen = myRepDictLen[nL]
+                        maxLenName = nL
+                tpn = maxNo
+                fpn = len(cl) - tpn
+                tpl = maxLen
+                fpl = totalLen - tpl
+                if float(tpn)/float(len(cl)) > threshold:
+                    repDictNo[maxNoName] += 1
+                    TPDictNo[maxNoName] += tpn
+                    FPDictNo[maxNoName] += fpn
+                if float(tpl)/float(totalLen) > threshold:
+                    repDictLen[maxLenName] += 1
+                    TPDictLen[maxLenName] += tpl
+                    FPDictLen[maxLenName] += fpl
         #print
         #print
         
@@ -523,10 +554,16 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
             #SnDict[na] = float(TPDict[na])/float(ZDict[na])               # tacoa (8)
             #SpDict[na] = float(TPDict[na])/float(TPDict[na]+FPDict[na])   # tacoa (9)
         
-        SnAllNo = float(TPAllNo)/float(ZAllNo)
-        SpAllNo = float(TPAllNo)/float(TPAllNo+FPAllNo)
-        SnAllLen = float(TPAllLen)/float(ZAllLen)
-        SpAllLen = float(TPAllLen)/float(TPAllLen+FPAllLen)
+        SnAllNo = 0.0
+        SpAllNo = 0.0
+        SnAllLen = 0.0
+        SpAllLen = 0.0
+        if TPAllNo:
+            SnAllNo = float(TPAllNo)/float(ZAllNo)
+            SpAllNo = float(TPAllNo)/float(TPAllNo+FPAllNo)
+        if TPAllLen:
+            SnAllLen = float(TPAllLen)/float(ZAllLen)
+            SpAllLen = float(TPAllLen)/float(TPAllLen+FPAllLen)
         
         repNumNo = 0
         for r in repDictNo:
@@ -541,14 +578,16 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, outFile):
         
         nmi = NMI(inClust, corrClust)
         #ami = AMI(inClust, corrClust)
-        #nmi = 0.0
         
-        avgClustSize = float(sum(clustMemList))/float(len(inClust))
+        avgClustSize = float(sum(clustMemList))/float(len(clustMemList))
         minClustSize = min(clustMemList)
         maxClustSize = max(clustMemList)
         
-        outF.write("{!s}:{!s}:{!s}:{!s}:{:01.2f}:{:01.2f}:{:01.2f}:{:01.2f}:{:03.2f}:{!s}:{!s}:{:01.4f}:{:01.4f}:{:01.4f}:{:01.4f}:{:01.4f}:{:01.4f}:{:01.4f}\n".\
-            format(mText,mAbund,score,cText,n,j,l,threshold,avgClustSize,minClustSize,maxClustSize,nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+        outF.write("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
+        outF.write("{:01.2f};{!s};{:03.2f};{!s};{!s};".format(threshold,sizeThreshold,avgClustSize,minClustSize,maxClustSize))
+        outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+        ctr += 1
+        
         
     outF.close()
     print "done"

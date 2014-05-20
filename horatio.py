@@ -181,9 +181,9 @@ def main(argv):
 	        newSeeds.append(queryItem)
 	    else:
 	       if dbItem in matchDict:
-	           matchDict[dbItem].append(queryItem)
+	           matchDict[dbItem].append([queryItem,bestScore])
 	       else:
-	           matchDict[dbItem] = [queryItem]
+	           matchDict[dbItem] = [[queryItem,bestScore]]
 	    # check for other good matches to queryItem
 	    myThresh = 0.0
 	    queryContig = allContigs[queryItem]
@@ -234,11 +234,11 @@ def main(argv):
 	    contigs2Clusters[newContigName] = cl
 	    clusters2Contigs[cl.seed].append(nCo)
 	    cl.root = newContigName
-	    cl.addNode(newContigName, seed)
+	    cl.addNode(newContigName, seed, 0.0)
 	    # concatenate all sequences from all matching children
-	    for child in matchDict[seed]:
+	    for [child,score] in matchDict[seed]:
 	        co = allContigs[child]
-		cl.addNode(newContigName, child)
+		cl.addNode(newContigName, child, score)
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
 		fNewContig.write(seq)
 		# add neighbors
@@ -362,7 +362,7 @@ def main(argv):
     for c in allClusters:
 	#print "-----"
 	r = allClusters[c].root
-	l = allClusters[c].getAll()
+	l = allClusters[c].getAllLeaves()
 	cl = [li for li in l]
 	cl.append(r)
 	fOutC.write("{!s}\n".format(cl))

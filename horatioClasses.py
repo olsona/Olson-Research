@@ -20,17 +20,29 @@ class Cluster:
     def __str__(self):
 	return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
 
-    def getAll(self):
+    def getAllLeaves(self):
 	if self.root is None or self.dict is None:
 	    return []
 	else:
-	    return hutil.getLeavesUtil(self.dict, self.root)
+	    return hutil.getLeavesScoreTree(self.dict, self.root)
+	    
+    def getAllScores(self):
+        if self.root is None or self.dict is None:
+            return []
+        else:
+            return hutil.getScoresAll(self.dict)
+            
+    def getLeafScores(self):
+        if self.root is None or self.dict is None:
+            return []
+        else:
+            return hutil.getScoresLeaves(self.dict)
     
-    def addNode(self, parent, child):
+    def addNode(self, parent, child, score):
 	if parent in self.dict:
-	    self.dict[parent].append(child)
+	    self.dict[parent].append([child,score])
 	else:
-	    self.dict[parent] = [child]
+	    self.dict[parent] = [[child,score]]
 
     def addMatch(self, goodMatch):
 	name = goodMatch[0]
