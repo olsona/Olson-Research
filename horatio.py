@@ -149,8 +149,6 @@ def main(argv):
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
-        iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
-            str(cutSchedule[i]).zfill(2))
         
         # create DB and query files, apply user-supplied scoring function to them
         DB = "{!s}_{!s}_DB".format(baseName,i)
@@ -222,6 +220,7 @@ def main(argv):
 	l2 = open(fSeed + "-2",'w')
 	# Make concatenated seeds
 	for seed in matchDict.keys():
+	    print seed
 	    cl = contigs2Clusters[seed]
 	    newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 	    fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
