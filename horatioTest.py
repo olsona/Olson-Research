@@ -20,7 +20,7 @@ def main(argv):
         elif opt == "-s":
             score = arg
     
-    outlog = out + "_log"
+    outlog = out + "_" + score + "_log"
     fOut = open(outlog,'w')
     
     jList = [0.5,0.7,0.9]
