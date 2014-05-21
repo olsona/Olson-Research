@@ -28,3 +28,7 @@ $ python horatio.py -i <INPUT> -o <OUTPUT> -c <CUT> [-s <SCORE> -p <PATH> -n <NE
 
 
 The output will be two files, one a human-readable list of contigs in their final clusters, and one a cPickle-formatted dictionary containing the entire clustering with all the information held in each cluster.
+
+### Notes on use ###
+
+Horatio doesn’t modify any files that were extant before starting.  Many files are created during runtime, though, and it is important that no other programs modify any of these created files before Horatio is done.  The created files are either contigs (stored in a contigs folder, and cleaned up at each stage) or working lists and indices.  Because of this, one cannot run more than one instance of Horatio in the same folder at the same time.  If you want to run simultaneous instances of Horatio, make sure that each metagenome is in its own folder.
