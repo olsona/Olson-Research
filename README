@@ -14,7 +14,7 @@ $ python horatio.py -i <INPUT> -o <OUTPUT> -c <CUT> [-s <SCORE> -p <PATH> -n <NE
 
 <OUTPUT> is the path and prefix for all output files.  For example, -o /space2/olsona/Olson-Research/test1 will produce test1_clusters and test1_clusters_pickle in the Olson-Research directory.
 
-<CUT> is the cut schedule, entered in the form [x1,x2,…,xn].  The cut schedule [4,8,12,16,20] denotes cuts at 4kbp, 8kbp, 12kbp, 16kbp, and 20kbp.  (More on cut schedule later.)
+<CUT> is the cut schedule, entered in the form [x1,x2,…,xn], where xi is an integer.  The cut schedule [4,8,12,16,20] denotes cuts at 4kbp, 8kbp, 12kbp, 16kbp, and 20kbp, and will create a set of contigs of size >=20kbp, between 16kbp and 20kbp, between 12kbp and 16kbp, 8kbp and 12kbp, and 4kbp and 8kbp.
 
 <SCORE> is the scoring mechanism that you want to use, either ‘raiphy’, ‘tetra’ or ‘tacoa’.  The default value is ‘raiphy’.
 
@@ -24,4 +24,7 @@ $ python horatio.py -i <INPUT> -o <OUTPUT> -c <CUT> [-s <SCORE> -p <PATH> -n <NE
 
 <JOIN> is the threshold for merging two clusters, entered as a float.  If cluster C1 sees C2 as a neighbor with relative frequency <JOIN>, then the two clusters will be merged.
 
-<SPLIT> is the threshold for letting a contig start its own cluster, entered as a list of floats ([x1,x2,…,x(n-1)]).  If at level 
+<SPLIT> is the threshold for letting a contig start its own cluster, entered as a list of floats ([y1,y2,…,y(n-1)]).  If a contig from level [xi,x(i+1)] cannot find a matching cluster with score >= yi, then the contig becomes its own new cluster.
+
+
+The output will be two files, one a human-readable list of contigs in their final clusters, and one a cPickle-formatted dictionary containing the entire clustering with all the information held in each cluster.
