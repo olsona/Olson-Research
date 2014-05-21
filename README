@@ -1,0 +1,27 @@
+### Requirements ###
+In order to use Horatio, you must have:
+- My version of kiki (available here: https://github.com/olsona/kiki)
+- PDL (Perl Data Language)
+- Perl 5.16+
+- Python 2.7
+
+### Usage ###
+Horatio usage looks like this:
+
+$ python horatio.py -i <INPUT> -o <OUTPUT> -c <CUT> [-s <SCORE> -p <PATH> -n <NEIGHBOR> -j <JOIN> -l <SPLIT>]
+
+<INPUT> is the input metagenome file, in FASTA format.  It does not have to be tab-delimited; Horatio takes care of that.  
+
+<OUTPUT> is the path and prefix for all output files.  For example, -o /space2/olsona/Olson-Research/test1 will produce test1_clusters and test1_clusters_pickle in the Olson-Research directory.
+
+<CUT> is the cut schedule, entered in the form [x1,x2,…,xn].  The cut schedule [4,8,12,16,20] denotes cuts at 4kbp, 8kbp, 12kbp, 16kbp, and 20kbp.  (More on cut schedule later.)
+
+<SCORE> is the scoring mechanism that you want to use, either ‘raiphy’, ‘tetra’ or ‘tacoa’.  The default value is ‘raiphy’.
+
+<PATH> is the path to necessary RAIphy computation executables.  If <SCORE> is ‘raiphy’, then <PATH> must be entered.  For example, with my setup, <PATH> = /space2/olsona/kiki/bin/.
+
+<NEIGHBOR> is the threshold for considering clusters to be neighbors to a contig, entered as a float.  If <NEIGHBOR> = 0.1, and if cluster C1 is the best match for a contig CO with score S, and cluster C2 matches to CO with score within 10% of S, then C2 is considered to be a neighbor of CO.
+
+<JOIN> is the threshold for merging two clusters, entered as a float.  If cluster C1 sees C2 as a neighbor with relative frequency <JOIN>, then the two clusters will be merged.
+
+<SPLIT> is the threshold for letting a contig start its own cluster, entered as a list of floats ([x1,x2,…,x(n-1)]).  If at level 
