@@ -20,11 +20,11 @@ $ python horatio.py -i <INPUT> -o <OUTPUT> -c <CUT> [-s <SCORE> -p <PATH> -n <NE
 
 <PATH> is the path to necessary RAIphy computation executables.  If <SCORE> is ‘raiphy’, then <PATH> must be entered.  For example, with my setup, <PATH> = /space2/olsona/kiki/bin/.
 
-<NEIGHBOR> is the threshold for considering clusters to be neighbors to a contig, entered as a float.  If <NEIGHBOR> = 0.1, and if cluster C1 is the best match for a contig CO with score S, and cluster C2 matches to CO with score within 10% of S, then C2 is considered to be a neighbor of CO.
+<NEIGHBOR> is the threshold for considering clusters to be neighbors to a contig, entered as a float between 0 and 1.  If <NEIGHBOR> = 0.1, and if cluster C1 is the best match for a contig CO with score S, and cluster C2 matches to CO with score within 10% of S, then C2 is considered to be a neighbor of CO.
 
-<JOIN> is the threshold for merging two clusters, entered as a float.  If cluster C1 sees C2 as a neighbor with relative frequency <JOIN>, then the two clusters will be merged.
+<JOIN> is the threshold for merging two clusters, entered as a float between 0 and 1.  If cluster C1 sees C2 as a neighbor with relative frequency <JOIN>, then the two clusters will be merged.
 
-<SPLIT> is the threshold for letting a contig start its own cluster, entered as a list of floats ([y1,y2,…,y(n-1)]).  If a contig from level [xi,x(i+1)] cannot find a matching cluster with score >= yi, then the contig becomes its own new cluster.
+<SPLIT> is the threshold for letting a contig start its own cluster, entered as a list of floats ([y1,y2,…,y(n-1)]).  If a contig from level [xi,x(i+1)] cannot find a matching cluster with score >= yi, then the contig becomes its own new cluster.  The values of [yi] should reflect the scoring mechanism used; RAIphy would benefit from yi between -17 and -16, whereas TETRA would benefit from yi between 0.2 and 0.5.
 
 
 The output will be two files, one a human-readable list of contigs in their final clusters, and one a cPickle-formatted dictionary containing the entire clustering with all the information held in each cluster.
