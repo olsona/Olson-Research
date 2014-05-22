@@ -408,10 +408,11 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
     
     
 # to process an entire folder    
-def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshold, outFile):
-    import glob, string, time
+def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile):
+    import glob, string, time, numpy
     import cPickle as pickle
     from horatioClasses import Cluster
+    from scipy.stats import pearsonr
     
     cutDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
             'lowClose': [2,4,6,8,10,14,18,22],
@@ -426,7 +427,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshol
             names.append(nm)
             
     outF = open(outFile,'w')
-    #outF.write("Source;Abundance;Score;Cut;N;J;L;Threshold;SizeThreshold;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen\n")
+    #outF.write("Source;Abundance;Score;Cut;N;J;L;SizeThreshold;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;avg2pN;avg2pL;low2pN;low2pL;sd2pN;sd2pL;pN2pL;mpN;mpL\n")
     
     # get Z values for each correct clustering
     corrList = glob.glob("{!s}*".format(correctFilePrefix))
@@ -447,13 +448,18 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshol
                 clen = int(c.rsplit("_",2)[1])
                 corrZLen[no][corName] += clen
     
-    clustMemList = []
-    
     ctr = 0
+    threshold = 0.0
     
     fileList = glob.glob("{!s}/*_pickle".format(inFolder))
     start = time.time()
     for fi in fileList:
+        clustMemList = []
+        avgScore = []
+        lowScore = []
+        sdScore = []
+        purityNo = []
+        purityLen = []
         #start = time.time()
         if ctr % 10 == 0:
             ntime = time.time()
@@ -485,8 +491,12 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshol
         
         inClustPre = pickle.load(open(fi,"rb"))
         inClust = []
+        list2Clusters = {}
         for i in inClustPre:
-            inClust.append(inClustPre[i].getAll())
+            ncl = inClustPre[i].getAllLeaves()
+            list2Clusters[ncl[0]] = inClustPre[i]
+            inClust.append(ncl)
+        #print inClust
         TPDictNo = {na:0 for na in names}
         FPDictNo = {na:0 for na in names}
         TPDictLen = {na:0 for na in names}
@@ -500,6 +510,18 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshol
             maxLen = 0
             maxLenName = ''
             totalLen = 0
+            # get information about scores
+            scores = list2Clusters[cl[0]].getLeafScores()
+            if scores and len(cl) >= sizeThreshold:
+                avgScore.append(float(numpy.mean(scores)))
+                lowScore.append(float(numpy.min(scores)))
+                sdScore.append(float(numpy.std(scores)))
+            elif len(cl) >= sizeThreshold:
+                avgScore.append(0.0)
+                lowScore.append(0.0)
+                sdScore.append(0.0)
+            
+            #get representations for each name
             for c in cl:
                 #print c
                 for nL in names:
@@ -522,11 +544,15 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshol
                 fpn = len(cl) - tpn
                 tpl = maxLen
                 fpl = totalLen - tpl
-                if float(tpn)/float(len(cl)) > threshold:
+                pN = float(tpn)/float(len(cl))
+                pL = float(tpl)/float(totalLen)
+                purityNo.append(pN)
+                purityLen.append(pL)
+                if pN > threshold:
                     repDictNo[maxNoName] += 1
                     TPDictNo[maxNoName] += tpn
                     FPDictNo[maxNoName] += fpn
-                if float(tpl)/float(totalLen) > threshold:
+                if pL > threshold:
                     repDictLen[maxLenName] += 1
                     TPDictLen[maxLenName] += tpl
                     FPDictLen[maxLenName] += fpl
@@ -582,10 +608,24 @@ def processFolder(inFolder, nameFile, correctFilePrefix, threshold, sizeThreshol
         avgClustSize = float(sum(clustMemList))/float(len(clustMemList))
         minClustSize = min(clustMemList)
         maxClustSize = max(clustMemList)
+        try:
+            avg2pN, _ = pearsonr(avgScore,purityNo)
+            avg2pL, _ = pearsonr(avgScore,purityLen)
+            low2pN, _ = pearsonr(lowScore,purityNo)
+            low2pL, _ = pearsonr(lowScore,purityLen)
+            sd2pN, _ = pearsonr(sdScore,purityNo)
+            sd2pL, _ = pearsonr(sdScore,purityLen)
+            pN2pL, _ = pearsonr(purityNo,purityLen)
+            mpN = numpy.mean(purityNo)
+            mpL = numpy.mean(purityLen)
+        except:
+            print len(avgScore), len(lowScore), len(sdScore), len(purityScore), len(purityLen)
+            print("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
         
         outF.write("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
-        outF.write("{:01.2f};{!s};{:03.2f};{!s};{!s};".format(threshold,sizeThreshold,avgClustSize,minClustSize,maxClustSize))
-        outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+        outF.write("{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,avgClustSize,minClustSize,maxClustSize))
+        outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+        outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
         ctr += 1
         
         

@@ -38,8 +38,7 @@ def main(argv):
         for s in sList:
             for j in jList:
                 for n in nList:
-                    splitList = [s]*(len(tDict[t])-2)
-                    splitList.insert(0,-20.0)
+                    splitList = [s]*(len(tDict[t])-1)
                     tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
                     sStr = "["+",".join([str(si) for si in splitList])+"]"
                     print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)

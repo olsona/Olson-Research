@@ -12,7 +12,7 @@ import cPickle as pickle
 # imports necessary for debugging and correctness
 #import matplotlib as mpl
 #mpl.use('Agg')
-#import horatioCorrectness as hcorr
+import horatioCorrectness as hcorr
 #import pprint
 
 def main(argv):
@@ -144,11 +144,14 @@ def main(argv):
     newContigCount = 0
 
     # ***
-    #rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-    #wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
+        
+        iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
+            str(cutSchedule[i]).zfill(2))
         
         # create DB and query files, apply user-supplied scoring function to them
         DB = "{!s}_{!s}_DB".format(baseName,i)
@@ -205,12 +208,12 @@ def main(argv):
 	    # ***
 	            
 	    # ***
-            #clName = contigs2Clusters[dbItem].seed
-            #isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
-            #if isCorrect:
-            #    rightDists[iterString].append(bestScore)
-            #else:
-            #    wrongDists[iterString].append(bestScore)
+            clName = contigs2Clusters[dbItem].seed
+            isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
+            if isCorrect:
+                rightDists[iterString].append(bestScore)
+            else:
+                wrongDists[iterString].append(bestScore)
             # ***
 	
 	fMatching.close()
@@ -344,13 +347,13 @@ def main(argv):
 	    clust.closeDict = {}
 	 
 	# *** compute correctness distributions
-	#rdata = rightDists[iterString]
-	#wdata = wrongDists[iterString]
+	rdata = rightDists[iterString]
+	wdata = wrongDists[iterString]
 	#if rdata:
 	#    print "Right ({!s}): {:03.2f} - {:03.2f}".format(len(rdata),min(rdata),max(rdata))
 	#if wdata:
 	#    print "Wrong ({!s}): {:03.2f} - {:03.2f}".format(len(wdata),min(wdata),max(wdata))
-	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
         #print iterString + " done"
