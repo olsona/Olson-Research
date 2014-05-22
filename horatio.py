@@ -146,6 +146,8 @@ def main(argv):
     # ***
     rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
     wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+    distLog = open("{!s}_distLog".format(outputFile),"w")
+    # ***
 
     #---MAIN LOOP---#
     for i in range(leng-1, 0, -1):
@@ -349,11 +351,13 @@ def main(argv):
 	# *** compute correctness distributions
 	rdata = rightDists[iterString]
 	wdata = wrongDists[iterString]
-	#if rdata:
-	#    print "Right ({!s}): {:03.2f} - {:03.2f}".format(len(rdata),min(rdata),max(rdata))
-	#if wdata:
-	#    print "Wrong ({!s}): {:03.2f} - {:03.2f}".format(len(wdata),min(wdata),max(wdata))
-	hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+	distLog.write(iterString + "\n")
+	if rdata:
+	    distLog.write("Right ({!s}): {:03.2f} - {:03.2f}\n".format(len(rdata),min(rdata),max(rdata)))
+	if wdata:
+	    distLog.write("Wrong ({!s}): {:03.2f} - {:03.2f}\n".format(len(wdata),min(wdata),max(wdata)))
+	distLog.write("\n")
+	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
         #print iterString + " done"
@@ -381,6 +385,7 @@ def main(argv):
     for i in range(leng+1):
 	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
     
+    distLog.close()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
