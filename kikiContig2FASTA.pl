@@ -10,7 +10,7 @@ while (<IN>) {
     print OUT ">$name\_$sz\_$ct\n";
     $wrct = 0;
     while ($wrct <= $sz) {
-        $subs = substr($g,wrct,60);
+        $subs = substr($g,$wrct,60);
         print OUT "$subs\n";
         $wrct += 60;
     }
