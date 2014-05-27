@@ -12,7 +12,7 @@ while (<IN>) {
     while ($wrct <= $sz) {
         $subs = substr($g,wrct,60);
         print OUT "$subs\n";
-        wrct += 60;
+        $wrct += 60;
     }
     $ct++;
 }
