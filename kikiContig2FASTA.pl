@@ -7,14 +7,7 @@ my $ct = 0;
 while (<IN>) {
     chomp;
     ($a,$sz,$c,$d,$e,$f,$g) = split("\t");
-    print OUT ">$name\_$sz\_$ct\n";
-    $wrct = 0;
-    while ($wrct <= $sz) {
-        $subs = substr($g,$wrct,60);
-        print OUT "$subs\n";
-        $wrct += 60;
-    }
-    $ct++;
+    print OUT ">$name\_$sz\_$ct\n$g\n";
 }
 close(IN);
 close(OUT);
