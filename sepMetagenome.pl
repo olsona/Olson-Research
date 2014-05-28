@@ -3,6 +3,7 @@ my ($path, $input, $out) = @ARGV;
 open(IN, $input);
 open(OUT1, '>', "$out-1");
 open(OUT2, '>', "$out-2");
+$ct=0;
 while (<IN>) {
     chomp;
     ($name, $seq) = split("\t");
@@ -13,6 +14,7 @@ while (<IN>) {
     close(FI);
     print OUT1 "$path$spname.fna\n";
     print OUT2 "$spname\t$path$spname.fna\n";
+    $ct += 1;
 }
 close(IN);
 close(OUT1);
