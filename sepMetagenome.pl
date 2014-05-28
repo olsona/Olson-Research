@@ -19,3 +19,4 @@ while (<IN>) {
 close(IN);
 close(OUT1);
 close(OUT2);
+print $ct;
