@@ -7,6 +7,7 @@ while (<IN>) {
     chomp;
     ($name, $seq) = split("\t");
     $nname = substr $name, 1;
+    print $nname
     open(FI, '>', "$path$nname.fna");
     print FI "$name\n$seq";
     close(FI);

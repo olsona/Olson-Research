@@ -417,7 +417,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
     cutDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
             'lowClose': [2,4,6,8,10,14,18,22],
             '2by4': [2,6,10,14,18,22],
-            '4by4': [4,8,12,16,20]}
+            '4by4': [4,8,12,16,20],
+            '4allClose': [4,6,8,10,12,14,16,18,20,22],
+            '4lowClose': [4,6,8,10,14,18,22]
+            }
             
     names = []
     nf = open(nameFile,'r')
@@ -631,3 +634,45 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
         
     outF.close()
     print "done"
+    
+
+def processDistLog(inFolder, out):
+    import glob
+    outF = open(out,'w')
+    fileList = glob.glob("{!s}/*_distLog".format(inFolder))
+    for fi in fileList:
+        fileName = fi.split("/")[-1]
+        fileSplit = fileName.split("_")
+        mText = fileSplit[0]
+        mAbund = fileSplit[1]
+        score = fileSplit[2]
+        nInd = fileSplit.index("N")
+        n = float(fileSplit[nInd+1])
+        jInd = fileSplit.index("J")
+        j = float(fileSplit[jInd+1])
+        cInd = fileSplit.index("C")
+        cText = fileSplit[cInd+1]
+        lInd = fileSplit.index("L")
+        l = float(fileSplit[lInd+1])
+        
+        heading = "Source;Abundance;Score;Cut;N;J;L;Range;RightNum;RightMin;RightMax;WrongNum;WrongMin;WrongMax"
+        
+        f = open(fi,'r')
+        lines = f.readlines()
+        for li in lines:
+            li = li.rstrip()
+            if li:
+                if li[0].isdigit():
+                    outF.write("{!s};{!s};{!s};{!s};{!s};{!s};{!s};{!s};".\
+                        format(mText, mAbund, score, n, j, cText, l, li.rstrip()))
+                elif li[0] == "R":
+                    num = li.split("(")[1].split(")")[0]
+                    rs = li.split(" ")
+                    outF.write("{!s};{!s};{!s};".format(num,rs[-1],rs[-3]))
+                elif li[0] == "W":
+                    num = li.split("(")[1].split(")")[0]
+                    rs = li.split(" ")
+                    outF.write("{!s};{!s};{!s}\n".format(num,rs[-1],rs[-3]))
+
+    outF.close()
+    f.close()
