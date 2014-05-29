@@ -12,9 +12,7 @@ for my $input (@files) {
         chomp;
         my $chr = substr $_, 0, 1;
         if ( $chr == '>' ) {
-            if FI {
-                close(FI);
-            }
+            close(FI) if defined $FI;
             my $name = substr $_, 1;
             my $spname = (split '|', $name)[4];
             my $cname = (split ',', $spname)[0];
