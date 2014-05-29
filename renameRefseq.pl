@@ -10,7 +10,7 @@ for my $input (@files) {
         chomp;
         my $cr = substr $_, 0, 1;
         print $cr . "\n";
-        if ($cr == '>' ) {
+        if ($cr eq ">" ) {
             print "hello\n";
             close($outfh) if defined $outfh;
             my $name = substr $_, 1;
