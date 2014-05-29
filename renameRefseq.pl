@@ -14,7 +14,8 @@ for my $input (@files) {
             print "hello\n";
             close($outfh) if defined $outfh;
             my $name = substr $_, 1;
-            my $spname = (split '|', $name)[4];
+            print $name . "\n";
+            my $spname = (split '|', $name)[5];
             print $spname . "\n";
             my $cname = (split ',', $spname)[0];
             open($outfh, '>', "$outpath$cname.fna");
