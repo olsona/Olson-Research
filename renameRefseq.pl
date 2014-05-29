@@ -12,6 +12,7 @@ for my $input (@files) {
         if ( $chr == '>' ) {
             close($FI) if (defined $FI);
             my $name = substr $_, 1;
+            print $name
             my $spname = (split '|', $name)[4];
             my $cname = (split ',', $spname)[0];
             open($FI, '>', "$outpath$cname.fna");
