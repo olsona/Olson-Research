@@ -3,7 +3,7 @@ my ($inpath, $outpath, $out) = @ARGV;
 my @files = <$inpath/*.fna>;
 open($OUT1, '>', "$out-1");
 open($OUT2, '>', "$out-2");
-my $d = quotemeta('|');
+my $d = qr/\|/;
 
 for my $input (@files) {
     open($IN, $input);
@@ -19,7 +19,7 @@ for my $input (@files) {
             print $name . "\n";
             
             my $spname = (split '|', $name)[5];
-            my @vals = split(/$d/, $name);
+            my @vals = split $d, $name;
             foreach my $val (@values) {
                 print $val . "\n";
             }
