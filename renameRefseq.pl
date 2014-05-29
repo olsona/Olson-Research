@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use File::Slurp;
-my ($path, $out) = @ARGV;
-my @files = read_dir $path;
+my ($inpath, $outpath, $out) = @ARGV;
+my @files = read_dir $inpath;
 open(OUT1, '>', "$out-1");
 open(OUT2, '>', "$out-2");
 for my $input (@files) {
@@ -11,11 +11,11 @@ for my $input (@files) {
         ($name, $seq) = split("\t");
         $spname = (split '|', $name)[4];
         $cname = (split ',' $spname)[0];
-        open(FI, '>', "$path$cname.fna");
+        open(FI, '>', "$outpath$cname.fna");
         print FI ">$cname\n$seq\n";
         close(FI);
-        print OUT1 "$path$cname.fna\n";
-        print OUT2 "$cname\t$path$cname.fna\n";
+        print OUT1 "$outpath$cname.fna\n";
+        print OUT2 "$cname\t$outpath$cname.fna\n";
     }
 }
 close(IN);
