@@ -42,7 +42,9 @@ def writeTabSequences(path1,path2):
         if f[-3:] == 'fna':
             f2 = open(path2 + "/" + f, 'w')
             nm, se = readSequence(path1 + "/" + f)
-            print nm.rstrip()
+            nm = nm.rstrip()
+            #spname = nm.split("|")[4]
+            #cname = spname.split(",")[0]
             f2.write(">" + nm.rstrip() + "\t" + se + "\n")
             f2.close()
 
