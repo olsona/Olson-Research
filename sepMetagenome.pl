@@ -10,7 +10,7 @@ while (<IN>) {
     $nname = substr $name, 1;
     $spname = (split '_len', $nname)[0];
     open(FI, '>', "$path$spname.fna");
-    print FI ">$spname\n$seq";
+    print FI ">$spname\n$seq\n";
     close(FI);
     print OUT1 "$path$spname.fna\n";
     print OUT2 "$spname\t$path$spname.fna\n";
