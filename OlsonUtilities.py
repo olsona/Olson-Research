@@ -35,6 +35,17 @@ def writeProperSequences(path1, path2):
             f2.close()
 
 
+def writeTabSequences(path1,path2)
+    import os
+    fls = os.listdir(path1)
+    for f in fls:
+        if f[-3:] == 'fna':
+            f2 = open(path2 + "/" + f, 'w')
+            nm, se = readSequence(path1 + "/" + f)
+            f2.write(">" + nm + "\t" + se + "\n")
+            f2.close()
+
+
 def ensureDir(pth):
     # source: http://stackoverflow.com/questions/273192/python-best-way-to-create-directory-if-it-doesnt-exist-for-file-write
     import os
