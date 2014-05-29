@@ -35,7 +35,7 @@ def writeProperSequences(path1, path2):
             f2.close()
 
 
-def writeTabSequences(path1,path2)
+def writeTabSequences(path1,path2):
     import os
     fls = os.listdir(path1)
     for f in fls:
