@@ -17,7 +17,7 @@ for my $input (@files) {
             my $name = substr $_, 1;
             my $spname = (split $d, $name)[4];
             my $cname = (split ',', $spname)[0];
-            my $fname = substr $cname 1;
+            my $fname = substr $cname, 1;
             print $fname . "\n";
             open($outfh, '>', "$outpath$fname.fna");
             print $outfh ">$fname\t";
