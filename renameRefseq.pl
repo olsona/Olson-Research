@@ -9,7 +9,7 @@ for my $input (@files) {
         chomp;
         ($name, $seq) = split("\t");
         $spname = (split '|', $name)[4];
-        $cname = (split ',' $spname)[0];
+        $cname = (split ',' , $spname)[0];
         open(FI, '>', "$outpath$cname.fna");
         print FI ">$cname\n$seq\n";
         close(FI);
