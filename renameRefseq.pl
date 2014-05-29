@@ -3,6 +3,7 @@ my ($inpath, $outpath, $out) = @ARGV;
 my @files = <$inpath/*.fna>;
 open($OUT1, '>', "$out-1");
 open($OUT2, '>', "$out-2");
+my $d = '|';
 for my $input (@files) {
     open($IN, $input);
     my $outfh;
@@ -15,8 +16,9 @@ for my $input (@files) {
             close($outfh) if defined $outfh;
             my $name = substr $_, 1;
             print $name . "\n";
+            
             my $spname = (split '|', $name)[5];
-            my @vals = split('\|', $name);
+            my @vals = split(/$d/, $name);
             foreach my $val (@values) {
                 print $val . "\n";
             }
