@@ -10,7 +10,8 @@ for my $input (@files) {
     my $seq = "";
     while (<IN>) {
         chomp;
-        if substr $_, 0, 1 = '>' {
+        my $chr = substr $_, 0, 1;
+        if [ $chr == '>' ] {
             if FI {
                 close(FI);
             }
