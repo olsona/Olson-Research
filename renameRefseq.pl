@@ -21,6 +21,7 @@ for my $input (@files) {
             print $OUT2 "$cname\t$outpath$cname.fna\n";
         }
         elsif (defined $outfh) {
+            print "hi\n";
             print $outfh $_;
         }
     }
