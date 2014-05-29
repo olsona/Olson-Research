@@ -16,7 +16,11 @@ for my $input (@files) {
             my $name = substr $_, 1;
             print $name . "\n";
             my $spname = (split '|', $name)[5];
-            print $spname . "\n";
+            my @vals = split('|', $name);
+            foreach my $val (@values) {
+                print $val . "\n";
+            }
+            #print $spname . "\n";
             my $cname = (split ',', $spname)[0];
             open($outfh, '>', "$outpath$cname.fna");
             print $outfh ">$cname\t";
