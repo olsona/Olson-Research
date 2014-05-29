@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use File::Slurp;
-my ($path, $inFolder, $out) = @ARGV;
+my ($path, $out) = @ARGV;
 my @files = read_dir $path;
 open(OUT1, '>', "$out-1");
 open(OUT2, '>', "$out-2");
