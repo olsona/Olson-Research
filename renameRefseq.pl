@@ -20,7 +20,7 @@ for my $input (@files) {
             
             my $spname = (split '|', $name)[5];
             my @vals = split $d, $name;
-            foreach my $val (@values) {
+            foreach my $val (@vals) {
                 print $val . "\n";
             }
             #print $spname . "\n";
