@@ -9,11 +9,12 @@ for my $input (@files) {
     while (<$IN>) {
         chomp;
         my $cr = substr $_, 0, 1;
-        print $cr . "\n";
+        #print $cr . "\n";
         if ($cr eq ">" ) {
             print "hello\n";
             close($outfh) if defined $outfh;
             my $name = substr $_, 1;
+            print $name . "\n";
             my $spname = (split '|', $name)[4];
             my $cname = (split ',', $spname)[0];
             open($outfh, '>', "$outpath$cname.fna");
@@ -22,7 +23,7 @@ for my $input (@files) {
             print $OUT2 "$cname\t$outpath$cname.fna\n";
         }
         else {
-            print "hi\n";
+            #print "hi\n";
             print $outfh $_;
         }
     }
