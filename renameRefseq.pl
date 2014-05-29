@@ -1,7 +1,6 @@
 #!/usr/bin/perl
-use File::Slurp;
 my ($inpath, $outpath, $out) = @ARGV;
-my @files = read_dir $inpath;
+my @files = <$inpath/*.fna>;
 open(OUT1, '>', "$out-1");
 open(OUT2, '>', "$out-2");
 for my $input (@files) {
