@@ -11,7 +11,7 @@ for my $input (@files) {
     while (<IN>) {
         chomp;
         my $chr = substr $_, 0, 1;
-        if [ $chr == '>' ] {
+        if ( $chr == '>' ) {
             if FI {
                 close(FI);
             }
