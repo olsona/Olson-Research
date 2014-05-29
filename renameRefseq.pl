@@ -3,7 +3,8 @@ my ($inpath, $outpath, $out) = @ARGV;
 my @files = <$inpath/*.fna>;
 open($OUT1, '>', "$out-1");
 open($OUT2, '>', "$out-2");
-my $d = '|';
+my $d = quotemeta('|');
+
 for my $input (@files) {
     open($IN, $input);
     my $outfh;
