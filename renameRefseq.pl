@@ -9,6 +9,7 @@ for my $input (@files) {
     while (<$IN>) {
         chomp;
         my $cr = substr $_, 0, 1;
+        print $cr . "\n";
         if ($cr == '>' ) {
             print "hello\n";
             close($outfh) if defined $outfh;
@@ -20,7 +21,7 @@ for my $input (@files) {
             print $OUT1 "$outpath$cname.fna\n";
             print $OUT2 "$cname\t$outpath$cname.fna\n";
         }
-        elsif (defined $outfh) {
+        else {
             print "hi\n";
             print $outfh $_;
         }
