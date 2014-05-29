@@ -10,6 +10,7 @@ for my $input (@files) {
         chomp;
         my $cr = substr $_, 0, 1;
         if ($cr == '>' ) {
+            print "hello\n";
             close($outfh) if defined $outfh;
             my $name = substr $_, 1;
             my $spname = (split '|', $name)[4];
