@@ -16,7 +16,7 @@ for my $input (@files) {
             my $name = substr $_, 1;
             print $name . "\n";
             my $spname = (split '|', $name)[5];
-            my @vals = split('|', $name);
+            my @vals = split('\|', $name);
             foreach my $val (@values) {
                 print $val . "\n";
             }
