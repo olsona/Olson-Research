@@ -456,14 +456,14 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
             corrZNo[no][corName] = len(cl)
             for c in cl:
                 clen = int(c.rsplit("_",2)[1])
-                if clen >= 4000:
-                    Zk[4] += 1
-                if clen >= 6000:
-                    Zk[6] += 1
-                if clen >= 8000:
-                    Zk[8] += 1
-                if clen >= 10000:
-                    Zk[10] += 1
+                #if clen >= 4000:
+                #    Zk[4] += 1
+                #if clen >= 6000:
+                #    Zk[6] += 1
+                #if clen >= 8000:
+                #    Zk[8] += 1
+                #if clen >= 10000:
+                #    Zk[10] += 1
                 corrZLen[no][corName] += clen
     
     ctr = 0
@@ -663,7 +663,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
         outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
         #outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
         for i in [4,6,8,10]:
-            outF.write(";{:01.4f};{:01.4f}".format(SnK[i],SpK[i]))
+            #outF.write(";{:01.4f};{:01.4f}".format(SnK[i],SpK[i]))
+            outF.write(";{:01.4f}".format(SpK[i]))
         outF.write("\n")
         ctr += 1
         
