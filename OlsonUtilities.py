@@ -43,7 +43,7 @@ def writeTabSequences(path1,path2):
             f2 = open(path2 + "/" + f, 'w')
             nm, se = readSequence(path1 + "/" + f)
             print nm.rstrip()
-            f2.write(">" + nm + "\t" + se + "\n")
+            f2.write(">" + nm.rstrip() + "\t" + se + "\n")
             f2.close()
 
 
