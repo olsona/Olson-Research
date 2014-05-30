@@ -541,15 +541,17 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
             #    lowScore.append(0.0)
             #    sdScore.append(0.0)
             
+            properLen = len(cl)
+            
             #get representations for each name
             for c in cl:
                 #print c
                 totalK = {i:0 for i in [4,6,8,10]}
                 repK = {na:{i:0 for i in [4,6,8,10]} for na in names}
+                mylen = int(c.rsplit('_',2)[1])
                 for nL in names:
                     if string.find(c,nL) != -1:
                         myRepDictNo[nL] += 1
-                        mylen = int(c.rsplit('_',2)[1])
                         myRepDictLen[nL] += mylen
                         totalLen += mylen
                         for i in [4,6,8,10]:
@@ -557,21 +559,24 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
                                 totalK[i] += 1
                                 repK[nL][i] += 1
                         break
+                if string.find(c,'pseudocontig') != -1:
+                    properlen -= 1
+                    totalLen -= mylen
             #pprint.pprint(repDict)
             for nL in myRepDictNo:
                 if myRepDictNo[nL] > maxNo:
                     maxNo = myRepDictNo[nL]
                     maxNoName = nL
-            if len(cl) >= sizeThreshold:
+            if properlen >= sizeThreshold:
                 for nL in myRepDictLen:
                     if myRepDictLen[nL] > maxLen:
                         maxLen = myRepDictLen[nL]
                         maxLenName = nL
                 tpn = maxNo
-                fpn = len(cl) - tpn
+                fpn = properlen - tpn
                 tpl = maxLen
                 fpl = totalLen - tpl
-                pN = float(tpn)/float(len(cl))
+                pN = float(tpn)/float(properlen)
                 pL = float(tpl)/float(totalLen)
                 purityNo.append(pN)
                 purityLen.append(pL)

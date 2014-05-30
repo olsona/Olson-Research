@@ -26,6 +26,15 @@ class Cluster:
 	else:
 	    return getLeavesScoreTree(self.dict, self.root)
 	    
+    def getAllLeavesHack(self):
+        leaves = []
+	for l in dict:    
+	    if dict[l] is None:
+	        if not l.startswith('pseudocontig'):
+	            leaves.append(l)
+	return leaves
+	    
+	    
     def getAllScores(self):
         if self.root is None or self.dict is None:
             return []
