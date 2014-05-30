@@ -35,6 +35,25 @@ def writeProperSequences(path1, path2):
             f2.close()
 
 
+def concatenateSequences(inFolder,outFolder, suffix) {
+    import os
+    fls = os.listdir(inFolder)
+    l = len(suffix)
+    for f in fls:
+        if f[-l:] == suffix:
+            f2 = open(outFolder + "/" + f, 'w')
+            fi = open(f,'r')
+            concat = ''
+            buf = fi.readline().rstrip()
+            while buf:
+                if not buf.startswith('>'):
+                    concat = concat + buf
+                buf = fi.readline()
+            nm = f[:-(l+1)]
+            f2.write("{!s}\t{!s}\n".format(nm,concat))
+}
+
+
 def writeTabSequences(path1,path2):
     import os
     fls = os.listdir(path1)
