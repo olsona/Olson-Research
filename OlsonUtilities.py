@@ -50,7 +50,7 @@ def concatenateSequences(inFolder,outFolder, suffix):
                     concat = concat + buf
                 buf = fi.readline()
             nm = f[:-(l+1)]
-            f2.write(">{!s}\t{!s}\n".format(nm,concat))
+            f2.write(">{!s}\t{!s}\n".format(nm,concat.upper()))
 
 
 def writeTabSequences(path1,path2):
