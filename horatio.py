@@ -376,7 +376,7 @@ def main(argv):
 	        pass
 	    else:
 	        lproper.append(item)
-	cl = [li for li in l]
+	cl = [li for li in lproper]
 	cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
