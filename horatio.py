@@ -370,6 +370,12 @@ def main(argv):
 	#print "-----"
 	r = allClusters[c].root
 	l = allClusters[c].getAllLeaves()
+	lproper = []
+	for item in l:
+	    if item.startswith('pseudocontig'):
+	        pass
+	    else:
+	        lproper.add(item)
 	cl = [li for li in l]
 	cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
