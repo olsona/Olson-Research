@@ -42,7 +42,7 @@ def concatenateSequences(inFolder,outFolder, suffix):
     for f in fls:
         if f[-l:] == suffix:
             f2 = open(outFolder + "/" + f, 'w')
-            fi = open(f,'r')
+            fi = open(inFolder + "/" + f,'r')
             concat = ''
             buf = fi.readline().rstrip()
             while buf:
