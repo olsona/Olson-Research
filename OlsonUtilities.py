@@ -48,6 +48,7 @@ def concatenateSequences(inFolder,outFolder, suffix):
             while buf:
                 if not buf.startswith('>'):
                     concat = concat + buf
+                    print "adding a new line"
                 buf = fi.readline()
             nm = f[:-(l+1)]
             f2.write(">{!s}\t{!s}\n".format(nm,concat.upper()))
