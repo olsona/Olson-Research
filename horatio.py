@@ -369,7 +369,7 @@ def main(argv):
     for c in allClusters:
 	#print "-----"
 	r = allClusters[c].root
-	l = allClusters[c].getAllLeavesHack()
+	l = allClusters[c].getAllLeaves()
 	cl = [li for li in l]
 	cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
