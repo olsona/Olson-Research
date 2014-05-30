@@ -47,6 +47,7 @@ def concatenateSequences(inFolder,outFolder, suffix):
             buf = fi.readline().rstrip()
             while buf:
                 if not buf.startswith('>'):
+                    print "whooo"
                     concat = concat + buf
                 buf = fi.readline().rstrip()
             nm = f[:-(l+1)]
