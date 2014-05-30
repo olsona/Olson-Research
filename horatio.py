@@ -379,7 +379,10 @@ def main(argv):
 	    else:
 	        lproper.append(item)
 	cl = [li for li in lproper]
-	cl.append(r)
+	if r.startswith('pseudocontig'):
+	    pass
+	else:
+	    cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
     fOutC.close()
