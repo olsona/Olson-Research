@@ -28,12 +28,11 @@ class Cluster:
 	    
     def getAllLeavesHack(self):
         leaves = []
-	for l in dict:    
-	    if dict[l] is None:
+	for l in self.dict:    
+	    if self.dict[l] is None:
 	        if not l.startswith('pseudocontig'):
 	            leaves.append(l)
-	return leaves
-	    
+	return leaves    
 	    
     def getAllScores(self):
         if self.root is None or self.dict is None:
