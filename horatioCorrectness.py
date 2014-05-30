@@ -408,7 +408,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
     
     
 # to process an entire folder    
-def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile):
+def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile, maxsize):
     import glob, string, time, numpy
     import cPickle as pickle
     from horatioClasses import Cluster
@@ -540,43 +540,40 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
             #    avgScore.append(0.0)
             #    lowScore.append(0.0)
             #    sdScore.append(0.0)
-            
-            properLen = len(cl)
+            totalK = {i:0 for i in [4,6,8,10]}
+            repK = {na:{i:0 for i in [4,6,8,10]} for na in names}
             
             #get representations for each name
             for c in cl:
                 #print c
-                totalK = {i:0 for i in [4,6,8,10]}
-                repK = {na:{i:0 for i in [4,6,8,10]} for na in names}
                 mylen = int(c.rsplit('_',2)[1])
-                for nL in names:
-                    if string.find(c,nL) != -1:
-                        myRepDictNo[nL] += 1
-                        myRepDictLen[nL] += mylen
-                        totalLen += mylen
-                        for i in [4,6,8,10]:
-                            if mylen > i*1000:
-                                totalK[i] += 1
-                                repK[nL][i] += 1
-                        break
-                if string.find(c,'pseudocontig') != -1:
-                    properlen -= 1
-                    totalLen -= mylen
+                if mylen < maxsize:
+                    for nL in names:
+                        if string.find(c,nL) != -1:
+                            myRepDictNo[nL] += 1
+                            myRepDictLen[nL] += mylen
+                            totalLen += mylen
+                            for i in [4,6,8,10]:
+                                if mylen > i*1000:
+                                    totalK[i] += 1
+                                    repK[nL][i] += 1
+                            break
+                        
             #pprint.pprint(repDict)
             for nL in myRepDictNo:
                 if myRepDictNo[nL] > maxNo:
                     maxNo = myRepDictNo[nL]
                     maxNoName = nL
-            if properlen >= sizeThreshold:
+            if len(cl) >= sizeThreshold:
                 for nL in myRepDictLen:
                     if myRepDictLen[nL] > maxLen:
                         maxLen = myRepDictLen[nL]
                         maxLenName = nL
                 tpn = maxNo
-                fpn = properlen - tpn
+                fpn = len(cl) - tpn
                 tpl = maxLen
                 fpl = totalLen - tpl
-                pN = float(tpn)/float(properlen)
+                pN = float(tpn)/float(len(cl))
                 pL = float(tpl)/float(totalLen)
                 purityNo.append(pN)
                 purityLen.append(pL)
@@ -718,3 +715,192 @@ def processDistLog(inFolder, out):
 
     outF.close()
     f.close()
+
+
+def processOne(inFile, nameFile, correctFile, sizeThreshold, outFile, donotinclude):
+    import string
+    import cPickle as pickle
+    from horatioClasses import Cluster
+            
+    names = []
+    nf = open(nameFile,'r')
+    for li in nf.readlines():
+        nm = li.rstrip()
+        if len(nm) > 0:
+            names.append(nm)
+            
+    outF = open(outFile,'w')
+    #outF.write("Source;Abundance;Score;Cut;N;J;L;SizeThreshold;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;Sn4k;Sp4k;Sn6k;Sp6k;Sn8k;Sp8k;Sn10k;Sp10k\n")
+    
+    # get Z values for each correct clustering
+    corrZNo = {na:0 for na in names}
+    corrZLen = {na:0 for na in names}
+    corrClust = pickle.load(open(correctFile,'rb'))
+    for cl in corrClust:
+        rep = cl[0]
+        corName = ''
+        for nm in names:
+            if string.find(rep,nm) != -1:
+                corName = nm
+                break
+        corrZNo[corName] = len(cl)
+        for c in cl:
+            clen = int(c.rsplit("_",2)[1])
+            corrZLen[corName] += clen
+    
+    threshold = 0.0
+    
+    clustMemList = []
+    purityNo = []
+    purityLen = []
+        
+    repDictNo = {na:0 for na in names}
+    repDictLen = {na:0 for na in names}
+        
+    inClustPre = pickle.load(open(inFile,"rb"))
+    inClust = []
+    list2Clusters = {}
+    for i in inClustPre:
+        ncl = inClustPre[i].getAllLeaves()
+        list2Clusters[ncl[0]] = inClustPre[i]
+        inClust.append(ncl)
+    #print inClust
+    TPDictNo = {na:0 for na in names}
+    FPDictNo = {na:0 for na in names}
+    TPDictLen = {na:0 for na in names}
+    FPDictLen = {na:0 for na in names}
+    TPk = {i:0 for i in [4,6,8,10]}
+    FPk = {i:0 for i in [4,6,8,10]}
+    for cl in inClust:
+        clustMemList.append(len(cl))
+        myRepDictNo = {nL: 0 for nL in names}
+        myRepDictLen = {nL: 0 for nL in names}
+        maxNo = 0
+        maxNoName = ''
+        maxLen = 0
+        maxLenName = ''
+        totalLen = 0
+        totalK = {i:0 for i in [4,6,8,10]}
+        repK = {na:{i:0 for i in [4,6,8,10]} for na in names}
+            
+        #get representations for each name
+        for c in cl:
+            try:
+                mylen = int(c.rsplit('_',2)[1])
+                print mylen
+                if mylen < maxsize:
+                    for nL in names:
+                        if string.find(c,nL) != -1:
+                            myRepDictNo[nL] += 1
+                            myRepDictLen[nL] += mylen
+                            totalLen += mylen
+                            for i in [4,6,8,10]:
+                                if mylen > i*1000:
+                                    totalK[i] += 1
+                                    repK[nL][i] += 1
+                            break
+            except:
+                pass
+           
+        if totalLen:             
+            #pprint.pprint(repDict)
+            for nL in myRepDictNo:
+                if myRepDictNo[nL] > maxNo:
+                    maxNo = myRepDictNo[nL]
+                    maxNoName = nL
+            if len(cl) >= sizeThreshold:
+                for nL in myRepDictLen:
+                    if myRepDictLen[nL] > maxLen:
+                        maxLen = myRepDictLen[nL]
+                        maxLenName = nL
+                tpn = maxNo
+                fpn = len(cl) - tpn
+                tpl = maxLen
+                fpl = totalLen - tpl
+                pN = float(tpn)/float(len(cl))
+                pL = float(tpl)/float(totalLen)
+                purityNo.append(pN)
+                purityLen.append(pL)
+                if pN > threshold:
+                    repDictNo[maxNoName] += 1
+                    TPDictNo[maxNoName] += tpn
+                    FPDictNo[maxNoName] += fpn
+                if pL > threshold:
+                    repDictLen[maxLenName] += 1
+                    TPDictLen[maxLenName] += tpl
+                    FPDictLen[maxLenName] += fpl
+                for i in [4,6,8,10]:
+                    TPk[i] += repK[maxNoName][i]
+                    FPk[i] += totalK[i] - repK[maxNoName][i]
+        #print
+        #print
+        
+        #pprint.pprint(TPDict)
+        
+        #SnDict = {na:0 for na in names}
+        #SpDict = {na:0 for na in names}
+    ZAllNo = 0
+    TPAllNo = 0
+    FPAllNo = 0
+    ZAllLen = 0
+    TPAllLen = 0
+    FPAllLen = 0
+    ZDictNo = corrZNo
+    ZDictLen = corrZLen
+    for na in names:
+        #if ZDict[na] and TPDict[na]:     # tacoa p 13 "The overall specificity is computed over those classes that have a defined specificity value"
+        ZAllNo += ZDictNo[na]
+        TPAllNo += TPDictNo[na]
+        FPAllNo += FPDictNo[na]
+        ZAllLen += ZDictLen[na]
+        TPAllLen += TPDictLen[na]
+        FPAllLen += FPDictLen[na]
+        #SnDict[na] = float(TPDict[na])/float(ZDict[na])               # tacoa (8)
+        #SpDict[na] = float(TPDict[na])/float(TPDict[na]+FPDict[na])   # tacoa (9)
+        
+    SnAllNo = 0.0
+    SpAllNo = 0.0
+    SnAllLen = 0.0
+    SpAllLen = 0.0
+    SnK = {i:0.0 for i in [4,6,8,10]}
+    SpK = {i:0.0 for i in [4,6,8,10]}
+    if TPAllNo:
+        SnAllNo = float(TPAllNo)/float(ZAllNo)
+        SpAllNo = float(TPAllNo)/float(TPAllNo+FPAllNo)
+    if TPAllLen:
+        SnAllLen = float(TPAllLen)/float(ZAllLen)
+        SpAllLen = float(TPAllLen)/float(TPAllLen+FPAllLen)
+    for i in [4,6,8,10]:
+        if TPk[i]:
+            SnK[i] = float(TPk[i])/float(Zk[i])
+            SpK[i] = float(TPk[i])/float(TPk[i]+FPk[i])
+        
+    repNumNo = 0
+    for r in repDictNo:
+        if repDictNo[r]:
+            repNumNo += 1
+    repFracNo = float(repNumNo)/float(len(names))
+    repNumLen = 0
+    for r in repDictLen:
+        if repDictLen[r]:
+            repNumLen += 1
+    repFracLen = float(repNumLen)/float(len(names))
+        
+    nmi = NMI(inClust, corrClust)
+    #ami = AMI(inClust, corrClust)
+        
+    avgClustSize = float(sum(clustMemList))/float(len(clustMemList))
+    minClustSize = min(clustMemList)
+    maxClustSize = max(clustMemList)
+        
+    #outF.write("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
+    outF.write("{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,avgClustSize,minClustSize,maxClustSize))
+    outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+    #outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
+    for i in [4,6,8,10]:
+        #outF.write(";{:01.4f};{:01.4f}".format(SnK[i],SpK[i]))
+        outF.write(";{:01.4f}".format(SpK[i]))
+    outF.write("\n")
+        
+    outF.close()
+    print "done"

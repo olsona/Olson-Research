@@ -379,6 +379,8 @@ def main(argv):
 	cl = [li for li in lproper]
 	if r.startswith('pseudocontig'):
 	    pass
+	elif r in cl:
+	    pass
 	else:
 	    cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
