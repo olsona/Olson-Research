@@ -372,7 +372,8 @@ def main(argv):
 	l = allClusters[c].getAllLeaves()
 	lproper = []
 	for item in l:
-	    if item.startswith('pseudocontig'):
+	    print item[0:12]
+	    if item[0:12] == 'pseudocontig':
 	        print "whoops"
 	        pass
 	    else:
