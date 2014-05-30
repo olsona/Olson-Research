@@ -373,6 +373,7 @@ def main(argv):
 	lproper = []
 	for item in l:
 	    if item.startswith('pseudocontig'):
+	        print "whoops"
 	        pass
 	    else:
 	        lproper.append(item)
