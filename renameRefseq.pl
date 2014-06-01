@@ -22,8 +22,9 @@ for my $input (@files) {
                 $sp = (split " ", $spname)[2];
             }
             my $fname = (substr $ge, 1)."_".$sp;
-            open($outfh, '>>', "$outpath$fname.fna")
-            unless (-e $outfh) {
+            open($outfh, '>>', "$outpath$fname.fna");
+            my $fsize = -s "$outpath$fname.fna";
+            if ($fsize > 20) {
                 print $outfh ">$fname\t";
             }
             print $OUT1 "$outpath$fname.fna\n";
