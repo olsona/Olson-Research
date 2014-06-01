@@ -16,8 +16,9 @@ for my $input (@files) {
             close($outfh) if defined $outfh;
             my $name = substr $_, 1;
             my $spname = (split $d, $name)[4];
-            my $cname = (split ',', $spname)[0];
-            my $fname = substr $cname, 1;
+            my $ge = (split " ", $spname)[0];
+            my $sp = (split " ", $spname)[1];
+            my $fname = (substr $ge, 1)."_".$sp;
             print $fname . "\n";
             if (-e $outfh) {
                 open($outfh, '>>', "$outpath$fname.fna");
