@@ -22,9 +22,9 @@ for my $input (@files) {
                 $sp = (split " ", $spname)[2];
             }
             my $fname = (substr $ge, 1)."_".$sp;
-            print $fname . "\n";
             if (-e $outfh) {
                 open($outfh, '>>', "$outpath$fname.fna");
+                print "I'm adding to ${outfh}\n";
             }
             else {
                 open($outfh, '>>', "$outpath$fname.fna");
