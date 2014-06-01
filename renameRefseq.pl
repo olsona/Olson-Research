@@ -24,7 +24,7 @@ for my $input (@files) {
             my $fname = (substr $ge, 1)."_".$sp;
             open($outfh, '>>', "$outpath$fname.fna");
             my $fsize = -s "$outpath$fname.fna";
-            if ($fsize > 20) {
+            if ($fsize < 20) {
                 print $outfh ">$fname\t";
                 print "new file ${fname}\n";
             }
