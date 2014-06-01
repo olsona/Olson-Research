@@ -4,6 +4,7 @@ my @files = <$inpath/*.fna>;
 open($OUT1, '>', "$out-1");
 open($OUT2, '>', "$out-2");
 my $d = qr/\|/;
+my $sl = quotemeta("/");
 
 for my $input (@files) {
     open($IN, $input);
@@ -21,10 +22,12 @@ for my $input (@files) {
             if ($sp eq "sp.") {
                 $sp = (split " ", $spname)[2];
             }
-            my $fname = (substr $ge, 1)."_".$sp;
+            my $fname = $ge."_".$sp;
+            $fname =~ s/$sl/"_"/g;
+            print $fname."/n";
             open($outfh, '>>', "$outpath$fname.fna");
             my $fsize = -s "$outpath$fname.fna";
-            if ($fsize < 20) {
+            if ($fsize < 10) {
                 print $outfh ">$fname\t";
                 print "new file ${fname}\n";
             }
