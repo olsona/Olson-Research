@@ -22,12 +22,8 @@ for my $input (@files) {
                 $sp = (split " ", $spname)[2];
             }
             my $fname = (substr $ge, 1)."_".$sp;
-            if (-e $outfh) {
-                open($outfh, '>>', "$outpath$fname.fna");
-                print "I'm adding to ${outfh}\n";
-            }
-            else {
-                open($outfh, '>>', "$outpath$fname.fna");
+            open($outfh, '>>', "$outpath$fname.fna")
+            unless (-e $outfh) {
                 print $outfh ">$fname\t";
             }
             print $OUT1 "$outpath$fname.fna\n";
