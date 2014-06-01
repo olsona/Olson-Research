@@ -23,7 +23,7 @@ for my $input (@files) {
                 $sp = (split " ", $spname)[2];
             }
             my $fname = $ge."_".$sp;
-            $fname =~ s/$sl/"_"/g;
+            $fname =~ s/$sl/_/g;
             print $fname."\n";
             open($outfh, '>>', "$outpath$fname.fna");
             my $fsize = -s "$outpath$fname.fna";
