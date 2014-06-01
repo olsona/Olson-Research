@@ -24,7 +24,7 @@ for my $input (@files) {
             }
             my $fname = $ge."_".$sp;
             $fname =~ s/$sl/"_"/g;
-            print $fname."/n";
+            print $fname."\n";
             open($outfh, '>>', "$outpath$fname.fna");
             my $fsize = -s "$outpath$fname.fna";
             if ($fsize < 10) {
