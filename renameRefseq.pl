@@ -19,8 +19,13 @@ for my $input (@files) {
             my $cname = (split ',', $spname)[0];
             my $fname = substr $cname, 1;
             print $fname . "\n";
-            open($outfh, '>', "$outpath$fname.fna");
-            print $outfh ">$fname\t";
+            if (-e $outfh) {
+                open($outfh, '>>', "$outpath$fname.fna");
+            }
+            else {
+                open($outfh, '>', "$outpath$fname.fna");
+                print $outfh ">$fname\t";
+            }
             print $OUT1 "$outpath$fname.fna\n";
             print $OUT2 "$fname\t$outpath$fname.fna\n";
         }

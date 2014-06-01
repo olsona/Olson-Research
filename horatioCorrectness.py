@@ -717,7 +717,7 @@ def processDistLog(inFolder, out):
     f.close()
 
 
-def processOne(inFile, nameFile, correctFile, sizeThreshold, outFile, donotinclude):
+def processOne(inFile, nameFile, correctFile, sizeThreshold, outFile, maxsize):
     import string
     import cPickle as pickle
     from horatioClasses import Cluster
@@ -782,23 +782,25 @@ def processOne(inFile, nameFile, correctFile, sizeThreshold, outFile, donotinclu
         totalLen = 0
         totalK = {i:0 for i in [4,6,8,10]}
         repK = {na:{i:0 for i in [4,6,8,10]} for na in names}
+        
+        print cl
             
         #get representations for each name
         for c in cl:
             try:
                 mylen = int(c.rsplit('_',2)[1])
-                print mylen
-                if mylen < maxsize:
-                    for nL in names:
-                        if string.find(c,nL) != -1:
-                            myRepDictNo[nL] += 1
-                            myRepDictLen[nL] += mylen
-                            totalLen += mylen
-                            for i in [4,6,8,10]:
-                                if mylen > i*1000:
-                                    totalK[i] += 1
-                                    repK[nL][i] += 1
-                            break
+                #print mylen
+                #if mylen <= maxsize:
+                for nL in names:
+                    if string.find(c,nL) != -1:
+                        myRepDictNo[nL] += 1
+                        myRepDictLen[nL] += mylen
+                        totalLen += mylen
+                        for i in [4,6,8,10]:
+                            if mylen > i*1000:
+                                totalK[i] += 1
+                                repK[nL][i] += 1
+                        break
             except:
                 pass
            
