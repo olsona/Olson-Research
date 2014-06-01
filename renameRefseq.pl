@@ -26,6 +26,7 @@ for my $input (@files) {
             my $fsize = -s "$outpath$fname.fna";
             if ($fsize > 20) {
                 print $outfh ">$fname\t";
+                print "new file ${fname}\n";
             }
             print $OUT1 "$outpath$fname.fna\n";
             print $OUT2 "$fname\t$outpath$fname.fna\n";
