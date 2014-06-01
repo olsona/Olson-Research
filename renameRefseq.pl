@@ -27,7 +27,7 @@ for my $input (@files) {
                 open($outfh, '>>', "$outpath$fname.fna");
             }
             else {
-                open($outfh, '>', "$outpath$fname.fna");
+                open($outfh, '>>', "$outpath$fname.fna");
                 print $outfh ">$fname\t";
             }
             print $OUT1 "$outpath$fname.fna\n";
