@@ -19,7 +19,7 @@ for my $input (@files) {
             my $ge = (split " ", $spname)[0];
             my $sp = (split " ", $spname)[1];
             if ($sp eq ".sp") {
-                $sp = (split " ", $spname[2];
+                $sp = (split " ", $spname)[2];
             }
             my $fname = (substr $ge, 1)."_".$sp;
             print $fname . "\n";
