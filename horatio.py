@@ -229,6 +229,12 @@ def main(argv):
 	
 	fMatching.close()
             
+        print
+        
+        pprint.pprint(matchDict)
+        
+        print
+            
 	# create new seeds through concatenation and prepare for next DB creation
 	fSeed = "{!s}_{!s}_seed".format(baseName, i)
 	l2 = open(fSeed + "-2",'w')
