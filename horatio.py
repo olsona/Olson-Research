@@ -176,11 +176,11 @@ def main(argv):
 	for row in range(2,len(lns)):
 	    line = lns[row]
 	    bestMatch = line.rstrip().split(", ")[0].split(":")
-	    print bestMatch
 	    bestIndex = int(bestMatch[1])
 	    bestScore = float(bestMatch[0])
 	    dbItem = dbNames[bestIndex]
 	    queryItem = queryNames[row-2]
+	    print "{!s} -> {!s}, {:01.3f}".format(queryItem,dbItem,bestScore)
 	    if bestScore < splitThreshold[i-1]:
 	        newSeeds.append(queryItem)
 	    else:
