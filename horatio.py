@@ -245,13 +245,16 @@ def main(argv):
 	    # concatenate all sequences from all matching children
 	    for [child,score] in matchDict[seed]:
 	        co = allContigs[child]
+	        print child
+	        if co.goodMatches:
+	           print co.goodMatches
 		cl.addNode(newContigName, child, score)
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
 		fNewContig.write(seq)
 		# add neighbors
 		for m in co.goodMatches:
 		    cl.addMatch(m)
-		    print "{!s} adding {!s}".format(cl,m)
+		    print "{!s} adding {!s}".format(seed,m)
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
