@@ -207,6 +207,7 @@ def main(argv):
 	               neighborCluster = contigs2Clusters[neighborName]
 	               queryContig.goodMatches.append([neighborCluster.seed,score])
 	       if queryContig.goodMatches:
+	           print queryItem, dbItem
 	           print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
 	    # ***
 	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
