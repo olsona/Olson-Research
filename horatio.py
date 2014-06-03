@@ -250,6 +250,7 @@ def main(argv):
 	    cl.addNode(newContigName, seed, 0.0)
 	    # concatenate all sequences from all matching children
 	    for [child,score] in matchDict[seed]:
+	        print child
 	        co = allContigs[child]
 		cl.addNode(newContigName, child, score)
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
