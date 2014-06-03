@@ -251,6 +251,7 @@ def main(argv):
 		# add neighbors
 		for m in co.goodMatches:
 		    cl.addMatch(m)
+		    print "{!s} adding {!s}".format(cl,m)
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
