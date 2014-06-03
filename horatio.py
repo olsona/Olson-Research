@@ -13,7 +13,7 @@ import cPickle as pickle
 #import matplotlib as mpl
 #mpl.use('Agg')
 import horatioCorrectness as hcorr
-#import pprint
+import pprint
 
 def main(argv):
     #---PREPROCESSING---#
@@ -256,6 +256,11 @@ def main(argv):
 	    fNewContig.close()
 	    newContigCount += 1
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+	
+	for cl in allClusters:
+	    if allClusters[cl].closeDict:
+	        print cl, pprint.pprint(allClusters[cl].closeDict)
+	
 	# add split seeds to DB
 	for nSeed in newSeeds:
 	    #print "{!s} is a new seed".format(nSeed)
@@ -265,7 +270,8 @@ def main(argv):
 	    contigs2Clusters[nSeed] = cl
 	    clusters2Contigs[nSeed] = [co]
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
-	    
+	
+	        
 	# go through clusters again, evaluate what clusters should be joined
 	# identify edges (make simplifying assumption that if A is a neighbor of B, then B is a neighbor of A)
 	graph = {}
