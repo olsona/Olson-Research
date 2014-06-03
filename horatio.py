@@ -192,7 +192,7 @@ def main(argv):
 	    myThresh = 0.0
 	    queryContig = allContigs[queryItem]
 	    # matchCluster = contigs2Clusters[dbItem]  # ***
-	    if bestScore < splitThreshold[i-1]:
+	    if bestScore >= splitThreshold[i-1]:
 	       if bestScore > 0:
 	           myThresh = (1.0-neighborThreshold)*bestScore
 	       else:
