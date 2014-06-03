@@ -192,21 +192,22 @@ def main(argv):
 	    myThresh = 0.0
 	    queryContig = allContigs[queryItem]
 	    # matchCluster = contigs2Clusters[dbItem]  # ***
-	    if bestScore > 0:
-	        myThresh = (1.0-neighborThreshold)*bestScore
-	    else:
-	        myThresh = (1.0+neighborThreshold)*bestScore
-	    # check for neighbors
-	    for l in line.rstrip().split(", ")[1:]:
-	        entry = l.split(":")
-	        score = float(entry[0])
-	        if score >= myThresh:
-	            neighborInd = int(entry[1])
-	            neighborName = dbNames[neighborInd]
-	            neighborCluster = contigs2Clusters[neighborName]
-	            queryContig.goodMatches.append([neighborCluster.seed,score])
-	    if queryContig.goodMatches:
-	        print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
+	    if bestScore < splitThreshold[i-1]:
+	       if bestScore > 0:
+	           myThresh = (1.0-neighborThreshold)*bestScore
+	       else:
+	           myThresh = (1.0+neighborThreshold)*bestScore
+	       # check for neighbors
+	       for l in line.rstrip().split(", ")[1:]:
+	           entry = l.split(":")
+	           score = float(entry[0])
+	           if score >= myThresh:
+	               neighborInd = int(entry[1])
+	               neighborName = dbNames[neighborInd]
+	               neighborCluster = contigs2Clusters[neighborName]
+	               queryContig.goodMatches.append([neighborCluster.seed,score])
+	       if queryContig.goodMatches:
+	           print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
 	    # ***
 	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
 	    #   matchCluster.seed, [m[0] for m in queryContig.goodMatches])
