@@ -275,9 +275,10 @@ def main(argv):
 	#print
 	
 	for cl in sorted(allClusters.keys()):
-	    if allClusters[cl].closeDict:
-	        print cl
-	        pprint.pprint(allClusters[cl].closeDict)
+	    print cl
+	    #if allClusters[cl].closeDict:
+	    #    print cl
+	    #    pprint.pprint(allClusters[cl].closeDict)
 	
 	# add split seeds to DB
 	for nSeed in newSeeds:
@@ -306,9 +307,9 @@ def main(argv):
 	            graph[nameB].add(clID)
 	        else:
 	            graph[nameB] = set([clID])
-	print "Graph"           
-	pprint.pprint(graph)
-	print
+	#print "Graph"           
+	#pprint.pprint(graph)
+	#print
 	    
         # DFS on clusters to find all connected components
         partition = []
@@ -374,6 +375,9 @@ def main(argv):
 	    root = clust.root
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 	    clust.closeDict = {}
+	    
+	for cl in sorted(allClusters.keys()):
+	    print cl
 	 
 	# *** compute correctness distributions
 	rdata = rightDists[iterString]
