@@ -259,7 +259,10 @@ def main(argv):
 	
 	for cl in allClusters:
 	    if allClusters[cl].closeDict:
-	        print cl, pprint.pprint(allClusters[cl].closeDict)
+	        print cl
+	        pprint.pprint(allClusters[cl].closeDict)
+	
+	print iterString
 	
 	# add split seeds to DB
 	for nSeed in newSeeds:
