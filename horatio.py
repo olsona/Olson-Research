@@ -279,17 +279,17 @@ def main(argv):
 	    #if allClusters[cl].closeDict:
 	    #    print cl
 	    #    pprint.pprint(allClusters[cl].closeDict)
-	print
+	#print
 	# add split seeds to DB
 	for nSeed in newSeeds:
-	    print "{!s} is a new seed".format(nSeed)
+	    #print "{!s} is a new seed".format(nSeed)
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    allClusters[nSeed] = cl
 	    contigs2Clusters[nSeed] = cl
 	    clusters2Contigs[nSeed] = [co]
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
-	print
+	#print
 	
 	        
 	# go through clusters again, evaluate what clusters should be joined
@@ -321,10 +321,10 @@ def main(argv):
                 if len(component) > 1:
                     partition.append(component)
                 metaVisited = metaVisited | component
-        print "Partition"
-        for p in partition:
-            print "\t*{!s}".format(", ".join(p))
-        print
+        #print "Partition"
+        #for p in partition:
+        #    print "\t*{!s}".format(", ".join(p))
+        #print
         
 	#print "Iterating:"                                           
 	# iterate through partition of clusters and merge as appropriate
@@ -334,6 +334,7 @@ def main(argv):
 	    mainClID = pList[0]
 	    #print mainClID
 	    mainClust = allClusters[mainClID]
+	    print mainClust.getAllLeaves()
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
 	    #print "Merged contig: {!s}".format(newContigName)
@@ -347,11 +348,12 @@ def main(argv):
 	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
 	    fNewContig.write(seq)
 	    for rCl in restClust:
+	        print rCl.getAllLeaves()
 	        co = allContigs[rCl.root]
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
 		fNewContig.write(seq)
-		for m in co.goodMatches:
-		    mainClust.addMatch(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+		#for m in co.goodMatches:
+		    #mainClust.addMatch(m)    # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
@@ -367,7 +369,8 @@ def main(argv):
 	        clusters2Contigs.pop(rCl.seed)
 	        allClusters.pop(rCl.seed)
 	        #print "Popped {!s}".format(rCl.seed)
-	
+	   print mainClust.getAllLeaves()
+	   
 	#print ", ".join([c for c in sorted(allClusters.keys())])
 	
 	# finally write root contigs to db index file
