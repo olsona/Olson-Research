@@ -372,10 +372,7 @@ def main(argv):
 	l = allClusters[c].getAllLeaves()
 	lproper = []
 	for item in l:
-	    if item.startswith('pseudocontig'):
-	        pass
-	    else:
-	        lproper.append(item)
+	    lproper.append(item)
 	cl = [li for li in lproper]
 	if r.startswith('pseudocontig'):
 	    pass
@@ -389,12 +386,12 @@ def main(argv):
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
     
     # Get rid of files we're not using any more
-    os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
-    os.system("rm {!s} >/dev/null 2>&1".format(DB))
-    os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
-    os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
-    for i in range(leng+1):
-	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
+    #os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
+    #os.system("rm {!s} >/dev/null 2>&1".format(DB))
+    #os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
+    #os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
+    #for i in range(leng+1):
+    #	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
     
     distLog.close()
 
