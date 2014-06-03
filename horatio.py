@@ -206,8 +206,8 @@ def main(argv):
 	               neighborName = dbNames[neighborInd]
 	               neighborCluster = contigs2Clusters[neighborName]
 	               queryContig.goodMatches.append([neighborCluster.seed,score])
-	       if queryContig.goodMatches:
-	           print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
+	       #if queryContig.goodMatches:
+	       #    print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
 	    # ***
 	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
 	    #   matchCluster.seed, [m[0] for m in queryContig.goodMatches])
@@ -272,16 +272,12 @@ def main(argv):
 	    newContigCount += 1
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	
-	print
+	#print
 	
 	for cl in allClusters:
 	    if allClusters[cl].closeDict:
 	        print cl
 	        pprint.pprint(allClusters[cl].closeDict)
-	
-	print iterString
-	print
-	print
 	
 	# add split seeds to DB
 	for nSeed in newSeeds:
@@ -310,9 +306,9 @@ def main(argv):
 	            graph[nameB].add(clID)
 	        else:
 	            graph[nameB] = set([clID])
-	#print "Graph"           
-	#pprint.pprint(graph)
-	#print
+	print "Graph"           
+	pprint.pprint(graph)
+	print
 	    
         # DFS on clusters to find all connected components
         partition = []
@@ -390,6 +386,10 @@ def main(argv):
 	distLog.write("\n")
 	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
+        
+        print iterString
+	print
+	print
         
         #print iterString + " done"
 	l2.close()
