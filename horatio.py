@@ -279,16 +279,17 @@ def main(argv):
 	    #if allClusters[cl].closeDict:
 	    #    print cl
 	    #    pprint.pprint(allClusters[cl].closeDict)
-	
+	print
 	# add split seeds to DB
 	for nSeed in newSeeds:
-	    #print "{!s} is a new seed".format(nSeed)
+	    print "{!s} is a new seed".format(nSeed)
 	    co = allContigs[nSeed]
 	    cl = Cluster(nSeed)
 	    allClusters[nSeed] = cl
 	    contigs2Clusters[nSeed] = cl
 	    clusters2Contigs[nSeed] = [co]
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
+	print
 	
 	        
 	# go through clusters again, evaluate what clusters should be joined
