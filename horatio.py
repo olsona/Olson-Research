@@ -380,8 +380,8 @@ def main(argv):
 	    l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 	    clust.closeDict = {}
 	    
-	for cl in sorted(allClusters.keys()):
-	    print cl
+	#for cl in sorted(allClusters.keys()):
+	#    print cl
 	 
 	# *** compute correctness distributions
 	rdata = rightDists[iterString]
