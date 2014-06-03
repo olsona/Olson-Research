@@ -221,6 +221,8 @@ def main(argv):
                 wrongDists[iterString].append(bestScore)
             # ***
 	
+	print
+	
 	fMatching.close()
             
 	# create new seeds through concatenation and prepare for next DB creation
@@ -245,21 +247,20 @@ def main(argv):
 	    # concatenate all sequences from all matching children
 	    for [child,score] in matchDict[seed]:
 	        co = allContigs[child]
-	        print child
-	        if co.goodMatches:
-	           print co.goodMatches
 		cl.addNode(newContigName, child, score)
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
 		fNewContig.write(seq)
 		# add neighbors
 		for m in co.goodMatches:
 		    cl.addMatch(m)
-		    print "{!s} adding {!s}".format(seed,m)
+		    print "Adding {!s} to {!s}'s neighbor list".format(m, seed)
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
 	    newContigCount += 1
 	    #l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+	
+	print
 	
 	for cl in allClusters:
 	    if allClusters[cl].closeDict:
@@ -267,6 +268,8 @@ def main(argv):
 	        pprint.pprint(allClusters[cl].closeDict)
 	
 	print iterString
+	print
+	print
 	
 	# add split seeds to DB
 	for nSeed in newSeeds:
