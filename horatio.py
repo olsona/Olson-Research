@@ -223,6 +223,10 @@ def main(argv):
 	
 	print
 	
+	for co in allContigs:
+	    if allContigs[co].goodMatches:
+	        print co, " ", pprint.pprint(allContigs[co].goodMatches)
+	
 	fMatching.close()
             
 	# create new seeds through concatenation and prepare for next DB creation
