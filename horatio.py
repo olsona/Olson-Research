@@ -207,7 +207,6 @@ def main(argv):
 	               neighborCluster = contigs2Clusters[neighborName]
 	               queryContig.goodMatches.append([neighborCluster.seed,score])
 	       if queryContig.goodMatches:
-	           print queryItem, dbItem
 	           print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
 	    # ***
 	    #print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
@@ -223,19 +222,19 @@ def main(argv):
                 wrongDists[iterString].append(bestScore)
             # ***
 	
-	print
+	#print
 	
-	for co in allContigs:
-	    if allContigs[co].goodMatches:
-	        print co, " ", pprint.pprint(allContigs[co].goodMatches)
+	#for co in allContigs:
+	#    if allContigs[co].goodMatches:
+	#        print co, " ", pprint.pprint(allContigs[co].goodMatches)
 	
 	fMatching.close()
             
-        print
+        #print
         
-        pprint.pprint(matchDict)
+        #pprint.pprint(matchDict)
         
-        print
+        #print
             
 	# create new seeds through concatenation and prepare for next DB creation
 	fSeed = "{!s}_{!s}_seed".format(baseName, i)
@@ -259,14 +258,14 @@ def main(argv):
 	    # concatenate all sequences from all matching children
 	    for [child,score] in matchDict[seed]:
 	        co = allContigs[child]
-	        print child, co.goodMatches
+	        #print child, co.goodMatches
 		cl.addNode(newContigName, child, score)
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
 		fNewContig.write(seq)
 		# add neighbors
 		for m in co.goodMatches:
 		    cl.addMatch(m)
-		    print "Adding {!s} to {!s}'s neighbor list".format(m, seed)
+		    #print "Adding {!s} to {!s}'s neighbor list".format(m, seed)
 		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 	    fNewContig.write("\n")
 	    fNewContig.close()
