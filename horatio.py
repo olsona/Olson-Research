@@ -369,7 +369,7 @@ def main(argv):
 	        clusters2Contigs.pop(rCl.seed)
 	        allClusters.pop(rCl.seed)
 	        #print "Popped {!s}".format(rCl.seed)
-	    print mainClust.getAllLeaves()
+	    print sorted(mainClust.getAllLeaves())
 	   
 	#print ", ".join([c for c in sorted(allClusters.keys())])
 	
