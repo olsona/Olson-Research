@@ -421,9 +421,11 @@ def main(argv):
 	finalContigs.write(">{!s}\t".format(r))
 	print c,
 	print "{!s}/{!s}.fna".format(genePath, r)
-	os.system("cat {!s}/{!s}.fna >> {!s}_contigs".format(genePath,r,outputFile))
+	_, seq = hUtil.readSeq("{!s}/{!s}.fna".format(genePath, r))
+	finalContigs.write("{!s}\n".format(seq))
     fOutC.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
+    finalContigs.close()
     
     # Get rid of files we're not using any more
     #os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
