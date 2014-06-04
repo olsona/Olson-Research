@@ -401,7 +401,7 @@ def main(argv):
     #---POSTPROCESSING---#
     totalCluster = {}
     fOutC = open("{!s}_clusters".format(outputFile),'w')
-    finalContigs = open("{!s}_contigs".format(outputFile),'w')
+    finalContigList = open("{!s}_contigs-1".format(outputFile),'w')
     for c in allClusters:
 	#print "-----"
 	r = allClusters[c].root
@@ -418,12 +418,9 @@ def main(argv):
 	    cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
-	finalContigs.write(">{!s}\t".format(r))
-	_, seq = hutil.readSequence("{!s}/{!s}.fna".format(genePath, r))
-	finalContigs.write("{!s}\n".format(seq))
+	finalContigList.write("{!s}/{!s}.fna\n".format(genePath,r))
     fOutC.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
-    finalContigs.close()
     
     # Get rid of files we're not using any more
     os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
