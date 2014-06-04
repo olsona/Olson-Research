@@ -334,7 +334,7 @@ def main(argv):
 	    mainClID = pList[0]
 	    #print mainClID
 	    mainClust = allClusters[mainClID]
-	    print "\t" + mainClust.getAllLeaves()
+	    print "\t" + str(sorted(mainClust.getAllLeaves()))
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
 	    #print "Merged contig: {!s}".format(newContigName)
@@ -348,7 +348,7 @@ def main(argv):
 	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
 	    fNewContig.write(seq)
 	    for rCl in restClust:
-	        print "\t" + rCl.getAllLeaves()
+	        print "\t" + str(sorted(rCl.getAllLeaves()))
 	        co = allContigs[rCl.root]
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
 		fNewContig.write(seq)
