@@ -419,6 +419,7 @@ def main(argv):
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
 	finalContigs.write(">{!s}\t".format(r))
+	print c, r
 	os.system("cat {!s}/{!s}.fna >> {!s}_contigs".format(genePath,r,outputFile))
     fOutC.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
