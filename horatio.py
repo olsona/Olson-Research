@@ -419,8 +419,6 @@ def main(argv):
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
 	finalContigs.write(">{!s}\t".format(r))
-	print c,
-	print "{!s}/{!s}.fna".format(genePath, r)
 	_, seq = hutil.readSequence("{!s}/{!s}.fna".format(genePath, r))
 	finalContigs.write("{!s}\n".format(seq))
     fOutC.close()
