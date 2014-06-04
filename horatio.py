@@ -423,7 +423,7 @@ def main(argv):
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
     
     # Get rid of files we're not using any more
-    os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
+    #os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
     os.system("rm {!s} >/dev/null 2>&1".format(DB))
     os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
     os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
