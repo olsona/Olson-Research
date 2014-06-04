@@ -421,7 +421,7 @@ def main(argv):
 	finalContigs.write(">{!s}\t".format(r))
 	print c,
 	print "{!s}/{!s}.fna".format(genePath, r)
-	_, seq = hUtil.readSeq("{!s}/{!s}.fna".format(genePath, r))
+	_, seq = hutil.readSeq("{!s}/{!s}.fna".format(genePath, r))
 	finalContigs.write("{!s}\n".format(seq))
     fOutC.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
