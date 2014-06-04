@@ -274,8 +274,8 @@ def main(argv):
 	
 	#print
 	
-	for cl in sorted(allClusters.keys()):
-	    print cl
+	#for cl in sorted(allClusters.keys()):
+	#    print cl
 	    #if allClusters[cl].closeDict:
 	    #    print cl
 	    #    pprint.pprint(allClusters[cl].closeDict)
