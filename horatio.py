@@ -334,7 +334,7 @@ def main(argv):
 	    mainClID = pList[0]
 	    #print mainClID
 	    mainClust = allClusters[mainClID]
-	    print "\t" + str(sorted(mainClust.getAllLeaves()))
+	    #print "\t" + str(sorted(mainClust.getAllLeaves()))
 	    restClust = [allClusters[ID] for ID in pList[1:]]
 	    # make ubercontig
 	    #print "Merged contig: {!s}".format(newContigName)
@@ -348,7 +348,7 @@ def main(argv):
 	    _, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
 	    fNewContig.write(seq)
 	    for rCl in restClust:
-	        print "\t" + str(sorted(rCl.getAllLeaves()))
+	        #print "\t" + str(sorted(rCl.getAllLeaves()))
 	        co = allContigs[rCl.root]
 		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
 		fNewContig.write(seq)
@@ -369,7 +369,7 @@ def main(argv):
 	        clusters2Contigs.pop(rCl.seed)
 	        allClusters.pop(rCl.seed)
 	        #print "Popped {!s}".format(rCl.seed)
-	    print sorted(mainClust.getAllLeaves())
+	    #print sorted(mainClust.getAllLeaves())
 	   
 	#print ", ".join([c for c in sorted(allClusters.keys())])
 	
@@ -395,16 +395,13 @@ def main(argv):
 	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 	# ***   
         
-        print iterString
-	print
-	print
-        
         #print iterString + " done"
 	l2.close()
 			
     #---POSTPROCESSING---#
     totalCluster = {}
     fOutC = open("{!s}_clusters".format(outputFile),'w')
+    finalContigs = open("{!s}_contigs".format(outputFile),'w')
     for c in allClusters:
 	#print "-----"
 	r = allClusters[c].root
@@ -421,6 +418,8 @@ def main(argv):
 	    cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
+	finalContigs.write(">{!s}\t".format(r))
+	os.system("cat {!s}/{!s}.fna >> {!s}_contigs".format(genePath,r,outputFile))
     fOutC.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
     
