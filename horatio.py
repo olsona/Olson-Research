@@ -401,7 +401,7 @@ def main(argv):
     #---POSTPROCESSING---#
     totalCluster = {}
     fOutC = open("{!s}_clusters".format(outputFile),'w')
-    finalContigList = open("{!s}_contigs-1".format(outputFile),'w')
+    finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
     for c in allClusters:
 	#print "-----"
 	r = allClusters[c].root
@@ -418,8 +418,9 @@ def main(argv):
 	    cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
-	finalContigList.write("{!s}/{!s}.fna\n".format(genePath,r))
+	finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
     fOutC.close()
+    finalContigList.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
     
     # Get rid of files we're not using any more
