@@ -47,7 +47,7 @@ foreach my $mv (@$matchVectors) {
 		# Calculate correlation of matchVector vs this DBvector
 		my $zc = $mv->corr($dv);
 		#$zrec{$zc} = $i;
-        $zrec{%i} = $zc;
+        $zrec{$i} = $zc;
 	}
 	my @zsort = (sort {$b <=> $a} keys %zrec);
 	my @zfull = ();
