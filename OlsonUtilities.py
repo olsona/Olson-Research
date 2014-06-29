@@ -122,13 +122,12 @@ def Fasta2Tab(fIn,fOut):
 
 def properFormatMetagenome(inputFile):
 	import string
+	baseName = inputFile.rsplit(".",1)[0]+"_TAB.fa"
 	f = open(inputFile, 'r')
-	newName = inputFile
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
 		# convert to contiguous line AND tabbed format
-		newName = baseName+"_TAB.fa"
-		fN = open(newName,'w')
+		fN = open(baseName,'w')
 		s = 0
 		while ln:
 			if ln[0] == '>': # deal with name lines
