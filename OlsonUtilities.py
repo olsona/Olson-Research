@@ -121,6 +121,7 @@ def Fasta2Tab(fIn,fOut):
 	fileOut.close()
 
 def properFormatMetagenome(inputFile):
+	import string
 	f = open(inputFile, 'r')
 	newName = inputFile
 	ln = f.readline()
