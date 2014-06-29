@@ -55,9 +55,9 @@ def main(argv):
 			nf = open(nameFile,'r')
 			names = []
 			for l in nf.readlines():
-			    n = l.rstrip()
-			    if len(n) > 0:
-			        names.append(n)
+				n = l.rstrip()
+				if len(n) > 0:
+					names.append(n)
 	if len(inputFile) == 0:
 		print 'Missing argument: -i'
 		print usageString
@@ -252,7 +252,7 @@ def main(argv):
 				log.write("Original score: {!s}\n".format(bestScore))
 				log.write("Matches within {!s}%: {!s}\n\n".format(neighborThreshold*100, co.goodMatches))
 			
-			#if i < leng-1:	
+			#if i < leng-1: 
 			#	correctM = correctnessDictMax[matchLevel](child, cl, names)
 			#	if correctM == 1:
 			#		rightDistsMax[iterString].append(bestScore)
@@ -300,7 +300,7 @@ def main(argv):
 		alreadyDone = set()
 		#print "keys:", toWrite
 		toPop = set()
-		# merge clusters as appropriate	
+		# merge clusters as appropriate 
 		allClustList = allClusters.values()
 		clustDict = {cl.seed: cl for cl in allClustList}
 		for index in range(len(allClustList)):
@@ -386,7 +386,7 @@ def main(argv):
 		#		item = mergeLog[a]
 		#		corr = checkCorrectGenusOlsonFormat(item[0],item[2])
 		#		if corr == 1:
-		#			neighborLog.write("{!s} (max {!s}):\n    {:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
+		#			neighborLog.write("{!s} (max {!s}):\n	 {:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
 		#		else:
 		#			neighborLog.write("{!s} (max {!s}):\nXXXX{:03.2f}%, {!s} (max {!s})\n".format(item[0],item[1],item[4]*100.0,item[2],item[3]))
 		#	neighborLog.write("\n")

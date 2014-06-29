@@ -65,7 +65,7 @@ def listLex(alphabet, n):
 	return res
 	
 def comprehension_flatten(iter_lst):
-    return list(item for iter_ in iter_lst for item in iter_)
+	return list(item for iter_ in iter_lst for item in iter_)
 
 def getHash(string, alphabet, k):
 	import math
