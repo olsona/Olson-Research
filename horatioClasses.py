@@ -164,11 +164,11 @@ def getScoresLeaves(inDict):
 
 class Contig:
 	def __init__(self, name, goodMatches=None):
-	self.name = name
-	if goodMatches is None:
-		self.goodMatches = []
-	else:
-		self.goodMatches = goodMatches
+		self.name = name
+		if goodMatches is None:
+			self.goodMatches = []
+		else:
+			self.goodMatches = goodMatches
 
 	def __str__(self):
-	return "Name: {!s}".format(self.name)
+		return "Name: {!s}".format(self.name)
