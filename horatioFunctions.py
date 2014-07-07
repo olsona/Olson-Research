@@ -7,10 +7,10 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	# Process contigs to match
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
-	sp = l.rstrip().split("\t")
-	nm = sp[0]
-	co = Contig(nm)
-	allContigs[nm] = co
+		sp = l.rstrip().split("\t")
+		nm = sp[0]
+		co = Contig(nm)
+		allContigs[nm] = co
 	# Match ith contigs to DB
 	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
 	short = toMatch.rsplit("/",1)[1]
@@ -30,9 +30,9 @@ def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
-	nm = sp[0]
-	co = Contig(nm)
-	allContigs[nm] = co
+		nm = sp[0]
+		co = Contig(nm)
+		allContigs[nm] = co
 	mDB = "{!s}_M".format(DB)
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
@@ -48,10 +48,10 @@ def scoreTETRAFinal(DB, fSeed, toMatch, outputFile):
 def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
-	sp = l.rstrip().split("\t")
-	nm = sp[0]
-	co = Contig(nm)
-	allContigs[nm] = co
+		sp = l.rstrip().split("\t")
+		nm = sp[0]
+		co = Contig(nm)
+		allContigs[nm] = co
 	mDB = "{!s}_M".format(DB)
 
 	#print("  Running1: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(fSeed,DB))
