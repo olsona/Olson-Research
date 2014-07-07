@@ -328,7 +328,7 @@ def main(argv):
 		
 	#print "Iterating:"											  
 	# iterate through partition of clusters and merge as appropriate
-		for p in partition:
+	for p in partition:
 		pList = list(p)
 		#print "Merging:" + str(pList)
 		mainClID = pList[0]
