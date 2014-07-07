@@ -57,9 +57,9 @@ def main(argv):
 
 	# check inputs for validity
 	if scoreFunction == "raiphy" and computePath is None:
-	print 'Missing argument: -p'
-	print hcon.usageString
-	sys.exit(2)
+		print 'Missing argument: -p'
+		print hcon.usageString
+		sys.exit(2)
 	if len(splitThreshold) != len(cutSchedule) -1:
 		print "Incorrect number of split thresholds."
 		sys.exit(2)
@@ -86,8 +86,8 @@ def main(argv):
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
 	# convert to contiguous line AND tabbed format
-	newName = baseName+"_TAB.fa"
-	fN = open(newName,'w')
+		newName = baseName+"_TAB.fa"
+		fN = open(newName,'w')
 	s = 0
 	while ln:
 		if ln[0] == '>': # deal with name lines
@@ -96,9 +96,9 @@ def main(argv):
 				myStr = ln.rstrip()[m:]
 				fN.write('>'+string.replace(myStr,' ','_')+'\t')
 				s = 1
-		else: # make new line
-			myStr = ln.rstrip()[m:]
-			fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
+			else: # make new line
+				myStr = ln.rstrip()[m:]
+				fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
 		else: # genetic lines
 			fN.write(ln.rstrip())
 		ln = f.readline()
@@ -157,14 +157,14 @@ def main(argv):
 		
 		# create DB and query files, apply user-supplied scoring function to them
 		DB = "{!s}_{!s}_DB".format(baseName,i)
-	matches = "{!s}_{!s}_matches".format(baseName,i)
-	toMatch = "{!s}_{!s}".format(baseName,i)
-	if scoreFunction == "tacoa":
-		hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
-	elif scoreFunction == "tetra":
-		hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
-	elif scoreFunction == "raiphy":
-		hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
+		matches = "{!s}_{!s}_matches".format(baseName,i)
+		toMatch = "{!s}_{!s}".format(baseName,i)
+		if scoreFunction == "tacoa":
+			hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
+		elif scoreFunction == "tetra":
+			hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
+		elif scoreFunction == "raiphy":
+			hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 		
 	# construct matching dictionary for internal use
 	matchDict = {}
