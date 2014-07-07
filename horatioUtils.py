@@ -3,8 +3,8 @@ def csv2MediansTop(inFile, outFile, numTop):
 	mat = numpy.genfromtxt(inFile, dtype=numpy.float32, delimiter=" ")
 	fout = open(outFile, 'w')
 	for r in range(len(mat)/numTop):
-	segment = mat[r*numTop:(r+1)*numTop]
-	fout.write("{!s}\n".format(numpy.median(segment,axis=0)[2]))
+		segment = mat[r*numTop:(r+1)*numTop]
+		fout.write("{!s}\n".format(numpy.median(segment,axis=0)[2]))
 	fout.close()
 
 
@@ -13,7 +13,7 @@ def ensureDir(pth):
 	import os
 	d = os.path.dirname(pth)
 	if not os.path.exists(d):
-	os.makedirs(d)
+		os.makedirs(d)
 
 
 def namesPosTable(fastaFile):
@@ -22,11 +22,11 @@ def namesPosTable(fastaFile):
 	table = {}
 	ln = f.readline()
 	while ln:
-	if ln[0] == '>': # found a contig name
-		nm = string.replace(ln.rstrip(),' ','_')
-		m = re.search('[A-Za-z]',ln).start()
-		table[nm[m:]] = f.tell()-len(ln)
-	ln = f.readline()
+		if ln[0] == '>': # found a contig name
+			nm = string.replace(ln.rstrip(),' ','_')
+			m = re.search('[A-Za-z]',ln).start()
+			table[nm[m:]] = f.tell()-len(ln)
+		ln = f.readline()
 	return table
 
 
@@ -36,16 +36,16 @@ def readSequence(fi):
 	concat = ''
 	buf = f.readline().rstrip()
 	while buf:
-	seq_name, seq = buf[2:], ''
-	buf = f.readline()
-	while not buf.startswith('>') and buf:
-		seq = seq + buf.rstrip()
+		seq_name, seq = buf[2:], ''
 		buf = f.readline()
-	if seq_name.find("complete genome") == -1:
-		concat = concat + seq
-	elif seq_name.find("complete genome") > -1:
-		concat = seq
-		break
+		while not buf.startswith('>') and buf:
+			seq = seq + buf.rstrip()
+			buf = f.readline()
+		if seq_name.find("complete genome") == -1:
+			concat = concat + seq
+		elif seq_name.find("complete genome") > -1:
+			concat = seq
+			break
 	f.close()
 	return seq_name, concat
 
@@ -57,12 +57,12 @@ def makeDistanceMatrix(scoreFile):
 	cols = len(lns[2].split(", "))
 	dists = [[0.0 for c in range(cols)] for r in range(rows)]
 	for r in range(rows):
-	li = lns[r+2].split(", ")
-	for l in li:
-		[sStr, cStr] = l.split(":")
-		s = float(sStr)
-		c = int(cStr)
-		dists[r][c] = s
+		li = lns[r+2].split(", ")
+		for l in li:
+			[sStr, cStr] = l.split(":")
+			s = float(sStr)
+			c = int(cStr)
+			dists[r][c] = s
 	return dists
 
 
