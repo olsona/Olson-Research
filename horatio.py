@@ -320,10 +320,10 @@ def main(argv):
 				if len(component) > 1:
 					partition.append(component)
 				metaVisited = metaVisited | component
-		#print "Partition"
-		#for p in partition:
-		#	 print "\t*{!s}".format(", ".join(p))
-		#print
+		        #print "Partition"
+		        #for p in partition:
+		        # print "\t*{!s}".format(", ".join(p))
+		        #print
 		
 		#print "Iterating:"											  
 		# iterate through partition of clusters and merge as appropriate
