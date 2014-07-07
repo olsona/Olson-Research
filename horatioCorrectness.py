@@ -211,8 +211,8 @@ def precision(inFile, threshold, nameList):
 	ls = fstBrk[1].split(", ")
 	for l in ls:
 		for nL in nameList:
-		if string.find(l,nL) != -1:
-			repDict[nL] += 1
+			if string.find(l,nL) != -1:
+				repDict[nL] += 1
 	for nL in repDict:
 		if repDict[nL] > max:
 			max = repDict[nL]
