@@ -92,12 +92,12 @@ def getMatchesWithinPercentage(inline, pct):
 	#find all scores within pct of
 	for i in range(1,len(ln)):
 		info = ln[i].split(":")
-	match = int(info[0])
-	dist = float(info[1])
-	if dist >= threshold:
-		out.append([match,dist])
-	else:
-		break
+		match = int(info[0])
+		dist = float(info[1])
+		if dist >= threshold:
+			out.append([match,dist])
+		else:
+			break
 	return out
 	
 
