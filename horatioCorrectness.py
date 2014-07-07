@@ -347,8 +347,9 @@ def ncr(n, r):
 	#return 1.0
 	#print n, r
 	r = min(r, n-r)
-	if r == 0: return 1
-		nrtuple = tuple([n,r])
+	if r == 0: 
+		return 1
+	nrtuple = tuple([n,r])
 	if nrtuple not in ncr_memo:
 		numer = reduce(op.mul, xrange(n, n-r, -1))
 		denom = reduce(op.mul, xrange(1, r+1))
