@@ -84,26 +84,25 @@ def main(argv):
 	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
 	newName = inputFile
 	ln = f.readline()
-	if string.find(ln,"\t") == -1:
-	# convert to contiguous line AND tabbed format
+	if string.find(ln,"\t") == -1: # convert to contiguous line AND tabbed format
 		newName = baseName+"_TAB.fa"
 		fN = open(newName,'w')
-	s = 0
-	while ln:
-		if ln[0] == '>': # deal with name lines
-			m = re.search('[A-Za-z]',ln).start()
-			if s == 0: # start file
-				myStr = ln.rstrip()[m:]
-				fN.write('>'+string.replace(myStr,' ','_')+'\t')
-				s = 1
-			else: # make new line
-				myStr = ln.rstrip()[m:]
-				fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
-		else: # genetic lines
-			fN.write(ln.rstrip())
-		ln = f.readline()
-	fN.close()		
-	f.close()
+		s = 0
+		while ln:
+			if ln[0] == '>': # deal with name lines
+				m = re.search('[A-Za-z]',ln).start()
+				if s == 0: # start file
+					myStr = ln.rstrip()[m:]
+					fN.write('>'+string.replace(myStr,' ','_')+'\t')
+					s = 1
+				else: # make new line
+					myStr = ln.rstrip()[m:]
+					fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
+			else: # genetic lines
+				fN.write(ln.rstrip())
+			ln = f.readline()
+		fN.close()		
+		f.close()
 	
 	# separate out contigs by size, according to user-supplied cut schedule
 	fNext = newName
@@ -134,13 +133,14 @@ def main(argv):
 	f = open(fSeed+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
-	nm = sp[0]		  # nm is the name of the contig
-	cl = Cluster(nm)  # starting a new cluster cl with nm as its seed
-	co = Contig(nm)
-	allClusters[nm] = cl
-	allContigs[nm] = co
-	contigs2Clusters[nm] = cl
-	clusters2Contigs[nm] = [co]
+		nm = sp[0]		  # nm is the name of the contig
+		cl = Cluster(nm)  # starting a new cluster cl with nm as its seed
+		co = Contig(nm)
+		allClusters[nm] = cl
+		allContigs[nm] = co
+		contigs2Clusters[nm] = cl
+		clusters2Contigs[nm] = [co]
+	
 	newContigCount = 0
 
 	# ***
@@ -151,7 +151,6 @@ def main(argv):
 
 	#---MAIN LOOP---#
 	for i in range(leng-1, 0, -1):
-		
 		iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
 			str(cutSchedule[i]).zfill(2))
 		
@@ -166,52 +165,52 @@ def main(argv):
 		elif scoreFunction == "raiphy":
 			hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 		
-	# construct matching dictionary for internal use
-	matchDict = {}
-	fMatching = open(matches,'r')
-	lns = fMatching.readlines()
-	dbNames = lns[0].rstrip().split(",")
-	queryNames = lns[1].rstrip().split(",")
-	newSeeds = []
-	for row in range(2,len(lns)):
-		line = lns[row]
-		bestMatch = line.rstrip().split(", ")[0].split(":")
-		bestIndex = int(bestMatch[1])
-		bestScore = float(bestMatch[0])
-		dbItem = dbNames[bestIndex]
-		queryItem = queryNames[row-2]
-		#print "{!s} -> {!s}, {:01.3f}".format(queryItem,dbItem,bestScore)
-		if bestScore < splitThreshold[i-1]:
-			newSeeds.append(queryItem)
-		else:
-		   if dbItem in matchDict:
-			   matchDict[dbItem].append([queryItem,bestScore])
-		   else:
-			   matchDict[dbItem] = [[queryItem,bestScore]]
-		# check for other good matches to queryItem
-		myThresh = 0.0
-		queryContig = allContigs[queryItem]
-		# matchCluster = contigs2Clusters[dbItem]  # ***
-		if bestScore >= splitThreshold[i-1]:
-		   if bestScore > 0:
-			   myThresh = (1.0-neighborThreshold)*bestScore
-		   else:
-			   myThresh = (1.0+neighborThreshold)*bestScore
-		   # check for neighbors
-		   for l in line.rstrip().split(", ")[1:]:
-			   entry = l.split(":")
-			   score = float(entry[0])
-			   if score >= myThresh:
-				   neighborInd = int(entry[1])
-				   neighborName = dbNames[neighborInd]
-				   neighborCluster = contigs2Clusters[neighborName]
-				   queryContig.goodMatches.append([neighborCluster.seed,score])
-		   #if queryContig.goodMatches:
-		   #	print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
-		# ***
-		#print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
-		#	matchCluster.seed, [m[0] for m in queryContig.goodMatches])
-		# ***
+		# construct matching dictionary for internal use
+		matchDict = {}
+		fMatching = open(matches,'r')
+		lns = fMatching.readlines()
+		dbNames = lns[0].rstrip().split(",")
+		queryNames = lns[1].rstrip().split(",")
+		newSeeds = []
+		for row in range(2,len(lns)):
+			line = lns[row]
+			bestMatch = line.rstrip().split(", ")[0].split(":")
+			bestIndex = int(bestMatch[1])
+			bestScore = float(bestMatch[0])
+			dbItem = dbNames[bestIndex]
+			queryItem = queryNames[row-2]
+			#print "{!s} -> {!s}, {:01.3f}".format(queryItem,dbItem,bestScore)
+			if bestScore < splitThreshold[i-1]:
+				newSeeds.append(queryItem)
+			else:
+				if dbItem in matchDict:
+					matchDict[dbItem].append([queryItem,bestScore])
+				else:
+					matchDict[dbItem] = [[queryItem,bestScore]]
+			# check for other good matches to queryItem
+			myThresh = 0.0
+			queryContig = allContigs[queryItem]
+			# matchCluster = contigs2Clusters[dbItem]  # ***
+			if bestScore >= splitThreshold[i-1]:
+				if bestScore > 0:
+					myThresh = (1.0-neighborThreshold)*bestScore
+				else:
+					myThresh = (1.0+neighborThreshold)*bestScore
+			# check for neighbors
+			for l in line.rstrip().split(", ")[1:]:
+				entry = l.split(":")
+				score = float(entry[0])
+				if score >= myThresh:
+					neighborInd = int(entry[1])
+					neighborName = dbNames[neighborInd]
+					neighborCluster = contigs2Clusters[neighborName]
+					queryContig.goodMatches.append([neighborCluster.seed,score])
+					#if queryContig.goodMatches:
+					#	print bestScore, contigs2Clusters[dbItem].seed, queryContig.goodMatches
+				# ***
+				#print "{!s} matched: {!s}\n\tNear: {!s}\n".format(queryContig,\
+				#	matchCluster.seed, [m[0] for m in queryContig.goodMatches])
+				# ***
 				
 		# ***
 		clName = contigs2Clusters[dbItem].seed
@@ -222,13 +221,13 @@ def main(argv):
 			wrongDists[iterString].append(bestScore)
 			# ***
 	
-	#print
+		#print
 	
-	#for co in allContigs:
-	#	 if allContigs[co].goodMatches:
-	#		 print co, " ", pprint.pprint(allContigs[co].goodMatches)
+		#for co in allContigs:
+		#	 if allContigs[co].goodMatches:
+		#		 print co, " ", pprint.pprint(allContigs[co].goodMatches)
 	
-	fMatching.close()
+		fMatching.close()
 			
 		#print
 		
@@ -236,81 +235,81 @@ def main(argv):
 		
 		#print
 			
-	# create new seeds through concatenation and prepare for next DB creation
-	fSeed = "{!s}_{!s}_seed".format(baseName, i)
-	l2 = open(fSeed + "-2",'w')
-	# Make concatenated seeds
-	for seed in matchDict.keys():
-		#print seed
-		cl = contigs2Clusters[seed]
-		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-		fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
-		fNewContig.write(">{!s}\n".format(newContigName))
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, seed))
-		fNewContig.write(seq)
-		#os.system("rm {!s}{!s}.fna".format(genePath,seed)) # clear up space
-		nCo = Contig(newContigName)
-		allContigs[newContigName] = nCo
-		contigs2Clusters[newContigName] = cl
-		clusters2Contigs[cl.seed].append(nCo)
-		cl.root = newContigName
-		cl.addNode(newContigName, seed, 0.0)
-		# concatenate all sequences from all matching children
-		for [child,score] in matchDict[seed]:
-			co = allContigs[child]
-			#print child, co.goodMatches
-		cl.addNode(newContigName, child, score)
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
-		fNewContig.write(seq)
-		# add neighbors
-		for m in co.goodMatches:
-			cl.addMatch(m)
-			#print "Adding {!s} to {!s}'s neighbor list".format(m, seed)
-		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
-		fNewContig.write("\n")
-		fNewContig.close()
-		newContigCount += 1
-		#l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+		# create new seeds through concatenation and prepare for next DB creation
+		fSeed = "{!s}_{!s}_seed".format(baseName, i)
+		l2 = open(fSeed + "-2",'w')
+		# Make concatenated seeds
+		for seed in matchDict.keys():
+			#print seed
+			cl = contigs2Clusters[seed]
+			newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+			fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+			fNewContig.write(">{!s}\n".format(newContigName))
+			_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, seed))
+			fNewContig.write(seq)
+			#os.system("rm {!s}{!s}.fna".format(genePath,seed)) # clear up space
+			nCo = Contig(newContigName)
+			allContigs[newContigName] = nCo
+			contigs2Clusters[newContigName] = cl
+			clusters2Contigs[cl.seed].append(nCo)
+			cl.root = newContigName
+			cl.addNode(newContigName, seed, 0.0)
+			# concatenate all sequences from all matching children
+			for [child,score] in matchDict[seed]:
+				co = allContigs[child]
+				#print child, co.goodMatches
+				cl.addNode(newContigName, child, score)
+				_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,child))
+				fNewContig.write(seq)
+			# add neighbors
+			for m in co.goodMatches:
+				cl.addMatch(m)
+				#print "Adding {!s} to {!s}'s neighbor list".format(m, seed)
+			# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+			fNewContig.write("\n")
+			fNewContig.close()
+			newContigCount += 1
+			#l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 	
-	#print
+			#print
 	
-	#for cl in sorted(allClusters.keys()):
-	#	 print cl
-		#if allClusters[cl].closeDict:
+		#for cl in sorted(allClusters.keys()):
 		#	 print cl
-		#	 pprint.pprint(allClusters[cl].closeDict)
-	#print
-	# add split seeds to DB
-	for nSeed in newSeeds:
-		#print "{!s} is a new seed".format(nSeed)
-		co = allContigs[nSeed]
-		cl = Cluster(nSeed)
-		allClusters[nSeed] = cl
-		contigs2Clusters[nSeed] = cl
-		clusters2Contigs[nSeed] = [co]
-		#l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
-	#print
+		#	 if allClusters[cl].closeDict:
+		#	 	print cl
+		#	 	pprint.pprint(allClusters[cl].closeDict)
+		#print
+		# add split seeds to DB
+		for nSeed in newSeeds:
+			#print "{!s} is a new seed".format(nSeed)
+			co = allContigs[nSeed]
+			cl = Cluster(nSeed)
+			allClusters[nSeed] = cl
+			contigs2Clusters[nSeed] = cl
+			clusters2Contigs[nSeed] = [co]
+			#l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
+		#print
 	
 			
-	# go through clusters again, evaluate what clusters should be joined
-	# identify edges (make simplifying assumption that if A is a neighbor of B, then B is a neighbor of A)
-	graph = {}
-	for clID in allClusters:
-		clust = allClusters[clID]
-		ratio, nameB = clust.getMostCommonNeighbor()
-		if ratio >= joinThreshold:
-			#print "Edge between {!s} and {!s}".format(clID,nameB)
-			if clID in graph:
-				graph[clID].add(nameB)
-			else:
-			   graph[clID] = set([nameB])
+		# go through clusters again, evaluate what clusters should be joined
+		# identify edges (make simplifying assumption that if A is a neighbor of B, then B is a neighbor of A)
+		graph = {}
+		for clID in allClusters:
+			clust = allClusters[clID]
+			ratio, nameB = clust.getMostCommonNeighbor()
+			if ratio >= joinThreshold:
+				#print "Edge between {!s} and {!s}".format(clID,nameB)
+				if clID in graph:
+					graph[clID].add(nameB)
+				else:
+					graph[clID] = set([nameB])
 			if nameB in graph:
 				graph[nameB].add(clID)
 			else:
 				graph[nameB] = set([clID])
-	#print "Graph"			 
-	#pprint.pprint(graph)
-	#print
+		#print "Graph"			 
+		#pprint.pprint(graph)
+		#print
 		
 		# DFS on clusters to find all connected components
 		partition = []
@@ -326,77 +325,77 @@ def main(argv):
 		#	 print "\t*{!s}".format(", ".join(p))
 		#print
 		
-	#print "Iterating:"											  
-	# iterate through partition of clusters and merge as appropriate
-	for p in partition:
-		pList = list(p)
-		#print "Merging:" + str(pList)
-		mainClID = pList[0]
-		#print mainClID
-		mainClust = allClusters[mainClID]
-		#print "\t" + str(sorted(mainClust.getAllLeaves()))
-		restClust = [allClusters[ID] for ID in pList[1:]]
-		# make ubercontig
-		#print "Merged contig: {!s}".format(newContigName)
-		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-		newContig = Contig(newContigName)
-		allContigs[newContigName] = newContig
-		contigs2Clusters[newContigName] = mainClust
-		clusters2Contigs[mainClID].append(newContig)
-		fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
-		fNewContig.write(">{!s}\n".format(newContigName))
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
-		fNewContig.write(seq)
-		for rCl in restClust:
-			#print "\t" + str(sorted(rCl.getAllLeaves()))
-			co = allContigs[rCl.root]
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
-		fNewContig.write(seq)
-		#for m in co.goodMatches:
-			#mainClust.addMatch(m)	  # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
-		# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
-		fNewContig.write("\n")
-		fNewContig.close()
-		newContigCount += 1
-		# add clusters
-		mainClust.addClusters(restClust, newContigName)
-		# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
-		for rCl in restClust:
-			contigNames = clusters2Contigs[rCl.seed]
-			for con in contigNames:
-				clusters2Contigs[mainClust.seed].append(con)
-				contigs2Clusters[con] = mainClust
-			clusters2Contigs.pop(rCl.seed)
-			allClusters.pop(rCl.seed)
-			#print "Popped {!s}".format(rCl.seed)
-		#print sorted(mainClust.getAllLeaves())
+		#print "Iterating:"											  
+		# iterate through partition of clusters and merge as appropriate
+		for p in partition:
+			pList = list(p)
+			#print "Merging:" + str(pList)
+			mainClID = pList[0]
+			#print mainClID
+			mainClust = allClusters[mainClID]
+			#print "\t" + str(sorted(mainClust.getAllLeaves()))
+			restClust = [allClusters[ID] for ID in pList[1:]]
+			# make ubercontig
+			#print "Merged contig: {!s}".format(newContigName)
+			newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+			newContig = Contig(newContigName)
+			allContigs[newContigName] = newContig
+			contigs2Clusters[newContigName] = mainClust
+			clusters2Contigs[mainClID].append(newContig)
+			fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+			fNewContig.write(">{!s}\n".format(newContigName))
+			_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
+			fNewContig.write(seq)
+			for rCl in restClust:
+				#print "\t" + str(sorted(rCl.getAllLeaves()))
+				co = allContigs[rCl.root]
+				_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
+				fNewContig.write(seq)
+				#for m in co.goodMatches:
+					#mainClust.addMatch(m)	  # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+				fNewContig.write("\n")
+				fNewContig.close()
+				newContigCount += 1
+			# add clusters
+			mainClust.addClusters(restClust, newContigName)
+			# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
+			for rCl in restClust:
+				contigNames = clusters2Contigs[rCl.seed]
+				for con in contigNames:
+					clusters2Contigs[mainClust.seed].append(con)
+					contigs2Clusters[con] = mainClust
+				clusters2Contigs.pop(rCl.seed)
+				allClusters.pop(rCl.seed)
+				#print "Popped {!s}".format(rCl.seed)
+			#print sorted(mainClust.getAllLeaves())
 	   
-	#print ", ".join([c for c in sorted(allClusters.keys())])
+		#print ", ".join([c for c in sorted(allClusters.keys())])
 	
-	# finally write root contigs to db index file
-	for clID in allClusters:
-		clust = allClusters[clID]
-		root = clust.root
-		l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
-		clust.closeDict = {}
+		# finally write root contigs to db index file
+		for clID in allClusters:
+			clust = allClusters[clID]
+			root = clust.root
+			l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
+			clust.closeDict = {}
 		
-	#for cl in sorted(allClusters.keys()):
-	#	 print cl
+		#for cl in sorted(allClusters.keys()):
+		#	 print cl
 	 
-	# *** compute correctness distributions
-	rdata = rightDists[iterString]
-	wdata = wrongDists[iterString]
-	distLog.write(iterString + "\n")
-	if rdata:
-		distLog.write("Right ({!s}): {:03.2f} - {:03.2f}\n".format(len(rdata),min(rdata),max(rdata)))
-	if wdata:
-		distLog.write("Wrong ({!s}): {:03.2f} - {:03.2f}\n".format(len(wdata),min(wdata),max(wdata)))
-	distLog.write("\n")
-	#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
-	# ***	
+		# *** compute correctness distributions
+		rdata = rightDists[iterString]
+		wdata = wrongDists[iterString]
+		distLog.write(iterString + "\n")
+		if rdata:
+			distLog.write("Right ({!s}): {:03.2f} - {:03.2f}\n".format(len(rdata),min(rdata),max(rdata)))
+		if wdata:
+			distLog.write("Wrong ({!s}): {:03.2f} - {:03.2f}\n".format(len(wdata),min(wdata),max(wdata)))
+		distLog.write("\n")
+		#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
+		# ***	
 		
 		#print iterString + " done"
-	l2.close()
+		l2.close()
 			
 	#---POSTPROCESSING---#
 	totalCluster = {}
