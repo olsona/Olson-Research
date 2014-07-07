@@ -404,18 +404,18 @@ def main(argv):
 	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
 	for c in allClusters:
 	#print "-----"
-	r = allClusters[c].root
-	l = allClusters[c].getAllLeaves()
-	lproper = []
-	for item in l:
-		lproper.append(item)
-	cl = [li for li in lproper]
-	if r.startswith('pseudocontig'):
-		pass
-	elif r in cl:
-		pass
-	else:
-		cl.append(r)
+		r = allClusters[c].root
+		l = allClusters[c].getAllLeaves()
+		lproper = []
+		for item in l:
+			lproper.append(item)
+			cl = [li for li in lproper]
+			if r.startswith('pseudocontig'):
+				pass
+			elif r in cl:
+				pass
+			else:
+				cl.append(r)
 	fOutC.write("{!s}\n".format(cl))
 	totalCluster[r] = allClusters[c]
 	finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
