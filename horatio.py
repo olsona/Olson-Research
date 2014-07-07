@@ -214,12 +214,12 @@ def main(argv):
 		# ***
 				
 		# ***
-			clName = contigs2Clusters[dbItem].seed
-			isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
-			if isCorrect:
-				rightDists[iterString].append(bestScore)
-			else:
-				wrongDists[iterString].append(bestScore)
+		clName = contigs2Clusters[dbItem].seed
+		isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
+		if isCorrect:				
+			rightDists[iterString].append(bestScore)
+		else:
+			wrongDists[iterString].append(bestScore)
 			# ***
 	
 	#print
