@@ -103,7 +103,7 @@ def main(argv):
 					fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
 			else: # genetic lines
 				fN.write(ln.rstrip())
-		ln = f.readline()
+			ln = f.readline()
 		fN.close()		
 	f.close()
 	
