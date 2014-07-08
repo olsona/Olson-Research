@@ -57,9 +57,9 @@ def main(argv):
 
 	# check inputs for validity
 	if scoreFunction == "raiphy" and computePath is None:
-	print 'Missing argument: -p'
-	print hcon.usageString
-	sys.exit(2)
+		print 'Missing argument: -p'
+		print hcon.usageString
+		sys.exit(2)
 	if len(splitThreshold) != len(cutSchedule) -1:
 		print "Incorrect number of split thresholds."
 		sys.exit(2)
