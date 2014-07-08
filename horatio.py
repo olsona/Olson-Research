@@ -110,13 +110,13 @@ def main(argv):
 	#print "Separating"
 	# separate out contigs by size, according to user-supplied cut schedule
 	fNext = newName
-	print fNext
+	#print fNext
 	genePath = newName.rsplit("/",1)[0]+"/contigs/"
 	hutil.ensureDir(genePath)
 	leng = len(cutSchedule)
 	for i in range(leng):
 		workingFile = fNext
-		print i, workingFile
+		#print i, workingFile
 		thr = cutSchedule[i]*1000
 		bgr = "{!s}_{!s}_next".format(baseName,i)
 		if i == 0:
@@ -176,7 +176,7 @@ def main(argv):
 		# construct matching dictionary for internal use
 		matchDict = {}
 		fMatching = open(matches,'r')
-		print fMatching
+		#print fMatching
 		lns = fMatching.readlines()
 		dbNames = lns[0].rstrip().split(",")
 		queryNames = lns[1].rstrip().split(",")
@@ -365,7 +365,7 @@ def main(argv):
 		#print iterString + " done"
 		l2.close()
 		#print i
-		print i, len(allContigs)
+		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
 	totalCluster = {}
