@@ -368,6 +368,7 @@ def main(argv):
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
 	actualClusterList = open("{!s}_clusters-2".format(outputFile),'w')
+	fSeed = "{!s}_clusters-2".format(outputFile)
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
@@ -391,11 +392,11 @@ def main(argv):
 	toMatch = "{!s}_final_matches".format(baseName)
 	outputFile = "{!s}_final_dists".format(baseName)
 	if scoreFunction == "tacoa":
-		hfun.scoreTACOAFinal(DB, actualClusterList, outputFile)			
+		hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
 	elif scoreFunction == "tetra":
-		hfun.scoreTETRAFinal(DB, actualClusterList, outputFile)
+		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
 	elif scoreFunction == "raiphy":
-		hfun.scoreRAIphyFinal(DB, actualClusterList, toMatch, computePath, outputFile)
+		hfun.scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile)
 	
 	fOutC.close()
 	finalContigList.close()
