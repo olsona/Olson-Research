@@ -174,6 +174,7 @@ def main(argv):
 		# construct matching dictionary for internal use
 		matchDict = {}
 		fMatching = open(matches,'r')
+		print fMatching
 		lns = fMatching.readlines()
 		dbNames = lns[0].rstrip().split(",")
 		queryNames = lns[1].rstrip().split(",")
