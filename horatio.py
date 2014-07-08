@@ -136,6 +136,7 @@ def main(argv):
 	contigs2Clusters = {} # matches contig names to clusters
 	clusters2Contigs = {} # matches cluster seeds (aka names) to a list of contigs
 	f = open(fSeed+"-2",'r')
+	os.system("head -1 {!s}".format(fSeed))
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
 		nm = sp[0]		  # nm is the name of the contig
@@ -163,7 +164,6 @@ def main(argv):
 		DB = "{!s}_{!s}_DB".format(baseName,i)
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
-		os.system("head -1 {!s}".format(fSeed))
 		if scoreFunction == "tacoa":
 			hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
 		elif scoreFunction == "tetra":
