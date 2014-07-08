@@ -79,6 +79,8 @@ def main(argv):
 			sys.exit(2)
 	# ***
 
+	print "I'm running"
+
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
 	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
