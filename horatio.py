@@ -157,46 +157,46 @@ def main(argv):
         
         # create DB and query files, apply user-supplied scoring function to them
         DB = "{!s}_{!s}_DB".format(baseName,i)
-	matches = "{!s}_{!s}_matches".format(baseName,i)
-	toMatch = "{!s}_{!s}".format(baseName,i)
-	if scoreFunction == "tacoa":
-	    hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
-	elif scoreFunction == "tetra":
-	    hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
-	elif scoreFunction == "raiphy":
-	    hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
+		matches = "{!s}_{!s}_matches".format(baseName,i)
+		toMatch = "{!s}_{!s}".format(baseName,i)
+		if scoreFunction == "tacoa":
+	    	hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
+		elif scoreFunction == "tetra":
+	    	hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
+		elif scoreFunction == "raiphy":
+	    	hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 	    
-	# construct matching dictionary for internal use
-	matchDict = {}
-	fMatching = open(matches,'r')
-	lns = fMatching.readlines()
-	dbNames = lns[0].rstrip().split(",")
-	queryNames = lns[1].rstrip().split(",")
-	newSeeds = []
-	for row in range(2,len(lns)):
-	    line = lns[row]
-	    bestMatch = line.rstrip().split(", ")[0].split(":")
-	    bestIndex = int(bestMatch[1])
-	    bestScore = float(bestMatch[0])
-	    dbItem = dbNames[bestIndex]
-	    queryItem = queryNames[row-2]
-	    #print "{!s} -> {!s}, {:01.3f}".format(queryItem,dbItem,bestScore)
-	    if bestScore < splitThreshold[i-1]:
-	        newSeeds.append(queryItem)
-	    else:
-	       if dbItem in matchDict:
-	           matchDict[dbItem].append([queryItem,bestScore])
-	       else:
-	           matchDict[dbItem] = [[queryItem,bestScore]]
-	    # check for other good matches to queryItem
-	    myThresh = 0.0
-	    queryContig = allContigs[queryItem]
-	    # matchCluster = contigs2Clusters[dbItem]  # ***
-	    if bestScore >= splitThreshold[i-1]:
-	       if bestScore > 0:
-	           myThresh = (1.0-neighborThreshold)*bestScore
-	       else:
-	           myThresh = (1.0+neighborThreshold)*bestScore
+		# construct matching dictionary for internal use
+		matchDict = {}
+		fMatching = open(matches,'r')
+		lns = fMatching.readlines()
+		dbNames = lns[0].rstrip().split(",")
+		queryNames = lns[1].rstrip().split(",")
+		newSeeds = []
+		for row in range(2,len(lns)):
+			line = lns[row]
+	    	bestMatch = line.rstrip().split(", ")[0].split(":")
+	    	bestIndex = int(bestMatch[1])
+	    	bestScore = float(bestMatch[0])
+	    	dbItem = dbNames[bestIndex]
+	    	queryItem = queryNames[row-2]
+	    	#print "{!s} -> {!s}, {:01.3f}".format(queryItem,dbItem,bestScore)
+	    	if bestScore < splitThreshold[i-1]:
+				newSeeds.append(queryItem)
+			else:
+				if dbItem in matchDict:
+					matchDict[dbItem].append([queryItem,bestScore])
+				else:
+					matchDict[dbItem] = [[queryItem,bestScore]]
+			# check for other good matches to queryItem
+			myThresh = 0.0
+			queryContig = allContigs[queryItem]
+			# matchCluster = contigs2Clusters[dbItem]  # ***
+			if bestScore >= splitThreshold[i-1]:
+				if bestScore > 0:
+					myThresh = (1.0-neighborThreshold)*bestScore
+				else:
+					myThresh = (1.0+neighborThreshold)*bestScore
 	       # check for neighbors
 	       for l in line.rstrip().split(", ")[1:]:
 	           entry = l.split(":")
@@ -312,19 +312,19 @@ def main(argv):
 	#pprint.pprint(graph)
 	#print
 	    
-        # DFS on clusters to find all connected components
-        partition = []
-        metaVisited = set()
-        for root in graph:
-            if root not in metaVisited:
-                component = hutil.dfs(graph,root)
-                if len(component) > 1:
-                    partition.append(component)
-                metaVisited = metaVisited | component
-        #print "Partition"
-        #for p in partition:
-        #    print "\t*{!s}".format(", ".join(p))
-        #print
+    # DFS on clusters to find all connected components
+	partition = []
+	metaVisited = set()
+	for root in graph:
+		if root not in metaVisited:
+			component = hutil.dfs(graph,root)
+			if len(component) > 1:
+				partition.append(component)
+			metaVisited = metaVisited | component
+	#print "Partition"
+	#for p in partition:
+	#    print "\t*{!s}".format(", ".join(p))
+	#print
         
 	#print "Iterating:"                                           
 	# iterate through partition of clusters and merge as appropriate
@@ -403,22 +403,24 @@ def main(argv):
     fOutC = open("{!s}_clusters".format(outputFile),'w')
     finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
     for c in allClusters:
-	#print "-----"
-	r = allClusters[c].root
-	l = allClusters[c].getAllLeaves()
-	lproper = []
-	for item in l:
-	    lproper.append(item)
-	cl = [li for li in lproper]
-	if r.startswith('pseudocontig'):
-	    pass
-	elif r in cl:
-	    pass
-	else:
-	    cl.append(r)
-	fOutC.write("{!s}\n".format(cl))
-	totalCluster[r] = allClusters[c]
-	finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+		r = allClusters[c].root
+		l = allClusters[c].getAllLeaves()
+		lproper = []
+		for item in l:
+	    	lproper.append(item)
+		cl = [li for li in lproper]
+		if r.startswith('pseudocontig'):
+	    	pass
+		elif r in cl:
+	    	pass
+		else:
+	    	cl.append(r)
+		fOutC.write("{!s}\n".format(cl))
+		totalCluster[r] = allClusters[c]
+		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+	
+	
+	
     fOutC.close()
     finalContigList.close()
     pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
@@ -432,6 +434,7 @@ def main(argv):
     	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
     
     distLog.close()
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])
