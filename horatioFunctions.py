@@ -19,12 +19,11 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 	
 	
 def scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile):
-	os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
-	os.system("{!s}rai -I {!s} -d {!s} >/dev/null 2>&1".format(computePath, toMatch, DB))
+	os.system("{!s}rait -new -i {!s} -o {!s} ".format(computePath, fSeed, DB))
+	os.system("{!s}rai -I {!s} -d {!s} ".format(computePath, toMatch, DB))
 	short = toMatch.rsplit("/",1)[1]
-	os.system("ls -A {!s}".format(os.getcwd()))
-	#os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
-	#os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
+	os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
+	os.system("rm {!s}/{!s}.bin".format(os.getcwd(), short))
 	
 	
 def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
