@@ -136,7 +136,7 @@ def main(argv):
 	contigs2Clusters = {} # matches contig names to clusters
 	clusters2Contigs = {} # matches cluster seeds (aka names) to a list of contigs
 	f = open(fSeed+"-2",'r')
-	os.system("head -1 {!s}".format(fSeed))
+	os.system("head -1 {!s}-2".format(fSeed))
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
 		nm = sp[0]		  # nm is the name of the contig

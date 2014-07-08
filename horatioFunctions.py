@@ -46,7 +46,7 @@ def scoreTETRAFinal(DB, fSeed, outputFile):
 	
 	
 def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
-	os.system("head -1 {!s}".format(fSeed))
+	os.system("head -1 {!s}-2".format(fSeed))
 	f = open(toMatch+"-2",'r')
 	for l in f.readlines():
 		sp = l.rstrip().split("\t")
