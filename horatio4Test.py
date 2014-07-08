@@ -40,11 +40,15 @@ def main(argv):
             'tetra': [0.2,0.4,0.6],
             'raiphy': [-17.0,-16.5,-16.0]}
     #for score in sorted(sDict.keys()):
-    sList = sDict[score]
-    for t in tDict:
-        for s in sList:
-            for j in jList:
-                for n in nList:
+    #sList = sDict[score]
+    #for t in tDict:
+    #    for s in sList:
+    #        for j in jList:
+    #            for n in nList:
+	for t in ['4by4Chop']:
+		for s in ['tetra']:
+			for j in [0.5]:
+				for n in [0.02]:
                     splitList = [s]*(len(tDict[t])-1)
                     tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
                     sStr = "["+",".join([str(si) for si in splitList])+"]"
