@@ -79,7 +79,7 @@ def main(argv):
 			sys.exit(2)
 	# ***
 
-	print "Starting"
+	#print "Starting"
 
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
@@ -107,7 +107,7 @@ def main(argv):
 		fN.close()		
 	f.close()
 	
-	print "Separating"
+	#print "Separating"
 	# separate out contigs by size, according to user-supplied cut schedule
 	fNext = newName
 	genePath = newName.rsplit("/",1)[0]+"/contigs/"
@@ -126,7 +126,7 @@ def main(argv):
 		   		format(thr, genePath, workingFile, smlr, bgr))
 		fNext = bgr
 	
-	print "Seeding"
+	#print "Seeding"
 	# make initial seed file
 	fSeed = "{!s}_{!s}_seed".format(baseName, leng)
 	os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
@@ -155,7 +155,7 @@ def main(argv):
 
 	#---MAIN LOOP---#
 	for i in range(leng-1, 0, -1):
-		print i
+		#print i
 		iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
 			str(cutSchedule[i]).zfill(2))
 		
@@ -360,7 +360,7 @@ def main(argv):
 		
 		#print iterString + " done"
 		l2.close()
-		print i
+		#print i
 			
 	#---POSTPROCESSING---#
 	totalCluster = {}
@@ -384,7 +384,6 @@ def main(argv):
 		totalCluster[r] = allClusters[c]
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	
-	print "Distances!!!"
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
 	toMatch = "{!s}_final_matches".format(baseName)
