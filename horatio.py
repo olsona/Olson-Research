@@ -389,13 +389,12 @@ def main(argv):
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
-	toMatch = "{!s}_final_matches".format(baseName)
 	if scoreFunction == "tacoa":
 		hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
 	elif scoreFunction == "tetra":
 		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
 	elif scoreFunction == "raiphy":
-		hfun.scoreRAIphyFinal(DB, fSeed, toMatch, computePath, outputFile)
+		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
 	
 	fOutC.close()
 	finalContigList.close()
