@@ -85,22 +85,22 @@ def main(argv):
 	newName = inputFile
 	ln = f.readline()
 	if string.find(ln,"\t") == -1:
-	# convert to contiguous line AND tabbed format
-	newName = baseName+"_TAB.fa"
-	fN = open(newName,'w')
-	s = 0
-	while ln:
-		if ln[0] == '>': # deal with name lines
-			m = re.search('[A-Za-z]',ln).start()
-			if s == 0: # start file
-				myStr = ln.rstrip()[m:]
-				fN.write('>'+string.replace(myStr,' ','_')+'\t')
-				s = 1
-		else: # make new line
-			myStr = ln.rstrip()[m:]
-			fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
-		else: # genetic lines
-			fN.write(ln.rstrip())
+		# convert to contiguous line AND tabbed format
+		newName = baseName+"_TAB.fa"
+		fN = open(newName,'w')
+		s = 0
+		while ln:
+			if ln[0] == '>': # deal with name lines
+				m = re.search('[A-Za-z]',ln).start()
+				if s == 0: # start file
+					myStr = ln.rstrip()[m:]
+					fN.write('>'+string.replace(myStr,' ','_')+'\t')
+					s = 1
+				else: # make new line
+					myStr = ln.rstrip()[m:]
+					fN.write('\n>'+string.replace(myStr,' ','_')+'\t')
+			else: # genetic lines
+				fN.write(ln.rstrip())
 		ln = f.readline()
 	fN.close()		
 	f.close()
