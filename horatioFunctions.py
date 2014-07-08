@@ -21,7 +21,7 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 def scoreRAIphyFinal(DB, fSeed, computePath, outputFile):
 	os.system("head -1 "+fSeed + "-1")
 	os.system("head -1 "+fSeed + "-2")
-	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
+	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null ".format(computePath, fSeed, DB))
 	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
 	short = fSeed.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
