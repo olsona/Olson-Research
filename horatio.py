@@ -402,6 +402,7 @@ def main(argv):
     totalCluster = {}
     fOutC = open("{!s}_clusters".format(outputFile),'w')
     finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
+	actualClusterList = open("{!s}_clusters-2".format(outputFile),'w')
     for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
@@ -410,7 +411,7 @@ def main(argv):
 	    	lproper.append(item)
 		cl = [li for li in lproper]
 		if r.startswith('pseudocontig'):
-	    	pass
+			actualClusterList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 		elif r in cl:
 	    	pass
 		else:
@@ -419,7 +420,16 @@ def main(argv):
 		totalCluster[r] = allClusters[c]
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	
-	
+	#final distances
+    DB = "{!s}_final_DB".format(baseName)
+	toMatch = "{!s}_final_matches".format(baseName)
+	outputFile = "{!s}_final_dists".format(baseName)
+	if scoreFunction == "tacoa":
+		hfun.scoreTACOAFinal(DB, actualClusterList, outputFile)			
+	elif scoreFunction == "tetra":
+    	hfun.scoreTETRAFinal(DB, actualClusterList, outputFile)
+	elif scoreFunction == "raiphy":
+    	hfun.scoreRAIphyFinal(DB, actualClusterList, toMatch, computePath, outputFile)
 	
     fOutC.close()
     finalContigList.close()
