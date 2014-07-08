@@ -6,9 +6,9 @@ def main(argv):
 	myfile = ''
 	out = ''
 	try:
-	opts, args = getopt.getopt(argv,"f:o:p:s:")
+		opts, args = getopt.getopt(argv,"f:o:p:s:")
 	except getopt.GetoptError:
-	sys.exit(2)
+		sys.exit(2)
 		
 	for opt, arg in opts:
 		if opt == "-f": 
