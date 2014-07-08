@@ -355,6 +355,7 @@ def main(argv):
 		
 		#print iterString + " done"
 		l2.close()
+		print i
 			
 	#---POSTPROCESSING---#
 	totalCluster = {}
