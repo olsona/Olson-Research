@@ -46,7 +46,7 @@ def main(argv):
 	#		 for j in jList:
 	#			 for n in nList:
 	for t in ['4by4Chop']:
-		for s in ['tetra']:
+		for s in [0.2]:
 			for j in [0.5]:
 				for n in [0.02]:
 					splitList = [s]*(len(tDict[t])-1)
