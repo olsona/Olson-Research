@@ -116,7 +116,7 @@ def main(argv):
 	leng = len(cutSchedule)
 	for i in range(leng):
 		workingFile = fNext
-		print workingFile
+		print i, workingFile
 		thr = cutSchedule[i]*1000
 		bgr = "{!s}_{!s}_next".format(baseName,i)
 		if i == 0:
