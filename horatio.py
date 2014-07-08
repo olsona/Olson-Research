@@ -367,8 +367,9 @@ def main(argv):
 	totalCluster = {}
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
-	actualClusterList = open("{!s}_clusters-2".format(outputFile),'w')
-	fSeed = "{!s}_clusters-2".format(outputFile)
+	actualClusterList1 = open("{!s}_clusters-1".format(outputFile),'w')
+	actualClusterList1 = open("{!s}_clusters-2".format(outputFile),'w')
+	fSeed = "{!s}_clusters".format(outputFile)
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
@@ -377,7 +378,8 @@ def main(argv):
 			lproper.append(item)
 		cl = [li for li in lproper]
 		if r.startswith('pseudocontig'):
-			actualClusterList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+			actualClusterList1.write("{!s}/{!s}.fna\n".format(r,genePath,r))
 		elif r in cl:
 			pass
 		else:
@@ -385,7 +387,8 @@ def main(argv):
 		fOutC.write("{!s}\n".format(cl))
 		totalCluster[r] = allClusters[c]
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-	actualClusterList.close()
+	actualClusterList1.close()
+	actualClusterList2.close()
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
