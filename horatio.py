@@ -367,9 +367,9 @@ def main(argv):
 	totalCluster = {}
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
-	actualClusterList1 = open("{!s}_clusters-1".format(outputFile),'w')
-	actualClusterList2 = open("{!s}_clusters-2".format(outputFile),'w')
-	fSeed = "{!s}_clusters".format(outputFile)
+	actualClusterList1 = open("{!s}/{!s}_clusters-1".format(os.getcwd(),outputFile),'w')
+	actualClusterList2 = open("{!s}/{!s}_clusters-2".format(os.getcwd(),outputFile),'w')
+	fSeed = "{!s}/{!s}_clusters".format(os.getcwd(),outputFile)
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
