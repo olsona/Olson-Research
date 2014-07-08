@@ -36,6 +36,8 @@ def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 	mDB = "{!s}_M".format(DB)
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
+	os.system("head -1 {!s}".format(DB))
+	os.system("head -1 {!s}".format(mDB))
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,matches))
 	#os.system("rm {!s}".format(mDB))
 	
