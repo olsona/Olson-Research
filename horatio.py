@@ -156,15 +156,15 @@ def main(argv):
             str(cutSchedule[i]).zfill(2))
         
         # create DB and query files, apply user-supplied scoring function to them
-        DB = "{!s}_{!s}_DB".format(baseName,i)
+		DB = "{!s}_{!s}_DB".format(baseName,i)
 		matches = "{!s}_{!s}_matches".format(baseName,i)
 		toMatch = "{!s}_{!s}".format(baseName,i)
 		if scoreFunction == "tacoa":
-	    	hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
+			hfun.scoreTACOA(DB, fSeed, matches, toMatch, allContigs)				
 		elif scoreFunction == "tetra":
-	    	hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
+			hfun.scoreTETRA(DB, fSeed, matches, toMatch, allContigs)
 		elif scoreFunction == "raiphy":
-	    	hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
+			hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 	    
 		# construct matching dictionary for internal use
 		matchDict = {}
