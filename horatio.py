@@ -156,7 +156,7 @@ def main(argv):
 
 	#---MAIN LOOP---#
 	for i in range(leng-1, 0, -1):
-		#print i
+		print i
 		iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
 			str(cutSchedule[i]).zfill(2))
 		
