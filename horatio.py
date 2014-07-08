@@ -361,15 +361,16 @@ def main(argv):
 		
 		#print iterString + " done"
 		l2.close()
-		#print i
+		print i
+		print len(allClusters)
 			
 	#---POSTPROCESSING---#
 	totalCluster = {}
 	fOutC = open("{!s}_clusters".format(outputFile),'w')
 	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
-	actualClusterList1 = open("{!s}_clusters-1".format(outputFile),'w')
-	actualClusterList2 = open("{!s}_clusters-2".format(outputFile),'w')
-	fSeed = "{!s}_clusters".format(outputFile)
+	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
+	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
+	fSeed = "{!s}_actualclusters".format(outputFile)
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
