@@ -383,6 +383,7 @@ def main(argv):
 		fOutC.write("{!s}\n".format(cl))
 		totalCluster[r] = allClusters[c]
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+	actualClusterList.close()
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
