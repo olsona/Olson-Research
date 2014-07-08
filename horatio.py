@@ -379,7 +379,7 @@ def main(argv):
 		cl = [li for li in lproper]
 		if r.startswith('pseudocontig'):
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-			actualClusterList1.write("{!s}/{!s}.fna\n".format(r,genePath,r))
+			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 		elif r in cl:
 			pass
 		else:
