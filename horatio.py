@@ -379,6 +379,7 @@ def main(argv):
 		totalCluster[r] = allClusters[c]
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	
+	print "Distances!!!"
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
 	toMatch = "{!s}_final_matches".format(baseName)
