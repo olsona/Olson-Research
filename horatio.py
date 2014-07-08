@@ -369,8 +369,6 @@ def main(argv):
 	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
 	actualClusterList1 = open("{!s}_clusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_clusters-2".format(outputFile),'w')
-	clusterOutput = open("{!s}_clusters".format(outputFile),'w')
-	print "{!s}_clusters".format(outputFile)
 	fSeed = "{!s}_clusters".format(outputFile)
 	for c in allClusters:
 		r = allClusters[c].root
@@ -382,7 +380,6 @@ def main(argv):
 		if r.startswith('pseudocontig'):
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			clusterOutput.write("{!s}\n".format(l))
 		elif r in cl:
 			pass
 		else:
