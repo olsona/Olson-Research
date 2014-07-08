@@ -362,7 +362,7 @@ def main(argv):
 		#print iterString + " done"
 		l2.close()
 		print i
-		print len(allClusters)
+		print len(allContigs)
 			
 	#---POSTPROCESSING---#
 	totalCluster = {}
