@@ -405,11 +405,11 @@ def main(argv):
 	
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
-	os.system("rm {!s} >/dev/null 2>&1".format(DB))
-	os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
-	os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
-	for i in range(leng+1):
-		os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
+	#os.system("rm {!s} >/dev/null 2>&1".format(DB))
+	#os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
+	#os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
+	#for i in range(leng+1):
+	#	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
 	
 	distLog.close()
 
