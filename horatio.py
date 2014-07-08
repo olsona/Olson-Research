@@ -370,6 +370,7 @@ def main(argv):
 	actualClusterList1 = open("{!s}_clusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_clusters-2".format(outputFile),'w')
 	clusterOutput = open("{!s}_clusters".format(outputFile),'w')
+	print "{!s}_clusters".format(outputFile)
 	fSeed = "{!s}_clusters".format(outputFile)
 	for c in allClusters:
 		r = allClusters[c].root
