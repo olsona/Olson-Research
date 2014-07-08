@@ -390,7 +390,6 @@ def main(argv):
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
 	toMatch = "{!s}_final_matches".format(baseName)
-	outputFile = "{!s}_final_dists".format(baseName)
 	if scoreFunction == "tacoa":
 		hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
 	elif scoreFunction == "tetra":
