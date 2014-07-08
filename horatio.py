@@ -79,7 +79,7 @@ def main(argv):
 			sys.exit(2)
 	# ***
 
-	print "I'm running"
+	print "Starting"
 
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
@@ -104,9 +104,10 @@ def main(argv):
 			else: # genetic lines
 				fN.write(ln.rstrip())
 		ln = f.readline()
-	fN.close()		
+		fN.close()		
 	f.close()
 	
+	print "Separating"
 	# separate out contigs by size, according to user-supplied cut schedule
 	fNext = newName
 	genePath = newName.rsplit("/",1)[0]+"/contigs/"
@@ -123,8 +124,9 @@ def main(argv):
 			smlr = "{!s}_{!s}".format(baseName, i)
 			os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".\
 		   		format(thr, genePath, workingFile, smlr, bgr))
-	fNext = bgr
+		fNext = bgr
 	
+	print "Seeding"
 	# make initial seed file
 	fSeed = "{!s}_{!s}_seed".format(baseName, leng)
 	os.system("perl processSeedFile.pl {!s} {!s} {!s}".format(genePath, fNext, fSeed))
