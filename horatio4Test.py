@@ -41,7 +41,7 @@ def main(argv):
             'raiphy': [-17.0,-16.5,-16.0]}
     #for score in sorted(sDict.keys()):
     sList = sDict[score]
-    for t in [tDict[0]]:
+    for t in [tDict['4by4Chop']]:
         for s in [sList[0]]:
             for j in [jList[0]]:
                 for n in [nList[0]]:
