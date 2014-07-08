@@ -364,7 +364,7 @@ def main(argv):
 		
 		#print iterString + " done"
 		l2.close()
-		#print i
+		print i
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
