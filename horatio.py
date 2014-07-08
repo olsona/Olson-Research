@@ -389,7 +389,9 @@ def main(argv):
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	actualClusterList1.close()
 	actualClusterList2.close()
-	clusterOutput.close()
+	fOutC.close()
+	finalContigList.close()
+	pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
@@ -399,10 +401,6 @@ def main(argv):
 		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
 	elif scoreFunction == "raiphy":
 		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
-	
-	fOutC.close()
-	finalContigList.close()
-	pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
 	
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
