@@ -110,11 +110,13 @@ def main(argv):
 	#print "Separating"
 	# separate out contigs by size, according to user-supplied cut schedule
 	fNext = newName
+	print fNext
 	genePath = newName.rsplit("/",1)[0]+"/contigs/"
 	hutil.ensureDir(genePath)
 	leng = len(cutSchedule)
 	for i in range(leng):
 		workingFile = fNext
+		print workingFile
 		thr = cutSchedule[i]*1000
 		bgr = "{!s}_{!s}_next".format(baseName,i)
 		if i == 0:
