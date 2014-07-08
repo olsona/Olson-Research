@@ -73,7 +73,5 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
 	
 	
 def scoreTACOAFinal(DB, fSeed, outputFile):
-	print "Step 1"
 	os.system("perl tacoaCount.pl -k 4 {!s} {!s} >/dev/null".format(fSeed,DB))
-	print "Step 2"
 	os.system("perl tacoaDistance.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
