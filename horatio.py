@@ -384,12 +384,12 @@ def main(argv):
 		if r.startswith('pseudocontig'):
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+			totalCluster[r] = allClusters[c]
 		elif r in cl:
 			pass
 		else:
 			cl.append(r)
 		fOutC.write("{!s}\n".format(cl))
-		totalCluster[r] = allClusters[c]
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	actualClusterList1.close()
 	actualClusterList2.close()

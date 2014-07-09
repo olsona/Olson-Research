@@ -673,6 +673,43 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
         
     outF.close()
     print "done"
+	
+
+def processDistanceInfo(inClusters, inDistance, nameFile):
+	import cPickle as pickle
+	#associate roots - and index numbers - with max representation
+	nf = open(nameFile,'r')
+	nameList = [n.rstrip() for n in nf.readlines()]
+	nf.close()
+	clusters = pickle.load(open(inClusters,'rb'))
+	rootDict = {clusters[c].root:'' for c in clusters.keys()}
+	print rootDict
+	for c in clusters:
+		_, maxName = purityOfCluster(clusters[c].getAllLeaves(),nameList)
+		rootDict[clusters[c].root] = maxName
+	distF = open(inDistance,'r')
+	rootList = distF.readline().rstrip().split(",")
+	rightDists = []
+	wrongDists = []
+	distF.readline()
+	line = distF.readline().rstrip()
+	ind = 0
+	while line:
+		myRoot = rootList[ind]
+		myMax = rootDict[myRoot]
+		dists = line.split(", ")
+		for j in range(len(dists)):
+			dInfo = dists[j]
+			[d,i] = dInfo.split(":")
+			theirRoot = rootList[int(i)]
+			theirMax = rootDict[theirRoot]
+			if theirMax == myMax:
+				rightDists.append(d)
+			else:
+				wrongDists.append(d)
+		ind += 1
+		line = distF.readline().rstrip()
+	return rightDists,wrongDists
     
 
 def processDistLog(inFolder, out):
