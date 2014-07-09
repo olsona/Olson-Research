@@ -677,6 +677,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 
 def processDistanceInfo(inClusters, inDistance, nameFile):
 	import cPickle as pickle
+	import horatioUtils as hutil
 	#associate roots - and index numbers - with max representation
 	nf = open(nameFile,'r')
 	nameList = [n.rstrip() for n in nf.readlines()]
@@ -704,12 +705,13 @@ def processDistanceInfo(inClusters, inDistance, nameFile):
 			theirRoot = rootList[int(i)]
 			theirMax = rootDict[theirRoot]
 			if theirMax == myMax:
-				rightDists.append(d)
+				rightDists.append(float(d))
 			else:
-				wrongDists.append(d)
+				wrongDists.append(float(d))
 		ind += 1
 		line = distF.readline().rstrip()
-	return rightDists,wrongDists
+	allDist = hutil.makeDistanceMatrix(inDistance)
+	return rightDists,wrongDists,allDist
     
 
 def processDistLog(inFolder, out):
