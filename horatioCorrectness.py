@@ -312,31 +312,27 @@ def ExpectedMutualInformation(U,V):
 	C = len(V)
 	print C
 	E = Decimal(0.0)
-	start = time.time()
 	for i in range(R):
-		if i % 10 == 0:
-			print "	 i=", i, " runtime=", (time.time() - start)
-			start = time.time()
-	for j in range(C):
-		ai = len(U[i])
-		if ai:
-			#print "ai: ", N, ai;
-			ncr_Nai = Decimal(ncr(N,ai))
-			#print "{:2.2e}".format(ncr_Nai)			
-		bj = len(V[j])
-		if bj:
-			#print "bj:", N, bj
-			ncr_Nbj = Decimal(ncr(N,bj))
-			#print "{:2.2e}".format(ncr_Nbj)
-		for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
-			if ai != 0 and bj != 0:
-				t1 = Decimal((float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj))))
-				t2 = Decimal(ncr(N,nij))
-				t2 /= ncr_Nai
-				t2 *= Decimal(ncr(N-nij,ai-nij))
-				t2 /= ncr_Nbj
-				t2 *= Decimal(ncr(N-ai,bj-nij))
-				E += t1*t2	
+		for j in range(C):
+			ai = len(U[i])
+			if ai:
+				#print "ai: ", N, ai;
+				ncr_Nai = Decimal(ncr(N,ai))
+				#print "{:2.2e}".format(ncr_Nai)			
+			bj = len(V[j])
+			if bj:
+				#print "bj:", N, bj
+				ncr_Nbj = Decimal(ncr(N,bj))
+				#print "{:2.2e}".format(ncr_Nbj)
+			for nij in range(max(ai+bj-N,1), min(ai,bj)+1):
+				if ai != 0 and bj != 0:
+					t1 = Decimal((float(nij)/float(N)) * (math.log(float(N*nij)/float(ai*bj))))
+					t2 = Decimal(ncr(N,nij))
+					t2 /= ncr_Nai
+					t2 *= Decimal(ncr(N-nij,ai-nij))
+					t2 /= ncr_Nbj
+					t2 *= Decimal(ncr(N-ai,bj-nij))
+					E += t1*t2	
 
 	return E
 	
@@ -364,7 +360,7 @@ def AMI(U, V):
 	I = MutualInformation(U, V)
 	HU = Entropy(U)
 	HV = Entropy(V)
-	E = ExpectedMutualInformation(U,V)
+	E = float(ExpectedMutualInformation(U,V))
 	return (I-E)/(0.5*(HU+HV)-E)
 	
 	
@@ -408,7 +404,7 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	
 	
 # to process an entire folder	 
-def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile, maxsize):
+def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile):
 	import glob, string, time, numpy
 	import cPickle as pickle
 	from horatioClasses import Cluster
@@ -431,12 +427,14 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 	names = []
 	nf = open(nameFile,'r')
 	for li in nf.readlines():
+		#print li
 		nm = li.rstrip()
 		if len(nm) > 0:
 			names.append(nm)
+	#print names
 			
 	outF = open(outFile,'w')
-	#outF.write("Source;Abundance;Score;Cut;N;J;L;SizeThreshold;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;Sn4k;Sp4k;Sn6k;Sp6k;Sn8k;Sp8k;Sn10k;Sp10k\n")
+	#outF.write("Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;Sn4k;Sp4k;Sn6k;Sp6k;Sn8k;Sp8k;Sn10k;Sp10k\n")
 	
 	# get Z values for each correct clustering
 	corrList = glob.glob("{!s}*".format(correctFilePrefix))
@@ -454,7 +452,6 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 				if string.find(rep,nm) != -1:
 					corName = nm
 					break
-			#print rep
 			corrZNo[no][corName] = len(cl)
 			for c in cl:
 				clen = int(c.rsplit("_",2)[1])
@@ -491,8 +488,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 		fileName = fi.split("/")[-1]
 		fileSplit = fileName.split("_")
 		mText = fileSplit[0]
-		mAbund = fileSplit[1]
-		score = fileSplit[2]
+		#mAbund = fileSplit[1]
+		score = fileSplit[1]
 		nInd = fileSplit.index("N")
 		n = float(fileSplit[nInd+1])
 		jInd = fileSplit.index("J")
@@ -551,17 +548,16 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 			for c in cl:
 				#print c
 				mylen = int(c.rsplit('_',2)[1])
-				if mylen < maxsize:
-					for nL in names:
-						if string.find(c,nL) != -1:
-							myRepDictNo[nL] += 1
-							myRepDictLen[nL] += mylen
-							totalLen += mylen
-							for i in [4,6,8,10]:
-								if mylen > i*1000:
-									totalK[i] += 1
-									repK[nL][i] += 1
-							break
+				for nL in names:
+					if string.find(c,nL) != -1:
+						myRepDictNo[nL] += 1
+						myRepDictLen[nL] += mylen
+						totalLen += mylen							
+						for i in [4,6,8,10]:
+							if mylen > i*1000:
+								totalK[i] += 1
+								repK[nL][i] += 1
+						break
 						
 			#pprint.pprint(repDict)
 			for nL in myRepDictNo:
@@ -651,6 +647,14 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 		avgClustSize = float(sum(clustMemList))/float(len(clustMemList))
 		minClustSize = min(clustMemList)
 		maxClustSize = max(clustMemList)
+		numberClusters = 0
+		for c in clustMemList:
+		#	print c,
+			if c >= sizeThreshold:
+				numberClusters += 1
+		#print
+		#print numberClusters
+		
 		#try:
 		#	 avg2pN, _ = pearsonr(avgScore,purityNo)
 		#	 avg2pL, _ = pearsonr(avgScore,purityLen)
@@ -665,8 +669,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile,
 		#	 print len(avgScore), len(lowScore), len(sdScore), len(purityScore), len(purityLen)
 		#	 print("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
 		
-		outF.write("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
-		outF.write("{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,avgClustSize,minClustSize,maxClustSize))
+		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen;Sp4;Sp6;Sp8;Sp10"
+		
+		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,score,cText,n,j,l))
+		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
 		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
 		#outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
 		for i in [4,6,8,10]:
@@ -689,7 +695,7 @@ def processDistanceInfo(inClusters, inDistance, nameFile):
 	nf.close()
 	clusters = pickle.load(open(inClusters,'rb'))
 	rootDict = {clusters[c].root:'' for c in clusters.keys()}
-	print rootDict
+	#print rootDict
 	for c in clusters:
 		_, maxName = purityOfCluster(clusters[c].getAllLeaves(),nameList)
 		rootDict[clusters[c].root] = maxName
@@ -700,10 +706,12 @@ def processDistanceInfo(inClusters, inDistance, nameFile):
 	distF.readline()
 	line = distF.readline().rstrip()
 	ind = 0
+	clustering = {n:[] for n in nameList}
 	while line:
 		myRoot = rootList[ind]
 		myMax = rootDict[myRoot]
 		dists = line.split(", ")
+		clustering[myMax].append(ind)
 		for j in range(len(dists)):
 			dInfo = dists[j]
 			[d,i] = dInfo.split(":")
@@ -716,7 +724,8 @@ def processDistanceInfo(inClusters, inDistance, nameFile):
 		ind += 1
 		line = distF.readline().rstrip()
 	allDist = hutil.makeDistanceMatrix(inDistance)
-	return rightDists,wrongDists,allDist
+	clustList = clustering.values()
+	return rightDists,wrongDists,clustList,allDist
 	
 
 def processDistLog(inFolder, out):

@@ -381,10 +381,15 @@ def main(argv):
 		for item in l:
 			lproper.append(item)
 		cl = [li for li in lproper]
+		# for if I want to look at all clusters
+		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+		totalCluster[r] = allClusters[c]
 		if r.startswith('pseudocontig'):
-			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			totalCluster[r] = allClusters[c]
+			# for if I only want to look at pseudocontigs
+			#actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+			#actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+			#totalCluster[r] = allClusters[c]
 		elif r in cl:
 			pass
 		else:
