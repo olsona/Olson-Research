@@ -403,12 +403,42 @@ def testCorrectnessAll(computedClustering, correctClustering, names, outFile, re
 	outF.close()
 	
 	
+def generateLabeling(clustering):
+	allItems = []
+	for cl in clustering:
+		for c in cl:
+			allItems.append(c)
+	sortItems = sorted(allItems)
+	L = [0]*len(sortItems)
+	ind = 0
+	for cl in clustering:
+		for c in cl:
+			id = sortItems.index(c)
+			L[id] = ind
+		ind += 1
+	return L 	
+	
+	
+def generateLabelingSubset(clustering, subset):
+	sortItems = sorted(subset)
+	L = [0]*len(sortItems)
+	ind = 0
+	for cl in clustering:
+		for c in cl:
+			if c in subset:
+				id = sortItems.index(c)
+				L[id] = ind
+		ind += 1
+	return L
+	
+	
 # to process an entire folder	 
 def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile):
 	import glob, string, time, numpy
 	import cPickle as pickle
 	from horatioClasses import Cluster
 	from scipy.stats import pearsonr
+	import sklearn.metrics
 	
 	cutDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
 			'lowClose': [2,4,6,8,10,14,18,22],
@@ -442,8 +472,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 	corrZNo = {no:{na: 0 for na in names} for no in corrDict}
 	corrZLen = {no:{na: 0 for na in names} for no in corrDict}
 	Zk = {i:0 for i in [4,6,8,10]}
+	true_labels = {i:[] for i in [4,6,8,10]}
 	for no in corrDict:
 		clustering = pickle.load(open(corrDict[no],'rb'))
+		true_labels[no] = generateLabeling(clustering)
 		for cl in clustering:
 			rep = cl[0]
 			corName = ''
@@ -642,6 +674,13 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		repFracLen = float(repNumLen)/float(len(names))
 		
 		nmi = NMI(inClust, corrClust)
+		my_label = generateLabeling(inClust)
+		idSubset = []
+		for cl in inClust:
+			for c in cl:
+				idSubset.append(c)
+		tr_label = generateLabelingSubset(corrClust,idSubset)
+		vscore = sklearn.metrics.v_measure_score(tr_label,my_label)
 		#ami = AMI(inClust, corrClust)
 		
 		avgClustSize = float(sum(clustMemList))/float(len(clustMemList))
@@ -669,18 +708,17 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		#	 print len(avgScore), len(lowScore), len(sdScore), len(purityScore), len(purityLen)
 		#	 print("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
 		
-		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen;Sp4;Sp6;Sp8;Sp10"
+		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen;Sp4;Sp6;Sp8;Sp10"
 		
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,score,cText,n,j,l))
 		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
-		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
 		#outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
 		for i in [4,6,8,10]:
 			#outF.write(";{:01.4f};{:01.4f}".format(SnK[i],SpK[i]))
 			outF.write(";{:01.4f}".format(SpK[i]))
 		outF.write("\n")
 		ctr += 1
-		
 		
 	outF.close()
 	print "done"
@@ -725,7 +763,7 @@ def processDistanceInfo(inClusters, inDistance, nameFile):
 		line = distF.readline().rstrip()
 	allDist = hutil.makeDistanceMatrix(inDistance)
 	clustList = clustering.values()
-	return rightDists,wrongDists,clustList,allDist
+	return rightDists,wrongDists,clustList,rootList,allDist
 	
 
 def processDistLog(inFolder, out):

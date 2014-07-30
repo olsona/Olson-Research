@@ -111,6 +111,17 @@ def dfs(graph, start, visited=None):
     return visited     		
 	
 	
+def processAPLabels(labels, items):
+	lDict = {}
+	for i in range(len(labels)):
+		l = labels[i]
+		if l in lDict.keys():
+			lDict[l].append(items[i])
+		else:
+			lDict[l] = [items[i]]
+	return lDict.values()
+	
+	
 def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
     import string
     import cPickle as pickle

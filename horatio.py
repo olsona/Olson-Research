@@ -8,6 +8,7 @@ import horatioFunctions as hfun
 from horatioClasses import Cluster, Contig
 import argparse
 import cPickle as pickle
+import sklearn.cluster
 
 # imports necessary for debugging and correctness
 #import matplotlib as mpl
@@ -368,40 +369,54 @@ def main(argv):
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
-	totalCluster = {}
-	fOutC = open("{!s}_clusters".format(outputFile),'w')
-	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
+#	totalCluster = {}
+#	fOutC = open("{!s}_clusters".format(outputFile),'w')
+#	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
+#	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
+#	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
+#	fSeed = "{!s}_actualclusters".format(outputFile)
+#	for c in allClusters:
+#		r = allClusters[c].root
+#		l = allClusters[c].getAllLeaves()
+#		lproper = []
+#		for item in l:
+#			lproper.append(item)
+#		cl = [li for li in lproper]
+#		# for if I want to look at all clusters
+#		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+#		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+#		totalCluster[r] = allClusters[c]
+#		if r.startswith('pseudocontig'):
+#			# for if I only want to look at pseudocontigs
+#			#actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+#			#actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+#			#totalCluster[r] = allClusters[c]
+#			pass
+#		elif r in cl:
+#			pass
+#		else:
+#			cl.append(r)
+#		fOutC.write("{!s}\n".format(cl))
+#		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+#	actualClusterList1.close()
+#	actualClusterList2.close()
+#	fOutC.close()
+#	finalContigList.close()
+#	pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
+	
+	fSeed = "{!s}_actualclusters".format(outputFile)
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
-	fSeed = "{!s}_actualclusters".format(outputFile)
+	clusterList = []
 	for c in allClusters:
-		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
-		lproper = []
-		for item in l:
-			lproper.append(item)
-		cl = [li for li in lproper]
-		# for if I want to look at all clusters
-		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-		totalCluster[r] = allClusters[c]
-		if r.startswith('pseudocontig'):
-			# for if I only want to look at pseudocontigs
-			#actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-			#actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			#totalCluster[r] = allClusters[c]
-			pass
-		elif r in cl:
-			pass
-		else:
-			cl.append(r)
-		fOutC.write("{!s}\n".format(cl))
-		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+		if len(l) > 1:
+			r = allClusters[c].root
+			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+			clusterList.append(c)
 	actualClusterList1.close()
 	actualClusterList2.close()
-	fOutC.close()
-	finalContigList.close()
-	pickle.dump(totalCluster,open("{!s}_clusters_pickle".format(outputFile),"wb"))
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
@@ -411,6 +426,50 @@ def main(argv):
 		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
 	elif scoreFunction == "raiphy":
 		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
+	
+	fOutC = open("{!s}_clusters".format(outputFile),'w')	
+	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
+	_, labels = sklearn.cluster.affinity_propagation(finalDists)
+	metaClustering = hutil.processAPLabels(labels, clusters)
+	# iterate through partition of clusters and merge as appropriate
+	finalClusters = []
+	for p in metaClustering:
+		pList = list(p)
+		mainClID = pList[0]
+		mainClust = allClusters[mainClID]
+		restClust = [allClusters[ID] for ID in pList[1:]]
+		# make ubercontig
+		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+		newContig = Contig(newContigName)
+		allContigs[newContigName] = newContig
+		contigs2Clusters[newContigName] = mainClust
+		clusters2Contigs[mainClID].append(newContig)
+		fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+		fNewContig.write(">{!s}\n".format(newContigName))
+		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
+		fNewContig.write(seq)
+		for rCl in restClust:
+			co = allContigs[rCl.root]
+			_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
+			fNewContig.write(seq)
+			# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+		fNewContig.write("\n")
+		fNewContig.close()
+		#newContigCount += 1
+		# add clusters
+		mainClust.addClusters(restClust, newContigName)
+		finalClusters.append(mainClust)
+		leaves = mainClust.getAllLeaves()
+		fOutC.write(leaves + "\n")
+		# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
+		for rCl in restClust:
+			contigNames = clusters2Contigs[rCl.seed]
+			for con in contigNames:
+				clusters2Contigs[mainClust.seed].append(con)
+				contigs2Clusters[con] = mainClust
+			clusters2Contigs.pop(rCl.seed)
+			allClusters.pop(rCl.seed)
+	pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb"))	
 	
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
