@@ -327,7 +327,9 @@ def main(argv):
 			fNewContig.close()
 			newContigCount += 1
 			# add clusters
+			print mainClust.getAllLeaves()
 			mainClust.addClusters(restClust, newContigName)
+			print mainClust.getAllLeaves()
 			# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
 			for rCl in restClust:
 				contigNames = clusters2Contigs[rCl.seed]
