@@ -369,6 +369,7 @@ def main(argv):
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
+	print allClusters.keys()
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
 	fSeed = "{!s}_actualclusters".format(outputFile)
