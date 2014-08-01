@@ -258,7 +258,7 @@ def main(argv):
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
-			#l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 
 		# add split seeds to DB
 		for nSeed in newSeeds:
@@ -320,16 +320,16 @@ def main(argv):
 				co = allContigs[rCl.root]
 				_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
 				fNewContig.write(seq)
-				#for m in co.goodMatches:
-					#mainClust.addMatch(m)	  # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
+				for m in co.goodMatches:
+					mainClust.addMatch(m)	  # it's entirely possible that the root is not something I made above in the initial matching loop, and so would have neighbors
 				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
 			# add clusters
-			print mainClust.getAllLeaves()
+			#print mainClust.getAllLeaves()
 			mainClust.addClusters(restClust, newContigName)
-			print mainClust.getAllLeaves()
+			#print mainClust.getAllLeaves()
 			# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
 			for rCl in restClust:
 				contigNames = clusters2Contigs[rCl.seed]
@@ -339,8 +339,8 @@ def main(argv):
 				clusters2Contigs.pop(rCl.seed)
 				allClusters.pop(rCl.seed)
 				#print "Popped {!s}".format(rCl.seed)
-			#print sorted(mainClust.getAllLeaves())
-			#print ", ".join([c for c in sorted(allClusters.keys())])
+			print sorted(mainClust.getAllLeaves())
+			print ", ".join([c for c in sorted(allClusters.keys())])
 	
 		# finally write root contigs to db index file
 		for clID in allClusters:
