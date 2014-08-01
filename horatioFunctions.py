@@ -43,8 +43,8 @@ def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 	
 	
 def scoreTETRAFinal(DB, fSeed, outputFile):
-	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
-	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
+	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s}".format(fSeed,DB))
+	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted".format(DB, DB, outputFile))
 	
 	
 def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
