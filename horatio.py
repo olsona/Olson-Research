@@ -386,12 +386,12 @@ def main(argv):
 		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 		totalCluster[r] = allClusters[c]
-#		if r.startswith('pseudocontig'):
+		if r.startswith('pseudocontig'):
 			# for if I only want to look at pseudocontigs
 #			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 #			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 #			totalCluster[r] = allClusters[c]
-#			pass
+			pass
 		elif r in cl:
 			pass
 		else:
