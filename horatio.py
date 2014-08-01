@@ -338,7 +338,6 @@ def main(argv):
 				allClusters.pop(rCl.seed)
 				#print "Popped {!s}".format(rCl.seed)
 			#print sorted(mainClust.getAllLeaves())
-			#allClusters[newContig] = mainClust
 			#print ", ".join([c for c in sorted(allClusters.keys())])
 	
 		# finally write root contigs to db index file
@@ -409,8 +408,8 @@ def main(argv):
 	for p in metaClustering:
 		pList = list(p)
 		mainClID = pList[0]
-		mainClust = allClusters[mainClID]
-		restClust = [allClusters[ID] for ID in pList[1:]]
+		mainClust = allClusters[mainClID.seed]
+		restClust = [allClusters[ID.seed] for ID in pList[1:]]
 		# make ubercontig
 		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 		newContig = Contig(newContigName)
