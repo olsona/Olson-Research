@@ -401,6 +401,7 @@ def main(argv):
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
 	_, labels = sklearn.cluster.affinity_propagation(finalDists)
 	metaClustering = hutil.processAPLabels(labels, clusters)
+	print metaClustering
 	# iterate through partition of clusters and merge as appropriate
 	finalClusters = []
 	for p in metaClustering:
