@@ -385,7 +385,7 @@ def main(argv):
 			# for if I only want to look at pseudocontigs
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			clusters.append(r)
+			clusters.append(c)
 	actualClusterList1.close()
 	actualClusterList2.close()
 	
