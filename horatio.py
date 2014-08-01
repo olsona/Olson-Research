@@ -408,6 +408,7 @@ def main(argv):
 	for p in metaClustering:
 		pList = list(p)
 		mainClust = pList[0]
+		mainClID = mainClust.seed
 		restClust = pList[1:]
 		# make ubercontig
 		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
