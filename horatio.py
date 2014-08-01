@@ -376,6 +376,7 @@ def main(argv):
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
+		print r, l
 #		# for if I want to look at all clusters
 #		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 #		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
@@ -400,7 +401,7 @@ def main(argv):
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
 	_, labels = sklearn.cluster.affinity_propagation(finalDists)
-	metaClustering = hutil.processAPLabels(labels, clusters)
+	#metaClustering = hutil.processAPLabels(labels, clusters)
 	print metaClustering
 	# iterate through partition of clusters and merge as appropriate
 	finalClusters = []
