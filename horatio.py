@@ -369,9 +369,6 @@ def main(argv):
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
-	totalCluster = {}
-	fOutC = open("{!s}_clusters".format(outputFile),'w')
-	finalContigList = open("{!s}_contigs-2".format(outputFile),'w')
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
 	fSeed = "{!s}_actualclusters".format(outputFile)
@@ -379,10 +376,6 @@ def main(argv):
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
-		lproper = []
-		for item in l:
-			lproper.append(item)
-		cl = [li for li in lproper]
 #		# for if I want to look at all clusters
 #		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 #		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
@@ -391,19 +384,9 @@ def main(argv):
 			# for if I only want to look at pseudocontigs
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			totalCluster[r] = allClusters[c]
 			clusters.append(c)
-		elif r in cl:
-			pass
-		else:
-			cl.append(r)
-		fOutC.write("{!s}\n".format(cl))
-		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	actualClusterList1.close()
 	actualClusterList2.close()
-	fOutC.close()
-	finalContigList.close()
-	pickle.dump(totalCluster,open("{!s}_penultimate_clusters_pickle".format(outputFile),"wb"))
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
@@ -447,7 +430,7 @@ def main(argv):
 		mainClust.addClusters(restClust, newContigName)
 		finalClusters.append(mainClust)
 		leaves = mainClust.getAllLeaves()
-		fOutC.write(leaves + "\n")
+		fOutC.write(str(leaves) + "\n")
 		# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
 		for rCl in restClust:
 			contigNames = clusters2Contigs[rCl.seed]
