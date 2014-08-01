@@ -385,7 +385,7 @@ def main(argv):
 			# for if I only want to look at pseudocontigs
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			clusters.append(c)
+			clusters.append(allClusters[c])
 	actualClusterList1.close()
 	actualClusterList2.close()
 	
@@ -407,9 +407,8 @@ def main(argv):
 	finalClusters = []
 	for p in metaClustering:
 		pList = list(p)
-		mainClID = pList[0]
-		mainClust = allClusters[mainClID.seed]
-		restClust = [allClusters[ID.seed] for ID in pList[1:]]
+		mainClust = pList[0]
+		restClust = pList[1:]
 		# make ubercontig
 		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 		newContig = Contig(newContigName)
