@@ -18,24 +18,24 @@ defaultSchedule = [2,6,10,14,18,22]
 #http://my.safaribooksonline.com/book/programming/python/0596007973/python-shortcuts/pythoncook2-chp-4-sect-16
 # ***
 #correctnessDictSeed = {
-#    "species":	checkCorrectSpeciesOlsonFormat,
-#    "genus":	checkCorrectGenusOlsonFormat,
+#	 "species": checkCorrectSpeciesOlsonFormat,
+#	 "genus":	checkCorrectGenusOlsonFormat,
 #}
 
 #correctnessDictMax = {
-#    "species":	checkCorrectMatchClusterMaxSpecies,
-#    "genus":	checkCorrectMatchClusterMaxGenus,
+#	 "species": checkCorrectMatchClusterMaxSpecies,
+#	 "genus":	checkCorrectMatchClusterMaxGenus,
 #}
 # ***
 
 scoringMethod = {
-    "raiphy":	hfun.scoreRAIphy,
-    "tetra":	hfun.scoreTETRA,
-    "tacoa":	hfun.scoreTACOA,
+	"raiphy":	hfun.scoreRAIphy,
+	"tetra":	hfun.scoreTETRA,
+	"tacoa":	hfun.scoreTACOA,
 }
 
 scoringMethodFinal = {
-    "raiphy":	hfun.scoreRAIphyFinal,
-    "tetra":	hfun.scoreTETRAFinal,
-    "tacoa":	hfun.scoreTACOAFinal,
+	"raiphy":	hfun.scoreRAIphyFinal,
+	"tetra":	hfun.scoreTETRAFinal,
+	"tacoa":	hfun.scoreTACOAFinal,
 }

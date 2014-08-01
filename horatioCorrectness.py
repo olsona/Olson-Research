@@ -416,7 +416,7 @@ def generateLabeling(clustering):
 			id = sortItems.index(c)
 			L[id] = ind
 		ind += 1
-	return L 	
+	return L	
 	
 	
 def generateLabelingSubset(clustering, subset):

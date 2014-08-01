@@ -43,8 +43,8 @@ def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 	
 	
 def scoreTETRAFinal(DB, fSeed, outputFile):
-    os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
-    os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
+	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
+	os.system("perl tetraCorrelation.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
 	
 	
 def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
@@ -60,7 +60,7 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
 	#d1 = os.path.getsize(fSeed+"-2")
 	#os.system("du -h {!s}-2".format(fSeed))
 	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
-    
+	
 	#print("  Running2: perl tacoaCount.pl -k 4 {!s}-2 {!s}".format(toMatch,mDB))
 	#d2 = os.path.getsize(toMatch+"-2")
 	#os.system("du -h {!s}-2".format(toMatch))

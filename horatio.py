@@ -122,11 +122,11 @@ def main(argv):
 		bgr = "{!s}_{!s}_next".format(baseName,i)
 		if i == 0:
 			os.system("perl discardSmlr.pl {!s} {!s} {!s} {!s}".\
-		   		format(thr, genePath, workingFile, bgr))
+				format(thr, genePath, workingFile, bgr))
 		else:
 			smlr = "{!s}_{!s}".format(baseName, i)
 			os.system("perl sepSizeListDownUp.pl {!s} {!s} {!s} {!s} {!s}".\
-		   		format(thr, genePath, workingFile, smlr, bgr))
+				format(thr, genePath, workingFile, smlr, bgr))
 		fNext = bgr
 	
 	#print "Seeding"
@@ -469,7 +469,7 @@ def main(argv):
 				contigs2Clusters[con] = mainClust
 			clusters2Contigs.pop(rCl.seed)
 			allClusters.pop(rCl.seed)
-	pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb"))	
+	pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb")) 
 	
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
