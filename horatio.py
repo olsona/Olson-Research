@@ -338,7 +338,7 @@ def main(argv):
 				allClusters.pop(rCl.seed)
 				#print "Popped {!s}".format(rCl.seed)
 			#print sorted(mainClust.getAllLeaves())
-			allClusters[newContig] = mainClust
+			#allClusters[newContig] = mainClust
 			#print ", ".join([c for c in sorted(allClusters.keys())])
 	
 		# finally write root contigs to db index file
