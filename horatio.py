@@ -375,6 +375,7 @@ def main(argv):
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
 	fSeed = "{!s}_actualclusters".format(outputFile)
+	clusters = []
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getAllLeaves()
@@ -391,6 +392,7 @@ def main(argv):
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 			totalCluster[r] = allClusters[c]
+			clusters.append[r]
 		elif r in cl:
 			pass
 		else:
@@ -399,7 +401,6 @@ def main(argv):
 		finalContigList.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 	actualClusterList1.close()
 	actualClusterList2.close()
-	print totalCluster
 	fOutC.close()
 	finalContigList.close()
 	pickle.dump(totalCluster,open("{!s}_penultimate_clusters_pickle".format(outputFile),"wb"))
