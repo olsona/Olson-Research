@@ -135,18 +135,18 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	resDict = {name:[] for name in nameList}
 	l = cf.readline()
 	while l:
-	if l[0] == ">":
-		#we have a contig name
-		li = l.rstrip()[1:]
-		src = ''
-		for n in nameList:
-			if string.find(li, n) != -1:
-				src = n
-				break
-		leng = int(li.split("_")[-2])
-		if leng >= threshold:
-			resDict[src].append(li)
-	l = cf.readline()
+		if l[0] == ">":
+			#we have a contig name
+			li = l.rstrip()[1:]
+			src = ''
+			for n in nameList:
+				if string.find(li, n) != -1:
+					src = n
+					break
+			leng = int(li.split("_")[-2])
+			if leng >= threshold:
+				resDict[src].append(li)
+		l = cf.readline()
 	nf.close()
 	cf.close()
 	resList = []
