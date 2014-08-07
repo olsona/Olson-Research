@@ -223,8 +223,8 @@ def main(argv):
 			else:
 				wrongDists[iterString].append(bestScore)
 			# ***
-	
 		fMatching.close()
+		pprint.pprint(matchDict)
 			
 		# create new seeds through concatenation and prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
