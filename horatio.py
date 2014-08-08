@@ -159,8 +159,6 @@ def main(argv):
 
 	#---MAIN LOOP---#
 	for i in range(leng-1, 0, -1):
-		print
-		print
 		print i
 		iterString = "{!s}-{!s}".format(str(cutSchedule[i-1]).zfill(2),\
 			str(cutSchedule[i]).zfill(2))
@@ -349,6 +347,8 @@ def main(argv):
 		for clID in allClusters:
 			clust = allClusters[clID]
 			root = clust.root
+			leaves = clust.getAllLeaves()
+			print root, leaves
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 			clust.closeDict = {}
 		
@@ -370,6 +370,8 @@ def main(argv):
 		#print iterString + " done"
 		l2.close()
 		print i
+		print
+		print
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
