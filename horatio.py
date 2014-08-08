@@ -370,6 +370,7 @@ def main(argv):
 		#print iterString + " done"
 		l2.close()
 		print i
+		os.sys("ls")
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
