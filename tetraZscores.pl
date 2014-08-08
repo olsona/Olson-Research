@@ -202,12 +202,12 @@ parseArgs();
 my ($indexFile, $resultsFile) = @ARGV;
 die usage() unless -f $indexFile && $resultsFile ne '';
 
-print "Step 1"
+print "Step 1";
 
 # Read index file
 my $inputFiles = readIndex($indexFile);
 
-print "Step 2"
+print "Step 2";
 
 # Open results file
 open(my $resultsfh, '>', $resultsFile) or die "FATAL: Unable to write results file: $!\n";
@@ -227,7 +227,7 @@ my @allK2Kmers = sort keys kmer_generator($KmerSize - 2);
 
 my $h_1 = $KmerSize-1;
 
-print "Step 3"
+print "Step 3";
 
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
