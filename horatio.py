@@ -257,6 +257,7 @@ def main(argv):
 				for m in co.goodMatches:
 					cl.addMatch(m)
 				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+			print cl.root	
 			pprint.pprint(cl.dict)
 			fNewContig.write("\n")
 			fNewContig.close()
