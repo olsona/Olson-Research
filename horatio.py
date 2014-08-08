@@ -176,8 +176,6 @@ def main(argv):
 		elif scoreFunction == "raiphy":
 			hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 		
-		print os.path.getsize(matches)
-		
 		# construct matching dictionary for internal use
 		matchDict = {}
 		fMatching = open(matches,'r')
@@ -263,7 +261,7 @@ def main(argv):
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
-			l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
+			#l2.write("{!s}\t{!s}{!s}.fna\n".format(newContigName,genePath,newContigName))
 
 		# add split seeds to DB
 		for nSeed in newSeeds:
@@ -351,6 +349,7 @@ def main(argv):
 		for clID in allClusters:
 			clust = allClusters[clID]
 			root = clust.root
+			print root
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 			clust.closeDict = {}
 		
