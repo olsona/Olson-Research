@@ -136,7 +136,7 @@ def getLeavesScoreTree(inDict, root):
 				res = getLeavesScoreTree(inDict,l[0])
 				for r in res:
 				    leaves.append(r)
-			return leaves
+		return leaves
 
 
 def getScoresAll(inDict):
