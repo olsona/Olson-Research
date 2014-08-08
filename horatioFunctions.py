@@ -36,8 +36,8 @@ def scoreTETRA(DB, fSeed, matches, toMatch, allContigs):
 		co = Contig(nm)
 		allContigs[nm] = co
 	mDB = "{!s}_M".format(DB)
-	print "fSeed: " + str(os.path.getsize(fSeed))
-	print "toMatch: " + str(os.path.getsize(toMatch))
+	print "fSeed: " + str(os.path.getsize(fSeed+"-2"))
+	print "toMatch: " + str(os.path.getsize(toMatch+"-2"))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(fSeed,DB))
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(toMatch,mDB))
 	print "DB: "+str(os.path.getsize(DB))
