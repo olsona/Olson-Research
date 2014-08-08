@@ -233,7 +233,7 @@ def main(argv):
 		l2 = open(fSeed + "-2",'w')
 		# Make concatenated seeds
 		for seed in matchDict.keys():
-			print seed, matchDict[seed]
+			#print seed, matchDict[seed]
 			cl = contigs2Clusters[seed]
 			newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 			fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
