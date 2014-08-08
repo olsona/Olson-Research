@@ -232,7 +232,7 @@ print "Step 3";
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
 	my $inputFile = $inputFiles->{$inputName};
-	print STDOUT "Processing File: $inputName - $inputFile\n";
+	#print STDOUT "Processing File: $inputName - $inputFile\n";
 
 	# Read the input file
 	my ($k0Counts, $k1Counts, $k2Counts) = processFile($inputFile);
