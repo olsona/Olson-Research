@@ -224,14 +224,14 @@ def main(argv):
 				wrongDists[iterString].append(bestScore)
 			# ***
 		fMatching.close()
-		pprint.pprint(matchDict)
+		#pprint.pprint(matchDict)
 			
 		# create new seeds through concatenation and prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
 		l2 = open(fSeed + "-2",'w')
 		# Make concatenated seeds
 		for seed in matchDict.keys():
-			#print seed, matchDict[seed]
+			print seed, matchDict[seed]
 			cl = contigs2Clusters[seed]
 			newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
 			fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
@@ -244,7 +244,7 @@ def main(argv):
 			contigs2Clusters[newContigName] = cl
 			clusters2Contigs[cl.seed].append(nCo)
 			cl.root = newContigName
-			cl.addNode(newContigName, seed, 0.0)
+			#cl.addNode(newContigName, seed, 0.0)
 			# concatenate all sequences from all matching children
 			for [child,score] in matchDict[seed]:
 				co = allContigs[child]
@@ -256,6 +256,7 @@ def main(argv):
 				for m in co.goodMatches:
 					cl.addMatch(m)
 				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+			pprint.pprint(cl.dict)
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
