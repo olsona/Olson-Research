@@ -247,7 +247,7 @@ def main(argv):
 			cl.addNode(newContigName, seed, 0.0)
 			# concatenate all sequences from all matching children
 			for [child,score] in matchDict[seed]:
-				print child
+				#print child
 				co = allContigs[child]
 				#print child, co.goodMatches
 				cl.addNode(newContigName, child, score)
@@ -257,6 +257,7 @@ def main(argv):
 				for m in co.goodMatches:
 					cl.addMatch(m)
 				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+			pprint.pprint(cl.dict)
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
