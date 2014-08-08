@@ -259,6 +259,7 @@ def main(argv):
 				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 			print cl.root	
 			pprint.pprint(cl.dict)
+			print cl.getAllLeaves()
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
