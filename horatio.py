@@ -176,6 +176,8 @@ def main(argv):
 		elif scoreFunction == "raiphy":
 			hfun.scoreRAIphy(DB, computePath, fSeed, matches, toMatch, allContigs)
 		
+		print os.path.getsize(matches)
+		
 		# construct matching dictionary for internal use
 		matchDict = {}
 		fMatching = open(matches,'r')
@@ -226,7 +228,7 @@ def main(argv):
 				wrongDists[iterString].append(bestScore)
 			# ***
 		fMatching.close()
-		pprint.pprint(matchDict)
+		#pprint.pprint(matchDict)
 			
 		# create new seeds through concatenation and prepare for next DB creation
 		fSeed = "{!s}_{!s}_seed".format(baseName, i)
@@ -370,7 +372,6 @@ def main(argv):
 		#print iterString + " done"
 		l2.close()
 		print i
-		os.system("ls")
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
