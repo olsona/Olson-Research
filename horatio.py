@@ -157,6 +157,8 @@ def main(argv):
 	distLog = open("{!s}_distLog".format(outputFile),"w")
 	# ***
 
+	numLeaves = 0
+
 	#---MAIN LOOP---#
 	for i in range(leng-1, 0, -1):
 		#print i
@@ -247,6 +249,7 @@ def main(argv):
 			cl.addNode(newContigName, seed, 0.0)
 			# concatenate all sequences from all matching children
 			for [child,score] in matchDict[seed]:
+				numLeaves += 1
 				#print child
 				co = allContigs[child]
 				#print child, co.goodMatches
@@ -273,6 +276,7 @@ def main(argv):
 			allClusters[nSeed] = cl
 			contigs2Clusters[nSeed] = cl
 			clusters2Contigs[nSeed] = [co]
+			numLeaves += 1
 			#l2.write("{!s}\t{!s}{!s}.fna\n".format(nSeed, genePath, nSeed))
 			
 		# go through clusters again, evaluate what clusters should be joined
@@ -372,6 +376,7 @@ def main(argv):
 		
 		#print iterString + " done"
 		l2.close()
+		print i, numLeaves
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
