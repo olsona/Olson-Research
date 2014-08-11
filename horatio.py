@@ -259,7 +259,7 @@ def main(argv):
 				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
 			#print cl.root	
 			#pprint.pprint(cl.dict)
-			#print cl.getAllLeaves()
+			#print cl.getLeaves()
 			fNewContig.write("\n")
 			fNewContig.close()
 			newContigCount += 1
@@ -332,9 +332,9 @@ def main(argv):
 			fNewContig.close()
 			newContigCount += 1
 			# add clusters
-			#print mainClust.getAllLeaves()
+			#print mainClust.getLeaves()
 			mainClust.addClusters(restClust, newContigName)
-			#print mainClust.getAllLeaves()
+			#print mainClust.getLeaves()
 			# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
 			for rCl in restClust:
 				contigNames = clusters2Contigs[rCl.seed]
@@ -344,7 +344,7 @@ def main(argv):
 				clusters2Contigs.pop(rCl.seed)
 				allClusters.pop(rCl.seed)
 				#print "Popped {!s}".format(rCl.seed)
-			#print sorted(mainClust.getAllLeaves())
+			#print sorted(mainClust.getLeaves())
 			#print ", ".join([c for c in sorted(allClusters.keys())])
 	
 		# finally write root contigs to db index file
@@ -390,7 +390,7 @@ def main(argv):
 	clusters = []
 	for c in allClusters:
 		r = allClusters[c].root
-		l = allClusters[c].getAllLeaves()
+		l = allClusters[c].getLeaves()
 		#print r, l
 #		# for if I want to look at all clusters
 #		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
@@ -446,7 +446,7 @@ def main(argv):
 		# add clusters
 		mainClust.addClusters(restClust, newContigName)
 		finalClusters.append(mainClust)
-		leaves = mainClust.getAllLeaves()
+		leaves = mainClust.getLeaves()
 		fOutC.write(str(leaves) + "\n")
 		# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
 		for rCl in restClust:
