@@ -16,7 +16,7 @@ class Cluster:
 			self.closeDict = {}
 		else:
 			self.closeDict = closeDict
-		if scoreSet = None:
+		if scoreSet is None:
 			self.scoreSet = set()
 		else:
 			self.scoreSet = scoreSet
@@ -106,46 +106,6 @@ def getLeavesUtil(inDict, root):
 			for r in res:
 				leaves.append(r)
 		return leaves
-
-
-def getLeavesScoreTree(inDict, root):
-	leaves = []
-	if root not in inDict:
-		return [root]
-	elif inDict[root] == []:
-		return [root]
-	else:
-		for l in inDict[root]:
-			if isinstance(l, basestring):
-				res = getLeavesScoreTree(inDict,l)
-			else:
-				res = getLeavesScoreTree(inDict,l[0])
-				for r in res:
-				    leaves.append(r)
-		return leaves
-
-
-def getScoresAll(inDict):
-	scores = []
-	for l in inDict:
-		res = inDict[l]
-		print res
-		for r in res:
-			print "\t" + str(r)
-			if not isinstance(r, basestring):
-				scores.append(r[1])
-	return scores
-		
-		
-def getScoresLeaves(inDict):
-	scores = []
-	for l in inDict:
-		res = inDict[l]
-		for r in res:
-			if not isinstance(r, basestring):
-				if r[0] not in inDict:
-					scores.append(r[1])
-	return scores
 
 
 class Contig:
