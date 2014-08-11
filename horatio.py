@@ -352,8 +352,9 @@ def main(argv):
 			clust = allClusters[clID]
 			root = clust.root
 			leaves = clust.getAllLeaves()
-			print root, clust.dict
-			print
+			if len(leaves) == 0:
+				print root, clust.dict
+				print
 			l2.write("{!s}\t{!s}{!s}.fna\n".format(root, genePath, root))
 			clust.closeDict = {}
 		
