@@ -53,7 +53,7 @@ def readSequence(fi):
 def makeDistanceMatrix(scoreFile):
 	f = open(scoreFile,'r')
 	lns = f.readlines()
-	print lns[0]
+	print lns[1]
 	rows = len(lns)-2
 	cols = len(lns[2].split(", "))
 	dists = [[0.0 for c in range(cols)] for r in range(rows)]

@@ -383,7 +383,7 @@ def main(argv):
 	#print allClusters.keys()
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
-	clusterLengths = {}
+	clusterLengths = []
 	fSeed = "{!s}_actualclusters".format(outputFile)
 	clusters = []
 	numLeaves = 0
@@ -405,10 +405,10 @@ def main(argv):
 		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 		clusters.append(allClusters[c])
 		sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
-		clusterLengths[r] = sz
+		clusterLengths.append = sz
 	actualClusterList1.close()
 	actualClusterList2.close()
-	print numLeaves
+	#print numLeaves
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
@@ -421,10 +421,9 @@ def main(argv):
 	
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
-	_, labels = sklearn.cluster.affinity_propagation(finalDists)
-	print labels
+	
+	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=clusterLength)
 	metaClustering = hutil.processAPLabels(labels, clusters)
-	#print metaClustering
 	#print metaClustering
 	# iterate through partition of clusters and merge as appropriate
 	finalClusters = []
