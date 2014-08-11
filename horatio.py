@@ -372,9 +372,6 @@ def main(argv):
 		
 		#print iterString + " done"
 		l2.close()
-		print i, len(allContigs)
-		print
-		print
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
@@ -383,21 +380,27 @@ def main(argv):
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
 	fSeed = "{!s}_actualclusters".format(outputFile)
 	clusters = []
+	numLeaves = 0
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getLeaves()
+		numLeaves += len(l)
 		#print r, l
 #		# for if I want to look at all clusters
 #		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 #		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 #		totalCluster[r] = allClusters[c]
-		if r.startswith('pseudocontig'):
+		#if r.startswith('pseudocontig'):
 			# for if I only want to look at pseudocontigs
-			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-			clusters.append(allClusters[c])
+		#	actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+		#	actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+		#	clusters.append(allClusters[c])
+		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+		clusters.append(allClusters[c])
 	actualClusterList1.close()
 	actualClusterList2.close()
+	print numLeaves
 	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)

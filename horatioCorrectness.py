@@ -477,25 +477,26 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		clustering = pickle.load(open(corrDict[no],'rb'))
 		true_labels[no] = generateLabeling(clustering)
 		for cl in clustering:
-			rep = cl[0]
-			corName = ''
-			for nm in names:
-				#print string.find(rep,nm), nm
-				if string.find(rep,nm) != -1:
-					corName = nm
-					break
-			corrZNo[no][corName] = len(cl)
-			for c in cl:
-				clen = int(c.rsplit("_",2)[1])
-				if clen >= 4000:
-					 Zk[4] += 1
-				if clen >= 6000:
-					 Zk[6] += 1
-				if clen >= 8000:
-					 Zk[8] += 1
-				if clen >= 10000:
-					 Zk[10] += 1
-				corrZLen[no][corName] += clen
+			if len(cl) > 0:
+				rep = cl[0]
+				corName = ''
+				for nm in names:
+					#print string.find(rep,nm), nm
+					if string.find(rep,nm) != -1:
+						corName = nm
+						break
+				corrZNo[no][corName] = len(cl)
+				for c in cl:
+					clen = int(c.rsplit("_",2)[1])
+					if clen >= 4000:
+						 Zk[4] += 1
+					if clen >= 6000:
+						 Zk[6] += 1
+					if clen >= 8000:
+						 Zk[8] += 1
+					if clen >= 10000:
+						 Zk[10] += 1
+					corrZLen[no][corName] += clen
 	
 	
 	
@@ -544,8 +545,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		inClust = []
 		list2Clusters = {}
 		for i in inClustPre:
-			ncl = inClustPre[i].getAllLeaves()
-			list2Clusters[ncl[0]] = inClustPre[i]
+			#ncl = inClustPre[i].getLeaves()
+			ncl = i.getLeaves()
+			#list2Clusters[ncl[0]] = inClustPre[i]
+			list2Clusters[ncl[0]] = i
 			inClust.append(ncl)
 		#print inClust
 		TPDictNo = {na:0 for na in names}
@@ -735,7 +738,7 @@ def processDistanceInfo(inClusters, inDistance, nameFile):
 	rootDict = {clusters[c].root:'' for c in clusters.keys()}
 	#print rootDict
 	for c in clusters:
-		_, maxName = purityOfCluster(clusters[c].getAllLeaves(),nameList)
+		_, maxName = purityOfCluster(clusters[c].getLeaves(),nameList)
 		rootDict[clusters[c].root] = maxName
 	distF = open(inDistance,'r')
 	rootList = distF.readline().rstrip().split(",")
@@ -852,7 +855,7 @@ def processOne(inFile, nameFile, correctFile, sizeThreshold, outFile, maxsize):
 	inClust = []
 	list2Clusters = {}
 	for i in inClustPre:
-		ncl = inClustPre[i].getAllLeaves()
+		ncl = inClustPre[i].getLeaves()
 		list2Clusters[ncl[0]] = inClustPre[i]
 		inClust.append(ncl)
 	#print inClust
