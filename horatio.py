@@ -422,7 +422,7 @@ def main(argv):
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
 	
-	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=clusterLength)
+	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=clusterLengths)
 	metaClustering = hutil.processAPLabels(labels, clusters)
 	#print metaClustering
 	# iterate through partition of clusters and merge as appropriate
