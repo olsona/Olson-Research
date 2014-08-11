@@ -2,7 +2,7 @@ import horatioUtils as hutil
 #from bootstrapCorrectness import *
 
 class Cluster:
-	def __init__(self, seed, dict = None, root = None, closeDict = None):
+	def __init__(self, seed, dict = None, root = None, closeDict = None, scoreSet = None):
 		self.seed = seed
 		if root is None:
 			self.root = self.seed
@@ -16,41 +16,27 @@ class Cluster:
 			self.closeDict = {}
 		else:
 			self.closeDict = closeDict
+		if scoreSet = None:
+			self.scoreSet = set()
+		else:
+			self.scoreSet = scoreSet
 			
 	def __str__(self):
 		return "Seed: {!s}\tLeaves: {!s}".format(self.seed,self.getLeaves())
 
-	def getAllLeaves(self):
+	def getLeaves(self):
 		if self.root is None or self.dict is None:
 			return []
 		else:
-			return getLeavesScoreTree(self.dict, self.root)
-		
-	def getAllLeavesHack(self):
-		leaves = []
-		for l in self.dict:	   
-			if self.dict[l] is None:
-				if not l.startswith('pseudocontig'):
-					leaves.append(l)
-		return leaves	 
-		
-	def getAllScores(self):
-		if self.root is None or self.dict is None:
-			return []
-		else:
-			return getScoresAll(self.dict)
-			
-	def getLeafScores(self):
-		if self.root is None or self.dict is None:
-			return []
-		else:
-			return getScoresLeaves(self.dict)
+			return getLeavesUtil(self.dict, self.root)
 	
 	def addNode(self, parent, child, score):
 		if parent in self.dict:
-			self.dict[parent].append([child,score])
+			self.dict[parent].append(child)
+			self.scoreSet.add(score)
 		else:
-			self.dict[parent] = [[child,score]]
+			self.dict[parent] = [child]
+			self.scoreSet.add(score)
 
 	def addMatch(self, goodMatch):
 		name = goodMatch[0]
