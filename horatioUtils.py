@@ -53,6 +53,7 @@ def readSequence(fi):
 def makeDistanceMatrix(scoreFile):
 	f = open(scoreFile,'r')
 	lns = f.readlines()
+	print lns[0]
 	rows = len(lns)-2
 	cols = len(lns[2].split(", "))
 	dists = [[0.0 for c in range(cols)] for r in range(rows)]
@@ -145,7 +146,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 					break
 			leng = int(li.split("_")[-2])
 			if leng >= threshold:
-				resDict[src].append(li)
+				 resDict[src].append(li)
 		l = cf.readline()
 	nf.close()
 	cf.close()

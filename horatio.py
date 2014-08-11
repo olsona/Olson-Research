@@ -424,7 +424,7 @@ def main(argv):
 	_, labels = sklearn.cluster.affinity_propagation(finalDists)
 	print labels
 	metaClustering = hutil.processAPLabels(labels, clusters)
-	print metaClustering
+	#print metaClustering
 	#print metaClustering
 	# iterate through partition of clusters and merge as appropriate
 	finalClusters = []
