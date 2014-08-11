@@ -351,7 +351,7 @@ def main(argv):
 		for clID in allClusters:
 			clust = allClusters[clID]
 			root = clust.root
-			leaves = clust.getAllLeaves()
+			leaves = clust.getLeaves()
 			print root, clust.dict
 			print
 			print leaves
