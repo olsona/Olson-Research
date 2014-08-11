@@ -405,7 +405,7 @@ def main(argv):
 		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 		clusters.append(allClusters[c])
 		sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
-		clusterLengths.append = sz
+		clusterLengths.append(sz)
 	actualClusterList1.close()
 	actualClusterList2.close()
 	#print numLeaves
