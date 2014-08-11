@@ -23,9 +23,11 @@ def main(argv):
 	outlog = out + "_" + score + "_log"
 	fOut = open(outlog,'w')
 	
-	jList = [0.5,0.7,0.9]
+	#jList = [0.5,0.7,0.9]
+	jList = [0.5]
 	#nList = [0.01,0.03,0.1]
-	nList = [0.02,0.05,0.1]
+	#nList = [0.02,0.05,0.1]
+	nList = [0.02]
 	#tDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
 	#		 'lowClose': [2,4,6,8,10,14,18,22],
 	#		 '2by4': [2,6,10,14,18,22],
@@ -33,12 +35,16 @@ def main(argv):
 	#tDict = {'4allClose': [4,6,8,10,12,14,16,18,20,22],
 	#		 '4lowClose': [4,6,8,10,14,18,22],
 	#		 '4by4': [4,8,12,16,20]}
-	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
-			'4lowCloseChop': [4,6,8,10,14,18],
-			'4by4Chop': [4,8,12,16]}
-	sDict = {'tacoa': [0.3,0.35,0.4],
-			'tetra': [0.2,0.4,0.6],
-			'raiphy': [-17.0,-16.5,-16.0]}
+	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
+	#		'4lowCloseChop': [4,6,8,10,14,18],
+	#		'4by4Chop': [4,8,12,16]}
+	tDict = {'4allCloseChop': [4,6,8,10,14,18]}
+	#sDict = {'tacoa': [0.3,0.35,0.4],
+	#		'tetra': [0.2,0.4,0.6],
+	#		'raiphy': [-17.0,-16.5,-16.0]}
+	sDict = {'tacoa': [0.3],
+			'tetra': [0.2],
+			'raiphy': [-17.0]}
 	#for score in sorted(sDict.keys()):
 	sList = sDict[score]
 	for t in tDict:
