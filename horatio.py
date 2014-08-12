@@ -403,11 +403,12 @@ def main(argv):
 		#	actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 		#	actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 		#	clusters.append(allClusters[c])
-		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-		clusters.append(allClusters[c])
-		sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
-		clusterLengths.append(sz)
+		if len(l) > 1:
+			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+			clusters.append(allClusters[c])
+			sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
+			clusterLengths.append(sz)
 	actualClusterList1.close()
 	actualClusterList2.close()
 	#print numLeaves
