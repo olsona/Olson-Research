@@ -46,7 +46,7 @@ def main(argv):
 		for s in sList:
 			for j in jList:
 				for n in nList:
-					for p in prefList:
+					for pref in prefList:
 	#for t in ['4by4Chop']:
 	#	for s in [-17.0]:
 	#		for j in [0.5]:
@@ -54,13 +54,13 @@ def main(argv):
 						splitList = [s]*(len(tDict[t])-1)
 						tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 						sStr = "["+",".join([str(si) for si in splitList])+"]"
-						print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
-						myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}_A_{!s}".format(out,score,n,j,t,s,p)
+						print "{!s}, {!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr, pref)
+						myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}_A_{!s}".format(out,score,n,j,t,s,pref)
 						fOut.write("{!s},{!s},{!s},{!s},{!s},{!s}".\
-							format(score, n, j, tStr, sStr, p))
+							format(score, n, j, tStr, sStr, pref))
 						start = time.time()
 						os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} -a {!s}".\
-							format(myfile, myOut, score, n, j, tStr, sStr, path, p))
+							format(myfile, myOut, score, n, j, tStr, sStr, path, pref))
 						end = time.time()
 						fOut.write("{:03.2f}\n".format(end-start))
 						minutes = int((end-start)/60.0)
