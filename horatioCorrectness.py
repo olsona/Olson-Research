@@ -264,7 +264,8 @@ def Entropy(U):
 	sum = 0.0
 	for u in U:
 		p = float(len(u))/float(N)
-		sum += p * math.log(p)
+		if p > 0:
+			sum += p * math.log(p)
 	return sum*(-1)
 	
 	
@@ -279,15 +280,17 @@ def MutualInformation(U, V):
 	sum = 0.0
 	for k in range(K):
 		uk = len(U[k])
-		for j in range(J):
-			vj = len(V[j])
-			s1 = set(U[k])
-			s2 = set(V[j])
-			ukvj = len(set.intersection(s1,s2))
-			A = float(ukvj)/float(N)
-			B = float(N*ukvj)/float(uk*vj)
-			if A != 0.0 and B != 0.0:
-				sum += A*math.log(B)
+		if uk > 0:
+			for j in range(J):
+				vj = len(V[j])
+				if vj > 0:
+					s1 = set(U[k])
+					s2 = set(V[j])
+					ukvj = len(set.intersection(s1,s2))
+					A = float(ukvj)/float(N)
+					B = float(N*ukvj)/float(uk*vj)
+					if A != 0.0 and B != 0.0:
+						sum += A*math.log(B)
 	return sum
 	
 	
