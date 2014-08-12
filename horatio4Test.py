@@ -43,16 +43,17 @@ def main(argv):
 	#for score in sorted(sDict.keys()):
 	sList = sDict[score]
 	
-	try:
-		for t in tDict:
-			for s in sList:
-				for j in jList:
-					for n in nList:
-						for pref in prefList:
+	
+	for t in tDict:			
+		for s in sList:
+			for j in jList:
+				for n in nList:
+					for pref in prefList:
 		#for t in ['4by4Chop']:
 		#	for s in [-17.0]:
 		#		for j in [0.5]:
 		#			for n in [0.02]:
+						try:
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
@@ -68,8 +69,8 @@ def main(argv):
 							minutes = int((end-start)/60.0)
 							secs = int((end-start)-60.0*minutes)
 							print "{!s}:{!s}\n".format(minutes,str(secs).zfill(2))
-	except KeyboardInterrupt:
-		sys.exit()
+						except KeyboardInterrupt:
+							sys.exit()
 	fOut.close()			
 
 if __name__ == "__main__":
