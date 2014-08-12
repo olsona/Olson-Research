@@ -39,7 +39,7 @@ def main(argv):
 	parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
-	parser.add_argument("-a","--ap", help="AP preference",type=string,default="min")
+	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max'],default="min")
 	parser.add_argument("-l","--split", help="Split threshold")
 	parser.add_argument("-f","--names", help="Name file")
 	args = parser.parse_args()
