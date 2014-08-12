@@ -452,8 +452,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			'4allCloseChop': [4,6,8,10,12,14,16,18],
 			'4lowCloseChop': [4,6,8,10,14,18],
 			'4by4Chop': [4,8,12,16]
-			}
-			
+			}		
 	names = []
 	nf = open(nameFile,'r')
 	for li in nf.readlines():
@@ -462,20 +461,17 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		if len(nm) > 0:
 			names.append(nm)
 	#print names
-			
 	outF = open(outFile,'w')
-	#outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;Sn4k;Sp4k;Sn6k;Sp6k;Sn8k;Sp8k;Sn10k;Sp10k\n")
-	
+	#outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen\n")
+
 	# get Z values for each correct clustering
 	corrList = glob.glob("{!s}*".format(correctFilePrefix))
 	corrDict = {int(cf.split("gt")[1][0:-1]):cf for cf in corrList}
 	corrZNo = {no:{na: 0 for na in names} for no in corrDict}
 	corrZLen = {no:{na: 0 for na in names} for no in corrDict}
-	Zk = {i:0 for i in [4,6,8,10]}
-	true_labels = {i:[] for i in [4,6,8,10]}
 	for no in corrDict:
 		clustering = pickle.load(open(corrDict[no],'rb'))
-		true_labels[no] = generateLabeling(clustering)
+		#true_labels[no] = generateLabeling(clustering)
 		for cl in clustering:
 			if len(cl) > 0:
 				rep = cl[0]
@@ -488,21 +484,19 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				corrZNo[no][corName] = len(cl)
 				for c in cl:
 					clen = int(c.rsplit("_",2)[1])
-					if clen >= 4000:
-						 Zk[4] += 1
-					if clen >= 6000:
-						 Zk[6] += 1
-					if clen >= 8000:
-						 Zk[8] += 1
-					if clen >= 10000:
-						 Zk[10] += 1
+					#if clen >= 4000:
+					#	 Zk[4] += 1
+					#if clen >= 6000:
+					#	 Zk[6] += 1
+					#if clen >= 8000:
+					#	 Zk[8] += 1
+					#if clen >= 10000:
+					#	 Zk[10] += 1
 					corrZLen[no][corName] += clen
-	
-	
-	
 	ctr = 0
 	threshold = 0.0
 	
+	# iterate through files
 	fileList = glob.glob("{!s}/*_pickle".format(inFolder))
 	start = time.time()
 	for fi in fileList:
@@ -539,30 +533,37 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		else:
 			pref = "N"
 		
-		corrClustName = corrDict[cut[0]]
-		corrClust = pickle.load(open(corrClustName,'rb'))
-		ZDictNo = corrZNo[cut[0]]
-		ZDictLen = corrZLen[cut[0]]
-		
 		repDictNo = {na:0 for na in names}
 		repDictLen = {na:0 for na in names}
-		
+
 		inClustPre = pickle.load(open(fi,"rb"))
 		inClust = []
 		list2Clusters = {}
+		allMembers = set()
 		for i in inClustPre:
 			#ncl = inClustPre[i].getLeaves()
 			ncl = i.getLeaves()
 			#list2Clusters[ncl[0]] = inClustPre[i]
 			list2Clusters[ncl[0]] = i
 			inClust.append(ncl)
-		#print inClust
+			allMembers = allMembers | set(ncl)
+			
+		# because not all contigs may appear in the final clusters	
+		corrClustName = corrDict[cut[0]]
+		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
+		corrClustReal = []
+		for clust in corrClustIdeal:
+			clSet = set(clust) & allMembers
+			corrClustReal.append(list(clSet))
+		ZDictNo = corrZNo[cut[0]]
+		ZDictLen = corrZLen[cut[0]]	
+			
 		TPDictNo = {na:0 for na in names}
 		FPDictNo = {na:0 for na in names}
 		TPDictLen = {na:0 for na in names}
 		FPDictLen = {na:0 for na in names}
-		TPk = {i:0 for i in [4,6,8,10]}
-		FPk = {i:0 for i in [4,6,8,10]}
+		#TPk = {i:0 for i in [4,6,8,10]}
+		#FPk = {i:0 for i in [4,6,8,10]}
 		for cl in inClust:
 			clustMemList.append(len(cl))
 			myRepDictNo = {nL: 0 for nL in names}
@@ -626,9 +627,9 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 					repDictLen[maxLenName] += 1
 					TPDictLen[maxLenName] += tpl
 					FPDictLen[maxLenName] += fpl
-				for i in [4,6,8,10]:
-					TPk[i] += repK[maxNoName][i]
-					FPk[i] += totalK[i] - repK[maxNoName][i]
+				#for i in [4,6,8,10]:
+				#	TPk[i] += repK[maxNoName][i]
+				#	FPk[i] += totalK[i] - repK[maxNoName][i]
 		#print
 		#print
 		
@@ -666,10 +667,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		if TPAllLen:
 			SnAllLen = float(TPAllLen)/float(ZAllLen)
 			SpAllLen = float(TPAllLen)/float(TPAllLen+FPAllLen)
-		for i in [4,6,8,10]:
-			if TPk[i]:
-				SnK[i] = float(TPk[i])/float(Zk[i])
-				SpK[i] = float(TPk[i])/float(TPk[i]+FPk[i])
+		#for i in [4,6,8,10]:
+		#	if TPk[i]:
+		#		SnK[i] = float(TPk[i])/float(Zk[i])
+		#		SpK[i] = float(TPk[i])/float(TPk[i]+FPk[i])
 		
 		repNumNo = 0
 		for r in repDictNo:
@@ -682,15 +683,15 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				repNumLen += 1
 		repFracLen = float(repNumLen)/float(len(names))
 		
-		nmi = NMI(inClust, corrClust)
+		nmi = NMI(inClust, corrClustReal)
 		my_label = generateLabeling(inClust)
 		idSubset = []
 		for cl in inClust:
 			for c in cl:
 				idSubset.append(c)
-		tr_label = generateLabelingSubset(corrClust,idSubset)
+		tr_label = generateLabelingSubset(corrClustReal,idSubset)
 		vscore = sklearn.metrics.v_measure_score(tr_label,my_label)
-		#ami = AMI(inClust, corrClust)
+		#ami = AMI(inClust, corrClustReal)
 		
 		avgClustSize = float(sum(clustMemList))/float(len(clustMemList))
 		minClustSize = min(clustMemList)
@@ -717,15 +718,15 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		#	 print len(avgScore), len(lowScore), len(sdScore), len(purityScore), len(purityLen)
 		#	 print("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
 		
-		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen;Sp4;Sp6;Sp8;Sp10"
+		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
 		
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
 		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
 		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
 		#outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
-		for i in [4,6,8,10]:
+		#for i in [4,6,8,10]:
 			#outF.write(";{:01.4f};{:01.4f}".format(SnK[i],SpK[i]))
-			outF.write(";{:01.4f}".format(SpK[i]))
+		#	outF.write(";{:01.4f}".format(SpK[i]))
 		outF.write("\n")
 		ctr += 1
 		
