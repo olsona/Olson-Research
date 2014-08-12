@@ -423,7 +423,7 @@ def main(argv):
 	
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
-	pref = hcon[prefFun](finalDists)
+	pref = hcon.apPreferences[prefFun](finalDists)
 	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
 	metaClustering = hutil.processAPLabels(labels, clusters)
 	#print metaClustering
