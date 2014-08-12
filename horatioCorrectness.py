@@ -464,7 +464,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 	#print names
 			
 	outF = open(outFile,'w')
-	#outF.write("Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;Sn4k;Sp4k;Sn6k;Sp6k;Sn8k;Sp8k;Sn10k;Sp10k\n")
+	#outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;SnNo;SpNo;RepNo;SnLen;SpLen;RepLen;Sn4k;Sp4k;Sn6k;Sp6k;Sn8k;Sp8k;Sn10k;Sp10k\n")
 	
 	# get Z values for each correct clustering
 	corrList = glob.glob("{!s}*".format(correctFilePrefix))
@@ -532,6 +532,12 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		cut = cutDict[cText]
 		lInd = fileSplit.index("L")
 		l = float(fileSplit[lInd+1])
+		pF = string.find(fi,"A_")
+		if pF >= 0:
+			pInd = fileSplit.index("A")
+			pref = fileSplit[pInd+1]
+		else:
+			pref = "N"
 		
 		corrClustName = corrDict[cut[0]]
 		corrClust = pickle.load(open(corrClustName,'rb'))
@@ -713,7 +719,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		
 		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen;Sp4;Sp6;Sp8;Sp10"
 		
-		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,score,cText,n,j,l))
+		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
 		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
 		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
 		#outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}\n".format(avg2pN,avg2pL,low2pN,low2pL,sd2pN,sd2pL,pN2pL,mpN,mpL))
