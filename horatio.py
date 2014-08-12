@@ -154,9 +154,9 @@ def main(argv):
 	newContigCount = 0
 
 	# ***
-	rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
-	distLog = open("{!s}_distLog".format(outputFile),"w")
+	#rightDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	#wrongDists = {"{!s}-{!s}".format(str(cutSchedule[i]).zfill(2),str(cutSchedule[i+1]).zfill(2)):[] for i in range(leng-1)}
+	#distLog = open("{!s}_distLog".format(outputFile),"w")
 	# ***
 
 	numLeaves = 0
@@ -220,12 +220,12 @@ def main(argv):
 					neighborCluster = contigs2Clusters[neighborName]
 					queryContig.goodMatches.append([neighborCluster.seed,score])
 			# ***
-			clName = contigs2Clusters[dbItem].seed
-			isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
-			if isCorrect:
-				rightDists[iterString].append(bestScore)
-			else:
-				wrongDists[iterString].append(bestScore)
+			#clName = contigs2Clusters[dbItem].seed
+			#isCorrect = hcorr.checkCorrectGenusOlsonFormat(clName,queryItem)
+			#if isCorrect:
+			#	rightDists[iterString].append(bestScore)
+			#else:
+			#	wrongDists[iterString].append(bestScore)
 			# ***
 		fMatching.close()
 		#pprint.pprint(matchDict)
@@ -366,14 +366,14 @@ def main(argv):
 		#	 print cl
 	 
 		# *** compute correctness distributions
-		rdata = rightDists[iterString]
-		wdata = wrongDists[iterString]
-		distLog.write(iterString + "\n")
-		if rdata:
-			distLog.write("Right ({!s}): {:03.2f} - {:03.2f}\n".format(len(rdata),min(rdata),max(rdata)))
-		if wdata:
-			distLog.write("Wrong ({!s}): {:03.2f} - {:03.2f}\n".format(len(wdata),min(wdata),max(wdata)))
-		distLog.write("\n")
+		#rdata = rightDists[iterString]
+		#wdata = wrongDists[iterString]
+		#distLog.write(iterString + "\n")
+		#if rdata:
+		#	distLog.write("Right ({!s}): {:03.2f} - {:03.2f}\n".format(len(rdata),min(rdata),max(rdata)))
+		#if wdata:
+		#	distLog.write("Wrong ({!s}): {:03.2f} - {:03.2f}\n".format(len(wdata),min(wdata),max(wdata)))
+		#distLog.write("\n")
 		#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 		# ***	
 		
@@ -423,6 +423,8 @@ def main(argv):
 	
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
+	os.system("rm {!s}_dists_sorted".format(outPutFile))
+	os.system("rm {!s}_actualclusters*".format(outputFile))
 	pref = hcon.apPreferences[prefFun](finalDists)
 	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
 	metaClustering = hutil.processAPLabels(labels, clusters)
@@ -475,7 +477,7 @@ def main(argv):
 	#for i in range(leng+1):
 	#	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
 	
-	distLog.close()
+	#distLog.close()
 
 
 if __name__ == "__main__":
