@@ -43,7 +43,7 @@ scoringMethodFinal = {
 
 apPreferences = {
 	"min":	numpy.min,
-	"med":	numpy.median,
+	"median":	numpy.median,
 	"mean":	numpy.mean,
 	"max":	numpy.max,
 }
