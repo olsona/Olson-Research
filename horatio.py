@@ -423,7 +423,7 @@ def main(argv):
 	
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
-	os.system("rm {!s}_dists_sorted".format(outPutFile))
+	os.system("rm {!s}_dists_sorted".format(outputFile))
 	os.system("rm {!s}_actualclusters*".format(outputFile))
 	pref = hcon.apPreferences[prefFun](finalDists)
 	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)

@@ -96,6 +96,9 @@ class Cluster:
 
 def getLeavesUtil(inDict, root):
 	leaves = []
+	print inDict
+	print root
+	print
 	if root not in inDict:
 		return [root]
 	elif inDict[root] == []:
