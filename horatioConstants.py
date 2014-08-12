@@ -1,4 +1,5 @@
 import horatioFunctions as hfun
+import numpy
 
 myMethods = ['raiphy']
 
@@ -38,4 +39,11 @@ scoringMethodFinal = {
 	"raiphy":	hfun.scoreRAIphyFinal,
 	"tetra":	hfun.scoreTETRAFinal,
 	"tacoa":	hfun.scoreTACOAFinal,
+}
+
+apPreferences = {
+	"min":	numpy.min,
+	"med":	numpy.median,
+	"mean":	numpy.mean,
+	"max":	numpy.max,
 }

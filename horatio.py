@@ -39,12 +39,14 @@ def main(argv):
 	parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
+	parser.add_argument("-a","--ap", help="AP preference",type=string,default="min")
 	parser.add_argument("-l","--split", help="Split threshold")
 	parser.add_argument("-f","--names", help="Name file")
 	args = parser.parse_args()
 	inputFile = args.input
 	outputFile = args.output
 	scoreFunction = args.score
+	prefFun = args.ap
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
 	if args.split:
 		splitThreshold = [float(n) for n in args.split.lstrip()[1:-1].split(',')]
@@ -421,8 +423,8 @@ def main(argv):
 	
 	fOutC = open("{!s}_clusters".format(outputFile),'w')	
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
-	
-	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=clusterLengths)
+	pref = hcon[prefFun](finalDists)
+	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
 	metaClustering = hutil.processAPLabels(labels, clusters)
 	#print metaClustering
 	# iterate through partition of clusters and merge as appropriate
