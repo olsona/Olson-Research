@@ -686,13 +686,14 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				repNumLen += 1
 		repFracLen = float(repNumLen)/float(len(names))
 		
-		nmi = NMI(inClust, corrClustReal)
+		#nmi = NMI(inClust, corrClustReal)
 		my_label = generateLabeling(inClust)
 		idSubset = []
 		for cl in inClust:
 			for c in cl:
 				idSubset.append(c)
 		tr_label = generateLabelingSubset(corrClustReal,idSubset)
+		nmi = sklearn.metrics.normalized_mutual_info_score(tr_label,my_label)
 		vscore = sklearn.metrics.v_measure_score(tr_label,my_label)
 		#ami = AMI(inClust, corrClustReal)
 		
@@ -721,7 +722,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		#	 print len(avgScore), len(lowScore), len(sdScore), len(purityScore), len(purityLen)
 		#	 print("{!s};{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};".format(mText,mAbund,score,cText,n,j,l))
 		
-		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
+		#"Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;maxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
 		
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
 		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
