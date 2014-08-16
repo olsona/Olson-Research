@@ -153,3 +153,52 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	for r in resDict:
 		resList.append(resDict[r])
 	pickle.dump(resList, open(out,"wb"))
+	
+	
+def makeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
+	import numpy
+	import subprocess
+	import string
+	import itertools
+	# populate names file
+	nF = open(namesFile,'r')
+	names = [string.replace(n.rstrip(),'_',' ') for n in nF.readlines()]
+	N = len(names)
+	distMatrix = numpy.zeros((N,N)) - 1.0
+	names2IDsDict = {n:[] for n in names}
+	# map names to IDs
+	for n in names:
+		[genus,species,_] = n.split(" ",2)
+		result = subprocess.check_output("grep {ge} {fi} | grep {sp}".format(ge=genus,fi=names2IDFile,sp=species),shell=True).split("\n")
+		for r in result:
+			id = r.split("\t")[0]
+			if len(id) > 0:
+				names2IDsDict[n].append(id)
+	# populate distance matrix
+	for x in range(len(names)):
+		n1 = names[x]
+		index1 = names.index(n1)
+		try:
+			idSet1 = names2IDsDict[n1]
+			idRegex1 = "\|".join(idSet1)
+			subprocess.check_output("grep '{i1}' {fi} > {fi}.current".format(i1=idRegex1,fi=distFile),shell=True)
+			for y in range(x+1):
+				n2 = names[y]
+				index2 = names.index(n2)
+				if n1 != n2:
+					# get distance between distinct species
+					idSet2 = names2IDsDict[n2]
+					idRegex2 = "\|".join(idSet2)
+					try:
+						result = subprocess.check_output("grep '{i2}' {fi}.current".format(i2=idRegex2,fi=distFile),shell=True)
+						dist = float(result.split("\n")[0].split("\t")[2])
+						distMatrix[index1][index2] = dist
+						distMatrix[index2][index1] = dist
+						print "{0}, {1}, {2}".format(n1,n2,dist)
+					except subprocess.CalledProcessError:
+						pass
+				else:
+					distMatrix[index1][index2] = 0.0
+		except subprocess.CalledProcessError:
+			distMatrix[index1][index1] = 0.0
+	return names, distMatrix
