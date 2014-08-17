@@ -44,17 +44,17 @@ def main(argv):
 	#for score in sorted(sDict.keys()):
 	sList = sDict[score]
 	
-	
-	for t in tDict:			
-		for s in sList:
-			for j in jList:
-				for n in nList:
-					for pref in prefList:
-		#for t in ['4by4Chop']:
-		#	for s in [-17.0]:
-		#		for j in [0.5]:
-		#			for n in [0.02]:
-						try:
+	try:
+		#for t in tDict:			
+		#	for s in sList:
+		#		for j in jList:
+		#			for n in nList:
+		#				for pref in prefList:
+		for pref in ['median']:
+			for t in ['4by4Chop']:
+				for s in [-17.0]:
+					for j in [0.5]:
+						for n in [0.02]:
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
@@ -67,8 +67,8 @@ def main(argv):
 								format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
 							end = time.time()
 							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
-						except KeyboardInterrupt:
-							sys.exit()
+	except KeyboardInterrupt:
+		sys.exit()
 	#fOut.close()			
 
 if __name__ == "__main__":
