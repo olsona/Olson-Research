@@ -378,7 +378,7 @@ def main(argv):
 		# ***	
 		
 		if scoreFunction == "raiphy":
-			print iterString + " done"
+			print >> sys.stderr, iterString + " done"
 		l2.close()
 		#print i, len(allContigs)
 			
