@@ -410,7 +410,6 @@ def main(argv):
 		clusterLengths.append(sz)
 	actualClusterList1.close()
 	actualClusterList2.close()
-	
 	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
 	
