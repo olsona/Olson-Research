@@ -21,6 +21,8 @@ def main(argv):
 			score = arg
 	
 	outlog = out + "_" + score + "_log"
+	fOut = open(outlog,'w')
+	fOut.close()
 	
 	jList = [0.5,0.7,0.9]
 	#nList = [0.01,0.03,0.1]
@@ -67,7 +69,7 @@ def main(argv):
 							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
 						except KeyboardInterrupt:
 							sys.exit()
-	fOut.close()			
+	#fOut.close()			
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
