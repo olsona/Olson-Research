@@ -51,7 +51,7 @@ def main(argv):
 		#			for n in nList:
 		#				for pref in prefList:
 		for pref in ['median']:
-			for t in ['4by4Chop']:
+			for t in ['4allCloseChop']:
 				for s in [-17.0]:
 					for j in [0.5]:
 						for n in [0.02]:
