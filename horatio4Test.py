@@ -21,7 +21,6 @@ def main(argv):
 			score = arg
 	
 	outlog = out + "_" + score + "_log"
-	fOut = open(outlog,'w')
 	
 	jList = [0.5,0.7,0.9]
 	#nList = [0.01,0.03,0.1]
@@ -59,20 +58,13 @@ def main(argv):
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
 							print "{!s}, {!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr, pref)
 							myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}_A_{!s}".format(out,score,n,j,t,s,pref)
-							fOut.write("{!s},{!s},{!s},{!s},{!s},{!s},".\
-								format(score, n, j, tStr, sStr, pref))
+							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
+								format(score, n, j, tStr, sStr, pref, outlog))
 							start = time.time()
-							try:
-								sizes = subprocess.check_output("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} -a {!s}".\
-									format(myfile, myOut, score, n, j, tStr, sStr, path, pref))
-								fOut.write(sizes + ",")
-							except subprocess.CalledProcessError:
-								fOut.write("0,0,")
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} -a {!s} >> {!s}".\
+								format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
 							end = time.time()
-							fOut.write("{:03.2f}\n".format(end-start))
-							minutes = int((end-start)/60.0)
-							secs = int((end-start)-60.0*minutes)
-							print "{!s}:{!s}\n".format(minutes,str(secs).zfill(2))
+							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
 						except KeyboardInterrupt:
 							sys.exit()
 	fOut.close()			
