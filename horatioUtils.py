@@ -155,7 +155,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	pickle.dump(resList, open(out,"wb"))
 	
 	
-def makeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
+def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 	import numpy
 	import subprocess
 	import string
