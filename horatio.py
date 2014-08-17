@@ -414,6 +414,8 @@ def main(argv):
 	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
 	
+	fSeed = "{!s}_actualclusters".format(outputFile)
+	
 	#final distances
 	DB = "{!s}_final_DB".format(baseName)
 	if scoreFunction == "tacoa":
