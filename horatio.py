@@ -377,8 +377,6 @@ def main(argv):
 		#hcorr.comparisonPlot(rdata, wdata, iterString, outputFile, "seed", "Correct distances", "Incorrect Distances")
 		# ***	
 		
-		if scoreFunction == "raiphy":
-			print >> sys.stderr, iterString + " done"
 		l2.close()
 		#print i, len(allContigs)
 			
