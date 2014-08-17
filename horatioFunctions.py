@@ -23,8 +23,6 @@ def scoreRAIphyFinal(DB, fSeed, computePath, outputFile):
 	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
 	short = fSeed.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
-	#print "{!s}/{!s}-1.bin".format(os.getcwd(), short)
-	#print "{!s}_dists_sorted".format(outputFile)
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
 	
 	

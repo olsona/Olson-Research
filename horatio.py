@@ -386,7 +386,6 @@ def main(argv):
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
 	clusterLengths = []
-	fSeed = "{!s}_actualclusters".format(outputFile)
 	clusters = []
 	numLeaves = 0
 	for c in allClusters:
@@ -411,6 +410,8 @@ def main(argv):
 		clusterLengths.append(sz)
 	actualClusterList1.close()
 	actualClusterList2.close()
+	
+	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
 	
 	#final distances
