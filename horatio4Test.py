@@ -63,10 +63,10 @@ def main(argv):
 								format(score, n, j, tStr, sStr, pref))
 							start = time.time()
 							try:
-								sizes = os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} -a {!s}".\
+								sizes = subprocess.check_output("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} -a {!s}".\
 									format(myfile, myOut, score, n, j, tStr, sStr, path, pref))
 								fOut.write(sizes + ",")
-							except CalledProcessError:
+							except subprocess.CalledProcessError:
 								fOut.write("0,0,")
 							end = time.time()
 							fOut.write("{:03.2f}\n".format(end-start))
