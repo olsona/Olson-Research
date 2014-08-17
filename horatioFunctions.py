@@ -12,7 +12,8 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 		co = Contig(nm)
 		allContigs[nm] = co
 	# Match ith contigs to DB
-	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+	#os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(raiPath, toMatch, DB))
+	os.system("{!s}rai -I {!s}-1 -d {!s}".format(raiPath, toMatch, DB))
 	short = toMatch.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, matches)) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
