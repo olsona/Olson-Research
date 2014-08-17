@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import sys, os, getopt, time, subprocess
+import sys, os, getopt, time
 
 def main(argv):
 	myfile = ''
