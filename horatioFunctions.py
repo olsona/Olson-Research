@@ -21,11 +21,8 @@ def scoreRAIphy(DB, raiPath, fSeed, matches, toMatch, allContigs):
 def scoreRAIphyFinal(DB, fSeed, computePath, outputFile):
 	print >> sys.stderr, "I started scoreRAIphyFinal"
 	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
-	#os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
-	print >> sys.stderr, "{!s}rai -I {!s}-1 -d {!s}".format(computePath, fSeed, DB)
-	os.system("{!s}rai -I {!s}-1 -d {!s}".format(computePath, fSeed, DB))
+	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(computePath, fSeed, DB))
 	short = fSeed.rsplit("/",1)[1]
-	print >> sys.stderr, "cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, outputFile+"_dists_sorted")) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
 	print >> sys.stderr, "I got through scoreRAIphyFinal"
