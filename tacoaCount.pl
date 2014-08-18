@@ -188,7 +188,7 @@ my @allKmers = sort keys kmer_generator($KmerSize);
 # Read each input file
 foreach my $inputName (sort keys %$inputFiles) {
 	my $inputFile = $inputFiles->{$inputName};
-	print STDOUT "Processing File: $inputName - $inputFile\n";
+	print STDERR "Processing File: $inputName - $inputFile\n";
     
 	# Read the input file
 	my ($kCounts, $s, $gc) = processFile($inputFile);

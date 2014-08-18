@@ -154,6 +154,21 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 		resList.append(resDict[r])
 	pickle.dump(resList, open(out,"wb"))
 	
+
+def percentile90(array):
+	import numpy
+	return numpy.percentile(array,90)
+
+
+def percentile80(array):
+	import numpy
+	return numpy.percentile(array,80)	
+
+
+def percentile70(array):
+	import numpy
+	return numpy.percentile(array,70)
+
 	
 def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 	import numpy

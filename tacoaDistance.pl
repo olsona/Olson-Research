@@ -34,7 +34,7 @@ sub readFile {
 # Read command-line arguments
 print "Running\n";
 my ($DBfile, $matchfile, $outfile) = @ARGV;
-print "DB: $DBfile\n";
+#print "DB: $DBfile\n";
 die "Usage: $0 <DBfile> <matchfile> <outfile>\n" unless -f $DBfile && -f $matchfile && defined $outfile;
 # Read inputs
 my ($DBNames,		$DBVectors)		= readFile($DBfile);
