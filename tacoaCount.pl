@@ -62,7 +62,7 @@ sub processFile {
                 $ct += length($seq);
                 
                 #Alex's fast fix
-                $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
+                $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', uc $seq);
                 
                 $gc += ( $seq =~ tr/CG// );
 			}
@@ -82,7 +82,7 @@ sub processFile {
         $ct += length($seq);
         
         #Alex's fast fix
-        $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
+        $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', uc $seq);
         $gc += ( $seq =~ tr/CG// );
 	}
     
