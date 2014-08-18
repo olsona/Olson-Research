@@ -72,9 +72,9 @@ sub processFile {
 				#countKmer($k2, $seq, $k2Counts);
                 
                 #Alex's fast fix
-                $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', $seq);
-                $k1Counts->{$_}++ foreach unpack('(A' . $k1 . 'X' . ($k1 - 1) . ')*', $seq);
-                $k2Counts->{$_}++ foreach unpack('(A' . $k2 . 'X' . ($k2 - 1) . ')*', $seq);
+                $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', uc $seq);
+                $k1Counts->{$_}++ foreach unpack('(A' . $k1 . 'X' . ($k1 - 1) . ')*', uc $seq);
+                $k2Counts->{$_}++ foreach unpack('(A' . $k2 . 'X' . ($k2 - 1) . ')*', uc $seq);
 			}
 
 			# Setup for reading new sequence
