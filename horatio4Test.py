@@ -20,7 +20,7 @@ def main(argv):
 		elif opt == "-a":
 			pref = arg
 	
-	outlog = out + "_" + score + "_log"
+	outlog = out + "_" + pref + "_log"
 	fOut = open(outlog,'w')
 	fOut.close()
 	
