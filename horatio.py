@@ -40,7 +40,8 @@ def main(argv):
 	parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
-	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','70','80','90','len'],default="min")
+	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','70','80','90','len'],default="max")
+	parser.add_argument("-d","--doAP", help="Do AP or not", type=int, choices=[0,1],default=0)
 	parser.add_argument("-l","--split", help="Split threshold")
 	parser.add_argument("-f","--names", help="Name file")
 	args = parser.parse_args()
@@ -382,105 +383,104 @@ def main(argv):
 		#print i, len(allContigs)
 			
 	#---POSTPROCESSING---#
-	#print allClusters.keys()
-	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
-	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
-	clusterLengths = []
-	totalLength = 0
-	clusters = []
-	numLeaves = 0
-	for c in allClusters:
-		r = allClusters[c].root
-		l = allClusters[c].getLeaves()
-		numLeaves += len(l)
-		#print r, l
-#		# for if I want to look at all clusters
-#		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-#		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-#		totalCluster[r] = allClusters[c]
-		#if r.startswith('pseudocontig'):
-			# for if I only want to look at pseudocontigs
-		#	actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-		#	actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-		#	clusters.append(allClusters[c])
-		
-		actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-		actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-		clusters.append(allClusters[c])
-		sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
-		clusterLengths.append(sz)
-	actualClusterList1.close()
-	actualClusterList2.close()
-	print "{!s},{!s}".format(len(allClusters),len(clusters))
-	#print numLeaves
-	fSeed = "{!s}_actualclusters".format(outputFile)
 	
-	#final distances
-	DB = "{!s}_final_DB".format(baseName)
-	if scoreFunction == "tacoa":
-		hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
-	elif scoreFunction == "tetra":
-		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
-	elif scoreFunction == "raiphy":
-		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
+	if doAP:
+		#print allClusters.keys()
+		actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
+		actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
+		clusterLengths = []
+		totalLength = 0
+		clusters = []
+		numLeaves = 0
+		for c in allClusters:
+			r = allClusters[c].root
+			l = allClusters[c].getLeaves()
+			numLeaves += len(l)
+			if numLeaves > 1:
+				actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+				actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+				clusters.append(allClusters[c])
+				sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
+				clusterLengths.append(sz)
+		actualClusterList1.close()
+		actualClusterList2.close()
+		print "{!s},{!s}".format(len(allClusters),len(clusters))
+		#print numLeaves
+		fSeed = "{!s}_actualclusters".format(outputFile)
 	
-	fOutC = open("{!s}_clusters".format(outputFile),'w')	
-	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
-	os.system("rm {!s}_dists_sorted".format(outputFile))
-	os.system("rm {!s}_actualclusters*".format(outputFile))
-	if prefFun == "len":
-		minDist = numpy.min(finalDists)
-		maxDist = numpy.max(finalDists)
-		minLen = numpy.min(clusterLengths)
-		maxLen = numpy.max(clusterLengths)
-		print >> sys.stderr, [len(clusterLengths), minLen, maxLen]
-		m = (maxDist - minDist)/(maxLen - minLen)
-		b = minDist - m*minLen
-		pref = [m*c + b for c in clusterLengths]
-	else:
-		pref = hcon.apPreferences[prefFun](finalDists)
-	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
-	metaClustering = hutil.processAPLabels(labels, clusters)
-	#print metaClustering
-	# iterate through partition of clusters and merge as appropriate
-	finalClusters = []
-	for p in metaClustering:
-		pList = list(p)
-		mainClust = pList[0]
-		mainClID = mainClust.seed
-		restClust = pList[1:]
-		# make ubercontig
-		newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
-		newContig = Contig(newContigName)
-		allContigs[newContigName] = newContig
-		contigs2Clusters[newContigName] = mainClust
-		clusters2Contigs[mainClID].append(newContig)
-		fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
-		fNewContig.write(">{!s}\n".format(newContigName))
-		_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
-		fNewContig.write(seq)
-		for rCl in restClust:
-			co = allContigs[rCl.root]
-			_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
+		#final distances
+		DB = "{!s}_final_DB".format(baseName)
+		if scoreFunction == "tacoa":
+			hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
+		elif scoreFunction == "tetra":
+			hfun.scoreTETRAFinal(DB, fSeed, outputFile)
+		elif scoreFunction == "raiphy":
+			hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
+	
+		fOutC = open("{!s}_clusters".format(outputFile),'w')	
+		finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
+		os.system("rm {!s}_dists_sorted".format(outputFile))
+		os.system("rm {!s}_actualclusters*".format(outputFile))
+		if prefFun == "len":
+			minDist = numpy.min(finalDists)
+			maxDist = numpy.max(finalDists)
+			minLen = numpy.min(clusterLengths)
+			maxLen = numpy.max(clusterLengths)
+			print >> sys.stderr, [len(clusterLengths), minLen, maxLen]
+			m = (maxDist - minDist)/(maxLen - minLen)
+			b = minDist - m*minLen
+			pref = [m*c + b for c in clusterLengths]
+		else:
+			pref = hcon.apPreferences[prefFun](finalDists)
+		_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
+		metaClustering = hutil.processAPLabels(labels, clusters)
+		#print metaClustering
+		# iterate through partition of clusters and merge as appropriate
+		finalClusters = []
+		for p in metaClustering:
+			pList = list(p)
+			mainClust = pList[0]
+			mainClID = mainClust.seed
+			restClust = pList[1:]
+			# make ubercontig
+			newContigName = "pseudocontig_"+"{!s}".format(newContigCount).zfill(4)
+			newContig = Contig(newContigName)
+			allContigs[newContigName] = newContig
+			contigs2Clusters[newContigName] = mainClust
+			clusters2Contigs[mainClID].append(newContig)
+			fNewContig = open("{!s}{!s}.fna".format(genePath,newContigName),'w')
+			fNewContig.write(">{!s}\n".format(newContigName))
+			_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath, mainClID))
 			fNewContig.write(seq)
-			# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
-		fNewContig.write("\n")
-		fNewContig.close()
-		#newContigCount += 1
-		# add clusters
-		mainClust.addClusters(restClust, newContigName)
-		finalClusters.append(mainClust)
-		leaves = mainClust.getLeaves()
-		fOutC.write(str(leaves) + "\n")
-		# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
-		for rCl in restClust:
-			contigNames = clusters2Contigs[rCl.seed]
-			for con in contigNames:
-				clusters2Contigs[mainClust.seed].append(con)
-				contigs2Clusters[con] = mainClust
-			clusters2Contigs.pop(rCl.seed)
-			allClusters.pop(rCl.seed)
-	pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb")) 
+			for rCl in restClust:
+				co = allContigs[rCl.root]
+				_, seq = hutil.readSequence("{!s}{!s}.fna".format(genePath,co.name))
+				fNewContig.write(seq)
+				# os.system("rm {!s}{!s}.fna".format(genePath,child)) # clear up space
+			fNewContig.write("\n")
+			fNewContig.close()
+			#newContigCount += 1
+			# add clusters
+			mainClust.addClusters(restClust, newContigName)
+			finalClusters.append(mainClust)
+			leaves = mainClust.getLeaves()
+			fOutC.write(str(leaves) + "\n")
+			# remove restClust from allClusters, update all entries in clusters2Contigs and contigs2Clusters
+			for rCl in restClust:
+				contigNames = clusters2Contigs[rCl.seed]
+				for con in contigNames:
+					clusters2Contigs[mainClust.seed].append(con)
+					contigs2Clusters[con] = mainClust
+				clusters2Contigs.pop(rCl.seed)
+				allClusters.pop(rCl.seed)
+		pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb")) 
+	else:
+		clusters = []
+		for c in allClusters:
+			r = allClusters[c].root
+			l = allClusters[c].getLeaves()
+			clusters.append(l)
+		pickle.dump(clusters, open("{!s}_clusters_pickle".format(outputFile),'wb'))
 	
 	# Get rid of files we're not using any more
 	#os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
