@@ -6,7 +6,7 @@ def main(argv):
 	myfile = ''
 	out = ''
 	try:
-		opts, args = getopt.getopt(argv,"f:o:p:a:")
+		opts, args = getopt.getopt(argv,"f:o:p:")
 	except getopt.GetoptError:
 		sys.exit(2)
 		
@@ -17,8 +17,8 @@ def main(argv):
 			out = arg	
 		elif opt == "-p":
 			path = arg
-		elif opt == "-a":
-			pref = arg
+		#elif opt == "-a":
+		#	pref = arg
 	
 	outlog = out + "_" + pref + "_log"
 	fOut = open(outlog,'w')
@@ -63,13 +63,13 @@ def main(argv):
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
-							print "{!s}, {!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr, pref)
-							myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}_A_{!s}".format(out,score,n,j,t,s,pref)
-							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
-								format(score, n, j, tStr, sStr, pref, outlog))
+							print "{!s}, {!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
+							myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,score,n,j,t,s)
+							os.system('echo "::{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
+								format(score, n, j, tStr, sStr, outlog))
 							start = time.time()
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} -a {!s} >> {!s}".\
-								format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} >> {!s}".\
+								format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
 							end = time.time()
 							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
 	except KeyboardInterrupt:
