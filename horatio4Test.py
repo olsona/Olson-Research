@@ -50,16 +50,16 @@ def main(argv):
 	sList = sDict[score]
 	
 	try:
-		for t in tDict:			
-			for s in sList:
-				for j in jList:
-					for n in nList:
-						for pref in prefList:
-		#for pref in ['median']:
-		#	for t in ['4allCloseChop']:
-		#		for s in [-17.0]:
-		#			for j in [0.5]:
-		#				for n in [0.02]:
+		#for pref in prefList:
+		#	for t in tDict:			
+		#		for s in sList:
+		#			for j in jList:
+		#				for n in nList:
+		for pref in ['median']:
+			for t in ['4allCloseChop']:
+				for s in [-17.0]:
+					for j in [0.7]:
+						for n in [0.1]:
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"

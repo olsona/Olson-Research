@@ -413,7 +413,7 @@ def main(argv):
 	actualClusterList2.close()
 	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
-	
+	print >> sys.stderr, clusterLengths
 	fSeed = "{!s}_actualclusters".format(outputFile)
 	
 	#final distances
