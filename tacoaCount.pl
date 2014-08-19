@@ -192,7 +192,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
 	# Read the input file
 	my ($kCounts, $s, $gc) = processFile($inputFile);
-	print STDERR "$s, $gc";
+	#print STDERR "$s, $gc\n";
     
     my $gcpr = $gc/$s;
     
