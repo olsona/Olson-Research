@@ -432,7 +432,7 @@ def main(argv):
 		minDist = numpy.min(finalDists)
 		maxDist = numpy.max(finalDists)
 		minLen = numpy.min(clusterLengths)
-		maxLen = numpy.min(clusterLengths)
+		maxLen = numpy.max(clusterLengths)
 		print >> sys.stderr, [len(clusterLengths), minLen, maxLen]
 		m = (maxDist - minDist)/(maxLen - minLen)
 		b = minDist - m*minLen
