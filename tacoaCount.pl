@@ -83,7 +83,7 @@ sub processFile {
         
         #Alex's fast fix
         $k0Counts->{$_}++ foreach unpack('(A' . $k0 . 'X' . ($k0 - 1) . ')*', uc $seq);
-        $gc += ( uc $seq =~ tr/CG// );
+        $gc += ( ( uc $seq ) =~ tr/CG// );
 	}
     
 	close($FH);
@@ -192,6 +192,7 @@ foreach my $inputName (sort keys %$inputFiles) {
     
 	# Read the input file
 	my ($kCounts, $s, $gc) = processFile($inputFile);
+	print STDERR "$s, $gc"
     
     my $gcpr = $gc/$s;
     

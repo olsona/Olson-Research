@@ -220,4 +220,11 @@ def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 	
 
 def phyloDistribution(clustering,distMatrixFile):
+	import string, cPickle
+	dMF = open(distMatrixFile,'r')
+	lines = [l.rstrip() for l in dMF.readlines()]
+	names = lines[0].split(",")
+	dists = [[float(i) for i in l.split(",")] for l in lines[1:]]
+	distsIn = []
+	distsOut = []
 	
