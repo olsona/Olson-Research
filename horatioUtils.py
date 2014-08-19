@@ -217,3 +217,7 @@ def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 		except subprocess.CalledProcessError:
 			distMatrix[index1][index1] = 0.0
 	return names, distMatrix
+	
+
+def phyloDistribution(clustering,distMatrixFile):
+	
