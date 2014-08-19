@@ -413,7 +413,6 @@ def main(argv):
 	actualClusterList2.close()
 	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
-	print >> sys.stderr, clusterLengths
 	fSeed = "{!s}_actualclusters".format(outputFile)
 	
 	#final distances
@@ -434,6 +433,7 @@ def main(argv):
 		maxDist = numpy.max(finalDists)
 		minLen = numpy.min(clusterLengths)
 		maxLen = numpy.min(clusterLengths)
+		print >> sys.stderr, [len(clusterLengths), minLen, maxLen]
 		m = (maxDist - minDist)/(maxLen - minLen)
 		b = minDist - m*minLen
 		pref = [m*c + b for c in clusterLengths]
