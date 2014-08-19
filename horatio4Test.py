@@ -6,7 +6,7 @@ def main(argv):
 	myfile = ''
 	out = ''
 	try:
-		opts, args = getopt.getopt(argv,"f:o:p:s:")
+		opts, args = getopt.getopt(argv,"f:o:p:a:")
 	except getopt.GetoptError:
 		sys.exit(2)
 		
@@ -17,8 +17,8 @@ def main(argv):
 			out = arg	
 		elif opt == "-p":
 			path = arg
-		elif opt == "-s":
-			score = arg
+		elif opt == "-a":
+			pref = arg
 	
 	outlog = out + "_" + score + "_log"
 	fOut = open(outlog,'w')
@@ -45,21 +45,21 @@ def main(argv):
 	sDict = {'tetra': [0.6,0.7],
 			'raiphy': [-17.0,-16.0]}
 	#prefList = ['min','mean','median','max']
-	prefList = ['max','90','80','70','len']
+	#prefList = ['max','90','80','70','len']
 	#for score in sorted(sDict.keys()):
-	sList = sDict[score]
 	
 	try:
 		#for pref in prefList:
-		#	for t in tDict:			
-		#		for s in sList:
-		#			for j in jList:
-		#				for n in nList:
-		for pref in ['median']:
-			for t in ['4allCloseChop']:
-				for s in [-17.0]:
-					for j in [0.7]:
-						for n in [0.1]:
+		for t in tDict:			
+			for score in sDict.keys():
+				for s in sDict[score]
+					for j in jList:
+						for n in nList:
+		#for pref in ['median']:
+		#	for t in ['4allCloseChop']:
+		#		for s in [-17.0]:
+		#			for j in [0.7]:
+		#				for n in [0.1]:
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
