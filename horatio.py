@@ -9,6 +9,7 @@ from horatioClasses import Cluster, Contig
 import argparse
 import cPickle as pickle
 import sklearn.cluster
+import numpy
 
 # imports necessary for debugging and correctness
 #import matplotlib as mpl
@@ -385,6 +386,7 @@ def main(argv):
 	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
 	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
 	clusterLengths = []
+	totalLength = 0
 	clusters = []
 	numLeaves = 0
 	for c in allClusters:
@@ -427,7 +429,16 @@ def main(argv):
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
 	os.system("rm {!s}_dists_sorted".format(outputFile))
 	os.system("rm {!s}_actualclusters*".format(outputFile))
-	pref = hcon.apPreferences[prefFun](finalDists)
+	if pref == "len":
+		minDist = numpy.min(finalDists)
+		maxDist = numpy.max(finalDists)
+		minLen = numpy.min(clusterLengths)
+		maxLen = numpy.min(clusterLengths)
+		m = (maxDist - minDist)/(maxLen - minLen)
+		b = minDist - m*minLen
+		pref = [m*c + b for c in clusterLengths]
+	else:
+		pref = hcon.apPreferences[prefFun](finalDists)
 	_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
 	metaClustering = hutil.processAPLabels(labels, clusters)
 	#print metaClustering

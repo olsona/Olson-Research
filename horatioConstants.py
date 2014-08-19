@@ -1,4 +1,5 @@
 import horatioFunctions as hfun
+import horatioUtils as hutil
 import numpy
 
 myMethods = ['raiphy']
@@ -46,4 +47,7 @@ apPreferences = {
 	"median":	numpy.median,
 	"mean":	numpy.mean,
 	"max":	numpy.max,
+	"90":	hutil.percentile90,
+	"80":	hutil.percentile80,
+	"70":	hutil.percentile70
 }
