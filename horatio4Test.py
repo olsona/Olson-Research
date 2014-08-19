@@ -52,7 +52,7 @@ def main(argv):
 		#for pref in prefList:
 		for t in tDict:			
 			for score in sDict.keys():
-				for s in sDict[score]
+				for s in sDict[score]:
 					for j in jList:
 						for n in nList:
 		#for pref in ['median']:
