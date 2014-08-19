@@ -49,6 +49,7 @@ def main(argv):
 	outputFile = args.output
 	scoreFunction = args.score
 	prefFun = args.ap
+	doAP = args.doAP
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
 	if args.split:
 		splitThreshold = [float(n) for n in args.split.lstrip()[1:-1].split(',')]
