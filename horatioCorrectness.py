@@ -545,13 +545,12 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 
 		inClustPre = pickle.load(open(fi,"rb"))
 		inClust = []
-		list2Clusters = {}
 		allMembers = set()
 		for i in inClustPre:
-			#ncl = inClustPre[i].getLeaves()
-			ncl = i.getLeaves()
-			#list2Clusters[ncl[0]] = inClustPre[i]
-			list2Clusters[ncl[0]] = i
+			if isinstance(i,list):
+				ncl = i
+			else:
+				ncl = i.getLeaves()
 			inClust.append(ncl)
 			allMembers = allMembers | set(ncl)
 			
