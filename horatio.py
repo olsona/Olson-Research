@@ -480,7 +480,7 @@ def main(argv):
 		for c in allClusters:
 			r = allClusters[c].root
 			l = allClusters[c].getLeaves()
-			clusters.append(l)
+			clusters.append(allClusters[c])
 		pickle.dump(clusters, open("{!s}_clusters_pickle".format(outputFile),'wb'))
 	
 	# Get rid of files we're not using any more
