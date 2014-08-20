@@ -40,8 +40,8 @@ def main(argv):
 			'4lowCloseChop': [4,6,8,10,14,18]}
 	#tDict = {'4by4Chop': [4,8,12,16]}
 	#sDict = {'tacoa': [0.3,0.35,0.4],
-			'tetra': [0.2,0.4,0.6],
-			'raiphy': [-17.0,-16.5,-16.0]}
+	#		'tetra': [0.2,0.4,0.6],
+	#		'raiphy': [-17.0,-16.5,-16.0]}
 	sDict = {'tetra': [0.6,0.7],
 			'raiphy': [-17.0,-16.0]}
 	#prefList = ['min','mean','median','max']
