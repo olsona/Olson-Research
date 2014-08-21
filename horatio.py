@@ -40,7 +40,7 @@ def main(argv):
 	parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
-	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','70','80','90','len'],default="max")
+	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','len','len2'],default="max")
 	parser.add_argument("-d","--doAP", help="Do AP or not", type=int, choices=[0,1],default=0)
 	parser.add_argument("-l","--split", help="Split threshold")
 	parser.add_argument("-f","--names", help="Name file")
@@ -385,42 +385,43 @@ def main(argv):
 			
 	#---POSTPROCESSING---#
 	
-	if doAP:
-		#print allClusters.keys()
-		actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
-		actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
-		clusterLengths = []
-		totalLength = 0
-		clusters = []
-		numLeaves = 0
-		for c in allClusters:
-			r = allClusters[c].root
-			l = allClusters[c].getLeaves()
-			numLeaves += len(l)
-			if numLeaves > 1:
-				actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
-				actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
-				clusters.append(allClusters[c])
-				sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
-				clusterLengths.append(sz)
-		actualClusterList1.close()
-		actualClusterList2.close()
-		print "{!s},{!s}".format(len(allClusters),len(clusters))
-		#print numLeaves
-		fSeed = "{!s}_actualclusters".format(outputFile)
 	
-		#final distances
-		DB = "{!s}_final_DB".format(baseName)
-		if scoreFunction == "tacoa":
-			hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
-		elif scoreFunction == "tetra":
-			hfun.scoreTETRAFinal(DB, fSeed, outputFile)
-		elif scoreFunction == "raiphy":
-			hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
+	#print allClusters.keys()
+	actualClusterList1 = open("{!s}_actualclusters-1".format(outputFile),'w')
+	actualClusterList2 = open("{!s}_actualclusters-2".format(outputFile),'w')
+	clusterLengths = []
+	totalLength = 0
+	clusters = []
+	numLeaves = 0
+	for c in allClusters:
+		r = allClusters[c].root
+		l = allClusters[c].getLeaves()
+		numLeaves += len(l)
+		if numLeaves > 1:
+			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
+			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
+			clusters.append(allClusters[c])
+			sz = os.path.getsize("{!s}/{!s}.fna".format(genePath,r))
+			clusterLengths.append(sz)
+	actualClusterList1.close()
+	actualClusterList2.close()
+	print "{!s},{!s}".format(len(allClusters),len(clusters))
+	#print numLeaves
+	fSeed = "{!s}_actualclusters".format(outputFile)
+
+	#final distances
+	DB = "{!s}_final_DB".format(baseName)
+	if scoreFunction == "tacoa":
+		hfun.scoreTACOAFinal(DB, fSeed, outputFile)			
+	elif scoreFunction == "tetra":
+		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
+	elif scoreFunction == "raiphy":
+		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
 	
-		fOutC = open("{!s}_clusters".format(outputFile),'w')	
-		finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
-		os.system("rm {!s}_dists_sorted".format(outputFile))
+	fOutC = open("{!s}_clusters".format(outputFile),'w')	
+	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
+	if doAP:	
+		#os.system("rm {!s}_dists_sorted".format(outputFile))
 		os.system("rm {!s}_actualclusters*".format(outputFile))
 		if prefFun == "len":
 			minDist = numpy.min(finalDists)
@@ -431,6 +432,14 @@ def main(argv):
 			m = (maxDist - minDist)/(maxLen - minLen)
 			b = minDist - m*minLen
 			pref = [m*c + b for c in clusterLengths]
+		elif prefFun == "len2":
+			minDist = numpy.min(finalDists)
+			maxDist = numpy.max(finalDists)
+			minLen = numpy.min(clusterLengths)**2
+			maxLen = numpy.max(clusterLengths)**2
+			m = m = (maxDist - minDist)/(maxLen - minLen)
+			b = minDist - m*minLen
+			pref = [m*(c**2) + b for c in clusterLengths]
 		else:
 			pref = hcon.apPreferences[prefFun](finalDists)
 		_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)

@@ -26,11 +26,11 @@ def main(argv):
 	
 	#jList = [0.5,0.7,0.9]
 	#jList = [0.7,0.8,0.9]
-	jList = [0.8]
+	jList = [0.9]
 	#nList = [0.01,0.03,0.1]
 	#nList = [0.02,0.05,0.1]
 	#nList = [0.08,0.1,0.12]
-	nList = [0.1,0.12]
+	nList = [0.1]
 	#tDict = {'allClose': [2,4,6,8,10,12,14,16,18,20,22],
 	#		 'lowClose': [2,4,6,8,10,14,18,22],
 	#		 '2by4': [2,6,10,14,18,22],
@@ -47,9 +47,10 @@ def main(argv):
 	#		'raiphy': [-17.0,-16.5,-16.0]}
 	#sDict = {'tetra': [0.6,0.7],
 	#		'raiphy': [-17.0,-16.0]}
-	sDict = {'tetra': [0.7]}
+	sDict = {'tetra': [0.6,0.7]}
 	#prefList = ['min','mean','median','max']
-	prefList = ['max','90','80','70','len']
+	#prefList = ['max','90','80','70','len']
+	prefList = ['60','median','40','len2']
 	#for score in sorted(sDict.keys()):
 	
 	try:
