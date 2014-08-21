@@ -168,6 +168,16 @@ def percentile80(array):
 def percentile70(array):
 	import numpy
 	return numpy.percentile(array,70)
+	
+
+def percentile60(array):
+	import numpy
+	return numpy.percentile(array,60)
+	
+
+def percentile40(array):
+	import numpy
+	return numpy.percentile(array,40)
 
 	
 def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
