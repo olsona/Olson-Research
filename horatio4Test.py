@@ -47,7 +47,7 @@ def main(argv):
 	#		'raiphy': [-17.0,-16.5,-16.0]}
 	sDict = {'tetra': [0.4,0.5,0.6],
 			'raiphy': [-17.0,-16.5,-16.0],
-			'tetra': [0.5,0.6,0.7]}
+			'tacoa': [0.3,0.35,0.4]}
 	#prefList = ['min','mean','median','max']
 	#prefList = ['max','90','80','70','len']
 	#prefList = ['60','median','40','len2']
@@ -60,11 +60,6 @@ def main(argv):
 				for s in sDict[score]:
 					for j in jList:
 						for n in nList:
-		#for pref in ['median']:
-		#	for t in ['4allCloseChop']:
-		#		for s in [-17.0]:
-		#			for j in [0.7]:
-		#				for n in [0.1]:
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
