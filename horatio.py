@@ -417,8 +417,7 @@ def main(argv):
 		hfun.scoreTETRAFinal(DB, fSeed, outputFile)
 	elif scoreFunction == "raiphy":
 		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
-	
-	fOutC = open("{!s}_clusters".format(outputFile),'w')	
+		
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
 	if doAP:	
 		#os.system("rm {!s}_dists_sorted".format(outputFile))
@@ -447,6 +446,7 @@ def main(argv):
 		#print metaClustering
 		# iterate through partition of clusters and merge as appropriate
 		finalClusters = []
+		fOutC = open("{!s}_clusters".format(outputFile),'w')
 		for p in metaClustering:
 			pList = list(p)
 			mainClust = pList[0]
