@@ -129,7 +129,7 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	nf = open(nameFile,'r')
 	nameList = []
 	for l in nf.readlines():
-		n = l.rstrip()
+		n = l.rstrip().split('_')[0]
 		if len(n) > 0:
 			nameList.append(n)
 	resDict = {name:[] for name in nameList}
