@@ -521,6 +521,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		# get information from filename
 		fileName = fi.split("/")[-1]
 		fileSplit = fileName.split("_")
+		#print fileSplit
 		mText = fileSplit[0]
 		#mAbund = fileSplit[1]
 		score = fileSplit[1]
@@ -780,3 +781,40 @@ def processDistLog(inFolder, out):
 	f.close()
 
 
+def processOrderedDistMatrix(orderedDistMatrix):
+	from collections import Counter
+	odmFile = open(orderedDistMatrix,'r')
+	db_names = odmFile.readline().rstrip().split(',')
+	db_genera = [n.split('_')[0] for n in db_names]
+	contig_names = odmFile.readline().rstrip().split(',')
+	contig_genera = [n.split('_')[0] for n in contig_names]
+	contig_genera_uniq = sorted(list(set(contig_genera)))
+	TPDict = {n:0 for n in contig_genera_uniq}
+	FPDict = {n:0 for n in contig_genera_uniq}
+	FNDict = {n:0 for n in contig_genera_uniq}
+	ZDict = Counter(contig_genera)
+	ct = 0
+	ln = odmFile.readline().rstrip()
+	while ln:
+		entry = ln.split(',')[0]
+		index = int(entry.split(':')[1])
+		match_genus = db_genera[index]
+		contig_genus = contig_genera[ct]
+		if contig_genus == match_genus:
+			TPDict[contig_genus] += 1
+		else:
+			if match_genus in contig_genera_uniq:
+				FPDict[match_genus] += 1
+		ct += 1
+		ln = odmFile.readline().rstrip()
+	TPAll = 0
+	FPAll = 0
+	ZAll = 0
+	for na in contig_genera_uniq:
+		TPAll += TPDict[na]
+		FPAll += FPDict[na]
+		ZAll += ZDict[na]
+	SN = float(TPAll)/float(ZAll)
+	SP = float(TPAll)/float(TPAll+FPAll)
+	print "SN: {:01.2f}".format(SN)
+	print "SP: {:01.2f}".format(SP)

@@ -42,6 +42,7 @@ def main(argv):
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
 	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','len','len2'],default="max")
 	parser.add_argument("-d","--doAP", help="Do AP or not", type=int, choices=[0,1],default=0)
+	parser.add_argument("-k","--clusterLimit", help="Minimum size for a cluster to be included in AP", type=int, default=2)
 	parser.add_argument("-l","--split", help="Split threshold")
 	parser.add_argument("-f","--names", help="Name file")
 	args = parser.parse_args()
@@ -50,6 +51,7 @@ def main(argv):
 	scoreFunction = args.score
 	prefFun = args.ap
 	doAP = args.doAP
+	k = args.clusterLimit
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
 	if args.split:
 		splitThreshold = [float(n) for n in args.split.lstrip()[1:-1].split(',')]
@@ -396,8 +398,8 @@ def main(argv):
 	for c in allClusters:
 		r = allClusters[c].root
 		l = allClusters[c].getLeaves()
-		numLeaves += len(l)
-		if numLeaves > 1:
+		numLeaves = len(l)
+		if numLeaves >= k:
 			actualClusterList2.write("{!s}\t{!s}/{!s}.fna\n".format(r,genePath,r))
 			actualClusterList1.write("{!s}/{!s}.fna\n".format(genePath,r))
 			clusters.append(allClusters[c])
