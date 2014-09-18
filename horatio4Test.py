@@ -68,7 +68,7 @@ def main(argv):
 							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
 								format(score, n, j, tStr, sStr, pref, outlog))
 							start = time.time()
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -p {!s} >> {!s}".\
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".\
 								format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
 							end = time.time()
 							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
