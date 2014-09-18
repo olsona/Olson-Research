@@ -355,17 +355,7 @@ def ncr(n, r):
 	#print "{:2.2e}".format(ncr_memo[nrtuple])
 	return ncr_memo[nrtuple]
 	#return 1.0
-	
-	
-def AMI(U, V):
-	# Information Theoretic Measures for Clusterings, Vinh, Epps, Bailey
-	# AMI_sum
-	I = MutualInformation(U, V)
-	HU = Entropy(U)
-	HV = Entropy(V)
-	E = float(ExpectedMutualInformation(U,V))
-	return (I-E)/(0.5*(HU+HV)-E)
-	
+
 	
 #----Total post-processing computation----#
 def testCorrectnessAll(computedClustering, correctClustering, names, outFile, representationThreshold=0.9):
@@ -465,11 +455,11 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			names.append(nm)
 	#print names
 	outF = open(outFile,'w')
-	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen")
-	for na in sorted(names):
-		[ge,sp,_] = na.split("_",2)
-		name = "{0}.{1}.".format(ge[:5],sp[:5])
-		outF.write(";{0}TPNo;{0}FPNo;{0}GrNo;{0}ZNo;{0}TPLen;{0}FPLen;{0}GrNo;{0}ZLen".format(name))
+	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen")
+	#for na in sorted(names):
+	#	[ge,sp,_] = na.split("_",2)
+	#	name = "{0}.{1}.".format(ge[:5],sp[:5])
+	#	outF.write(";{0}TPNo;{0}FPNo;{0}GrNo;{0}ZNo;{0}TPLen;{0}FPLen;{0}GrNo;{0}ZLen".format(name))
 	outF.write("\n")
 
 	# get Z values for each correct clustering
@@ -670,6 +660,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				idSubset.append(c)
 		tr_label = generateLabelingSubset(corrClustReal,idSubset)
 		nmi = sklearn.metrics.normalized_mutual_info_score(tr_label,my_label)
+		ami = sklearn.metrics.adjusted_mutual_info_score(tr_label,my_label)
 		vscore = sklearn.metrics.v_measure_score(tr_label,my_label)
 		#ami = AMI(inClust, corrClustReal)
 		
@@ -682,19 +673,41 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			if c >= sizeThreshold:
 				numberClusters += 1
 		
-		#"Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
-		
+		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
+		#pref = "NIL"
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
 		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
-		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
-		for na in sorted(names):
-			outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".\
-				format(TPDictNo[na],FPDictNo[na],GrDictNo[na],ZDictNo[na],TPDictLen[na],FPDictLen[na],GrDictLen[na],ZDictLen[na]))
+		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,ami,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+		#for na in sorted(names):
+		#	outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".\
+		#		format(TPDictNo[na],FPDictNo[na],GrDictNo[na],ZDictNo[na],TPDictLen[na],FPDictLen[na],GrDictLen[na],ZDictLen[na]))
 		outF.write("\n")
 		ctr += 1
 		
 	outF.close()
 	print "done"
+	
+	
+def generateCorrectClusteringFromResults(resPickle, nameFile, outFile, threshold):
+	import cPickle
+	import string
+	nf = open(nameFile,'r')
+	names = [l.rstrip() for l in nf.readlines()]
+	corrDict = {n:[] for n in names}
+	clustering = cPickle.load(open(resPickle,'rb'))
+	for cluster in clustering:
+		leaves = cluster.getLeaves()
+		for contig in leaves:
+			size = int(contig.rsplit('_',2)[-2])
+			if size >= threshold:
+				source = ''
+				for possible in names:
+					if string.find(possible,contig) != -1:
+						source = possible
+						corrDict[source].append(contig)
+						break
+	outList = corrDict.values()
+	cPickle.dump(outList,open(outFile,'wb'))
 	
 
 def processDistanceInfo(inClusters, inDistance, nameFile):
@@ -794,11 +807,16 @@ def processOrderedDistMatrix(orderedDistMatrix):
 	FNDict = {n:0 for n in contig_genera_uniq}
 	ZDict = Counter(contig_genera)
 	ct = 0
+	uniqueClusters = {}
 	ln = odmFile.readline().rstrip()
 	while ln:
 		entry = ln.split(',')[0]
 		index = int(entry.split(':')[1])
 		match_genus = db_genera[index]
+		if match_genus in uniqueClusters.keys():
+			uniqueClusters[match_genus] += 1
+		else:
+			uniqueClusters[match_genus] = 1
 		contig_genus = contig_genera[ct]
 		if contig_genus == match_genus:
 			TPDict[contig_genus] += 1
@@ -818,3 +836,50 @@ def processOrderedDistMatrix(orderedDistMatrix):
 	SP = float(TPAll)/float(TPAll+FPAll)
 	print "SN: {:01.2f}".format(SN)
 	print "SP: {:01.2f}".format(SP)
+	print "NumClusters: {!s}".format(len(uniqueClusters.keys()))
+	
+	
+def getPhyloDistribution(inClust,phyloDist,outPrefix):
+	import cPickle
+	import string
+	import numpy
+	import horatioUtils as hutil
+	phyloF = open(phyloDist,'r')
+	phyloLines = phyloF.readlines()
+	print len(phyloLines)
+	phyloNames = [string.replace(n," ","_") for n in phyloLines[0].rstrip().split(",")]
+	phyloDists = []
+	for x in phyloLines[1:]:
+		ln = x.rstrip().split(",")
+		phyloDists.append([float(n) for n in ln])
+	print len(phyloDists), len(phyloDists[0])
+	clustering = cPickle.load(open(inClust,'rb'))
+	ct = 0
+	orderingOfSources = {}
+	myIntervals = []
+	for cluster in clustering:
+		intervalStart = ct
+		contigs = cluster.getLeaves()
+		for con in contigs:
+			for pn in phyloNames:
+				if string.find(con,pn) != -1:
+					orderingOfSources[ct] = pn
+					break
+			ct += 1
+		intervalEnd = ct
+		myIntervals.append(range(intervalStart,intervalEnd))
+	numContigs = ct
+	distances = -1.0 * numpy.ones((numContigs,numContigs))
+	for x in range(numContigs):
+		distances[x][x] = 0.0
+		srcX = orderingOfSources[x]
+		indX = phyloNames.index(srcX)
+		for y in range(x):
+			srcY = orderingOfSources[y]
+			indY = phyloNames.index(srcY)
+			dist = phyloDists[indX][indY]
+			distances[x][y] = dist
+			distances[y][x] = dist
+	hutil.csv2DistanceDistribution(distances,outPrefix+".intra.csv",numContigs,intervals=myIntervals,include=1)
+	hutil.csv2DistanceDistribution(distances,outPrefix+".inter.csv",numContigs,intervals=myIntervals,include=0)
+

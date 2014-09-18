@@ -36,8 +36,8 @@ def main(argv):
 	parser.add_argument("-i","--input", help="Input .fasta file", required=True)
 	parser.add_argument("-o","--output", help="Prefix for all output files", required=True)
 	parser.add_argument("-c","--cut", help="Cut schedule", required=True)
-	parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='raiphy')
-	parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
+	parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='tetra')
+	parser.add_argument("-p","--path", help="Computation path (necessary only for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
 	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','len','len2'],default="max")
@@ -429,7 +429,6 @@ def main(argv):
 			maxDist = numpy.max(finalDists)
 			minLen = numpy.min(clusterLengths)
 			maxLen = numpy.max(clusterLengths)
-			print >> sys.stderr, [len(clusterLengths), minLen, maxLen]
 			m = (maxDist - minDist)/(maxLen - minLen)
 			b = minDist - m*minLen
 			pref = [m*c + b for c in clusterLengths]

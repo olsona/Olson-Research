@@ -207,7 +207,9 @@ def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 			idSet1 = names2IDsDict[n1]
 			idRegex1 = "\|".join(idSet1)
 			subprocess.check_output("grep '{i1}' {fi} > {fi}.current".format(i1=idRegex1,fi=distFile),shell=True)
-			for y in range(x+1):
+			distMatrix[x][x] = 0.0
+			for y in range(x):
+				print x, y
 				n2 = names[y]
 				index2 = names.index(n2)
 				if n1 != n2:
@@ -221,6 +223,7 @@ def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 						distMatrix[index2][index1] = dist
 						print "{0}, {1}, {2}".format(n1,n2,dist)
 					except subprocess.CalledProcessError:
+						print "Error"
 						pass
 				else:
 					distMatrix[index1][index2] = 0.0
@@ -229,3 +232,31 @@ def makeGenomeDistanceMatrix(namesFile, names2IDFile, distFile, outCSV):
 	return names, distMatrix
 	
 
+def csv2DistanceDistribution(distMatrix, out, num, intervals = [], include = 1):
+    # http://stackoverflow.com/a/5328669
+    import numpy as np
+    
+    mylist = []
+    if intervals == []:
+        for i in range(len(distMatrix)):
+            row = distMatrix[i]
+            for j in range(i):
+                if row[j] > 0:
+                    mylist.append(row[j])
+    else:
+        if include:
+            for n in range(len(intervals)):
+                for i in intervals[n]:
+                    row = distMatrix[i]
+                    for j in set(intervals[n]) - set([i]):
+                        mylist.append(row[j])
+        else:
+            for n in range(len(intervals)):
+                for i in intervals[n]:
+                    row = distMatrix[i]
+                    okset = set(range(num)) - set(intervals[n])
+                    for j in okset:
+                        mylist.append(row[j])
+
+    mat = np.array(mylist)
+    np.savetxt(out, mat, fmt='%.5e', delimiter=',')
