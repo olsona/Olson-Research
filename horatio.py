@@ -501,7 +501,7 @@ def main(argv):
 	for i in range(leng+1):
 		os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
 	os.system("rm {!s} >/dev/null 2>&1".format(finalDists))
-	os.system("rm {!s}_actualclusters* >/dev/null 2>&1".format(outputFile))
+	os.system("rm {!s}_dists_sorted >/dev/null 2>&1".format(outputFile))
 	
 	#distLog.close()
 
