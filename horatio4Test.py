@@ -18,13 +18,18 @@ def main(argv):
 		elif opt == "-p":
 			path = arg
 		elif opt == "-s":
-			score = arg
+			scr = arg
 		elif opt == "-c":
 			cut = arg
 	
 	outlog = out + "_log"
 	fOut = open(outlog,'w')
 	fOut.close()
+	
+	scoreDict = {'RA':'raiphy',
+				'TA':'tacoa',
+				'TE':'tetra'}
+	score = scoreDict[scr]			
 	
 	jList = [0.3,0.5,0.7,0.9]
 	#jList = [0.7,0.8,0.9]
@@ -80,7 +85,7 @@ def main(argv):
 							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
 								format(score, n, j, tStr, sStr, pref, outlog))
 							start = time.time()
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".\
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".
 								format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
 							end = time.time()
 							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
