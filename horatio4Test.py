@@ -70,25 +70,23 @@ def main(argv):
 	#prefList = ['60','median','40','len2']
 	prefList = ['median']
 	#for score in sorted(sDict.keys()):
-	
+	t = tDict[cut]
 	try:
-		for pref in prefList:
-			for t in tDict[cDict[cut]]:			
-				for s in sDict[score]:
-					for j in jList:
-						for n in nList:
-							splitList = [s]*(len(tDict[t])-1)
-							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
-							sStr = "["+",".join([str(si) for si in splitList])+"]"
-							print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
-							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}".format(out,score,n,j,t,s)
-							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
-								format(score, n, j, tStr, sStr, pref, outlog))
-							start = time.time()
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".
+		for pref in prefList:			
+			for s in sDict[score]:
+				for j in jList:
+					for n in nList:
+						splitList = [s]*(len(tDict[t])-1)
+						tStr = "["+",".join([str(ti) for ti in t])+"]"
+						sStr = "["+",".join([str(si) for si in splitList])+"]"
+						print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
+						myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}".format(out,score,n,j,t,s)
+						os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, tStr, sStr, pref, outlog))
+						start = time.time()
+						os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".
 								format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
-							end = time.time()
-							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
+						end = time.time()
+						os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
 	except KeyboardInterrupt:
 		sys.exit()
 	#fOut.close()			
