@@ -6,7 +6,7 @@ def main(argv):
 	myfile = ''
 	out = ''
 	try:
-		opts, args = getopt.getopt(argv,"f:o:p:s:c:")
+		opts, args = getopt.getopt(argv,"f:o:p:s:")
 	except getopt.GetoptError:
 		sys.exit(2)
 		
@@ -18,9 +18,7 @@ def main(argv):
 		elif opt == "-p":
 			path = arg
 		elif opt == "-s":
-			score = arg
-		elif opt == "-c":
-			cut = arg
+			scr = arg
 	
 	outlog = out + "_log"
 	fOut = open(outlog,'w')
@@ -50,6 +48,8 @@ def main(argv):
 	#sDict = {'tacoa': [0.3,0.35,0.4],
 	#		'tetra': [0.2,0.4,0.6],
 	#		'raiphy': [-17.0,-16.5,-16.0]}
+	scoreDict = {'RA':'raiphy','TA':'tacoa','TE':'tetra'}
+	score = scoreDict[scr]
 	sDict = {'tetra': [0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7],
 			'raiphy': [-18.0,-17.5,-17.0,-16.5,-16.0,-15.5,-15.0],
 			'tacoa': [0.2,0.25,0.3,0.35,0.4,0.45,0.5,0.55,0.6]}
