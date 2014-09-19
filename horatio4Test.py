@@ -6,7 +6,7 @@ def main(argv):
 	myfile = ''
 	out = ''
 	try:
-		opts, args = getopt.getopt(argv,"f:o:p:s:")
+		opts, args = getopt.getopt(argv,"f:o:p:s:c:")
 	except getopt.GetoptError:
 		sys.exit(2)
 		
@@ -19,6 +19,8 @@ def main(argv):
 			path = arg
 		elif opt == "-s":
 			score = arg
+		elif opt == "-c":
+			cut = arg
 	
 	outlog = out + "_log"
 	fOut = open(outlog,'w')
@@ -40,6 +42,9 @@ def main(argv):
 	#tDict = {'4allClose': [4,6,8,10,12,14,16,18,20,22],
 	#		 '4lowClose': [4,6,8,10,14,18,22],
 	#		 '4by4': [4,8,12,16,20]}
+	cDict = {'ACC':'4allCloseChop',
+			'LCC':'4lowCloseChop',
+			'X4C':'4x4Chop'}
 	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
 			'4lowCloseChop': [4,6,8,10,14,18],
 			'4by4Chop': [4,8,12,16]}
@@ -63,7 +68,7 @@ def main(argv):
 	
 	try:
 		for pref in prefList:
-			for t in tDict:			
+			for t in tDict[cDict[cut]]:			
 				for s in sDict[score]:
 					for j in jList:
 						for n in nList:
@@ -71,7 +76,7 @@ def main(argv):
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
 							print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
-							myOut = "{!s}_{!s}_N_{!s}_J_{!s}_C_{!s}_L_{!s}".format(out,score,n,j,t,s)
+							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}".format(out,score,n,j,t,s)
 							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
 								format(score, n, j, tStr, sStr, pref, outlog))
 							start = time.time()
