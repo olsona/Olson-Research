@@ -18,7 +18,7 @@ def main(argv):
 		elif opt == "-p":
 			path = arg
 		elif opt == "-s":
-			scr = arg
+			score = arg
 		elif opt == "-c":
 			cut = arg
 	
@@ -26,17 +26,12 @@ def main(argv):
 	fOut = open(outlog,'w')
 	fOut.close()
 	
-	scoreDict = {'RA':'raiphy',
-				'TA':'tacoa',
-				'TE':'tetra'}
-	score = scoreDict[scr]			
-	
-	jList = [0.3,0.5,0.7,0.9]
+	jList = [0.5,0.7,0.9]
 	#jList = [0.7,0.8,0.9]
 	#jList = [0.9]
 	
 	#nList = [0.01,0.03,0.1]
-	nList = [0.01,0.03,0.05,0.08,0.1,0.12]
+	nList = [0.01,0.05,0.1]
 	#nList = [0.08,0.1,0.12]
 	#nList = [0.1]
 	
@@ -47,9 +42,6 @@ def main(argv):
 	#tDict = {'4allClose': [4,6,8,10,12,14,16,18,20,22],
 	#		 '4lowClose': [4,6,8,10,14,18,22],
 	#		 '4by4': [4,8,12,16,20]}
-	cDict = {'ACC':'4allCloseChop',
-			'LCC':'4lowCloseChop',
-			'X4C':'4by4Chop'}
 	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
 			'4lowCloseChop': [4,6,8,10,14,18],
 			'4by4Chop': [4,8,12,16]}
@@ -73,19 +65,19 @@ def main(argv):
 	
 	try:
 		for pref in prefList:
-			for t in tDict[cDict[cut]]:			
+			for t in tDict:			
 				for s in sDict[score]:
 					for j in jList:
 						for n in nList:
-							splitList = [s]*(len(tDict[cDict[cut]])-1)
-							tStr = "["+",".join([str(ti) for ti in tDict[cDict[cut]]])+"]"
+							splitList = [s]*(len(tDict[t])-1)
+							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
 							print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
 							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}".format(out,score,n,j,t,s)
 							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.\
 								format(score, n, j, tStr, sStr, pref, outlog))
 							start = time.time()
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} >> {!s}".\
 								format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
 							end = time.time()
 							os.system('echo "{:03.2f}" >> {!s}'.format(end-start, outlog))
