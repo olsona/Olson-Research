@@ -70,7 +70,7 @@ def main(argv):
 	#prefList = ['60','median','40','len2']
 	prefList = ['median']
 	#for score in sorted(sDict.keys()):
-	t = tDict[cut]
+	t = tDict[cDict[cut]]
 	try:
 		for pref in prefList:			
 			for s in sDict[score]:
