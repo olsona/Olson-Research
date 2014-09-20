@@ -59,9 +59,9 @@ def scoreTACOA(DB, fSeed, matches, toMatch, allContigs):
 	
 	
 def scoreTACOAFinal(DB, fSeed, outputFile):
-	os.system("cat {!s}-2 | wc -l".format(fSeed))
-	os.system("head {!s}-2".format(fSeed))
+	#os.system("cat {!s}-2 | wc -l".format(fSeed))
+	#os.system("head {!s}-2".format(fSeed))
 	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(fSeed,DB))
-	os.system("cat {!s} | wc -l".format(DB))
-	os.system("head {!s}".format(DB))
+	#os.system("cat {!s} | wc -l".format(DB))
+	#os.system("head {!s}".format(DB))
 	os.system("perl tacoaDistance.pl {!s} {!s} {!s}_dists_sorted >/dev/null".format(DB, DB, outputFile))
