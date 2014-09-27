@@ -423,7 +423,7 @@ def main(argv):
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
 	if doAP:	
 		#os.system("rm {!s}_dists_sorted".format(outputFile))
-		os.system("rm {!s}_actualclusters*".format(outputFile))
+		#os.system("rm {!s}_actualclusters*".format(outputFile))
 		if prefFun == "len":
 			minDist = numpy.min(finalDists)
 			maxDist = numpy.max(finalDists)

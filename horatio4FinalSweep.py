@@ -76,7 +76,7 @@ def main(argv):
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
 							print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
-							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}".format(out,score,n,j,t,s)
+							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}_A_{!s}".format(out,score,n,j,t,s,pref)
 							os.system('echo "{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, t, s, pref, outlog))
 							start = time.time()
 							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
