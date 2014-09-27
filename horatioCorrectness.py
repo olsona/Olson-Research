@@ -455,7 +455,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			names.append(nm)
 	#print names
 	outF = open(outFile,'w')
-	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen")
+	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;F1No;RepFracNo;SnAllLen;SpAllLen;F1Len;repFracLen")
 	#for na in sorted(names):
 	#	[ge,sp,_] = na.split("_",2)
 	#	name = "{0}.{1}.".format(ge[:5],sp[:5])
@@ -480,6 +480,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 						corName = nm
 						break
 				corrZNo[no][corName] = len(cl)
+				#print rep, corName
+				#print
 				for c in cl:
 					clen = int(c.rsplit("_",2)[1])
 					#if clen >= 4000:
@@ -512,7 +514,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		fileName = fi.split("/")[-1]
 		fileSplit = fileName.split("_")
 		#print fileSplit
-		mText = fileSplit[0]
+		mText = fileSplit[0].split(".")[0]
 		#mAbund = fileSplit[1]
 		score = fileSplit[1]
 		nInd = fileSplit.index("N")
@@ -524,12 +526,14 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		cut = cutDict[cText]
 		lInd = fileSplit.index("L")
 		l = float(fileSplit[lInd+1])
-		pF = string.find(fi,"A_")
-		if pF >= 0:
-			pInd = fileSplit.index("A")
-			pref = fileSplit[pInd+1]
-		else:
-			pref = "N"
+		#pF = string.find(fi,"A_")
+		#print fi[pF:], fileSplit
+		#if pF >= 0:
+		#	pInd = fileSplit.index("A")
+		#	pref = fileSplit[pInd+1]
+		#else:
+		#	pref = "N"
+		pref = "N"
 		
 		repDictNo = {na:0 for na in names}
 		repDictLen = {na:0 for na in names}
@@ -550,6 +554,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
 		corrClustReal = []
 		for clust in corrClustIdeal:
+			#clSet = set(clust)
 			clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
@@ -582,18 +587,20 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 						break
 						
 			if len(cl) >= sizeThreshold:
+				#print cl
 				for nL in myRepDictNo:
+					#print myRepDictNo[nL], maxNo
 					if myRepDictNo[nL] > maxNo:
 						maxNo = myRepDictNo[nL]
 						maxNoName = nL
-				if GrDictNo[maxNoName] < maxNo:
-					GrDictNo[maxNoName] = maxNo
+				#if GrDictNo[maxNoName] < maxNo:
+				#	GrDictNo[maxNoName] = maxNo
 				for nL in myRepDictLen:
 					if myRepDictLen[nL] > maxLen:
 						maxLen = myRepDictLen[nL]
 						maxLenName = nL
-				if GrDictLen[maxLenName] < maxLen:
-					GrDictLen[maxLenName] = maxLen
+				#if GrDictLen[maxLenName] < maxLen:
+				#	GrDictLen[maxLenName] = maxLen
 				tpn = maxNo
 				fpn = len(cl) - tpn
 				tpl = maxLen
@@ -618,6 +625,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		FPAllLen = 0
 		for na in names:
 			#if ZDict[na] and TPDict[na]:	  # tacoa p 13 "The overall specificity is computed over those classes that have a defined specificity value"
+			#print na
 			ZAllNo += ZDictNo[na]
 			TPAllNo += TPDictNo[na]
 			FPAllNo += FPDictNo[na]
@@ -640,6 +648,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		if TPAllLen:
 			SnAllLen = float(TPAllLen)/float(ZAllLen)
 			SpAllLen = float(TPAllLen)/float(TPAllLen+FPAllLen)
+		F1No = 2*(SnAllNo*SpAllNo)/(SnAllNo+SpAllNo)
+		F1Len = 2*(SnAllLen*SpAllLen)/(SnAllLen+SpAllLen)
 		
 		repNumNo = 0
 		for r in repDictNo:
@@ -677,7 +687,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		#pref = "NIL"
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
 		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
-		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,ami,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
+		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,ami,vscore,SnAllNo,SpAllNo,F1No,repFracNo,SnAllLen,SpAllLen,F1Len,repFracLen))
 		#for na in sorted(names):
 		#	outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".\
 		#		format(TPDictNo[na],FPDictNo[na],GrDictNo[na],ZDictNo[na],TPDictLen[na],FPDictLen[na],GrDictLen[na],ZDictLen[na]))
