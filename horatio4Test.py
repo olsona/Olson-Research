@@ -41,7 +41,7 @@ def main(argv):
 	#		 '4lowClose': [4,6,8,10,14,18,22],
 	#		 '4by4': [4,8,12,16,20]}
 	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
-			'4lowCloseChop': [4,6,8,10,14,18],
+			#'4lowCloseChop': [4,6,8,10,14,18],
 			'4by4Chop': [4,8,12,16]}
 	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18]}
 	
