@@ -554,8 +554,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
 		corrClustReal = []
 		for clust in corrClustIdeal:
-			#clSet = set(clust)
-			clSet = set(clust) & allMembers
+			clSet = set(clust)
+			#clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
 		ZDictLen = corrZLen[cut[0]]	

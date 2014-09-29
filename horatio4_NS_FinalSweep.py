@@ -24,9 +24,8 @@ def main(argv):
 	fOut = open(outlog,'w')
 	fOut.close()
 	
-	#jList = [0.5,0.7,0.9]
+	jList = [0.5,0.7,0.9]
 	#jList = [0.7,0.8,0.9]
-	jList = [0.9]
 	
 	#nList = [0.01,0.03,0.1]
 	#nList = [0.01,0.05,0.1]
@@ -43,7 +42,7 @@ def main(argv):
 	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
 	#		'4lowCloseChop': [4,6,8,10,14,18],
 	#		'4by4Chop': [4,8,12,16]}
-	tDict = {'4allCloseChop': [4,6,8,10,14,18]}
+	tDict = {'4lowCloseChop': [4,6,8,10,14,18]}
 	
 	#sDict = {'tacoa': [0.3,0.35,0.4],
 	#		'tetra': [0.2,0.4,0.6],
