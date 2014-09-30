@@ -21,12 +21,12 @@ def main(argv):
 			scr = arg
 	
 	outlog = out + "_log"
-	fOut = open(outlog,'w')
+	fOut = open(outlog,'a')
 	fOut.close()
 	
-	#jList = [0.5,0.7,0.9]
+	jList = [0.5,0.7]
 	#jList = [0.7,0.8,0.9]
-	jList = [0.9]
+	#jList = [0.9]
 	
 	#nList = [0.01,0.03,0.1]
 	#nList = [0.01,0.05,0.1]
