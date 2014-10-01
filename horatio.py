@@ -50,7 +50,6 @@ def main(argv):
 	outputFile = args.output
 	scoreFunction = args.score
 	prefFun = args.ap
-	print prefFun
 	doAP = args.doAP
 	k = args.clusterLimit
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
@@ -89,7 +88,8 @@ def main(argv):
 	# ***
 
 	#print "Starting"
-
+	print prefFun
+	
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
 	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
