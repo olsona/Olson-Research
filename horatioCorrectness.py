@@ -526,14 +526,14 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		cut = cutDict[cText]
 		lInd = fileSplit.index("L")
 		l = float(fileSplit[lInd+1])
-		#pF = string.find(fi,"A_")
+		pF = string.find(fi,"A_")
 		#print fi[pF:], fileSplit
-		#if pF >= 0:
-		#	pInd = fileSplit.index("A")
-		#	pref = fileSplit[pInd+1]
-		#else:
-		#	pref = "N"
-		pref = "N"
+		if pF >= 0:
+			pInd = fileSplit.index("A")
+			pref = fileSplit[pInd+1]
+		else:
+			pref = "N"
+		#pref = "N"
 		
 		repDictNo = {na:0 for na in names}
 		repDictLen = {na:0 for na in names}
@@ -554,8 +554,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
 		corrClustReal = []
 		for clust in corrClustIdeal:
-			clSet = set(clust)
-			#clSet = set(clust) & allMembers
+			#clSet = set(clust)
+			clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
 		ZDictLen = corrZLen[cut[0]]	
