@@ -50,6 +50,7 @@ def main(argv):
 	outputFile = args.output
 	scoreFunction = args.score
 	prefFun = args.ap
+	print prefFun
 	doAP = args.doAP
 	k = args.clusterLimit
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
@@ -88,7 +89,6 @@ def main(argv):
 	# ***
 
 	#print "Starting"
-	print prefFun
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
 	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
@@ -442,7 +442,7 @@ def main(argv):
 			pref = [m*(c**2) + b for c in clusterLengths]
 		else:
 			pref = hcon.apPreferences[prefFun](finalDists)
-		print pref
+		#print pref
 		_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
 		metaClustering = hutil.processAPLabels(labels, clusters)
 		#print metaClustering
