@@ -24,7 +24,7 @@ def main(argv):
 	fOut = open(outlog,'w')
 	fOut.close()
 	
-	jList = [0.5,0.7]
+	jList = [0.5,0.7,0.9]
 	#jList = [0.7,0.8,0.9]
 	#jList = [0.9]
 	
