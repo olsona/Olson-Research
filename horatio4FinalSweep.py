@@ -80,7 +80,7 @@ def main(argv):
 							os.system('echo "{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, t, s, pref, outlog))
 							start = time.time()
 							#os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 -a {!s} >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
-							s.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 -a {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref))
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 -a {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref))
 							end = time.time()
 							os.system('echo "{:03.2f}::" >> {!s}'.format(end-start, outlog))
 	except KeyboardInterrupt:
