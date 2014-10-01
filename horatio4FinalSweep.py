@@ -21,7 +21,7 @@ def main(argv):
 			scr = arg
 	
 	outlog = out + "_log"
-	fOut = open(outlog,'a')
+	fOut = open(outlog,'w')
 	fOut.close()
 	
 	jList = [0.5,0.7]
