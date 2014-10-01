@@ -89,7 +89,6 @@ def main(argv):
 
 	#print "Starting"
 	print prefFun
-	
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
 	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
