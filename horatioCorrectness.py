@@ -1,4 +1,5 @@
 from decimal import *
+import pprint
 
 #----For use in Bootstrap----#
 def checkCorrectMatchClusterMaxSpecies(match, cluster, names):
@@ -455,7 +456,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			names.append(nm)
 	#print names
 	outF = open(outFile,'w')
-	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;F1No;RepFracNo;SnAllLen;SpAllLen;F1Len;repFracLen")
+	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;ClustersPerGenus;NMI;AMI;V-score;SnAllNo;SpAllNo;F1No;RepFracNo;SnAllLen;SpAllLen;F1Len;repFracLen")
 	#for na in sorted(names):
 	#	[ge,sp,_] = na.split("_",2)
 	#	name = "{0}.{1}.".format(ge[:5],sp[:5])
@@ -554,8 +555,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
 		corrClustReal = []
 		for clust in corrClustIdeal:
-			#clSet = set(clust)
-			clSet = set(clust) & allMembers
+			clSet = set(clust)
+			#clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
 		ZDictLen = corrZLen[cut[0]]	
@@ -683,10 +684,12 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			if c >= sizeThreshold:
 				numberClusters += 1
 		
+		#pprint.pprint(ZDictLen)
+		
 		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
 		#pref = "NIL"
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
-		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
+		outF.write("{!s};{!s};{:03.2f};{!s};{!s};{:01.4f};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize,numberClusters/33.0))
 		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,ami,vscore,SnAllNo,SpAllNo,F1No,repFracNo,SnAllLen,SpAllLen,F1Len,repFracLen))
 		#for na in sorted(names):
 		#	outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".\
