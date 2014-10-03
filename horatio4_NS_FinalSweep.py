@@ -21,7 +21,7 @@ def main(argv):
 			scr = arg
 	
 	outlog = out + "_log"
-	fOut = open(outlog,'w')
+	fOut = open(outlog,'a')
 	fOut.close()
 	
 	jList = [0.5,0.7,0.9]
@@ -61,7 +61,8 @@ def main(argv):
 	#prefList = ['max','90','80','70','len']
 	#prefList = ['60','median','40','len2']
 	#prefList = ['median']
-	prefList = ['min','mean','median','max','90','80','70','60','40','len','len2']
+	#prefList = ['min','mean','median','max','90','80','70','60','40','len','len2']
+	prefList = ['40','60','max']
 	#for score in sorted(sDict.keys()):
 	score='tetra'
 	
