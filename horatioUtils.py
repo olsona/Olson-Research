@@ -155,6 +155,11 @@ def makeCorrectClustering(contigFile, nameFile, out, threshold=0):
 	pickle.dump(resList, open(out,"wb"))
 	
 
+def percentile95(array):
+	import numpy
+	return numpy.percentile(array,95)
+
+
 def percentile90(array):
 	import numpy
 	return numpy.percentile(array,90)

@@ -47,6 +47,7 @@ apPreferences = {
 	"median":	numpy.median,
 	"mean":	numpy.mean,
 	"max":	numpy.max,
+	"95":	hutil.percentile95,
 	"90":	hutil.percentile90,
 	"80":	hutil.percentile80,
 	"70":	hutil.percentile70,

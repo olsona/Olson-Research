@@ -62,7 +62,8 @@ def main(argv):
 	#prefList = ['min','mean','median','max']
 	#prefList = ['max','90','80','70','len']
 	#prefList = ['60','median','40','len2']
-	prefList = ['median']
+	#prefList = ['median']
+	prefList = ['95']
 	#for score in sorted(sDict.keys()):
 	
 	try:
