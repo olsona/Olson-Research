@@ -40,7 +40,7 @@ def main(argv):
 	parser.add_argument("-p","--path", help="Computation path (necessary only for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
-	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','len','len2'],default="max")
+	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','95','len','len2'],default="max")
 	parser.add_argument("-d","--doAP", help="Do AP or not", type=int, choices=[0,1],default=0)
 	parser.add_argument("-k","--clusterLimit", help="Minimum size for a cluster to be included in AP", type=int, default=2)
 	parser.add_argument("-l","--split", help="Split threshold")
