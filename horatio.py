@@ -407,7 +407,6 @@ def main(argv):
 			clusterLengths.append(sz)
 	actualClusterList1.close()
 	actualClusterList2.close()
-	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
 	fSeed = "{!s}_actualclusters".format(outputFile)
 
@@ -421,6 +420,7 @@ def main(argv):
 		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
 		
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
+	inDistNo = len(finalDists)
 	if doAP:	
 		#os.system("rm {!s}_dists_sorted".format(outputFile))
 		#os.system("rm {!s}_actualclusters*".format(outputFile))
@@ -485,6 +485,7 @@ def main(argv):
 					contigs2Clusters[con] = mainClust
 				clusters2Contigs.pop(rCl.seed)
 				allClusters.pop(rCl.seed)
+		print "{!s},{!s},{!s},{!s}".format(len(allClusters),len(clusters),inDistNo,len(finalClusters))
 		pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb")) 
 	else:
 		clusters = []
