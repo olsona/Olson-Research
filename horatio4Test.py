@@ -43,8 +43,8 @@ def main(argv):
 	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
 	#		'4lowCloseChop': [4,6,8,10,14,18],
 	#		'4by4Chop': [4,8,12,16]}
-	tDict = {'4lowCloseChop': [4,6,8,10,14,18]}
-	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18]}
+	#tDict = {'4lowCloseChop': [4,6,8,10,14,18]}
+	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18]}
 	
 	#sDict = {'tacoa': [0.3,0.35,0.4],
 	#		'tetra': [0.2,0.4,0.6],
