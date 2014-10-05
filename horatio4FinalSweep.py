@@ -65,7 +65,8 @@ def main(argv):
 	#prefList = ['min','mean','median','max','90','80','70','60','40','len','len2']
 	#prefList = ['40','60','max']
 	#prefList = ['max']
-	prefList = ['95','len3']
+	#prefList = ['95','len3']
+	prefList = ['len4']
 	#for score in sorted(sDict.keys()):
 	score='tetra'
 	
