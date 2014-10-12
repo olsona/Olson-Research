@@ -534,7 +534,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			pref = fileSplit[pInd+1]
 		else:
 			pref = "N"
-		#pref = "N"
+		if pref == "max":
+			pref = "none"
 		
 		repDictNo = {na:0 for na in names}
 		repDictLen = {na:0 for na in names}
@@ -555,8 +556,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
 		corrClustReal = []
 		for clust in corrClustIdeal:
-			#clSet = set(clust)
-			clSet = set(clust) & allMembers
+			clSet = set(clust)
+			#clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
 		ZDictLen = corrZLen[cut[0]]	
