@@ -66,7 +66,8 @@ def main(argv):
 	#prefList = ['40','60','max']
 	#prefList = ['max']
 	#prefList = ['95','len3']
-	prefList = ['len4']
+	#prefList = ['len4']
+	prefList = ['N']
 	#for score in sorted(sDict.keys()):
 	score='tetra'
 	
@@ -83,8 +84,8 @@ def main(argv):
 							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}_A_{!s}".format(out,score,n,j,t,s,pref)
 							os.system('echo "{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, t, s, pref, outlog))
 							start = time.time()
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 -a {!s} >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
-							#os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 -a {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref))
+							#os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 1 -a {!s} >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
+							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} -k 1  >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
 							end = time.time()
 							os.system('echo "{:03.2f}::" >> {!s}'.format(end-start, outlog))
 	except KeyboardInterrupt:

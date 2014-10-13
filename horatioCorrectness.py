@@ -527,7 +527,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		cut = cutDict[cText]
 		lInd = fileSplit.index("L")
 		l = float(fileSplit[lInd+1])
-		pF = string.find(fi,"A_")
+		pF = string.find(fi,"_A_")
 		#print fi[pF:], fileSplit
 		if pF >= 0:
 			pInd = fileSplit.index("A")
