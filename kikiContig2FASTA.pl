@@ -8,7 +8,6 @@ while (<IN>) {
     chomp;
     ($a,$sz,$c,$d,$e,$f,$g) = split("\t");
     print OUT ">$name\_$sz\_$ct\n$g\n";
-    (($ct++))
 }
 close(IN);
 close(OUT);

@@ -15,7 +15,7 @@ bigUsageString = '-i, --ifile\t\tInput metagenomics FASTA file\n'+\
 				'\t\t\t	 format: [1,2,5]\n'+\
 				'\t\t\t	 [1,2,5] implies the partition schedule > 5kbp, 2kbp, 1kbp\n'
 				
-defaultSchedule = [2,6,10,14,18,22]
+defaultSchedule = [4,6,8,10,12,14,16,18]
 
 #http://my.safaribooksonline.com/book/programming/python/0596007973/python-shortcuts/pythoncook2-chp-4-sect-16
 # ***
@@ -47,7 +47,10 @@ apPreferences = {
 	"median":	numpy.median,
 	"mean":	numpy.mean,
 	"max":	numpy.max,
+	"95":	hutil.percentile95,
 	"90":	hutil.percentile90,
 	"80":	hutil.percentile80,
-	"70":	hutil.percentile70
+	"70":	hutil.percentile70,
+	"60":	hutil.percentile60,
+	"40":	hutil.percentile40
 }

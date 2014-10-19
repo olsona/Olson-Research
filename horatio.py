@@ -36,11 +36,11 @@ def main(argv):
 	parser.add_argument("-i","--input", help="Input .fasta file", required=True)
 	parser.add_argument("-o","--output", help="Prefix for all output files", required=True)
 	parser.add_argument("-c","--cut", help="Cut schedule", required=True)
-	parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='raiphy')
-	parser.add_argument("-p","--path", help="Computation path (necessary for RAIphy scoring)")
+	parser.add_argument("-s","--score", help="Scoring function", choices=['raiphy','tetra','tacoa'], default='tetra')
+	parser.add_argument("-p","--path", help="Computation path (necessary only for RAIphy scoring)")
 	parser.add_argument("-n","--neighbor", help="Neighborhood threshold",type=float, default=0.01)
 	parser.add_argument("-j","--join", help="Joining threshold",type=float, default=0.5)
-	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','len','len2'],default="max")
+	parser.add_argument("-a","--ap", help="AP preference", choices=['min','median','mean','max','40','60','70','80','90','95','len','len2','len3','len4'],default="max")
 	parser.add_argument("-d","--doAP", help="Do AP or not", type=int, choices=[0,1],default=0)
 	parser.add_argument("-k","--clusterLimit", help="Minimum size for a cluster to be included in AP", type=int, default=2)
 	parser.add_argument("-l","--split", help="Split threshold")
@@ -50,6 +50,7 @@ def main(argv):
 	outputFile = args.output
 	scoreFunction = args.score
 	prefFun = args.ap
+	print prefFun
 	doAP = args.doAP
 	k = args.clusterLimit
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
@@ -88,7 +89,6 @@ def main(argv):
 	# ***
 
 	#print "Starting"
-
 	# properly format input metagenome file
 	f = open(inputFile, 'r')
 	baseName = inputFile.rsplit(".",1)[0]+"_working_"+scoreFunction
@@ -407,7 +407,6 @@ def main(argv):
 			clusterLengths.append(sz)
 	actualClusterList1.close()
 	actualClusterList2.close()
-	print "{!s},{!s}".format(len(allClusters),len(clusters))
 	#print numLeaves
 	fSeed = "{!s}_actualclusters".format(outputFile)
 
@@ -421,15 +420,15 @@ def main(argv):
 		hfun.scoreRAIphyFinal(DB, fSeed, computePath, outputFile)
 		
 	finalDists = hutil.makeDistanceMatrix("{!s}_dists_sorted".format(outputFile))
+	inDistNo = len(finalDists)
 	if doAP:	
 		#os.system("rm {!s}_dists_sorted".format(outputFile))
-		os.system("rm {!s}_actualclusters*".format(outputFile))
+		#os.system("rm {!s}_actualclusters*".format(outputFile))
 		if prefFun == "len":
 			minDist = numpy.min(finalDists)
 			maxDist = numpy.max(finalDists)
 			minLen = numpy.min(clusterLengths)
 			maxLen = numpy.max(clusterLengths)
-			print >> sys.stderr, [len(clusterLengths), minLen, maxLen]
 			m = (maxDist - minDist)/(maxLen - minLen)
 			b = minDist - m*minLen
 			pref = [m*c + b for c in clusterLengths]
@@ -441,8 +440,25 @@ def main(argv):
 			m = m = (maxDist - minDist)/(maxLen - minLen)
 			b = minDist - m*minLen
 			pref = [m*(c**2) + b for c in clusterLengths]
+		elif prefFun == "len3":
+			minDist = numpy.min(finalDists)
+			maxDist = numpy.max(finalDists)
+			minLen = numpy.min(clusterLengths)**3
+			maxLen = numpy.max(clusterLengths)**3
+			m = m = (maxDist - minDist)/(maxLen - minLen)
+			b = minDist - m*minLen
+			pref = [m*(c**3) + b for c in clusterLengths]
+		elif prefFun == "len4":
+			minDist = numpy.min(finalDists)
+			maxDist = numpy.max(finalDists)
+			minLen = numpy.min(clusterLengths)**4
+			maxLen = numpy.max(clusterLengths)**4
+			m = m = (maxDist - minDist)/(maxLen - minLen)
+			b = minDist - m*minLen
+			pref = [m*(c**4) + b for c in clusterLengths]
 		else:
 			pref = hcon.apPreferences[prefFun](finalDists)
+		#print pref
 		_, labels = sklearn.cluster.affinity_propagation(finalDists,preference=pref)
 		metaClustering = hutil.processAPLabels(labels, clusters)
 		#print metaClustering
@@ -485,6 +501,7 @@ def main(argv):
 					contigs2Clusters[con] = mainClust
 				clusters2Contigs.pop(rCl.seed)
 				allClusters.pop(rCl.seed)
+		print "{!s},{!s},{!s},{!s}".format(len(allClusters),len(clusters),inDistNo,len(finalClusters))
 		pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb")) 
 	else:
 		clusters = []
@@ -495,12 +512,14 @@ def main(argv):
 		pickle.dump(clusters, open("{!s}_clusters_pickle".format(outputFile),'wb'))
 	
 	# Get rid of files we're not using any more
-	#os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
-	#os.system("rm {!s} >/dev/null 2>&1".format(DB))
-	#os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
-	#os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
-	#for i in range(leng+1):
-	#	os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
+	os.system("rm -r {!s} >/dev/null 2>&1".format(genePath))
+	os.system("rm {!s} >/dev/null 2>&1".format(DB))
+	os.system("rm {!s} >/dev/null 2>&1".format(toMatch))
+	os.system("rm {!s} >/dev/null 2>&1".format(fSeed))
+	for i in range(leng+1):
+		os.system("rm {!s}_{!s}* >/dev/null 2>&1".format(baseName,i))
+	#os.system("rm {!s}_dists_sorted >/dev/null 2>&1".format(outputFile))
+	os.system("rm {!s}_actualclusters*".format(outputFile))
 	
 	#distLog.close()
 

@@ -1,4 +1,5 @@
 from decimal import *
+import pprint
 
 #----For use in Bootstrap----#
 def checkCorrectMatchClusterMaxSpecies(match, cluster, names):
@@ -355,17 +356,7 @@ def ncr(n, r):
 	#print "{:2.2e}".format(ncr_memo[nrtuple])
 	return ncr_memo[nrtuple]
 	#return 1.0
-	
-	
-def AMI(U, V):
-	# Information Theoretic Measures for Clusterings, Vinh, Epps, Bailey
-	# AMI_sum
-	I = MutualInformation(U, V)
-	HU = Entropy(U)
-	HV = Entropy(V)
-	E = float(ExpectedMutualInformation(U,V))
-	return (I-E)/(0.5*(HU+HV)-E)
-	
+
 	
 #----Total post-processing computation----#
 def testCorrectnessAll(computedClustering, correctClustering, names, outFile, representationThreshold=0.9):
@@ -465,11 +456,11 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			names.append(nm)
 	#print names
 	outF = open(outFile,'w')
-	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen")
-	for na in sorted(names):
-		[ge,sp,_] = na.split("_",2)
-		name = "{0}.{1}.".format(ge[:5],sp[:5])
-		outF.write(";{0}TPNo;{0}FPNo;{0}GrNo;{0}ZNo;{0}TPLen;{0}FPLen;{0}GrNo;{0}ZLen".format(name))
+	outF.write("Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;ClustersPerGenus;NMI;AMI;V-score;SnAllNo;SpAllNo;F1No;RepFracNo;SnAllLen;SpAllLen;F1Len;repFracLen")
+	#for na in sorted(names):
+	#	[ge,sp,_] = na.split("_",2)
+	#	name = "{0}.{1}.".format(ge[:5],sp[:5])
+	#	outF.write(";{0}TPNo;{0}FPNo;{0}GrNo;{0}ZNo;{0}TPLen;{0}FPLen;{0}GrNo;{0}ZLen".format(name))
 	outF.write("\n")
 
 	# get Z values for each correct clustering
@@ -490,6 +481,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 						corName = nm
 						break
 				corrZNo[no][corName] = len(cl)
+				#print rep, corName
+				#print
 				for c in cl:
 					clen = int(c.rsplit("_",2)[1])
 					#if clen >= 4000:
@@ -522,7 +515,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		fileName = fi.split("/")[-1]
 		fileSplit = fileName.split("_")
 		#print fileSplit
-		mText = fileSplit[0]
+		mText = fileSplit[0].split(".")[0]
 		#mAbund = fileSplit[1]
 		score = fileSplit[1]
 		nInd = fileSplit.index("N")
@@ -534,12 +527,15 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		cut = cutDict[cText]
 		lInd = fileSplit.index("L")
 		l = float(fileSplit[lInd+1])
-		pF = string.find(fi,"A_")
+		pF = string.find(fi,"_A_")
+		#print fi[pF:], fileSplit
 		if pF >= 0:
 			pInd = fileSplit.index("A")
 			pref = fileSplit[pInd+1]
 		else:
 			pref = "N"
+		if pref == "max":
+			pref = "none"
 		
 		repDictNo = {na:0 for na in names}
 		repDictLen = {na:0 for na in names}
@@ -560,7 +556,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustIdeal = pickle.load(open(corrClustName,'rb'))
 		corrClustReal = []
 		for clust in corrClustIdeal:
-			clSet = set(clust) & allMembers
+			clSet = set(clust)
+			#clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
 		ZDictLen = corrZLen[cut[0]]	
@@ -592,18 +589,20 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 						break
 						
 			if len(cl) >= sizeThreshold:
+				#print cl
 				for nL in myRepDictNo:
+					#print myRepDictNo[nL], maxNo
 					if myRepDictNo[nL] > maxNo:
 						maxNo = myRepDictNo[nL]
 						maxNoName = nL
-				if GrDictNo[maxNoName] < maxNo:
-					GrDictNo[maxNoName] = maxNo
+				#if GrDictNo[maxNoName] < maxNo:
+				#	GrDictNo[maxNoName] = maxNo
 				for nL in myRepDictLen:
 					if myRepDictLen[nL] > maxLen:
 						maxLen = myRepDictLen[nL]
 						maxLenName = nL
-				if GrDictLen[maxLenName] < maxLen:
-					GrDictLen[maxLenName] = maxLen
+				#if GrDictLen[maxLenName] < maxLen:
+				#	GrDictLen[maxLenName] = maxLen
 				tpn = maxNo
 				fpn = len(cl) - tpn
 				tpl = maxLen
@@ -628,6 +627,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		FPAllLen = 0
 		for na in names:
 			#if ZDict[na] and TPDict[na]:	  # tacoa p 13 "The overall specificity is computed over those classes that have a defined specificity value"
+			#print na
 			ZAllNo += ZDictNo[na]
 			TPAllNo += TPDictNo[na]
 			FPAllNo += FPDictNo[na]
@@ -650,6 +650,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		if TPAllLen:
 			SnAllLen = float(TPAllLen)/float(ZAllLen)
 			SpAllLen = float(TPAllLen)/float(TPAllLen+FPAllLen)
+		F1No = 2*(SnAllNo*SpAllNo)/(SnAllNo+SpAllNo)
+		F1Len = 2*(SnAllLen*SpAllLen)/(SnAllLen+SpAllLen)
 		
 		repNumNo = 0
 		for r in repDictNo:
@@ -670,6 +672,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				idSubset.append(c)
 		tr_label = generateLabelingSubset(corrClustReal,idSubset)
 		nmi = sklearn.metrics.normalized_mutual_info_score(tr_label,my_label)
+		ami = sklearn.metrics.adjusted_mutual_info_score(tr_label,my_label)
 		vscore = sklearn.metrics.v_measure_score(tr_label,my_label)
 		#ami = AMI(inClust, corrClustReal)
 		
@@ -682,19 +685,43 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			if c >= sizeThreshold:
 				numberClusters += 1
 		
-		#"Source;Score;Cut;N;J;L;Pref;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
+		#pprint.pprint(ZDictLen)
 		
+		#"Source;Score;Cut;N;J;L;SizeThreshold;NumberClusters;AvgClustSize;MinClustSize;MaxClustSize;NMI;AMI;V-score;SnAllNo;SpAllNo;RepFracNo;SnAllLen;SpAllLen;repFracLen"
+		#pref = "NIL"
 		outF.write("{!s};{!s};{!s};{:01.2f};{:01.2f};{:01.2f};{!s};".format(mText,score,cText,n,j,l,pref))
-		outF.write("{!s};{!s};{:03.2f};{!s};{!s};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize))
-		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,vscore,SnAllNo,SpAllNo,repFracNo,SnAllLen,SpAllLen,repFracLen))
-		for na in sorted(names):
-			outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".\
-				format(TPDictNo[na],FPDictNo[na],GrDictNo[na],ZDictNo[na],TPDictLen[na],FPDictLen[na],GrDictLen[na],ZDictLen[na]))
+		outF.write("{!s};{!s};{:03.2f};{!s};{!s};{:01.4f};".format(sizeThreshold,numberClusters,avgClustSize,minClustSize,maxClustSize,numberClusters/33.0))
+		outF.write("{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".format(nmi,ami,vscore,SnAllNo,SpAllNo,F1No,repFracNo,SnAllLen,SpAllLen,F1Len,repFracLen))
+		#for na in sorted(names):
+		#	outF.write(";{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f};{:01.4f}".\
+		#		format(TPDictNo[na],FPDictNo[na],GrDictNo[na],ZDictNo[na],TPDictLen[na],FPDictLen[na],GrDictLen[na],ZDictLen[na]))
 		outF.write("\n")
 		ctr += 1
 		
 	outF.close()
 	print "done"
+	
+	
+def generateCorrectClusteringFromResults(resPickle, nameFile, outFile, threshold):
+	import cPickle
+	import string
+	nf = open(nameFile,'r')
+	names = [l.rstrip() for l in nf.readlines()]
+	corrDict = {n:[] for n in names}
+	clustering = cPickle.load(open(resPickle,'rb'))
+	for cluster in clustering:
+		leaves = cluster.getLeaves()
+		for contig in leaves:
+			size = int(contig.rsplit('_',2)[-2])
+			if size >= threshold:
+				source = ''
+				for possible in names:
+					if string.find(possible,contig) != -1:
+						source = possible
+						corrDict[source].append(contig)
+						break
+	outList = corrDict.values()
+	cPickle.dump(outList,open(outFile,'wb'))
 	
 
 def processDistanceInfo(inClusters, inDistance, nameFile):
@@ -794,11 +821,16 @@ def processOrderedDistMatrix(orderedDistMatrix):
 	FNDict = {n:0 for n in contig_genera_uniq}
 	ZDict = Counter(contig_genera)
 	ct = 0
+	uniqueClusters = {}
 	ln = odmFile.readline().rstrip()
 	while ln:
 		entry = ln.split(',')[0]
 		index = int(entry.split(':')[1])
 		match_genus = db_genera[index]
+		if match_genus in uniqueClusters.keys():
+			uniqueClusters[match_genus] += 1
+		else:
+			uniqueClusters[match_genus] = 1
 		contig_genus = contig_genera[ct]
 		if contig_genus == match_genus:
 			TPDict[contig_genus] += 1
@@ -818,3 +850,50 @@ def processOrderedDistMatrix(orderedDistMatrix):
 	SP = float(TPAll)/float(TPAll+FPAll)
 	print "SN: {:01.2f}".format(SN)
 	print "SP: {:01.2f}".format(SP)
+	print "NumClusters: {!s}".format(len(uniqueClusters.keys()))
+	
+	
+def getPhyloDistribution(inClust,phyloDist,outPrefix):
+	import cPickle
+	import string
+	import numpy
+	import horatioUtils as hutil
+	phyloF = open(phyloDist,'r')
+	phyloLines = phyloF.readlines()
+	print len(phyloLines)
+	phyloNames = [string.replace(n," ","_") for n in phyloLines[0].rstrip().split(",")]
+	phyloDists = []
+	for x in phyloLines[1:]:
+		ln = x.rstrip().split(",")
+		phyloDists.append([float(n) for n in ln])
+	print len(phyloDists), len(phyloDists[0])
+	clustering = cPickle.load(open(inClust,'rb'))
+	ct = 0
+	orderingOfSources = {}
+	myIntervals = []
+	for cluster in clustering:
+		intervalStart = ct
+		contigs = cluster.getLeaves()
+		for con in contigs:
+			for pn in phyloNames:
+				if string.find(con,pn) != -1:
+					orderingOfSources[ct] = pn
+					break
+			ct += 1
+		intervalEnd = ct
+		myIntervals.append(range(intervalStart,intervalEnd))
+	numContigs = ct
+	distances = -1.0 * numpy.ones((numContigs,numContigs))
+	for x in range(numContigs):
+		distances[x][x] = 0.0
+		srcX = orderingOfSources[x]
+		indX = phyloNames.index(srcX)
+		for y in range(x):
+			srcY = orderingOfSources[y]
+			indY = phyloNames.index(srcY)
+			dist = phyloDists[indX][indY]
+			distances[x][y] = dist
+			distances[y][x] = dist
+	hutil.csv2DistanceDistribution(distances,outPrefix+".intra.csv",numContigs,intervals=myIntervals,include=1)
+	hutil.csv2DistanceDistribution(distances,outPrefix+".inter.csv",numContigs,intervals=myIntervals,include=0)
+
