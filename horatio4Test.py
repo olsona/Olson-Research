@@ -40,21 +40,21 @@ def main(argv):
 	#tDict = {'4allClose': [4,6,8,10,12,14,16,18,20,22],
 	#		 '4lowClose': [4,6,8,10,14,18,22],
 	#		 '4by4': [4,8,12,16,20]}
-	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
-	#		'4lowCloseChop': [4,6,8,10,14,18],
-	#		'4by4Chop': [4,8,12,16]}
+	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18],
+			'4lowCloseChop': [4,6,8,10,14,18],
+			'4by4Chop': [4,8,12,16]}
 	#tDict = {'4lowCloseChop': [4,6,8,10,14,18]}
-	tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18]}
+	#tDict = {'4allCloseChop': [4,6,8,10,12,14,16,18]}
 	
 	#sDict = {'tacoa': [0.3,0.35,0.4],
 	#		'tetra': [0.2,0.4,0.6],
 	#		'raiphy': [-17.0,-16.5,-16.0]}
 	scoreDict = {'RA':'raiphy','TA':'tacoa','TE':'tetra'}
 	score = scoreDict[scr]
-	#sDict = {'tetra': [0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7],
-	#		'raiphy': [-18.0,-17.5,-17.0,-16.5,-16.0,-15.5,-15.0],
-	#		'tacoa': [0.2,0.24,0.28,0.32,0.36,0.4,0.44]}
-	sDict = {'raiphy': [-15.0,-15.5,-16.0]}
+	sDict = {'tetra': [0.3,0.35,0.4,0.45,0.5,0.55,0.6,0.65,0.7],
+			'raiphy': [-18.0,-17.5,-17.0,-16.5,-16.0,-15.5,-15.0],
+			'tacoa': [0.2,0.24,0.28,0.32,0.36,0.4,0.44]}
+	#sDict = {'raiphy': [-15.0,-15.5,-16.0]}
 	#sDict = {'tetra': [0.6],
 	#		'raiphy': [-17.0],
 	#		'tacoa': [0.4]}
@@ -76,7 +76,7 @@ def main(argv):
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
 							print "{!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr)
 							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}".format(out,score,n,j,t,s)
-							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, tStr, sStr, pref, outlog))
+							os.system('echo "::{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, tStr, sStr, 'N', outlog))
 							start = time.time()
 							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} -k 1 >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
 							end = time.time()
