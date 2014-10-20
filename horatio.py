@@ -50,7 +50,7 @@ def main(argv):
 	outputFile = args.output
 	scoreFunction = args.score
 	prefFun = args.ap
-	print prefFun
+	#print prefFun
 	doAP = args.doAP
 	k = args.clusterLimit
 	cutSchedule = [int(n) for n in args.cut.lstrip()[1:-1].split(',')]
@@ -501,7 +501,7 @@ def main(argv):
 					contigs2Clusters[con] = mainClust
 				clusters2Contigs.pop(rCl.seed)
 				allClusters.pop(rCl.seed)
-		print "{!s},{!s},{!s},{!s}".format(len(allClusters),len(clusters),inDistNo,len(finalClusters))
+		#print "{!s},{!s},{!s},{!s}".format(len(allClusters),len(clusters),inDistNo,len(finalClusters))
 		pickle.dump(finalClusters,open("{!s}_clusters_pickle".format(outputFile),"wb")) 
 	else:
 		clusters = []
