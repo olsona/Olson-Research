@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import sys, os, getopt, time
+import os.path
 
 def main(argv):
 	myfile = ''
@@ -80,14 +81,15 @@ def main(argv):
 							splitList = [s]*(len(tDict[t])-1)
 							tStr = "["+",".join([str(ti) for ti in tDict[t]])+"]"
 							sStr = "["+",".join([str(si) for si in splitList])+"]"
-							print "{!s}, {!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr, pref)
 							myOut = "{!s}_{!s}_N_{!s}_J_{:0.2f}_C_{!s}_L_{:0.2f}_A_{!s}".format(out,score,n,j,t,s,pref)
-							os.system('echo "{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, t, s, pref, outlog))
-							start = time.time()
-							#os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 2 -a {!s} >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
-							os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} -k 2  >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
-							end = time.time()
-							os.system('echo "{:03.2f}::" >> {!s}'.format(end-start, outlog))
+							if(not(os.path.isfile(myOut+"_clusters_pickle"))):
+								print "{!s}, {!s}, {!s}, {!s}, {!s}, {!s}". format(score, n, j, tStr, sStr, pref)
+								os.system('echo "{!s},{!s},{!s},{!s},{!s},{!s}" >> {!s}'.format(score, n, j, t, s, pref, outlog))
+								start = time.time()
+								#os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 1 -p {!s} -k 2 -a {!s} >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, pref, outlog))
+								os.system("python horatio.py -i {!s} -o {!s} -s {!s} -n {!s} -j {!s} -c {!s} -l {!s} -d 0 -p {!s} -k 2  >> {!s}".format(myfile, myOut, score, n, j, tStr, sStr, path, outlog))
+								end = time.time()
+								os.system('echo "{:03.2f}::" >> {!s}'.format(end-start, outlog))
 	except KeyboardInterrupt:
 		sys.exit()
 	#fOut.close()			
