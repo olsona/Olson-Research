@@ -10,7 +10,7 @@ def removeSomeKnownSpecies(dbFolder, keyNames, percentKeep, outList):
 		else:
 			backgroundList.append(fi)
 	nKeys = len(keyList)
-	nKeep = int((percentKeep * nKeys)+0.5)
+	nKeep = int(((percentKeep/100.0) * nKeys)+0.5)
 	keepList = random.sample(keyList, nKeep)
 	outF = open(outList, 'w')
 	for bL in backgroundList:
