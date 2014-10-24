@@ -5,7 +5,7 @@ def removeSomeKnownSpecies(dbFolder, keyNames, percentKeep, outList):
 	keyList = []
 	listFiles = glob.glob(dbFolder + "/*.fna")
 	for fi in listFiles:
-		if isInName(fi, keyNames):
+		if isInNameSet(fi, keyNames):
 			keyList.append(fi)
 		else:
 			backgroundList.append(fi)
