@@ -74,6 +74,7 @@ def doTest(score, path, metagenomes, suffixes, dbFolder, names, percentKeep, wor
 			makeTacoaDB(myDList, myDB)
 		elif score == "tetra":
 			makeTetraDB(myDList, myDB)
+		print "Made DB"
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
 			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(mg, workFolder))
