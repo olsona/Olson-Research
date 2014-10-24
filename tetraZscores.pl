@@ -30,7 +30,7 @@ Usage: countKmer.pl [-k 6 -m] <indexFile> <resultsFile>
 For each possible words in the kmer of length -k count the number of time they are found in the fasta sequence file
   -k <size>   size of the kmer to analyze. Default 6
   -m          will count all possible kmer per sequences. Default: only one kmer is counted per sequence entries
-
+  HEY!
 EOFUSAGE
 	exit(1);
 }
