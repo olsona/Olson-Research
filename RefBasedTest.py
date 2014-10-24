@@ -37,7 +37,8 @@ def doTest(score, path, metagenome, dbFolder, names, percentKeep, workFolder, ou
 	import horatioFunctions as hfun
 	removeSomeKnownSpecies(dbFolder, names, percentKeep, workFolder + "/DB")
 	os.system("mkdir {!s}/contigs/".format(workFolder))
-	os.system("perl sepMetagenome.pl {!s}/contigs/ {!s} mtgnm".format(workFolder, metagenome))
+	os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(metagenome, workFolder))
+	os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm.tab mtgnm".format(workFolder, workFolder))
 	if score == "raiphy":
 		hfun.scoreRAIphyFinal(workFolder+"/DB", workFolder + "mtgnm", path, out)
 	elif score == "tetra":
