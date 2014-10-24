@@ -30,18 +30,61 @@ def isInNameSet(fileName, nameList):
 			res = True
 			break
 	return res
+
+
+def makeRaiDB(path, list, outDB):
+	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(path, list, outDB))
+	
+def makeTetraDB(list, outDB):
+	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(list,outDB))
+	
+def makeTacoaDB(list, outDB):
+	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(list,outDB))
+	
+def scoreRai(path, list, DB, outputFile):
+	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(path, list, DB))
+	short = toMatch.rsplit("/",1)[1]
+	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, outputFile)) # moves results to results folder
+	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
+
+def scoreTetra(list, DB, outputFile):
+	mDB = DB + ".m"
+	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s}".format(list, mDB))
+	os.system("perl tetraCorrelation.pl {!s} {!s} {!s} >/dev/null".format(DB, mDB, outputFile))
+	
+def scoreTacoa(list, DB, outputFile):
+	mDB = DB + ".m"
+	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(list,mDB))
+	os.system("perl tacoaDistance.pl {!s} {!s} {!s} >/dev/null".format(DB,mDB,outputFile))
 	
 	
-def doTest(score, path, metagenome, dbFolder, names, percentKeep, workFolder, out):
+def doTest(score, path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder, numDB, out):
 	import os
 	import horatioFunctions as hfun
-	removeSomeKnownSpecies(dbFolder, names, percentKeep, workFolder + "/DB")
 	os.system("mkdir {!s}/contigs/".format(workFolder))
-	os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(metagenome, workFolder))
-	os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm.tab {!s}/mtgnm".format(workFolder, workFolder, workFolder))
-	if score == "raiphy":
-		hfun.scoreRAIphyFinal(workFolder+"/DB", workFolder + "mtgnm", path, out)
-	elif score == "tetra":
-		hfun.scoreTETRAFinal(workFolder+"/DB", workFolder + "mtgnm", out)
-	elif score == "tacoa":
-		hfun.scoreTACOAFinal(workFolder+"/DB", workFolder + "mtgnm", out)
+	for i in range(numDB):
+		myList = workFolder + "/list." + str(i)
+		removeSomeKnownSpecies(dbFolder, names, percentKeep, myList)
+		myDB = workFolder + "/DB." + str(i)
+		if score == "raiphy":
+			makeRaiDB(path, myList, myDB)
+		elif score == "tacoa":
+			makeTacoaDB(myList, myDB)
+		elif score == "tetra":
+			makeTetraDB(myList, myDB)
+		for j in range(len(metagenomes)):
+			mg = metagenomes[j]
+			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(mg, workFolder))
+			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm.tab {!s}/mtgnm".format(workFolder, workFolder, workFolder))
+			list = workFolder + "mtgnm"
+			myOut = out
+			if score == "raiphy":
+				scoreRai(path, list, myDB, out + "." + suffixes[j])
+			elif score == "tetra":
+				scoreTetra(list, myDB, out + "." + suffixes[j])
+			elif score == "tacoa":
+				scoreTacoa(list, myDB, out + "." + suffixes[j])
+			print i, j
+			
+			
+	
