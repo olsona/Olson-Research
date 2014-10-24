@@ -65,15 +65,15 @@ def doTest(score, path, metagenomes, suffixes, dbFolder, names, percentKeep, wor
 	import horatioFunctions as hfun
 	os.system("mkdir {!s}/contigs/".format(workFolder))
 	for i in range(numDB):
-		myList = workFolder + "/list." + str(i)
-		removeSomeKnownSpecies(dbFolder, names, percentKeep, myList)
+		myDList = workFolder + "/list." + str(i)
+		removeSomeKnownSpecies(dbFolder, names, percentKeep, myDList)
 		myDB = workFolder + "/DB." + str(i)
 		if score == "raiphy":
-			makeRaiDB(path, myList, myDB)
+			makeRaiDB(path, myDList, myDB)
 		elif score == "tacoa":
-			makeTacoaDB(myList, myDB)
+			makeTacoaDB(myDList, myDB)
 		elif score == "tetra":
-			makeTetraDB(myList, myDB)
+			makeTetraDB(myDList, myDB)
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
 			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(mg, workFolder))
