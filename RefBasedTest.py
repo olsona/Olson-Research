@@ -1,3 +1,5 @@
+import os
+
 def removeSomeKnownSpecies(dbFolder, keyNames, percentKeep, outList):
 	import glob
 	import random
