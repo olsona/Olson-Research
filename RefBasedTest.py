@@ -35,13 +35,13 @@ def isInNameSet(fileName, nameList):
 
 
 def makeRaiDB(path, list, outDB):
-	os.system("{!s}rait -new -i {!s}-2 -o {!s} >/dev/null 2>&1".format(path, list, outDB))
+	os.system("{!s}rait -new -i {!s} -o {!s} >/dev/null 2>&1".format(path, list, outDB))
 	
 def makeTetraDB(list, outDB):
-	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s} >/dev/null".format(list,outDB))
+	os.system("perl tetraZscores.pl -k 4 -m {!s} {!s} >/dev/null".format(list,outDB))
 	
 def makeTacoaDB(list, outDB):
-	os.system("perl tacoaCount.pl -k 4 {!s}-2 {!s} >/dev/null".format(list,outDB))
+	os.system("perl tacoaCount.pl -k 4 {!s} {!s} >/dev/null".format(list,outDB))
 	
 def scoreRai(path, list, DB, outputFile):
 	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(path, list, DB))
