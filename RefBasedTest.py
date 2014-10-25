@@ -51,7 +51,7 @@ def scoreRai(path, list, DB, outputFile):
 
 def scoreTetra(list, DB, outputFile):
 	mDB = DB + ".m"
-	print mDB
+	print list, mDB
 	os.system("perl tetraZscores.pl -k 4 -m {!s}-2 {!s}".format(list, mDB))
 	print "made mDB"
 	os.system("perl tetraCorrelation.pl {!s} {!s} {!s} >/dev/null".format(DB, mDB, outputFile))
