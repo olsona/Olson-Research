@@ -480,6 +480,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 					if string.find(rep,nm) != -1:
 						corName = nm
 						break
+				#print rep, corName
 				corrZNo[no][corName] = len(cl)
 				#print rep, corName
 				#print
@@ -582,12 +583,13 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			for c in cl:
 				mylen = int(c.rsplit('_',2)[1])
 				for nL in names:
+					#print c, nL, string.find(c, nL)
 					if string.find(c,nL) != -1:
 						myRepDictNo[nL] += 1
 						myRepDictLen[nL] += mylen
 						totalLen += mylen			
 						break
-						
+							
 			if len(cl) >= sizeThreshold:
 				#print cl
 				for nL in myRepDictNo:
