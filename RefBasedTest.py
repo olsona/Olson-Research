@@ -81,7 +81,7 @@ def doTest(score, path, metagenomes, suffixes, dbFolder, names, percentKeep, wor
 			mg = metagenomes[j]
 			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(mg, workFolder))
 			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm.tab {!s}/mtgnm".format(workFolder, workFolder, workFolder))
-			list = workFolder + "mtgnm"
+			list = workFolder + "/mtgnm"
 			myOut = out
 			if score == "raiphy":
 				scoreRai(path, list, myDB, out + "." + suffixes[j])
