@@ -80,7 +80,7 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 	with open(names) as nF:
 		namesList = [l.rstrip() for l in list(nF)]
 	baseList = workFolder + "/base.list"
-	makeBackgroundList(dbFolder, keyNames, baseList)
+	makeBackgroundList(dbFolder, namesList, baseList)
 	baseDB = workFolder + "/Base.db"
 	makeRaiDB(path, baseList, baseDB + ".raiphy")
 	makeTacoaDB(baseList, baseDB + ".tacoa")
