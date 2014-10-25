@@ -3,30 +3,41 @@ import os
 def removeSomeKnownSpecies(dbFolder, keyNames, percentKeep, outList):
 	import glob
 	import random
-	backgroundList = []
 	keyList = []
 	listFiles = glob.glob(dbFolder + "/*.fna")
 	for fi in listFiles:
 		if isInNameSet(fi, keyNames):
 			keyList.append(fi)
-		else:
-			backgroundList.append(fi)
 	nKeys = len(keyList)
 	nKeep = int(((percentKeep/100.0) * nKeys)+0.5)
 	keepList = random.sample(keyList, nKeep)
 	outF = open(outList, 'w')
-	for bL in backgroundList:
-		name = bL.split("/")[-1].split(".")[0]
-		outF.write(name + "\t" + bL + "\n")
 	for kL in keepList:
 		name = kL.split("/")[-1].split(".")[0]
 		outF.write(name + "\t" + kL + "\n")
 	outF.close()
 		
 
+def makeBackgroundList(dbFolder, keyNames, outList):
+	import glob
+	backgroundList = []
+	listFiles = glob.glob(dbFolder + "/*.fna")
+	for fi in listFiles:
+		if isInNameSet(fi, keyNames):
+			pass
+		else:
+			backgroundList.append(fi)
+	outF = open(outList, 'w')
+	for bL in backgroundList:
+		name = bL.split("/")[-1].split(".")[0]
+		outF.write(name + "\t" + bL + "\n")
+	outF.close()
+
+
 def isInNameSet(fileName, nameList):
 	import string
 	res = False
+	
 	for n in nameList:
 		if string.find(fileName, n) > -1:
 			res = True
@@ -66,14 +77,27 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 	import os
 	import horatioFunctions as hfun
 	os.system("mkdir {!s}/contigs/".format(workFolder))
+	with open(names) as nF:
+		namesList = [l.rstrip() for l in list(nF)]
+	baseList = workFolder + "/base.list"
+	makeBackgroundList(dbFolder, keyNames, baseList)
+	baseDB = workFolder + "/Base.db"
+	makeRaiDB(path, baseList, baseDB + ".raiphy")
+	makeTacoaDB(baseList, baseDB + ".tacoa")
+	makeTetraDB(baseList, baseDB + ".tetra")
+	print "Made base DB"
 	for i in range(numDB):
 		myDList = workFolder + "/list." + str(i)
-		removeSomeKnownSpecies(dbFolder, names, percentKeep, myDList)
+		removeSomeKnownSpecies(dbFolder, namesList, percentKeep, myDList)
 		myDB = workFolder + "/DB." + str(i)
 		makeRaiDB(path, myDList, myDB+".raiphy")
 		makeTacoaDB(myDList, myDB+".tacoa")
 		makeTetraDB(myDList, myDB+".tetra")
-		print "Made DB"
+		os.system("tail -n +1 {!s} > {!s}".format(myDB+".raiphy",myDB+".raiphy"))
+		os.system("cat {!s} {!s}.raiphy > {!s}.raiphy".format(baseDB, myDB, myDB))
+		os.system("cat {!s} {!s}.tacoa > {!s}.tacoa".format(baseDB, myDB, myDB))
+		os.system("cat {!s} {!s}.tetra > {!s}.tetra".format(baseDB, myDB, myDB))
+		print "Made DBs - Step " + str(i)
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
 			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(mg, workFolder))
