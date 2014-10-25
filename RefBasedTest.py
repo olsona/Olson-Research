@@ -102,11 +102,11 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 			mg = metagenomes[j]
 			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm.tab".format(mg, workFolder))
 			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm.tab {!s}/mtgnm".format(workFolder, workFolder, workFolder))
-			list = workFolder + "/mtgnm"
+			mtgList = workFolder + "/mtgnm"
 			myOut = out + "." + str(i) + "." + suffixes[j]
-			scoreRai(path, list, myDB+".raiphy", myOut + ".raiphy")
-			scoreTetra(list, myDB+".tetra", myOut + ".tetra")
-			scoreTacoa(list, myDB+".tacoa", myOut + ".tacoa")
+			scoreRai(path, mtgList, myDB+".raiphy", myOut + ".raiphy")
+			scoreTetra(mtgList, myDB+".tetra", myOut + ".tetra")
+			scoreTacoa(mtgList, myDB+".tacoa", myOut + ".tacoa")
 			print i, j
 			
 			
