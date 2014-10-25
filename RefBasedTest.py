@@ -96,9 +96,9 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 		makeTacoaDB(myDList, myDB+".ta")
 		makeTetraDB(myDList, myDB+".te")
 		os.system("tail -n +1 {!s} > {!s}".format(myDB+".ra",myDB+".rai"))
-		os.system("cat {!s} {!s}.rai > {!s}.raiphy".format(baseDB, myDB, myDB))
-		os.system("cat {!s} {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
-		os.system("cat {!s} {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.raiphy {!s}.rai > {!s}.raiphy".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.tacoa {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.tetra {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
 		print "Made DBs - Step " + str(i)
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
