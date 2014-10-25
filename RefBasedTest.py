@@ -56,7 +56,7 @@ def makeTacoaDB(list, outDB):
 	
 def scoreRai(path, list, DB, outputFile):
 	os.system("{!s}rai -I {!s}-1 -d {!s} >/dev/null 2>&1".format(path, list, DB))
-	short = toMatch.rsplit("/",1)[1]
+	short = list.rsplit("/",1)[1]
 	os.system("cp {!s}/{!s}-1.bin {!s}".format(os.getcwd(), short, outputFile)) # moves results to results folder
 	os.system("rm {!s}/{!s}-1.bin".format(os.getcwd(), short))
 
@@ -75,7 +75,6 @@ def scoreTacoa(list, DB, outputFile):
 	
 def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder, numDB, out):
 	import os
-	import horatioFunctions as hfun
 	os.system("mkdir {!s}/contigs/".format(workFolder))
 	with open(names) as nF:
 		namesList = [l.rstrip() for l in list(nF)]
