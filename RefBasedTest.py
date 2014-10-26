@@ -102,7 +102,7 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
 			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, percentKeep, workFolder))
-			os.system("perl discardSmlr.pl 4000 {!s} {!s}/mtgnm-{!s}-all.tab {!s}/mtgnm-{!}.tab".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
+			os.system("perl discardSmlr.pl 4000 {!s} {!s}/mtgnm-{!s}-all.tab {!s}/mtgnm-{!s}.tab".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
 			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm-{!s}.tab {!s}/mtgnm-{!s}".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
 			print "Separated metagenome"
 			mtgList = workFolder + "/mtgnm-" + str(percentKeep)
