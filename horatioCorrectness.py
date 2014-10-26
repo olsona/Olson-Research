@@ -642,8 +642,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			TPAllLen += TPDictLen[na]
 			FPAllLen += FPDictLen[na]
 			#print na
-			SnLocal = float(TPDictNo[na])/float(ZDictNo[na])			   # tacoa (8)
-			SpLocal = float(TPDictNo[na])/float(TPDictNo[na]+FPDictNo[na])   # tacoa (9)
+			#SnLocal = float(TPDictNo[na])/float(ZDictNo[na])			   # tacoa (8)
+			#SpLocal = float(TPDictNo[na])/float(TPDictNo[na]+FPDictNo[na])   # tacoa (9)
 			#print SnLocal, SpLocal
 		
 		SnAllNo = 0.0
