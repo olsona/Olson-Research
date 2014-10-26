@@ -485,6 +485,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				#print
 				for c in cl:
 					clen = int(c.rsplit("_",2)[1])
+					#print c, clen
 					#if clen >= 4000:
 					#	 Zk[4] += 1
 					#if clen >= 6000:
@@ -496,6 +497,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 					corrZLen[no][corName] += clen
 	ctr = 0
 	threshold = 0.0
+	#pprint.pprint(corrZLen[4])
 	
 	# iterate through files
 	fileList = glob.glob("{!s}/*_pickle".format(inFolder))
@@ -557,10 +559,13 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 		corrClustReal = []
 		for clust in corrClustIdeal:
 			clSet = set(clust)
+			#print clust[0]
 			#clSet = set(clust) & allMembers
 			corrClustReal.append(list(clSet))
 		ZDictNo = corrZNo[cut[0]]
 		ZDictLen = corrZLen[cut[0]]	
+		
+		#pprint.pprint(ZDictNo)
 			
 		TPDictNo = {na:0 for na in names}
 		FPDictNo = {na:0 for na in names}
@@ -581,7 +586,7 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			#get representations for each name
 			for c in cl:
 				mylen = int(c.rsplit('_',2)[1])
-				for nL in names:
+				for nL in sorted(names):
 					#print c, nL, string.find(c, nL)
 					if string.find(c,nL) != -1:
 						myRepDictNo[nL] += 1
@@ -592,7 +597,6 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			if len(cl) >= sizeThreshold:
 				#print cl
 				for nL in myRepDictNo:
-					#print myRepDictNo[nL], maxNo
 					if myRepDictNo[nL] > maxNo:
 						maxNo = myRepDictNo[nL]
 						maxNoName = nL
@@ -637,10 +641,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			ZAllLen += ZDictLen[na]
 			TPAllLen += TPDictLen[na]
 			FPAllLen += FPDictLen[na]
-			print na
+			#print na
 			SnLocal = float(TPDictNo[na])/float(ZDictNo[na])			   # tacoa (8)
 			SpLocal = float(TPDictNo[na])/float(TPDictNo[na]+FPDictNo[na])   # tacoa (9)
-			print SnLocal, SpLocal
+			#print SnLocal, SpLocal
 		
 		SnAllNo = 0.0
 		SpAllNo = 0.0
