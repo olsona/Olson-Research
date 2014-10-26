@@ -115,5 +115,89 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 			print "Scored Tacoa"
 			print i, j
 			
-			
 	
+
+def isInNameSetGenera(fileName, nameList):
+	import string
+	res = False
+	for n in nameList:
+		nG = n.split("_")[0]
+		if string.find(fileName, nG) > -1:
+			res = True
+			break
+	return res
+
+def removeSomeKnownGenera(dbFolder, keyNames, percentKeep, outList):
+	import glob
+	import random
+	keyList = []
+	listFiles = glob.glob(dbFolder + "/*.fna")
+	for fi in listFiles:
+		if isInNameSetGenera(fi, keyNames):
+			keyList.append(fi)
+	nKeys = len(keyList)
+	nKeep = int(((percentKeep/100.0) * nKeys)+0.5)
+	keepList = random.sample(keyList, nKeep)
+	outF = open(outList, 'w')
+	for kL in keepList:
+		name = kL.split("/")[-1].split(".")[0]
+		outF.write(name + "\t" + kL + "\n")
+	outF.close()
+	
+def makeBackgroundListGenera(dbFolder, keyNames, outList):
+	import glob
+	backgroundList = []
+	listFiles = glob.glob(dbFolder + "/*.fna")
+	for fi in listFiles:
+		if isInNameSetGenera(fi, keyNames):
+			pass
+		else:
+			backgroundList.append(fi)
+	outF = open(outList, 'w')
+	for bL in backgroundList:
+		name = bL.split("/")[-1].split(".")[0]
+		outF.write(name + "\t" + bL + "\n")
+	outF.close()
+	
+
+def doTestGenera(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder, numDB, out):
+	import os
+	os.system("mkdir {!s}/contigs/".format(workFolder))
+	with open(names) as nF:
+		namesList = [l.rstrip() for l in list(nF)]
+	baseList = workFolder + "/base.list"
+	makeBackgroundListGenera(dbFolder, namesList, baseList)
+	baseDB = workFolder + "/Base.db"
+	makeRaiDB(path, baseList, baseDB + ".raiphy")
+	print "Made base Raiphy DB"
+	makeTacoaDB(baseList, baseDB + ".tacoa")
+	print "Made base Tacoa DB"
+	makeTetraDB(baseList, baseDB + ".tetra")
+	print "Made base Tetra DB"
+	for i in range(numDB):
+		myDList = workFolder + "/list." + str(i)
+		removeSomeKnownGenera(dbFolder, namesList, percentKeep, myDList)
+		myDB = workFolder + "/DB." + str(i)
+		makeRaiDB(path, myDList, myDB+".ra")
+		makeTacoaDB(myDList, myDB+".ta")
+		makeTetraDB(myDList, myDB+".te")
+		os.system("tail -n +1 {!s} > {!s}".format(myDB+".ra",myDB+".rai"))
+		os.system("cat {!s}.raiphy {!s}.rai > {!s}.raiphy".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.tacoa {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.tetra {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
+		print "Made DBs - Step " + str(i)
+		for j in range(len(metagenomes)):
+			mg = metagenomes[j]
+			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, percentKeep, workFolder))
+			os.system("perl discardSmlr.pl 4000 {!s} {!s}/mtgnm-{!s}-all.tab {!s}/mtgnm-{!s}.tab".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
+			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm-{!s}.tab {!s}/mtgnm-{!s}".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
+			print "Separated metagenome"
+			mtgList = workFolder + "/mtgnm-" + str(percentKeep)
+			myOut = out + "." + str(i) + "." + suffixes[j]
+			scoreRai(path, mtgList, myDB+".raiphy", myOut + ".raiphy")
+			print "Scored RAIphy"
+			scoreTetra(mtgList, myDB+".tetra", myOut + ".tetra")
+			print "Scored Tetra"
+			scoreTacoa(mtgList, myDB+".tacoa", myOut + ".tacoa")
+			print "Scored Tacoa"
+			print i, j

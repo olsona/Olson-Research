@@ -480,7 +480,6 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 					if string.find(rep,nm) != -1:
 						corName = nm
 						break
-				#print rep, corName
 				corrZNo[no][corName] = len(cl)
 				#print rep, corName
 				#print
@@ -606,6 +605,8 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 				#if GrDictLen[maxLenName] < maxLen:
 				#	GrDictLen[maxLenName] = maxLen
 				tpn = maxNo
+				#print sorted(cl), maxNoName, len(cl), tpn
+				#print maxNoName, len(cl), tpn
 				fpn = len(cl) - tpn
 				tpl = maxLen
 				fpl = totalLen - tpl
@@ -636,8 +637,10 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			ZAllLen += ZDictLen[na]
 			TPAllLen += TPDictLen[na]
 			FPAllLen += FPDictLen[na]
-			#SnDict[na] = float(TPDict[na])/float(ZDict[na])			   # tacoa (8)
-			#SpDict[na] = float(TPDict[na])/float(TPDict[na]+FPDict[na])   # tacoa (9)
+			print na
+			SnLocal = float(TPDictNo[na])/float(ZDictNo[na])			   # tacoa (8)
+			SpLocal = float(TPDictNo[na])/float(TPDictNo[na]+FPDictNo[na])   # tacoa (9)
+			print SnLocal, SpLocal
 		
 		SnAllNo = 0.0
 		SpAllNo = 0.0
