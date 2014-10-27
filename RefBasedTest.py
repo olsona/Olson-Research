@@ -83,14 +83,16 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 	baseDB = workFolder + "/Base.db"
 	makeRaiDB(path, baseList, baseDB + ".raiphy")
 	print "Made base Raiphy DB"
-	makeTacoaDB(baseList, baseDB + ".tacoa")
-	print "Made base Tacoa DB"
-	makeTetraDB(baseList, baseDB + ".tetra")
-	print "Made base Tetra DB"
+	#makeTacoaDB(baseList, baseDB + ".tacoa")
+	#print "Made base Tacoa DB"
+	#makeTetraDB(baseList, baseDB + ".tetra")
+	#print "Made base Tetra DB"
 	for i in range(numDB):
 		myDList = workFolder + "/list." + str(i)
 		removeSomeKnownSpecies(dbFolder, namesList, percentKeep, myDList)
 		myDB = workFolder + "/DB." + str(i)
+		print
+		print
 		makeRaiDB(path, myDList, myDB+".ra")
 		#makeTacoaDB(myDList, myDB+".ta")
 		#makeTetraDB(myDList, myDB+".te")
