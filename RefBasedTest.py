@@ -92,12 +92,12 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 		removeSomeKnownSpecies(dbFolder, namesList, percentKeep, myDList)
 		myDB = workFolder + "/DB." + str(i)
 		makeRaiDB(path, myDList, myDB+".ra")
-		makeTacoaDB(myDList, myDB+".ta")
-		makeTetraDB(myDList, myDB+".te")
+		#makeTacoaDB(myDList, myDB+".ta")
+		#makeTetraDB(myDList, myDB+".te")
 		os.system("tail -n +1 {!s} > {!s}".format(myDB+".ra",myDB+".rai"))
 		os.system("cat {!s}.raiphy {!s}.rai > {!s}.raiphy".format(baseDB, myDB, myDB))
-		os.system("cat {!s}.tacoa {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
-		os.system("cat {!s}.tetra {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
+		#os.system("cat {!s}.tacoa {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
+		#os.system("cat {!s}.tetra {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
 		print "Made DBs - Step " + str(i)
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
@@ -109,10 +109,10 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 			myOut = out + "." + str(i) + "." + suffixes[j]
 			scoreRai(path, mtgList, myDB+".raiphy", myOut + ".raiphy")
 			print "Scored RAIphy"
-			scoreTetra(mtgList, myDB+".tetra", myOut + ".tetra")
-			print "Scored Tetra"
-			scoreTacoa(mtgList, myDB+".tacoa", myOut + ".tacoa")
-			print "Scored Tacoa"
+			#scoreTetra(mtgList, myDB+".tetra", myOut + ".tetra")
+			#print "Scored Tetra"
+			#scoreTacoa(mtgList, myDB+".tacoa", myOut + ".tacoa")
+			#print "Scored Tacoa"
 			print i, j
 			
 	
