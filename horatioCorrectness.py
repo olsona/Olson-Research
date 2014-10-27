@@ -536,8 +536,6 @@ def processFolder(inFolder, nameFile, correctFilePrefix, sizeThreshold, outFile)
 			pref = fileSplit[pInd+1]
 		else:
 			pref = "N"
-		if pref == "max":
-			pref = "none"
 		
 		repDictNo = {na:0 for na in names}
 		repDictLen = {na:0 for na in names}
@@ -834,6 +832,7 @@ def processOrderedDistMatrix(orderedDistMatrix):
 	ln = odmFile.readline().rstrip()
 	while ln:
 		entry = ln.split(',')[0]
+		print entry
 		index = int(entry.split(':')[1])
 		match_genus = db_genera[index]
 		if match_genus in uniqueClusters.keys():
