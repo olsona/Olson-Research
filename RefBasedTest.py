@@ -91,19 +91,17 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 		myDList = workFolder + "/list." + str(i)
 		removeSomeKnownSpecies(dbFolder, namesList, percentKeep, myDList)
 		myDB = workFolder + "/DB." + str(i)
-		print
-		print
 		makeRaiDB(path, myDList, myDB+".ra")
-		#makeTacoaDB(myDList, myDB+".ta")
-		#makeTetraDB(myDList, myDB+".te")
+		makeTacoaDB(myDList, myDB+".ta")
+		makeTetraDB(myDList, myDB+".te")
 		os.system("tail -n +1 {!s} > {!s}".format(myDB+".ra",myDB+".rai"))
 		os.system("cat {!s}.raiphy {!s}.rai > {!s}.raiphy".format(baseDB, myDB, myDB))
-		#os.system("cat {!s}.tacoa {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
-		#os.system("cat {!s}.tetra {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.tacoa {!s}.ta > {!s}.tacoa".format(baseDB, myDB, myDB))
+		os.system("cat {!s}.tetra {!s}.te > {!s}.tetra".format(baseDB, myDB, myDB))
 		print "Made DBs - Step " + str(i)
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
-			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, percentKeep, workFolder))
+			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, workFolder, percentKeep))
 			os.system("perl discardSmlr.pl 4000 {!s} {!s}/mtgnm-{!s}-all.tab {!s}/mtgnm-{!s}.tab".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
 			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm-{!s}.tab {!s}/mtgnm-{!s}".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
 			print "Separated metagenome"
@@ -111,10 +109,10 @@ def doTest(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder
 			myOut = out + "." + str(i) + "." + suffixes[j]
 			scoreRai(path, mtgList, myDB+".raiphy", myOut + ".raiphy")
 			print "Scored RAIphy"
-			#scoreTetra(mtgList, myDB+".tetra", myOut + ".tetra")
-			#print "Scored Tetra"
-			#scoreTacoa(mtgList, myDB+".tacoa", myOut + ".tacoa")
-			#print "Scored Tacoa"
+			scoreTetra(mtgList, myDB+".tetra", myOut + ".tetra")
+			print "Scored Tetra"
+			scoreTacoa(mtgList, myDB+".tacoa", myOut + ".tacoa")
+			print "Scored Tacoa"
 			print i, j
 			
 	
