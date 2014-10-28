@@ -163,20 +163,20 @@ def makeBackgroundListGenera(dbFolder, keyNames, outList):
 	outF.close()
 	
 
-def doTestGenera(path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder, numDB, out):
+def doTestGenera(baseDB,path, metagenomes, suffixes, dbFolder, names, percentKeep, workFolder, numDB, out):
 	import os
 	os.system("mkdir {!s}/contigs/".format(workFolder))
 	with open(names) as nF:
 		namesList = [l.rstrip() for l in list(nF)]
 	baseList = workFolder + "/base.list"
 	makeBackgroundListGenera(dbFolder, namesList, baseList)
-	baseDB = workFolder + "/Base.db"
-	makeRaiDB(path, baseList, baseDB + ".raiphy")
-	print "Made base Raiphy DB"
-	makeTacoaDB(baseList, baseDB + ".tacoa")
-	print "Made base Tacoa DB"
-	makeTetraDB(baseList, baseDB + ".tetra")
-	print "Made base Tetra DB"
+	#baseDB = workFolder + "/Base.db"
+	#makeRaiDB(path, baseList, baseDB + ".raiphy")
+	#print "Made base Raiphy DB"
+	#makeTacoaDB(baseList, baseDB + ".tacoa")
+	#print "Made base Tacoa DB"
+	#makeTetraDB(baseList, baseDB + ".tetra")
+	#print "Made base Tetra DB"
 	for i in range(numDB):
 		myDList = workFolder + "/list." + str(i)
 		removeSomeKnownGenera(dbFolder, namesList, percentKeep, myDList)
@@ -191,8 +191,11 @@ def doTestGenera(path, metagenomes, suffixes, dbFolder, names, percentKeep, work
 		print "Made DBs - Step " + str(i)
 		for j in range(len(metagenomes)):
 			mg = metagenomes[j]
-			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, percentKeep, workFolder))
+			print "perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, workFolder, percentKeep)
+			os.system("perl fasta2tab.pl {!s} {!s}/mtgnm-{!s}-all.tab".format(mg, workFolder, percentKeep))
+			print "perl discardSmlr.pl 4000 {!s} {!s}/mtgnm-{!s}-all.tab {!s}/mtgnm-{!s}.tab".format(workFolder, workFolder, percentKeep, workFolder, percentKeep)
 			os.system("perl discardSmlr.pl 4000 {!s} {!s}/mtgnm-{!s}-all.tab {!s}/mtgnm-{!s}.tab".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
+			print "perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm-{!s}.tab {!s}/mtgnm-{!s}".format(workFolder, workFolder, percentKeep, workFolder, percentKeep)
 			os.system("perl sepMetagenome.pl {!s}/contigs/ {!s}/mtgnm-{!s}.tab {!s}/mtgnm-{!s}".format(workFolder, workFolder, percentKeep, workFolder, percentKeep))
 			print "Separated metagenome"
 			mtgList = workFolder + "/mtgnm-" + str(percentKeep)
